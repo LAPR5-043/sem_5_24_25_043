@@ -1,0 +1,276 @@
+@startuml
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+' Title
+title Domain Model
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+' Aggregates
+
+
+
+package "User Aggregate" {
+
+    entity User <<entity>><<root>> {
+    }
+
+    card Username <<Value Object>>
+    card Email <<Value Object>>
+
+    enum Role <<enumeration>> {
+        Admin
+        Doctor
+        Nurse
+        Technician
+        Patient
+    }
+
+    ' Relationships inside the User aggregate
+
+    User "1"-u->"1" Username
+    User "1"-u->"1" Email
+    User "1"-l->"1" Role
+
+
+}
+
+package "Patient Aggregate" {
+
+    entity Patient <<entity>><<root>> {
+    }
+
+    card PatientFirstName <<Value Object>>
+    card PatientLastName <<Value Object>>
+    card PatientFullName <<Value Object>>
+    card DateOfBirth <<Value Object>>
+    card Gender <<Value Object>>
+    card MedicalRecordNumber <<Value Object>>
+    card ContactInformation <<Value Object>>
+    card AllergiesAndConditions <<Value Object>>
+    card EmergencyContact <<Value Object>>
+    'card AppointmentHistory <<Value Object>>
+
+    ' Atributos Contact Information
+    card PatientEmail <<Value Object>>
+    card PhoneNumber <<Value Object>>
+
+    ' Relationships Contact Information
+    ContactInformation "1"-->"1" PatientEmail
+    ContactInformation "1"-->"1" PhoneNumber
+
+    ' Relationships inside the Patient aggregate
+    Patient "1"-->"1" PatientFirstName
+    Patient "1"-->"1" PatientLastName
+    Patient "1"-->"1" PatientFullName
+    Patient "1"-->"1" DateOfBirth
+    Patient "1" --> "1" Gender
+    Patient "1"-->"1" MedicalRecordNumber
+    Patient "1" --> "1" ContactInformation
+    Patient "1"--> "*" AllergiesAndConditions
+    Patient "1"--> "1" EmergencyContact
+
+}
+
+package "Staff Aggregate" {
+
+    entity Staff <<entity>><<root>> {
+    }
+
+    card StaffFirstName <<Value Object>>
+    card StaffLastName <<Value Object>>
+    card StaffFullName <<Value Object>>
+    card LicenseNumber <<Value Object>>
+
+    'specialization é entidade
+    card StaffContactInformation <<Value Object>>
+    card AvailabilitySlots <<Value Object>>
+    entity TimeSlots <<Value Object>> {
+        StartDate
+        EndDate
+        Occupied
+    }
+
+    ' Atributos Contact Information
+    card StaffEmail <<Value Object>>
+    card StaffPhoneNumber <<Value Object>>
+
+    'Relationships Contact Information
+    StaffContactInformation "1"-->"1" StaffEmail
+    StaffContactInformation "1"-->"1" StaffPhoneNumber
+
+    'Relationships inside the Staff aggregate
+    Staff "1"-->"1" StaffFirstName
+    Staff "1"-->"1" StaffLastName
+    Staff "1"-->"1" StaffFullName
+    Staff "1"-->"1" LicenseNumber
+    Staff "1"-->"1" StaffContactInformation
+    Staff "1"-->"1" AvailabilitySlots
+    AvailabilitySlots "1"-->"*" TimeSlots
+
+
+}
+
+package "Specialization Aggregate" {
+
+    entity Specialization <<entity>><<root>> {
+    }
+
+    card Name <<Value Object>>
+    card SpecializationDescription <<Value Object>>
+
+    'Relationships
+    Specialization "1"-up->"1" Name
+    Specialization "1"-up->"1" SpecializationDescription
+
+}
+
+package "Operation Request Aggregate" {
+
+    entity OperationRequest <<entity>><<root>> {
+    }
+
+    card ID <<Value Object>>
+    card PatientID <<Value Object>>
+    card DoctorID <<Value Object>>
+    card OperationType <<Value Object>>
+    card DeadlineDate <<Value Object>>
+    card Priority <<Value Object>>
+
+    'Relationships
+    OperationRequest "1"-up->"1" ID
+    OperationRequest "1"-up->"1" PatientID
+    OperationRequest "1"-up->"1" DoctorID
+    OperationRequest "1"-up->"1" OperationType
+    OperationRequest "1"-up->"1" DeadlineDate
+    OperationRequest "1"-up->"1" Priority
+
+
+}
+
+package "Operation Type Aggregate" {
+
+    entity OperationTypes <<entity>><<root>> {
+    }
+
+    card OperationTypeID <<Value Object>>
+    card OperationTypeName <<Value Object>>
+    card EstimatedDuration <<Value Object>>
+    'Ligar a Specialization
+    
+    'Relationships
+    OperationTypes "1"-up->"1" OperationTypeID
+    OperationTypes "1"-up->"1" OperationTypeName
+    OperationTypes "1"-up->"1" EstimatedDuration
+    
+
+}
+
+package "Appointment Aggregate" {
+
+    entity Appointment <<entity>><<root>> {
+    }
+
+    card AppointmentID <<Value Object>>
+    card RequestID <<Value Object>>
+    card RoomID <<Value Object>>
+    card DateAndTime <<Value Object>>
+    enum Status <<enumeration>> {
+        Scheduled
+        Completed
+        Cancelled
+    }
+
+    'Relationships
+    Appointment "1"-up->"1" AppointmentID
+    Appointment "1"-up->"1" RequestID
+    Appointment "1"-up->"1" RoomID
+    Appointment "1"-up->"1" DateAndTime
+    Appointment "1"-up->"1" Status
+
+
+}
+
+package "Equipment Aggregate"{
+
+    entity Equipment <<entity>><<root>> {
+    }
+
+    card Name <<Value Object>>
+    card Description <<Value Object>>
+}
+
+package "Surgery Room Aggregate" {
+
+    entity SurgeryRoom <<entity>><<root>> {
+    }
+
+    card RoomNumber <<Value Object>>
+    card Type <<Value Object>>
+    card Capacity <<Value Object>>
+    card AssignedEquipment <<Value Object>>
+    enum CurrentStatus <<enumeration>> {
+        Available
+        Occupied
+        UnderMaintenance
+    }
+    card MaintenanceSlots <<Value Object>>
+
+    'Relationship Of the Assigned Equipment
+    AssignedEquipment "1" --> "*" Equipment
+
+    'Relationships
+
+    SurgeryRoom "1"-->"1" RoomNumber
+    SurgeryRoom "1"-->"1" Type
+    SurgeryRoom "1"-->"1" Capacity
+    SurgeryRoom "1"-->"1" AssignedEquipment
+    SurgeryRoom "1"-->"1" CurrentStatus
+    SurgeryRoom "1"-->"1" MaintenanceSlots
+}
+
+' Relationships
+
+Patient "1" -up-> "*" Appointment
+Patient "1" -up-> "1" User
+
+Staff "*" -down----> "1" Specialization
+Staff "1" -up-> "1" User
+Staff "*" -up-> "*" OperationRequest
+
+OperationTypes "*" -up-> "1" Specialization
+
+Appointment "1" -up-> "1" SurgeryRoom
+Appointment "1" -l-> "1" Staff
+
+
+
+
+@enduml
