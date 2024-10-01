@@ -6,14 +6,50 @@ sl -e -w
 # Get the username
 USERNAME=$(whoami)
 
+# Get the current date and time
+CURRENT_DATE=$(date '+%d/%m/%Y %H:%M:%S')
+
 # Get Last Login from the User
 LAST_LOGIN=$(lastlog -u "$USERNAME" | awk 'NR==2 {print $4, $5, $6, $7, $8, $9}')
 
 # Get the machine uptime
 UPTIME=$(uptime -p)
 
-# Concatenate the message
-MESSAGE="Welcome, $USERNAME! \n\nThe current date and time is $(date '+%d/%m/%Y %H:%M:%S')\nYour last login was on: $LAST_LOGIN\nCurrent Machine uptime: $UPTIME"
+# Get system load
+LOAD=$(uptime | awk -F'load average:' '{ print $2 }' | sed 's/^ //')
 
-# Display the message
+# Get disk usage
+DISK_USAGE=$(df -h / | awk 'NR==2 {print $5 " used, " $4 " available"}')
+
+# Get memory usage
+MEMORY=$(free -h | awk '/Mem:/ {print $3 " used, " $4 " available"}')
+
+# Get number of logged-in users
+LOGGED_USERS=$(who | wc -l)
+
+# Get IP address
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
+
+# Concatenate the message with formatting
+MESSAGE=$(cat <<EOF
+==============================================
+           Welcome, $USERNAME!
+==============================================
+
+  📅 Date and Time:     $CURRENT_DATE
+  🔑 Last Login:        $LAST_LOGIN
+  ⏳ Uptime:            $UPTIME
+
+  📊 System Load:       $LOAD
+  💾 Disk Usage:        $DISK_USAGE
+  🧠 Memory Usage:      $MEMORY
+
+  👥 Logged In Users:   $LOGGED_USERS
+  🌐 IP Address:        $IP_ADDRESS
+
+==============================================
+EOF
+)
+
+# Display the message with cowsay
 echo -e "$MESSAGE" | cowsay -W 46 -n -f tux
