@@ -1,18 +1,37 @@
 #!/bin/bash
 
-# Get the current date
+# Certificar que limpamos o ficheiro
+> /etc/ssh/banner.txt
+> /etc/issue
+
+# Obter a data atual
 DATE=$(date "+%Y-%m-%d %H:%M:%S")
 
-# Get the number of activated users (example: users with /bin/bash shell)
+# Obter o número de users ativos (example: users with /bin/bash shell)
 ACTIVATED_USERS=$(grep -c '/bin/bash' /etc/passwd)
 
-# Message
-echo "========================================"
-echo "Welcome to the server!"
-echo "Please respect the rules!"
-echo "Never share your password with anyone!"
-echo "Current Date: $DATE"
-echo "Number of Activated Users: $ACTIVATED_USERS"
-echo "========================================"
+# Criar a mensagem do banner
+BANNER_MESSAGE=$(cat <<EOF
+========================================
+Welcome to the server!
+Please respect the rules!
+Never share your password with anyone!
+Current Date: $DATE
+Number of Activated Users: $ACTIVATED_USERS
+========================================
+EOF
+) 
 
-exec /bin/bash
+{
+  echo "$BANNER_MESSAGE"
+} > /etc/ssh/banner.txt 
+
+
+{
+  echo "$BANNER_MESSAGE"
+} > /etc/issue
+
+
+# Certificar que temos permisssões para escrever 
+chmod 644 /etc/ssh/banner.txt
+chmod 644 /etc/issue
