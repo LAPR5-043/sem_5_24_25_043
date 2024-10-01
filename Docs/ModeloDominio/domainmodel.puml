@@ -160,7 +160,7 @@ package "Operation Request Aggregate" {
     card ID <<Value Object>>
     card PatientID <<Value Object>>
     card DoctorID <<Value Object>>
-    card OperationType <<Value Object>>
+    card OperationTypeID <<Value Object>>
     card DeadlineDate <<Value Object>>
     card Priority <<Value Object>>
 
@@ -168,7 +168,7 @@ package "Operation Request Aggregate" {
     OperationRequest "1"-up->"1" ID
     OperationRequest "1"-up->"1" PatientID
     OperationRequest "1"-up->"1" DoctorID
-    OperationRequest "1"-up->"1" OperationType
+    OperationRequest "1"-up->"1" OperationTypeID
     OperationRequest "1"-up->"1" DeadlineDate
     OperationRequest "1"-up->"1" Priority
 
@@ -177,7 +177,7 @@ package "Operation Request Aggregate" {
 
 package "Operation Type Aggregate" {
 
-    entity OperationTypes <<entity>><<root>> {
+    entity OperationType <<entity>><<root>> {
     }
 
     card OperationTypeID <<Value Object>>
@@ -186,9 +186,9 @@ package "Operation Type Aggregate" {
     'Ligar a Specialization
     
     'Relationships
-    OperationTypes "1"-up->"1" OperationTypeID
-    OperationTypes "1"-up->"1" OperationTypeName
-    OperationTypes "1"-up->"1" EstimatedDuration
+    OperationType "1"-up->"1" OperationTypeID
+    OperationType "1"-up->"1" OperationTypeName
+    OperationType "1"-up->"1" EstimatedDuration
     
 
 }
@@ -258,18 +258,19 @@ package "Surgery Room Aggregate" {
 
 ' Relationships
 
-Patient "1" -up-> "*" Appointment
+Patient "1" -up-> "*" Appointment: books
 Patient "1" -up-> "1" User
 
 Staff "*" -down----> "1" Specialization
 Staff "1" -up-> "1" User
-Staff "*" -up-> "*" OperationRequest
+Staff "*" -up-> "*" OperationRequest: submits and edits
 
-OperationTypes "*" -up-> "1" Specialization
+OperationType "*" -up-> "1" Specialization
 
 Appointment "1" -up-> "1" SurgeryRoom
 Appointment "1" -l-> "1" Staff
 
+User "1" -up-> "1..*" OperationType: adds
 
 
 
