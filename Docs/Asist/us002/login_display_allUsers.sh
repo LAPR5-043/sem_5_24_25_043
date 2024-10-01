@@ -7,7 +7,7 @@ sl -e -w
 USERNAME=$(whoami)
 
 # Get Last Login from the User
-LAST_LOGIN=$(last -1 $(whoami) | awk '{print $4, $5, $6, $7, $8}' | tail -n 1)
+LAST_LOGIN=$(lastlog -u "$USERNAME" | awk 'NR==2 {print $4, $5, $6, $7, $8, $9}')
 
 # Get the machine uptime
 UPTIME=$(uptime -p)
