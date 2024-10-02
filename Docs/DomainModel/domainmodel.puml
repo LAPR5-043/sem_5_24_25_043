@@ -235,7 +235,6 @@ package "Surgery Room Aggregate" {
     card RoomNumber <<Value Object>>
     card Type <<Value Object>>
     card Capacity <<Value Object>>
-    card AssignedEquipment <<Value Object>>
     enum CurrentStatus <<enumeration>> {
         Available
         Occupied
@@ -244,14 +243,13 @@ package "Surgery Room Aggregate" {
     card MaintenanceSlots <<Value Object>>
 
     'Relationship Of the Assigned Equipment
-    AssignedEquipment "1" --> "*" Equipment
+    SurgeryRoom "1" --> "*" Equipment
 
     'Relationships
 
     SurgeryRoom "1"-->"1" RoomNumber
     SurgeryRoom "1"-->"1" Type
     SurgeryRoom "1"-->"1" Capacity
-    SurgeryRoom "1"-->"1" AssignedEquipment
     SurgeryRoom "1"-->"1" CurrentStatus
     SurgeryRoom "1"-->"1" MaintenanceSlots
 }
