@@ -10,7 +10,10 @@ USERNAME=$(whoami)
 CURRENT_DATE=$(date '+%d/%m/%Y %H:%M:%S')
 
 # Get Last Login from the User
-LAST_LOGIN=$(lastlog -u "$USERNAME" | awk 'NR==2 {print $4, $5, $6, $7, $8, $9}')
+LAST_LOGIN=$(last -F -n 2 "$USERNAME" | awk 'NR==2 {print $4, $5, $6, $7, $8, $9}')
+
+# Format Last Login
+LAST_LOGIN_FORMATTED=$(date -d "$LAST_LOGIN" '+%a %b %d %H:%M:%S %z %Y')
 
 # Get the machine uptime
 UPTIME=$(uptime -p)
@@ -37,7 +40,7 @@ MESSAGE=$(cat <<EOF
 ==============================================
 
   📅 Date and Time:     $CURRENT_DATE
-  🔑 Last Login:        $LAST_LOGIN
+  🔑 Last Login:        $LAST_LOGIN_FORMATTED
   ⏳ Uptime:            $UPTIME
 
   📊 System Load:       $LOAD
