@@ -8167,19 +8167,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\diogo\\.nuget\\packages\\": {}
+    "C:\\Users\\rfns0\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+      "projectUniqueName": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
       "projectName": "sem_5_24_25_043",
-      "projectPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
-      "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\obj\\",
+      "projectPath": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+      "packagesPath": "C:\\Users\\rfns0\\.nuget\\packages\\",
+      "outputPath": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\rfns0\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
