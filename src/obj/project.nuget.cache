@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FoYwSqd/1QI=",
+  "dgSpecHash": "do9+oo0JFG0=",
   "success": true,
-  "projectFilePath": "c:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+  "projectFilePath": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rfns0\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\rfns0\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
