@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d12b7313-7b28-48ec-975d-dceb77c8fe3b" name="Changes" comment="#3 remove assigned equipment and referencing the equipment root directly." />
+    <list default="true" id="d12b7313-7b28-48ec-975d-dceb77c8fe3b" name="Changes" comment="#3 remove assigned equipment and referencing the equipment root directly.">
+      <change beforePath="$PROJECT_DIR$/samples/Projeto Base Para Estrutura/obj/Debug/netcoreapp5.0/DDDNetCore.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/samples/Projeto Base Para Estrutura/obj/Debug/netcoreapp5.0/DDDNetCore.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/samples/Projeto Base Para Estrutura/obj/Debug/netcoreapp5.0/DDDNetCore.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/samples/Projeto Base Para Estrutura/obj/Debug/netcoreapp5.0/DDDNetCore.AssemblyInfoInputs.cache" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,9 +19,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2msD2BNk4Aa5r8yXYiwytVHcnGU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -28,6 +31,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -40,7 +44,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-19.0.2-corretto-19.0.2-4caba194b151-be841094" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
       </set>
     </attachedChunks>
   </component>
@@ -53,6 +58,7 @@
       <option name="presentableId" value="Default" />
       <updated>1727856180300</updated>
       <workItem from="1727856181601" duration="1271000" />
+      <workItem from="1727888707947" duration="19000" />
     </task>
     <servers />
   </component>

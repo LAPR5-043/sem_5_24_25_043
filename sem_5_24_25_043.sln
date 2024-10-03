@@ -1,30 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.5.002.0
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{C546448A-582E-44B6-9770-5068725B4C57}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDNetCore", "samples\Projeto Base Para Estrutura\DDDNetCore.csproj", "{1514D692-CCB0-4BCF-99DA-E31DE6CBAAE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sem_5_24_25_043", "src\sem_5_24_25_043.csproj", "{6790A408-1CB1-4029-8378-10E357236820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1514D692-CCB0-4BCF-99DA-E31DE6CBAAE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1514D692-CCB0-4BCF-99DA-E31DE6CBAAE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1514D692-CCB0-4BCF-99DA-E31DE6CBAAE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1514D692-CCB0-4BCF-99DA-E31DE6CBAAE0}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{1514D692-CCB0-4BCF-99DA-E31DE6CBAAE0} = {C546448A-582E-44B6-9770-5068725B4C57}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {73009A09-08AA-4CA8-83B8-7900034B8FF5}
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6790A408-1CB1-4029-8378-10E357236820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6790A408-1CB1-4029-8378-10E357236820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6790A408-1CB1-4029-8378-10E357236820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6790A408-1CB1-4029-8378-10E357236820}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

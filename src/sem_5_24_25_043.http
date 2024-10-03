@@ -1,0 +1,6 @@
+@sem_5_24_25_043_HostAddress = http://localhost:5055
+
+GET {{sem_5_24_25_043_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
