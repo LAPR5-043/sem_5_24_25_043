@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# Variables to fix root not found error
+SL_PATH="/usr/games/sl"
+COWSAY_PATH="/usr/games/cowsay"
+
 # Show the locomotive
-sl -e -w
+$SL_PATH -e -w
 
 # Get the username
 USERNAME=$(whoami)
@@ -55,4 +59,4 @@ EOF
 )
 
 # Display the message with cowsay
-echo -e "$MESSAGE" | cowsay -W 46 -n -f tux
+echo -e "$MESSAGE" | $COWSAY_PATH -W 46 -n -f tux
