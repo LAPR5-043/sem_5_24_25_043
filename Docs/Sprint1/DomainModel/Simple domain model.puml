@@ -1,0 +1,106 @@
+@startuml
+
+' Title
+title Simple Domain Model
+
+skinparam classAttributeIconSize 0
+hide methods
+
+skinparam class {
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+entity Appointment {
+    - id
+    - requestID
+    - roomID
+    - dateAndTime
+    - status
+}
+
+entity Equipment{
+    - name
+    - description
+}
+
+entity SurgeryRoom{
+    - roomNumber
+    - type
+    - capacity
+    '- assignedEquipment
+    - currentStatus
+    - maintenanceSlots
+}
+
+entity User{
+    - username
+    - role
+    - email
+}
+
+entity OperationType{
+    - id
+    - name
+    '- requiredStaffBySpecialization
+    - estimatedDuration
+}
+
+entity OperationRequest{
+    - id
+    - patientID
+    - doctorID
+    - operationTypeID
+    - deadlineDate
+    - priority
+}
+
+entity Staff{
+    - firstName
+    - lastName
+    - fullName
+    - licenseNumber
+    '- specialization
+    - contactInformation
+    - availabilitySlots
+}
+
+entity Patient{
+    - firstName
+    - lastName
+    - fullName
+    - dateOfBirth
+    - gender
+    - medicalRecordNumber
+    - contactInformation
+    - allergiesAndConditions
+    - emergencyContact
+    '- appointmentHistory
+}
+
+entity Specialization{
+    - name
+    - description
+}
+
+
+
+' Relationships
+User "1" -left- "1" Patient : is <
+User "1" -down- "1" Staff : is <
+User "1" -right- "*" OperationType : adds >
+
+Patient "1" -down- "*" Appointment : has >
+
+Staff "*" -right- "1" Specialization : has >
+Staff "*" -down- "*" OperationRequest : submits and edits >
+Staff "*" -left- "*" Appointment : handles >
+
+OperationType "*" -down- "*" Specialization : requires >
+
+Appointment "1" -down- "1" SurgeryRoom : in >
+
+SurgeryRoom "1" -down- "*" Equipment : contains >
+
+@enduml
