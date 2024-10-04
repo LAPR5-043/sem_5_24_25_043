@@ -55,9 +55,9 @@ package "User Aggregate" {
 
     ' Relationships inside the User aggregate
 
-    User "1"-u->"1" Username
-    User "1"-u->"1" Email
-    User "1"-l->"1" Role
+    User "1"-->"1" Username
+    User "1"-->"1" Email
+    User "1"-->"1" Role
 
 
 }
@@ -91,9 +91,9 @@ package "Patient Aggregate" {
     Patient "1"-->"1" PatientLastName
     Patient "1"-->"1" PatientFullName
     Patient "1"-->"1" DateOfBirth
-    Patient "1" --> "1" Gender
+    Patient "1"--> "1" Gender
     Patient "1"-->"1" MedicalRecordNumber
-    Patient "1" --> "1" ContactInformation
+    Patient "1"--> "1" ContactInformation
     Patient "1"--> "*" AllergiesAndConditions
     Patient "1"--> "1" EmergencyContact
 
@@ -143,12 +143,12 @@ package "Specialization Aggregate" {
     entity Specialization <<entity>><<root>> {
     }
 
-    card Name <<Value Object>>
+    card SpecializationName <<Value Object>>
     card SpecializationDescription <<Value Object>>
 
     'Relationships
-    Specialization "1"-up->"1" Name
-    Specialization "1"-up->"1" SpecializationDescription
+    Specialization "1"-->"1" SpecializationName
+    Specialization "1"-->"1" SpecializationDescription
 
 }
 
@@ -165,12 +165,12 @@ package "Operation Request Aggregate" {
     card Priority <<Value Object>>
 
     'Relationships
-    OperationRequest "1"-up->"1" ID
-    OperationRequest "1"-up->"1" PatientID
-    OperationRequest "1"-up->"1" DoctorID
-    OperationRequest "1"-up->"1" OperationTypeID
-    OperationRequest "1"-up->"1" DeadlineDate
-    OperationRequest "1"-up->"1" Priority
+    OperationRequest "1"-->"1" ID
+    OperationRequest "1"-->"1" PatientID
+    OperationRequest "1"-->"1" DoctorID
+    OperationRequest "1"-->"1" OperationTypeID
+    OperationRequest "1"-->"1" DeadlineDate
+    OperationRequest "1"-->"1" Priority
 
 
 }
@@ -186,9 +186,9 @@ package "Operation Type Aggregate" {
     'Ligar a Specialization
     
     'Relationships
-    OperationType "1"-up->"1" OperationTypeID
-    OperationType "1"-up->"1" OperationTypeName
-    OperationType "1"-up->"1" EstimatedDuration
+    OperationType "1"-->"1" OperationTypeID
+    OperationType "1"-->"1" OperationTypeName
+    OperationType "1"-->"1" EstimatedDuration
     
 
 }
@@ -209,11 +209,11 @@ package "Appointment Aggregate" {
     }
 
     'Relationships
-    Appointment "1"-up->"1" AppointmentID
-    Appointment "1"-up->"1" RequestID
-    Appointment "1"-up->"1" RoomID
-    Appointment "1"-up->"1" DateAndTime
-    Appointment "1"-up->"1" Status
+    Appointment "1"-->"1" AppointmentID
+    Appointment "1"-->"1" RequestID
+    Appointment "1"-->"1" RoomID
+    Appointment "1"-->"1" DateAndTime
+    Appointment "1"-->"1" Status
 
 
 }
@@ -223,8 +223,12 @@ package "Equipment Aggregate"{
     entity Equipment <<entity>><<root>> {
     }
 
-    card Name <<Value Object>>
-    card Description <<Value Object>>
+    card EquipmentName <<Value Object>>
+    card EquipmentDescription <<Value Object>>
+
+    'Relationships
+    Equipment "1"-->"1" EquipmentName
+    Equipment "1"-->"1" EquipmentDescription
 }
 
 package "Surgery Room Aggregate" {
@@ -256,19 +260,21 @@ package "Surgery Room Aggregate" {
 
 ' Relationships
 
-Patient "1" -up-> "*" Appointment: books
-Patient "1" -up-> "1" User
+' US 5.1.3, mas ficou esclarecido que NÃO é o patient que dá book, mas sim o Planning Module
+Patient "1" --> "*" Appointment: books
+Patient "1" --> "1" User
 
-Staff "*" -down----> "1" Specialization
-Staff "1" -up-> "1" User
-Staff "*" -up-> "*" OperationRequest: submits and edits
+Staff "*" --> "1" Specialization
+Staff "1" --> "1" User
+Staff "*" --> "*" OperationRequest: submits and edits
 
-OperationType "*" -up-> "1" Specialization
+OperationType "*" --> "*" Specialization
 
-Appointment "1" -up-> "1" SurgeryRoom
-Appointment "1" -l-> "1" Staff
+Appointment "1" --> "1" SurgeryRoom
+Appointment "*" --> "*" Staff
+'Alterada relação 1-para-1  ->  *-para-*
 
-User "1" -up-> "1..*" OperationType: adds
+User "1" --> "1..*" OperationType: adds
 
 
 
