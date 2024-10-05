@@ -1,0 +1,77 @@
+
+@startuml
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+' Title
+title Domain Model
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+package "Staff Aggregate" {
+
+    entity Staff <<entity>><<root>> {
+    }
+
+    card StaffFirstName <<Value Object>>
+    card StaffLastName <<Value Object>>
+    card StaffFullName <<Value Object>>
+    card LicenseNumber <<Value Object>>
+    card isActive <<Value Object>>
+
+    'specialization é entidade
+    card StaffContactInformation <<Value Object>>
+    card AvailabilitySlots <<Value Object>>
+    entity TimeSlots <<Value Object>> {
+        StartDate
+        EndDate
+        Occupied
+    }
+
+    ' Atributos Contact Information
+    card StaffEmail <<Value Object>>
+    card StaffPhoneNumber <<Value Object>>
+
+    'Relationships Contact Information
+    StaffContactInformation "1"-->"1" StaffEmail
+    StaffContactInformation "1"-->"1" StaffPhoneNumber
+
+    'Relationships inside the Staff aggregate
+    Staff "1"-->"1" StaffFirstName
+    Staff "1"-->"1" StaffLastName
+    Staff "1"-->"1" StaffFullName
+    Staff "1"-->"1" LicenseNumber
+    Staff "1"-->"1" StaffContactInformation
+    Staff "1"-->"1" AvailabilitySlots
+    Staff "1"-->"1" isActive
+    AvailabilitySlots "1"-->"*" TimeSlots
+
+
+}
+
+@enduml

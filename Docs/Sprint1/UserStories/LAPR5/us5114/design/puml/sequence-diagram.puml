@@ -1,0 +1,81 @@
+@startuml
+title Sequence Diagram Title
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor Admin
+participant "DeactivateStaffUI" as UI
+participant "DeactivateStaffController" as Controller
+participant "ManageStaffService" as userS
+participant "AuthService" as auth
+participant "Repositories" as Repositories
+participant "StaffRepository" as userR
+participant "Staff" as user
+participant "IsActive" as status
+
+activate Admin
+Admin -> UI: I want to deactivate a user 
+activate UI
+UI -> Admin : Which user do you want to deactivate?
+deactivate UI
+Admin -> UI : staffId
+activate UI
+UI -> Controller: deactivateStaff(staffId)
+activate Controller
+Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
+activate auth
+auth --> Controller:  true
+deactivate auth
+Controller -> userS : deactivateStaff(staffId)
+activate userS
+userS -> Repositories : getStaffRepository()
+activate Repositories
+Repositories --> userS : staffRepository
+deactivate Repositories
+userS -> userR : getStaff(staffId)
+activate userR
+userR --> userS : staff
+deactivate userR
+userS -> user : deactivate()
+activate user
+user -> status**: new isActive(false)
+user--> userS 
+deactivate user
+userS -> userR : update(user)
+activate userR
+userR --> userS : updated
+deactivate userR
+userS --> Controller : updated
+deactivate userS
+Controller --> UI : Staff deactivated
+deactivate Controller
+UI --> Admin : Staff deactivated
+
+
+
+
+
+
+
+
+
+
+
+@enduml
