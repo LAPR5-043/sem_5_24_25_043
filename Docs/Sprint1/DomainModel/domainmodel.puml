@@ -108,6 +108,7 @@ package "Staff Aggregate" {
     card StaffLastName <<Value Object>>
     card StaffFullName <<Value Object>>
     card LicenseNumber <<Value Object>>
+    card isActive <<Value Object>>
 
     'specialization é entidade
     card StaffContactInformation <<Value Object>>
@@ -133,6 +134,7 @@ package "Staff Aggregate" {
     Staff "1"-->"1" LicenseNumber
     Staff "1"-->"1" StaffContactInformation
     Staff "1"-->"1" AvailabilitySlots
+    Staff "1"-->"1" isActive
     AvailabilitySlots "1"-->"*" TimeSlots
 
 
