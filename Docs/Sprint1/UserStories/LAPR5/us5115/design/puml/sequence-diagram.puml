@@ -1,0 +1,89 @@
+@startuml
+title Sequence Diagram Title
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor Admin
+participant "DeactivateStaffUI" as UI
+participant "DeactivateStaffController" as Controller
+participant "ManageStaffService" as userS
+participant "AuthService" as auth
+participant "Repositories" as Repositories
+participant "StaffRepository" as userR
+participant "Staff" as user
+
+activate Admin
+Admin -> UI: I want to list staff based on some attributes
+activate UI
+UI --> Admin : Which attributes do you want to use?
+deactivate UI
+Admin -> UI : attributes
+activate UI
+UI -> Controller: listStaff(attributes)
+activate Controller
+Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
+activate auth
+auth --> Controller:  true
+deactivate auth
+Controller -> userS : listStaff(attributes)
+activate userS
+userS -> Repositories : getStaffRepository()
+activate Repositories
+Repositories --> userS : staffRepository
+deactivate Repositories
+userS -> userR : getStaffByAttributes(attributes)
+activate userR
+userR -> userR : getActiveStaff()
+activate userR
+userR --> userR : activeStaff
+deactivate userR   
+loop for each staff, check if they have the required attributes
+        userR -> user : getAtribbuteX()
+        activate user
+     
+        user -> userR : atributteX
+        deactivate user
+    alt staff has the required attributes
+
+        userR -> userR : add(staff)
+    end
+
+end
+userR --> userS : staffList
+deactivate userR
+userS --> Controller : staffList
+deactivate userS
+Controller --> UI : staffList
+deactivate Controller
+UI --> Admin : staffList
+deactivate UI
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml
