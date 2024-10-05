@@ -1,0 +1,57 @@
+@startuml
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+package "Operation Request Aggregate" {
+
+    entity OperationRequest <<entity>><<root>> {
+    }
+
+    card ID <<Value Object>>
+    card PatientID <<Value Object>>
+    card DoctorID <<Value Object>>
+    card OperationTypeID <<Value Object>>
+    card DeadlineDate <<Value Object>>
+    card Priority <<Value Object>>
+
+    'Relationships
+    OperationRequest "1"-->"1" ID
+    OperationRequest "1"-->"1" PatientID
+    OperationRequest "1"-->"1" DoctorID
+    OperationRequest "1"-->"1" OperationTypeID
+    OperationRequest "1"-->"1" DeadlineDate
+    OperationRequest "1"-->"1" Priority
+
+
+}
+
+
+@enduml
