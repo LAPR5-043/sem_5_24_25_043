@@ -1,0 +1,59 @@
+@startuml
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+' Title
+title Domain Model
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+
+
+package "Operation Type Aggregate" {
+
+    entity OperationType <<entity>><<root>> {
+    }
+
+    card OperationTypeID <<Value Object>>
+    card OperationTypeName <<Value Object>>
+    card EstimatedDuration <<Value Object>>
+    card isActive <<Value Object>>
+    'Ligar a Specialization
+    
+    'Relationships
+    OperationType "1"-->"1" OperationTypeID
+    OperationType "1"-->"1" OperationTypeName
+    OperationType "1"-->"1" EstimatedDuration
+    OperationType "1"-->"1" isActive
+    
+
+}
+
+
+@enduml
