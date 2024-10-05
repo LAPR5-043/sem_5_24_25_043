@@ -185,12 +185,14 @@ package "Operation Type Aggregate" {
     card OperationTypeID <<Value Object>>
     card OperationTypeName <<Value Object>>
     card EstimatedDuration <<Value Object>>
+    card isActive <<Value Object>>
     'Ligar a Specialization
     
     'Relationships
     OperationType "1"-->"1" OperationTypeID
     OperationType "1"-->"1" OperationTypeName
     OperationType "1"-->"1" EstimatedDuration
+    OperationType "1"-->"1" isActive
     
 
 }
