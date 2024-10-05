@@ -1,0 +1,93 @@
+@startuml
+title Sequence Diagram Title
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor Patient
+participant "ChangeUserDataUI" as UI
+participant "ChangeUserDataController" as Controller
+participant "ChangeUserDataService" as userS
+participant "AuthService" as auth
+participant "Repositories" as Repositories
+participant "UserRepository" as userR
+participant "User" as user
+participant "attribute" as attribute
+
+activate Patient
+Patient -> UI: Request to change the user data
+activate UI
+UI -> Controller: canChangeUserData()
+activate Controller
+Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
+activate auth
+auth --> Controller:  true
+deactivate auth
+Controller -> UI: true
+deactivate Controller
+UI -> Patient: asks which data he wants to change
+deactivate UI
+
+Patient -> UI: sends the data to be changed 
+activate UI
+UI -> Controller: changeUserData(data)
+activate Controller
+Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
+activate auth
+auth --> Controller:  true
+deactivate auth
+Controller -> userS : changeUserData(data)
+activate userS
+userS -> auth : getLoggedUser()
+activate auth
+auth --> userS : user
+deactivate auth
+userS -> Repositories : getUserRepository()
+activate Repositories
+Repositories --> userS : userRepository
+deactivate Repositories
+loop for each attribute in data
+userS -> user : updateData(dataField, data)
+activate user
+user -> user : updateX()
+user -> attribute : isSensitive()
+activate attribute
+attribute --> user : boolean
+deactivate attribute
+alt if some attribute is consider sensitive data
+
+user -> attribute : updatePending(data)
+activate attribute 
+
+
+
+end
+user --> userS : true
+deactivate user
+
+end
+
+
+
+
+
+
+
+
+@enduml
