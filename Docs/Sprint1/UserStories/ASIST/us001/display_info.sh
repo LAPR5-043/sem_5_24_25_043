@@ -2,7 +2,6 @@
 
 # Certificar que limpamos o ficheiro
 > /etc/ssh/banner.txt
-> /etc/issue
 
 # Obter a data atual
 DATE=$(date "+%Y-%m-%d %H:%M:%S")
@@ -40,10 +39,5 @@ chmod 644 /etc/issue
 {
   echo -e "$MESSAGE" | /usr/games/cowsay -W 46 -n -f tux
 } > /etc/ssh/banner.txt 
-
-
-{
-  echo -e "$MESSAGE" | /usr/games/cowsay -W 46 -n -f tux
-} > /etc/issue
 
 
