@@ -24,9 +24,13 @@ actor Doctor
 participant "EditOperationRequestUI" as UI
 participant "EditOperationRequestController" as Controller
 participant "ManageOperationRequestService" as staffS
+participant "PlanningInterface" as planning
 participant "AuthService" as auth
+participant "LogsService" as logs
 participant "Repositories" as Repositories
 participant "OperationRequestRepository" as operationRR
+participant "LogsRepository" as logsR
+participant "Log" as log
 participant "StaffRepository" as staffR
 participant "OperationRequest" as operationR
 participant "Priority" as priority
@@ -110,7 +114,7 @@ deactivate operationR
 
 
 else if the data contains the deadline
-alt if the data contains the priority
+
 staffS -> operationR: changeDeadline(deadline)
 activate operationR
 operationR -> deadline**: new Deadline(deadline)
@@ -126,6 +130,19 @@ staffS -> operationRR: update(operationRequest)
 activate operationRR
 operationRR --> staffS: updated
 deactivate operationRR
+staffS -> logs : logAction()
+activate logs
+logs -> log** : new Log()
+logs -> logsR : save(log)
+activate logsR 
+logsR --> logs : saved
+deactivate logsR
+logs --> staffS : added
+deactivate logs
+staffS --> planning : requestUpdated(request)
+activate planning 
+planning --> staffS : true
+deactivate planning 
 staffS --> Controller: updated
 deactivate staffS
 Controller --> UI: updated

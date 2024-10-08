@@ -23,6 +23,10 @@ This user story depends of US 5.1.19, because doctor needs to list all the opera
 
 ![analyzis ](analyzis\png\analyzis.svg "analyzis")
 
+We also will need to regist the operation request changes, so we'll use Logs
+
+![logs ](analyzis\png\logs.svg "logs")
+
 ## 4. Design
 
 
