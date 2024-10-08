@@ -1,0 +1,43 @@
+@startuml
+title Sequence Diagram Title
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+participant "Controller / \n Other Service" as Controller
+participant "SensitiveDataService" as service
+collections "ConfigFile" as file
+
+
+Controller -> service : isSensitiveData(attributeName)
+activate service
+service -> service : getSensitiveDataList()
+activate service
+service ->file : read()
+activate file
+file --> service : configFile
+deactivate file
+service --> service : list
+deactivate service
+service -> service : list.contains(attributeName)
+service --> Controller : true
+deactivate service
+
+@enduml
