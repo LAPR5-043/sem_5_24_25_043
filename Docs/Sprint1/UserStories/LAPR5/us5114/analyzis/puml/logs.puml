@@ -1,0 +1,56 @@
+@startuml
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+' Title
+title Log Aggregate 
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+package "Log Aggregate" {
+
+    entity Log <<entity>><<root>> {
+    }
+
+    card Timestamp <<Value Object>>
+    card Action <<Value Object>>
+    card Author <<Value Object>> 
+
+    'Relationships inside the Staff aggregate
+    Log "1"-->"1" Timestamp
+    Log "1"-->"1" Action
+    Log "1"-->"1" Author
+
+}
+
+
+
+
+
+@enduml 

@@ -22,6 +22,10 @@ Regarding this requirement we understand that it relates with user story 5.1.15,
 
 ![analyzis ](analyzis\png\analyzis.svg "analyzis")
 
+We also will need to regist the deactivation, so we'll use Logs
+
+![logs ](analyzis\png\logs.svg "logs")
+
 ## 4. Design
 
 

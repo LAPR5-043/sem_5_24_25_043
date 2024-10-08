@@ -25,8 +25,11 @@ participant "DeactivateStaffUI" as UI
 participant "DeactivateStaffController" as Controller
 participant "ManageStaffService" as userS
 participant "AuthService" as auth
+participant "LogsService" as Logs
 participant "Repositories" as Repositories
 participant "StaffRepository" as userR
+participant "LogsRepository" as user
+participant "Log" as log
 participant "Staff" as user
 participant "IsActive" as status
 
@@ -62,6 +65,15 @@ userS -> userR : update(user)
 activate userR
 userR --> userS : updated
 deactivate userR
+userS -> Logs : logAction()
+activate Logs
+Logs -> log** : new Log()
+Logs -> LogsRepository : save(log)
+activate LogsRepository
+LogsRepository --> Logs : saved
+deactivate LogsRepository
+Logs --> userS : saved
+deactivate Logs 
 userS --> Controller : updated
 deactivate userS
 Controller --> UI : Staff deactivated
