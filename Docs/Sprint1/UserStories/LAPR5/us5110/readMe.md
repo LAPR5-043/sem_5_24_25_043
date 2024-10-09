@@ -16,7 +16,8 @@ We need to delete a patient account from the system.
 
 **Dependencies/References:**
 
-Regarding this requirement we understand that it relates to the user story 5.1.11 because you need to search/list the patient in order to delete it, so we know the patient id before the user story even have started 
+Regarding this requirement we understand that it relates to the user story 5.1.11 because you need to search/list the patient in order to delete it, so we know the patient id before the user story even have started, so we don't need to use DTOS because nothing new will be shown to the user 
+
 
 ## 3. Analysis
 
