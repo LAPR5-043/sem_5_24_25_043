@@ -72,7 +72,7 @@ package "Log Aggregate" {
     Log "1"-->"1" Author
 
 }
-note right of PendingRequest : They will be used to keep track of the actions taken by the users in compliance with GPDR.
+note right of Log : They will be used to keep track of the actions taken by the users in compliance with GPDR.
 
 package "User Aggregate" {
 
