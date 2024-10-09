@@ -19,3 +19,10 @@ After the service classify the attribute has sensitive data, the controller or s
 
 ![pendingrequest](diagrams\png\PendingRequest.svg "pendingrequest")
 
+
+### Pending Request Creation
+
+![pendingrequest](diagrams\png\pendingRequestService.svg "pendingrequest")
+
+The after accept the email process will be different depending what user story we're talking about
+

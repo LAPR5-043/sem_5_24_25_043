@@ -23,6 +23,7 @@ skinparam card {
 
 participant "Controller / \n Other Service" as Controller
 participant "SensitiveDataService" as service
+
 collections "ConfigFile" as file
 
 
