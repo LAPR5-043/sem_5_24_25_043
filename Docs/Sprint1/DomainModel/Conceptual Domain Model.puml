@@ -1,10 +1,11 @@
 @startuml
 
 ' Title
-title Simple Domain Model
+title Conceptual Domain Model
 
 skinparam classAttributeIconSize 0
-hide methods
+hide empty members
+hide attributes
 
 skinparam class {
     BackgroundColor LemonChiffon
@@ -87,20 +88,23 @@ entity Specialization{
 
 
 ' Relationships
-User "1" -left- "1" Patient : is <
-User "1" -down- "1" Staff : is <
-User "1" -right- "*" OperationType : adds >
+User "1" -- "1" Patient : is <
+User "1" -- "1" Staff : is <
+User "1" -- "*" OperationType : adds >
 
-Patient "1" -down- "*" Appointment : has >
+Patient "1" -- "*" Appointment : has >
+Patient "1" -- "*" OperationRequest : has >
 
-Staff "*" -right- "1" Specialization : has >
-Staff "*" -down- "*" OperationRequest : submits and edits >
-Staff "*" -left- "*" Appointment : handles >
+Staff "*" -- "1" Specialization : has >
+Staff "*" -- "*" OperationRequest : submits and edits >
+Staff "*" -- "*" Appointment : handles >
 
-OperationType "*" -down- "*" Specialization : requires >
+OperationType "*" -- "*" Specialization : requires >
+OperationType "1" -- "*" OperationRequest : specifies >
 
-Appointment "1" -down- "1" SurgeryRoom : in >
+Appointment "1" -- "1" SurgeryRoom : in >
+Appointment "1" -- "1" OperationRequest :  generates <
 
-SurgeryRoom "1" -down- "*" Equipment : contains >
+SurgeryRoom "1" -- "*" Equipment : contains >
 
 @enduml
