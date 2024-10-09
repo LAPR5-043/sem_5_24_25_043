@@ -1,0 +1,59 @@
+@startuml
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+' Title
+title Pending Request 
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+package "PendingRequest Aggregate" {
+
+    entity PendingRequest <<entity>><<root>> {
+    }
+
+    card Id <<Value Object>>
+    card UserID <<Value Object>>
+    card AttributeName <<Value Object>>
+    card PendingValue <<Value Object>>
+    card OldValue <<Value Object>>
+
+    ' Relationships inside the User aggregate
+
+    PendingRequest "1"-->"1" Id
+    PendingRequest "1"-->"1" UserID
+    PendingRequest "1"-->"1" AttributeName
+    PendingRequest "1"-->"1" PendingValue
+    PendingRequest "1"-->"1" OldValue
+
+
+}
+
+
+@enduml

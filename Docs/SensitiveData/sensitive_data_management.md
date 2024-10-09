@@ -10,3 +10,12 @@ This way, we have a dynamic list which can have multiple types of sensitive data
 This process is represented in the following diagram
 
 ![sensistive data](diagrams\png\sensitiveDataService.svg "sensitiveData")
+
+
+## Pending Request
+
+After the service classify the attribute has sensitive data, the controller or service, which called the SensisitveDataService, will create a PendingRequest, where it will persist the data supposed to be change.
+
+
+![pendingrequest](diagrams\png\PendingRequest.svg "pendingrequest")
+
