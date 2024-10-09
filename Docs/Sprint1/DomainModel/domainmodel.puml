@@ -57,6 +57,22 @@ package "PendingRequest Aggregate" {
 
 note right of PendingRequest : Used to persist a change which needs \n a user confirmation to take effect .
 
+package "Log Aggregate" {
+
+    entity Log <<entity>><<root>> {
+    }
+
+    card Timestamp <<Value Object>>
+    card Action <<Value Object>>
+    card Author <<Value Object>> 
+
+    'Relationships inside the Staff aggregate
+    Log "1"-->"1" Timestamp
+    Log "1"-->"1" Action
+    Log "1"-->"1" Author
+
+}
+note right of PendingRequest : They will be used to keep track of the actions taken by the users in compliance with GPDR.
 
 package "User Aggregate" {
 

@@ -1,0 +1,83 @@
+@startuml
+title Sequence Diagram Title
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor Admin
+participant "DeletePatientUI" as UI
+participant "DeactivatePatientController" as Controller
+participant "PatientService" as userS
+participant "AuthService" as auth
+participant "LogsService" as Logs
+participant "Repositories" as Repositories
+participant "PatientRepository" as userR
+participant "LogsRepository" as user
+participant "Log" as log
+
+
+activate Admin
+Admin -> UI: I want to delete this patient \n (provides patientId)
+activate UI
+UI -> Controller: deletePatient(patientId)
+activate Controller
+Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
+activate auth
+auth --> Controller:  true
+deactivate auth
+Controller -> userS : deletePatient(patientId)
+activate userS
+userS -> Repositories : getPatientRepository()
+activate Repositories
+Repositories --> userS : patientRepository
+deactivate Repositories
+userS -> userR : deletePatient(patientId)
+activate userR
+userR -> userS : deleted
+deactivate userR
+userS -> Logs : patientDeletion(patientId)
+activate Logs
+Logs -> Repositories : getLogsRepository()
+activate Repositories
+Repositories --> Logs : logsRepository
+deactivate Repositories
+Logs -> log** : new Log(timestamp, action, user)
+activate log
+log --> Logs
+deactivate log
+Logs -> user : save(log)
+activate user
+user --> Logs : saved
+deactivate user 
+Logs --> userS : saved
+deactivate Logs
+userS --> Controller : deleted
+deactivate userS
+Controller --> UI : deleted
+deactivate Controller
+UI --> Admin : deleted
+deactivate UI
+
+
+
+
+
+
+
+@enduml
