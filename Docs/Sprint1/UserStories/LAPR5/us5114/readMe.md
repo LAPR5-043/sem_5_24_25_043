@@ -16,7 +16,8 @@ We want to deactivate a staff from the system
 
 **Dependencies/References:**
 
-Regarding this requirement we understand that it relates with user story 5.1.15, because it will be used in the staff which appears on the list showed by the us 5.1.15.
+Regarding this requirement we understand that it relates with user story 5.1.15, because it will be used in the staff which appears on the list showed by the us 5.1.15, so we don't need to use DTOS because nothing new will be shown to the user 
+
 
 ## 3. Analysis
 
