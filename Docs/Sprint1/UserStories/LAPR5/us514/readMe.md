@@ -27,19 +27,29 @@ Regarding this requirement we understand that it doesn't relates to any user sto
 
 ![analyzis ](analyzis\png\analyzis.svg "analyzis")
 
+
+
+![request ](analyzis\png\PendingRequest.svg "request")
 ## 4. Design
 
 
-### 4.1. 
+### 4.1. Attribute Change
+
+![part1 ](design\png\sequence-diagram-part1.svg "part1")
+
+After this, the non-sensitive attributes were changed, and the sensitive ones, are present in a pendingRequest, waiting for the patient accept the change in the email.
+
+
+### 4.2 Change Confirmation's
+Here, we will represent what happens right after the patient accept the change in the email, which contains a link to the api which will call the respective controller
+
+![part2 ](design\png\sequence-diagram-part2.svg "part2")
 
 
 
 
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-    ...
-}
-````
+
+
 
 ## 5. Implementation
 

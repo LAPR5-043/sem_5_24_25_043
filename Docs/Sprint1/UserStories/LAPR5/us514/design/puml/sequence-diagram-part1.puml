@@ -1,5 +1,5 @@
 @startuml
-title Sequence Diagram Title
+title Sequence Diagram PART 1
 skinparam classAttributeIconSize 0
 
 skinparam class {
@@ -21,14 +21,20 @@ skinparam card {
 }
 
 actor Patient
-participant "ChangeUserDataUI" as UI
-participant "ChangeUserDataController" as Controller
-participant "ChangeUserDataService" as userS
+participant "ChangePatientDataUI" as UI
+participant "ChangePatientDataController" as Controller
+participant "ChangePatientDataService" as userS
+participant "SensitiveDataService" as service
+participant "PendingRequestsService" as serviceRequest
+participant "NotificationService" as serviceNote
 participant "AuthService" as auth
 participant "Repositories" as Repositories
-participant "UserRepository" as userR
-participant "User" as user
-participant "attribute" as attribute
+participant "PatientRepository" as patientR
+participant "User" as USER
+participant "Patient" as patient
+
+participant "PatientDTO" as patientDTO
+
 
 activate Patient
 Patient -> UI: Request to change the user data
@@ -39,49 +45,91 @@ Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
 activate auth
 auth --> Controller:  true
 deactivate auth
-Controller -> UI: true
-deactivate Controller
-UI -> Patient: asks which data he wants to change
-deactivate UI
 
-Patient -> UI: sends the data to be changed 
-activate UI
-UI -> Controller: changeUserData(data)
-activate Controller
 Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
 activate auth
 auth --> Controller:  true
 deactivate auth
-Controller -> userS : changeUserData(data)
+Controller -> userS : getPatientByUser()
 activate userS
 userS -> auth : getLoggedUser()
 activate auth
 auth --> userS : user
 deactivate auth
-userS -> Repositories : getUserRepository()
+userS -> USER : email()
+activate USER
+USER --> userS : email
+deactivate USER
+userS ->Repositories : getPatientRepository()
 activate Repositories
-Repositories --> userS : userRepository
+Repositories -> userS : patientRepository
 deactivate Repositories
-loop for each attribute in data
-userS -> user : updateData(dataField, data)
-activate user
-user -> user : updateX()
-user -> attribute : isSensitive()
-activate attribute
-attribute --> user : boolean
-deactivate attribute
-alt if some attribute is consider sensitive data
+userS -> patientR : findByEmail(email)
+activate patientR
+patientR --> userS : patient
+deactivate patientR
+userS -> patientDTO** : new PatientDTO(patient)
+activate patientDTO
+patientDTO --> userS : patientDTO
+deactivate patientDTO
+userS --> Controller : patientDTO
+deactivate userS
+Controller -> UI : patientDTO
+deactivate Controller
+UI --> Patient : Shows patientDTO and asks which \n  attributes he wants to change
+deactivate UI
+Patient -> UI : Request to change some data
+activate UI
+UI -> Controller : changePatientData(patientAttributes)
+activate Controller
+Controller -> userS : changePatientData(patientAttributes)
+activate userS
+loop For each attribute 
+userS -> service : isSensitiveData(attributeName)
+activate service
+service --> userS : boolean
+deactivate service
+alt If is sensitive data
+userS -> serviceRequest : createPendingRequest(user, attributeName, \n pendingValue, oldValue)
+activate serviceRequest
+serviceRequest --> userS : pendingRequest
+deactivate serviceRequest
+userS -> serviceNote : notifyPendingRequest(pendingRequest, patientEmail)
+activate serviceNote
+serviceNote --> userS : notified
+deactivate serviceNote
 
-user -> attribute : updatePending(data)
-activate attribute 
-
-
-
+else If it is not sensitive data
+userS -> patientR : findByEmail(email)
+activate patientR
+patientR --> userS : patient
+deactivate patientR
+userS -> patient : changeAttribute(attributeName, newValue)~
+activate patient
+patient --> userS : patient
+deactivate patient
+userS -> patientR : save(patient)
+activate patientR
+patientR --> userS : saved
+deactivate patientR
 end
-user --> userS : true
-deactivate user
-
 end
+userS --> Controller : changed
+deactivate userS
+Controller --> UI : changed
+deactivate Controller
+UI --> Patient : changed
+
+
+
+
+
+
+
+
+
+
+
 
 
 
