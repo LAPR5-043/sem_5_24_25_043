@@ -69,7 +69,7 @@ alt deactivate
     Controller --> UI: updated
     deactivate Controller
     UI --> Admin: updated
-    deactivate UI
+    
 
 else    delete
     UI -> Controller: deleteOperationType(operationTypeId)
