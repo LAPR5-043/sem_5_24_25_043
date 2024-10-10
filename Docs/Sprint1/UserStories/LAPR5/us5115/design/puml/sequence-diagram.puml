@@ -28,6 +28,7 @@ participant "AuthService" as auth
 participant "Repositories" as Repositories
 participant "StaffRepository" as userR
 participant "Staff" as user
+participant "StaffDTO" as userDTO
 
 activate Admin
 Admin -> UI: I want to list staff based on some attributes
@@ -68,11 +69,18 @@ loop for each staff, check if they have the required attributes
 end
 userR --> userS : staffList
 deactivate userR
-userS --> Controller : staffList
+loop for each staff
+userS -> userDTO : new StaffDTO(staff)
+activate userDTO
+userDTO --> userS : staffDTO
+deactivate userDTO
+userS -> userS : add(staffDTO)
+end
+userS --> Controller : staffDTOList
 deactivate userS
-Controller --> UI : staffList
+Controller --> UI : staffDTOList
 deactivate Controller
-UI --> Admin : staffList
+UI --> Admin : staffDTOList
 deactivate UI
 
 

@@ -17,7 +17,7 @@ We want to edit a operation request, to change the deadline or priority, for exe
 
 **Dependencies/References:**
 
-This user story depends of US 5.1.19, because doctor needs to list all the operation requisitions before select one
+This user story depends of US 5.1.19, because doctor needs to list all the operation requisitions before select one, we already know which is the operationRequestID before the us start, so we don't need to use DTOS because nothing new will be shown to the user 
 
 ## 3. Analysis
 

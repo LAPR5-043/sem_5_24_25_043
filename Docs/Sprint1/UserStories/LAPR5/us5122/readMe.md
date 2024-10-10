@@ -16,7 +16,7 @@ We want to delete or deactivate a operation type from the system
 
 **Dependencies/References:**
 
-N/A
+We already know the Operation Type id, so we don't need to use DTOS because nothing new will be shown to the user 
 
 ## 3. Analysis
 

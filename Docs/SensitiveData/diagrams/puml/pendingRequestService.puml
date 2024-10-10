@@ -1,0 +1,43 @@
+@startuml
+title Sequence Diagram Title
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+participant "Controller / \n Other Service" as Controller
+participant "PendingRequestsService" as service
+participant "PendingRequestRepository" as repository
+participant "PendingRequest" as pendingRequest
+
+
+activate Controller
+Controller -> service : createPendingRequest(user, attributeName, \n pendingValue, oldValue)
+activate service
+service -> pendingRequest** : new PendingRequest(user, attributeName, pendingValue, oldValue)
+activate pendingRequest
+pendingRequest -->service : pendingRequest
+deactivate pendingRequest
+service -> repository : save(pendingRequest)
+activate repository
+repository --> service : saved
+deactivate repository
+service --> Controller : created
+deactivate Controller
+@enduml

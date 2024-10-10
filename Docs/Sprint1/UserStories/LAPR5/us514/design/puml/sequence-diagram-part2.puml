@@ -1,0 +1,83 @@
+@startuml
+title Sequence Diagram PART 1
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+participant "AcceptPendingRequestController" as Controller
+participant "PendingRequestsService" as serviceRequest
+participant "Repositories" as Repositories
+participant "PendingRequestRepository" as PendingRequestRepo
+participant "PatientRepository" as patientR
+participant "PendingRequest" as PendingRequest
+participant "Patient" as patient
+
+
+activate Controller
+Controller -> serviceRequest : acceptPendingRequest(requestId)
+activate serviceRequest
+serviceRequest -> Repositories : getPendingRequestRepository()
+activate Repositories
+Repositories --> serviceRequest : pendingRequestRepository
+deactivate Repositories
+serviceRequest -> PendingRequestRepo : findById(requestId)
+activate PendingRequestRepo
+PendingRequestRepo --> serviceRequest : pendingRequest
+deactivate PendingRequestRepo
+serviceRequest -> PendingRequest: getPatient()
+activate PendingRequest
+PendingRequest --> serviceRequest : patient
+deactivate PendingRequest
+serviceRequest -> patientR : findByUser(patient)
+activate patientR
+patientR --> serviceRequest : patient
+deactivate patientR
+serviceRequest -> patient : changeAttribute(attributeName, pendingValue)
+activate patient
+patient --> serviceRequest : changed
+deactivate patient
+serviceRequest -> patientR : save(patient)
+activate patientR
+patientR --> serviceRequest : saved
+deactivate patientR
+serviceRequest -->Controller : changed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml
