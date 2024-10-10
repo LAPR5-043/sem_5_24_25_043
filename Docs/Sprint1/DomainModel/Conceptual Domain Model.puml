@@ -85,6 +85,19 @@ entity Specialization{
     - description
 }
 
+entity PendingRequest{
+    - id
+    - userID
+    - attributeName
+    - pendingValue
+    - oldValue
+}
+note right of PendingRequest
+Used to persist a change which needs 
+a user confirmation to take effect.
+end note
+
+
 
 
 ' Relationships
