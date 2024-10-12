@@ -1,9 +1,12 @@
 public class LicenseNumber
 {
-    public string Value { get; }
+    public long licenseNumber { get; }
     
-    public LicenseNumber(string value)
+    public LicenseNumber(long value)
     {
-        Value = value;
+        if (value < 0){
+            throw new ArgumentException("License number cannot be negative.");
+        }
+        licenseNumber = value;
     }
 }

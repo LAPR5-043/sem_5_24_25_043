@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d12b7313-7b28-48ec-975d-dceb77c8fe3b" name="Changes" comment="#3 remove assigned equipment and referencing the equipment root directly.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/StaffAggregate/Staff.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/StaffAggregate/Staff.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.csproj.AssemblyReference.cache" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +24,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/samples/Projeto Base Para Estrutura/Startup.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Domain/StaffAggregate/Staff.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Models/TodoContext.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -75,10 +78,17 @@
       <workItem from="1727888707947" duration="19000" />
       <workItem from="1728120699455" duration="164000" />
       <workItem from="1728121499015" duration="15000" />
+      <workItem from="1728731099421" duration="140000" />
+      <workItem from="1728731253768" duration="83000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="VcsManagerConfiguration">
+    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
 </project>
