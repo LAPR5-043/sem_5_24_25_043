@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "mh7bLw/Bk4I=",
+  "dgSpecHash": "0QqydbaAGsc=",
   "success": true,
   "projectFilePath": "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/sem_5_24_25_043.csproj",
   "expectedPackageFiles": [
+    "/Users/tiagoabreu/.nuget/packages/amazon.extensions.cognitoauthentication/2.5.5/amazon.extensions.cognitoauthentication.2.5.5.nupkg.sha512",
+    "/Users/tiagoabreu/.nuget/packages/awssdk.cognitoidentity/3.7.300.74/awssdk.cognitoidentity.3.7.300.74.nupkg.sha512",
+    "/Users/tiagoabreu/.nuget/packages/awssdk.cognitoidentityprovider/3.7.403.15/awssdk.cognitoidentityprovider.3.7.403.15.nupkg.sha512",
+    "/Users/tiagoabreu/.nuget/packages/awssdk.core/3.7.400.34/awssdk.core.3.7.400.34.nupkg.sha512",
+    "/Users/tiagoabreu/.nuget/packages/awssdk.securitytoken/3.7.300.75/awssdk.securitytoken.3.7.300.75.nupkg.sha512",
     "/Users/tiagoabreu/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
     "/Users/tiagoabreu/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",
     "/Users/tiagoabreu/.nuget/packages/humanizer/2.14.1/humanizer.2.14.1.nupkg.sha512",
