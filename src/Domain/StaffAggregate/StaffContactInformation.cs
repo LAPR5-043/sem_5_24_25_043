@@ -1,11 +1,27 @@
 public class StaffContactInformation
 {
-    public StaffEmail Email { get; }
-    public StaffPhoneNumber PhoneNumber { get; }
+    private StaffEmail email { get; set; }
+    private StaffPhoneNumber phoneNumber { get; set; }
     
-    public StaffContactInformation(StaffEmail email, StaffPhoneNumber phoneNumber)
+    public StaffContactInformation(string email, string phoneNumber)
     {
-        Email = email;
-        PhoneNumber = phoneNumber;
+        this.email = new StaffEmail(email);
+        this.phoneNumber = new StaffPhoneNumber(phoneNumber);
     }
+
+    public StaffEmail getEmail(){
+        return email;
+    }    
+
+    public StaffPhoneNumber getPhoneNumber(){
+        return phoneNumber;
+    }    
+
+    public void setEmail(string email){
+        this.email = new StaffEmail(email);
+    }
+
+    public void setPhoneNumber(string phoneNumber){
+        this.phoneNumber = new StaffPhoneNumber(phoneNumber);
+    }        
 }

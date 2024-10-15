@@ -1,9 +1,31 @@
+using System;
+using System.Text.RegularExpressions;
+
 public class StaffLastName
 {
-    public string Value { get; }
-    
+    private static readonly Regex nameRegex = new Regex(
+        @"^[a-zA-Z]+$",
+        RegexOptions.Compiled);
+
+    private string Value { get; }
+
     public StaffLastName(string value)
     {
+        if (!isValidName(value))
+        {
+            throw new ArgumentException("Invalid last name format.", nameof(value));
+        }
+
         Value = value;
+    }
+
+    private static bool isValidName(string name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && nameRegex.IsMatch(name);
+    }
+
+    public override string ToString()
+    {
+        return Value;
     }
 }
