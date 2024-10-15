@@ -16,7 +16,7 @@ public class OperationType  {
     }
 
     public long operationTypeId(){
-        return operationTypeID.getID();
+        return operationTypeID.GetId();
     }
 
     public bool isOperationActive(){

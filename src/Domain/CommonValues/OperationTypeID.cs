@@ -1,20 +1,20 @@
 public class OperationTypeID{
-    private long id { get; set;}
+    private long Id { get; set;}
 
     public OperationTypeID(long id){
-        setID(id);
+        SetId(id);
     }
 
-    public long getID(){
-        return id;
+    public long GetId(){
+        return Id;
     }
 
 
-    private void setID(long id){
+    private void SetId(long id){
         if (id < 0) {
             throw new ArgumentException("ID cannot be negative.");
         }
-        this.id = id;
+        this.Id = id;
     }
 
 
