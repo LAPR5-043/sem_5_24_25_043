@@ -116,15 +116,23 @@ package "Patient Aggregate" {
     card ContactInformation <<Value Object>>
     card AllergiesAndConditions <<Value Object>>
     card EmergencyContact <<Value Object>>
+    card AppointmentHistory <<Value Object>>
     'card AppointmentHistory <<Value Object>>
 
     ' Atributos Contact Information
     card PatientEmail <<Value Object>>
     card PhoneNumber <<Value Object>>
 
+    ' Atributos Appointment History
+    card AppointmentId <<Value Object>>
+
     ' Relationships Contact Information
     ContactInformation "1"-->"1" PatientEmail
     ContactInformation "1"-->"1" PhoneNumber
+
+    ' Relationships Appointment History
+    AppointmentHistory "1" --> "*" AppointmentId 
+
 
     ' Relationships inside the Patient aggregate
     Patient "1" -u-> "1" PatientFirstName
@@ -136,6 +144,7 @@ package "Patient Aggregate" {
     Patient "1" --> "1" ContactInformation
     Patient "1" --> "*" AllergiesAndConditions
     Patient "1" --> "1" EmergencyContact
+    Patient "1" --> "1" AppointmentHistory
 
 }
 
