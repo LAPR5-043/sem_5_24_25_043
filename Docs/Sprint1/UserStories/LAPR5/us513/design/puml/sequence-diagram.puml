@@ -30,6 +30,7 @@ participant "API" as API
 participant ":PatientRegistrationController" as PRC
 participant ":PatientRegistrationService" as PRS
 participant ":PatientRepository" as PR
+participant ":EmailService" as ES
 
 activate P
 
@@ -65,25 +66,31 @@ PR --> PRS: result
 
 alt "Patient not found"
 
-    PRS -> PRC: false
+    PRS --> PRC: false
 
-    PRC -> API: false
+    PRC --> API: false
 
-    API -> IAM: false
+    API --> IAM: false
 
-    IAM -> P: shows "Patient not found"
+    IAM --> P: shows "Patient not found"
 
 else "Patient found"
 
-    PRS -> PRS: sendVerificationEmail(email)
+    PRS -> ES: sendPatientRegistrationEmail(email)
 
-    PRS -> PRC: true
+    activate ES
 
-    PRC -> API: true
+    ES --> PRS: 
 
-    API -> IAM: true
+    deactivate ES
 
-    IAM -> P: shows "User Registrered, check your email"
+    PRS --> PRC: true
+
+    PRC --> API: true
+
+    API --> IAM: true
+
+    IAM --> P: shows "User Registrered, check your email"
 end
 
 
