@@ -7,7 +7,7 @@ public class StaffLastName
         @"^[a-zA-Z]+$",
         RegexOptions.Compiled);
 
-    private string Value { get; }
+    public string Value { get; }
 
     public StaffLastName(string value)
     {
@@ -18,6 +18,8 @@ public class StaffLastName
 
         Value = value;
     }
+
+    public StaffLastName() { }
 
     private static bool isValidName(string name)
     {

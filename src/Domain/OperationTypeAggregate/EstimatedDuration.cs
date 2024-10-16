@@ -1,8 +1,9 @@
 public class EstimatedDuration{
 
-    private int hours { get; set;}
-    private int minutes { get; set;}
-
+    public int hours { get; private set;}
+    public int minutes { get; private set;}
+    
+    public EstimatedDuration(){}
     public EstimatedDuration(int hours, int minutes){
         setHours(hours);
         setMinutes(minutes);

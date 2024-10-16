@@ -1,7 +1,7 @@
 public class StaffFullName
 {
-    private StaffFirstName firstName { get; }
-    private StaffLastName lastName { get; }
+    public StaffFirstName firstName { get; }
+    public StaffLastName lastName { get; }
     
     public StaffFullName(StaffFirstName firstName, StaffLastName lastName)
     {
@@ -9,6 +9,7 @@ public class StaffFullName
         this.lastName = lastName;
     }
 
+    public StaffFullName() {}   
     public override string ToString()
     {
         return firstName.ToString() + " " + lastName.ToString();
