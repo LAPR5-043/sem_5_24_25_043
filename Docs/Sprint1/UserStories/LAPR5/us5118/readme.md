@@ -31,7 +31,6 @@
 
 ## 4. Design
 
-
 ![Design](design/svg/sequence-diagram.svg)
 
 ### 4.1. Realization
