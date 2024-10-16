@@ -92,9 +92,9 @@ package "User Aggregate" {
 
     ' Relationships inside the User aggregate
 
-    User "1"-->"1" Username
-    User "1"-->"1" Email
-    User "1"-->"1" Role
+    User "1" -u-> "1" Username
+    User "1" -u-> "1" Email
+    User "1" -u-> "1" Role
 
 
 }
@@ -124,15 +124,15 @@ package "Patient Aggregate" {
     ContactInformation "1"-->"1" PhoneNumber
 
     ' Relationships inside the Patient aggregate
-    Patient "1"-->"1" PatientFirstName
-    Patient "1"-->"1" PatientLastName
-    Patient "1"-->"1" PatientFullName
-    Patient "1"-->"1" DateOfBirth
-    Patient "1"--> "1" Gender
-    Patient "1"-->"1" MedicalRecordNumber
-    Patient "1"--> "1" ContactInformation
-    Patient "1"--> "*" AllergiesAndConditions
-    Patient "1"--> "1" EmergencyContact
+    Patient "1" -u-> "1" PatientFirstName
+    Patient "1" -u-> "1" PatientLastName
+    Patient "1" -u-> "1" PatientFullName
+    Patient "1" -u-> "1" DateOfBirth
+    Patient "1" -u-> "1" Gender
+    Patient "1" --> "1" MedicalRecordNumber
+    Patient "1" --> "1" ContactInformation
+    Patient "1" --> "*" AllergiesAndConditions
+    Patient "1" --> "1" EmergencyContact
 
 }
 
@@ -162,19 +162,19 @@ package "Staff Aggregate" {
     card StaffPhoneNumber <<Value Object>>
 
     'Relationships Contact Information
-    StaffContactInformation "1"-->"1" StaffEmail
-    StaffContactInformation "1"-->"1" StaffPhoneNumber
+    StaffContactInformation "1" -d-> "1" StaffEmail
+    StaffContactInformation "1" -d-> "1" StaffPhoneNumber
 
     'Relationships inside the Staff aggregate
-    Staff "1" -u-> "1" StaffFirstName
-    Staff "1" -u-> "1" StaffLastName
-    Staff "1" -u-> "1" StaffFullName
-    Staff "1" -u-> "1" StaffID
+    Staff "1" --> "1" StaffFirstName
+    Staff "1" --> "1" StaffLastName
+    Staff "1" --> "1" StaffFullName
+    Staff "1" -d-> "1" StaffID
     Staff "1" --> "1" LicenseNumber
-    Staff "1" --> "1" StaffContactInformation
+    Staff "1" -d-> "1" StaffContactInformation
     Staff "1" --> "1" AvailabilitySlots
     Staff "1" --> "1" isActives
-    AvailabilitySlots "1"-->"*" TimeSlots
+    AvailabilitySlots "1" -d-> "*" TimeSlots
 
 
 }
@@ -206,12 +206,12 @@ package "Operation Request Aggregate" {
     card Priority <<Value Object>>
 
     'Relationships
-    OperationRequest "1"-->"1" ID
-    OperationRequest "1"-->"1" PatientID
-    OperationRequest "1"-->"1" DoctorID
-    OperationRequest "1"-->"1" OperationTypeId
-    OperationRequest "1"-->"1" DeadlineDate
-    OperationRequest "1"-->"1" Priority
+    OperationRequest "1" -d-> "1" ID
+    OperationRequest "1" -d-> "1" PatientID
+    OperationRequest "1" -d-> "1" DoctorID
+    OperationRequest "1" -d-> "1" OperationTypeId
+    OperationRequest "1" -d-> "1" DeadlineDate
+    OperationRequest "1" -d-> "1" Priority
 
 
 }
@@ -228,10 +228,10 @@ package "Operation Type Aggregate" {
     'Ligar a Specialization
     
     'Relationships
-    OperationType "1"-->"1" OperationTypeID
-    OperationType "1"-->"1" OperationTypeName
-    OperationType "1"-->"1" EstimatedDuration
-    OperationType "1"-->"1" isActive
+    OperationType "1" -u-> "1" OperationTypeID
+    OperationType "1" -u-> "1" OperationTypeName
+    OperationType "1" -l-> "1" EstimatedDuration
+    OperationType "1" -u-> "1" isActive
     
 
 }
@@ -252,11 +252,11 @@ package "Appointment Aggregate" {
     }
 
     'Relationships
-    Appointment "1" -u-> "1" AppointmentID
+    Appointment "1" --> "1" AppointmentID
     Appointment "1" --> "1" RequestID
-    Appointment "1" -u-> "1" RoomID
+    Appointment "1" --> "1" RoomID
     Appointment "1" --> "1" DateAndTime
-    Appointment "1" -l-> "1" Status
+    Appointment "1" --> "1" Status
 
 
 }
@@ -270,8 +270,8 @@ package "Equipment Aggregate"{
     card EquipmentDescription <<Value Object>>
 
     'Relationships
-    Equipment "1"-->"1" EquipmentName
-    Equipment "1"-->"1" EquipmentDescription
+    Equipment "1" -u-> "1" EquipmentName
+    Equipment "1" -u-> "1" EquipmentDescription
 }
 
 package "Surgery Room Aggregate" {
@@ -291,7 +291,7 @@ package "Surgery Room Aggregate" {
     
     'Relationships
 
-    SurgeryRoom "1" -u-> "1" RoomNumber
+    SurgeryRoom "1" --> "1" RoomNumber
     SurgeryRoom "1" -u-> "1" Type
     SurgeryRoom "1" --> "1" Capacity
     SurgeryRoom "1" --> "1" CurrentStatus
@@ -301,12 +301,11 @@ package "Surgery Room Aggregate" {
 ' Relationships
 
 ' US 5.1.3, mas ficou esclarecido que NÃO é o patient que dá book, mas sim o Planning Module
-Patient "1" -l--> "*" Appointment: books
-Patient "1" -u-> "1" User
+Patient "1" ----> "*" Appointment: books
 
-Staff "*" ----> "1" Specialization
-Staff "1" --> "1" User
-Staff "*" --> "*" OperationRequest: submits and edits
+
+Staff "*" -l--> "1" Specialization
+Staff "*" -d--> "*" OperationRequest: submits and edits
 
 OperationType "*" --> "*" Specialization
 
@@ -315,8 +314,10 @@ Appointment "*" --> "*" Staff
 'Alterada relação 1-para-1  ->  *-para-*
 
 User "1" --> "1..*" OperationType: adds
+User "1" -u-> "0..*" Patient
+User "1" --> "0..*" Staff
 
-SurgeryRoom "1" -d-> "*" Equipment
+SurgeryRoom "1" -u--> "*" Equipment
 
 
 
