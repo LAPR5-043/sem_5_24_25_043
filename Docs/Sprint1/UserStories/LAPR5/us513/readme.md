@@ -2,8 +2,6 @@
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
 This is a new feature being developed for the first time in the system. Its purpose is to allow patients to register in the system as well as book appointments online. 
 
 ## 2. Requirements
@@ -27,7 +25,23 @@ This is a new feature being developed for the first time in the system. Its purp
 
 ## 3. Analysis
 
+**Questions and Answers with the client:**
+
+Q: 5.1.3 Clarification about the verification of the email AC
+
+A: 
+
+imagine the following scenario,
+a patient is admitted to the hospital and a clerk registers their patient record with email abc@abc.com. that's the patient personal email.
+afterwards, that same patient wants to self-register in the system.
+the system use external IAM provider xyz
+the patient will create an account in the IAM provider, e.g., abc12@xy2z.com and will use that identity to self-register as patient abc@abc.com
+the system needs to send a verification email to abc@abc.com
+when the patient follows the link sent to their personal email, the system will be able to "connect" the two emails as identifying the same person, and provide access to the system
+
 *In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+
+
 
 ## 4. Design
 
