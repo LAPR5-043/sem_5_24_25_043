@@ -27,11 +27,14 @@ This is a new feature being developed for the first time in the system. Its purp
 
 **Questions and Answers with the client:**
 
+```
+
 Q: 5.1.3 Clarification about the verification of the email AC
 
+```
+```
 A: 
 
-```
 Imagine the following scenario:
 
 A patient is admitted to the hospital and a clerk registers their patient record with the email `abc@abc.com`. That's the patient's personal email.
