@@ -3,31 +3,31 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using src.Infrastructure;
 using src.Infrastructure.Shared;
-using src.Domain.OperationTypeAggregate;
 using src.Domain.Shared;
+using AppContext = src.Models.AppContext;
 
 namespace src.Infrastructure.OperationTypes
 {
-    public class OperationTypeRepository : IOperationTypeRepository
+    public class OperationTypeRepository(AppContext context) : BaseRepository<OperationType, OperationTypeID>(context.Set<OperationType>()), IOperationTypeRepository
     {
-        private readonly DDDSample1DbContext _context;
-
-        public OperationTypeRepository(DDDSample1DbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppContext _context = context;
 
         public async Task<OperationType> GetByIdAsync(long id)
         {
-            return await _context.Set<OperationType>().FindAsync(id);
+            var result = await _context.Set<OperationType>().FindAsync(id);
+            if (result == null)
+            {
+                throw new KeyNotFoundException($"OperationType with id {id} not found.");
+            }
+            return result;
         }
 
-        public async Task<IEnumerable<OperationType>> GetAllAsync()
+        public new async Task<IEnumerable<OperationType>> GetAllAsync()
         {
             return await _context.Set<OperationType>().ToListAsync();
         }
 
-        public async Task AddAsync(OperationType operationType)
+        public new async Task AddAsync(OperationType operationType)
         {
             await _context.Set<OperationType>().AddAsync(operationType);
             await _context.SaveChangesAsync();
@@ -49,35 +49,27 @@ namespace src.Infrastructure.OperationTypes
             }
         }
 
+        public async void SaveChangesAsync(){
+            await _context.SaveChangesAsync();
+        }
+
         Task<List<OperationType>> IRepository<OperationType, OperationTypeID>.GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<OperationType>> GetByIdsAsync(List<long> ids)
+        public bool OperationTypeExists(long id)
         {
-            throw new NotImplementedException();
+        return _context.OperationTypes.Any(e => e.operationTypeId() == id);
         }
 
-        Task<OperationType> IRepository<OperationType, OperationTypeID>.AddAsync(OperationType obj)
+        public new void Remove(OperationType obj)
         {
-            throw new NotImplementedException();
+            _context.Set<OperationType>().Remove(obj);
+            SaveChangesAsync();
         }
 
-        public void Remove(OperationType obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationType> GetByIdAsync(OperationTypeID id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<OperationType>> GetByIdsAsync(List<OperationTypeID> ids)
-        {
-            throw new NotImplementedException();
-        }
+        
 
 
     }

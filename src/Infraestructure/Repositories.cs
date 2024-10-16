@@ -1,11 +1,33 @@
 using Microsoft.EntityFrameworkCore;
 using src.Infrastructure;
 using src.Infrastructure.OperationTypes;
+using AppContext = src.Models.AppContext;
 
 public class Repositories {
 
-    public static OperationTypeRepository operationTypeRepository = new OperationTypeRepository(  new DDDSample1DbContext(new DbContextOptionsBuilder<DDDSample1DbContext>().UseInMemoryDatabase("Test").Options));
 
+    private static Repositories _instance;
+    private static readonly object _lock = new object();
+    private static AppContext appContext = new AppContext(new DbContextOptionsBuilder<AppContext>().Options);
+    public static OperationTypeRepository operationTypeRepository = new OperationTypeRepository(appContext);
+    private Repositories()
+    {
+    }
+
+    public static Repositories GetInstance()
+    {
+        if (_instance == null)
+        {
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new Repositories();
+                }
+            }
+        }
+        return _instance;
+    }
 
 
     public OperationTypeRepository getOperationTypeRepository()

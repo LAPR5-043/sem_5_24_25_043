@@ -29,21 +29,20 @@ namespace sem_5_24_25_043.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OperationType>>> GetOperationTypes()
         {
-            return await _context.OperationTypes.ToListAsync();
+            var operationTypes = await manageOperationTypeService.getAllOperationTypesAsync();
+            return Ok(operationTypes);
         }
 
         // GET: api/OperationTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OperationType>> GetOperationType(long id)
         {
-            var operationType = await _context.OperationTypes.FindAsync(id);
-
+            var operationType = await manageOperationTypeService.getOperationTypeAsync(id);
             if (operationType == null)
             {
                 return NotFound();
             }
-
-            return operationType;
+            return Ok(operationType);
         }
 
         // PUT: api/OperationTypes/5
@@ -55,32 +54,23 @@ namespace sem_5_24_25_043.Controllers
                 return BadRequest();
             }
 
-            var operationType = await _context.OperationTypes.FindAsync(id);
-            if (operationType == null)
+            var operationType = await manageOperationTypeService.getOperationTypeAsync(id);
+            if (operationType.Value == null)
             {
                 return NotFound();
             }
+            
+            bool ret;
 
-
-            operationType.changeOperationStatus(operationTypeDto.IsActive); 
-            operationType.changeOperationType(operationTypeDto.OperationTypeName);
-            operationType.changeOperationDuration(operationTypeDto.Hours, operationTypeDto.Minutes);
-            _context.Entry(operationType).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
+            if (operationTypeDto.IsActive != operationType.Value.isOperationActive()){
+               ret =  manageOperationTypeService.deactivateOperationTypeAsync(operationType.Value, operationTypeDto.IsActive).Result;
+            }else{ 
+               ret = manageOperationTypeService.updateOperationTypeAsync(operationType.Value,operationTypeDto).Result;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OperationTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
+            
+            if (!ret){  
+                return NotFound();
             }
 
             return NoContent();
@@ -88,18 +78,9 @@ namespace sem_5_24_25_043.Controllers
 
         // POST: api/OperationTypes
         [HttpPost]
-        public async Task<ActionResult<OperationType>> PostOperationType(OperationTypeDto operationTypeDto)
+        public ActionResult<OperationType> PostOperationType(OperationTypeDto operationTypeDto)
         {
-            var operationType = new OperationType(
-                operationTypeDto.OperationTypeID,
-                operationTypeDto.IsActive,
-                operationTypeDto.OperationTypeName,
-                operationTypeDto.Hours,
-                operationTypeDto.Minutes
-            );
-
-            _context.OperationTypes.Add(operationType);
-            await _context.SaveChangesAsync();
+            OperationType operationType = manageOperationTypeService.AddOperationTypeAsync(operationTypeDto).Result;
 
             return CreatedAtAction("GetOperationType", new { id = operationType.operationTypeId() }, operationType);
         }
@@ -108,21 +89,17 @@ namespace sem_5_24_25_043.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOperationType(long id)
         {
-            var operationType = await _context.OperationTypes.FindAsync(id);
+            var operationType = await manageOperationTypeService.getOperationTypeAsync(id);
             if (operationType == null)
             {
                 return NotFound();
             }
+            manageOperationTypeService.deleteOperationType(operationType);
 
-            _context.OperationTypes.Remove(operationType);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool OperationTypeExists(long id)
-        {
-            return _context.OperationTypes.Any(e => e.operationTypeId() == id);
-        }
+
     }
 }

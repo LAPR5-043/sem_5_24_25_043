@@ -1,14 +1,14 @@
-
-
+using System.Threading.Tasks;
+using AppContext = src.Models.AppContext;
 using src.Domain.Shared;
 
 namespace src.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DDDSample1DbContext _context;
+        private readonly AppContext _context;
 
-        public UnitOfWork(DDDSample1DbContext context)
+        public UnitOfWork(AppContext context)
         {
             this._context = context;
         }
