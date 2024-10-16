@@ -141,6 +141,7 @@ package "Staff Aggregate" {
     entity Staff <<entity>><<root>> {
     }
 
+    card StaffID <<Value Object>>
     card StaffFirstName <<Value Object>>
     card StaffLastName <<Value Object>>
     card StaffFullName <<Value Object>>
@@ -168,6 +169,7 @@ package "Staff Aggregate" {
     Staff "1" -u-> "1" StaffFirstName
     Staff "1" -u-> "1" StaffLastName
     Staff "1" -u-> "1" StaffFullName
+    Staff "1" -u-> "1" StaffID
     Staff "1" --> "1" LicenseNumber
     Staff "1" --> "1" StaffContactInformation
     Staff "1" --> "1" AvailabilitySlots
