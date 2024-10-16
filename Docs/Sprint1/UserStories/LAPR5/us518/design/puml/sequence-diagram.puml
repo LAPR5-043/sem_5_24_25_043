@@ -1,0 +1,127 @@
+@startuml
+
+
+title US 5.1.8 - As an Admin, I want to create a new patient profile, so that I can register their personal details and medical history.
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor "Admin" as A
+
+participant "CreatePatientProfileUI" as UI
+participant "PatientController" as PC
+participant "PatientService" as PS
+participant "Patient" as P
+participant "PatientRepository" as PR
+
+
+
+activate A
+
+A -> UI: Create Patient Profile
+
+activate UI
+
+UI -> A: Ask for patient details
+
+deactivate UI
+
+A -> UI: Provide patient details (firs name, last name,\n contact information, etc.)
+
+activate UI
+
+UI -> PC: createPatientProfile(...)
+
+activate PC
+
+PC -> PS: createPatientProfile(...)
+
+activate PS
+
+PS -> PS: validatePatientInformation(email, phone number)
+
+activate PS
+
+PS -> PR: patientExists(email, phone number)
+
+activate PR
+
+PR --> PS: false
+
+deactivate PR
+
+PS --> PS: false
+
+deactivate PS
+
+
+
+PS -> PS: generatePatientID()
+
+activate PS
+
+PS -> PR: lastPatientID()
+
+activate PR
+
+PR --> PS: lastPatientID
+
+deactivate PR
+
+PS --> PS: lastPatientID + 1
+
+deactivate PS
+
+PS -> P: new Patient(...)
+
+activate P
+
+P --> PS: patient
+
+deactivate P
+
+PS -> PR: save(patient)
+
+activate PR
+
+PR --> PS: 
+
+deactivate PR
+
+PS --> PC: true
+
+deactivate PS
+
+PC --> UI: true
+
+deactivate PC
+
+UI --> A: Patient profile created successfully
+
+deactivate UI
+
+deactivate A
+
+
+
+
+
+
+@enduml

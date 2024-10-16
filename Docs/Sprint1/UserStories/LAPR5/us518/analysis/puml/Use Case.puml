@@ -1,0 +1,19 @@
+@startuml
+
+actor "Admin" as Admin
+
+usecase "Create Patient Profile" as UC_CreateProfile
+usecase "Input Patient Details" as UC_InputDetails
+usecase "Generate Medical Record Number" as UC_GenerateMRN
+usecase "Validate if Email and Phone are Unique" as UC_ValidateContact
+usecase "Store Profile Securely" as UC_StoreProfile
+usecase "Role-Based Access Control" as UC_RBAC
+
+Admin -> UC_CreateProfile
+UC_CreateProfile --> UC_InputDetails
+UC_CreateProfile --> UC_GenerateMRN
+UC_CreateProfile --> UC_ValidateContact
+UC_CreateProfile --> UC_StoreProfile
+UC_StoreProfile --> UC_RBAC
+
+@enduml
