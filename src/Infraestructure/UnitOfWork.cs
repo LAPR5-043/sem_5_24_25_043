@@ -1,4 +1,7 @@
 
+
+using src.Domain.Shared;
+
 namespace src.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork

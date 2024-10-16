@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d12b7313-7b28-48ec-975d-dceb77c8fe3b" name="Changes" comment="#3 remove assigned equipment and referencing the equipment root directly.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/StaffAggregate/Staff.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/StaffAggregate/Staff.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,9 +23,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/samples/Projeto Base Para Estrutura/Startup.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/samples/Projeto Base Para Estrutura/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Domain/StaffAggregate/Staff.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Models/TodoContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Program.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -80,6 +78,8 @@
       <workItem from="1728121499015" duration="15000" />
       <workItem from="1728731099421" duration="140000" />
       <workItem from="1728731253768" duration="83000" />
+      <workItem from="1728996392182" duration="126000" />
+      <workItem from="1728996557590" duration="48000" />
     </task>
     <servers />
   </component>
