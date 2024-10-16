@@ -1,0 +1,165 @@
+@startuml
+
+
+title US 5.1.18 - As a Doctor, I want to remove an operation requisition
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor "Doctor" as Doctor
+
+participant "RemoveOperationRequestUI" as UI
+participant "OperationRequestController" as ORC
+participant "AuthService" as AS
+participant "StaffRepository" as SR
+participant "OperationRequestService" as ORS
+participant "OperationRequestRepository" as ORR
+participant "OperationRequest" as OR
+participant "AppointmentRepository" as AR
+participant "PlanningModuleInterface" as PMI
+
+
+activate Doctor
+
+Doctor -> UI: Request to remove operation request
+
+activate UI
+
+UI -> ORC: removeOperationRequest(OperationRequestID)
+
+activate ORC
+
+ORC -> AS: ensureAuthenticatedUserHasRole(doctor)
+
+activate AS
+
+AS --> ORC: true
+
+deactivate AS
+
+ORC -> AS: getAuthenticatedUserEmail()
+
+activate AS
+
+AS --> ORC: email
+
+deactivate AS
+
+ORC -> SR: findDoctorIDByEmail(email)
+
+activate SR
+
+SR --> ORC: doctorID
+
+deactivate SR
+
+ORC -> ORS: removeOperationRequest(doctorID, OperationRequestID)
+
+activate ORS
+
+ORS -> ORR: findOperationRequestByID(OperationRequestID)
+
+activate ORR
+
+ORR --> ORS: operationRequest
+
+deactivate ORR
+
+ORS -> ORS: validateOperationRequestBelongsToDoctor(doctorID, operationRequest)
+
+activate ORS
+
+ORS -> OR: doctorResponsibleIs(doctorID)
+
+activate OR
+
+OR --> ORS: true
+
+deactivate OR
+
+ORS --> ORS: true
+
+deactivate ORS
+
+ORS -> ORS: ensureOperationIsNotScheduled(OperationRequestID)
+
+activate ORS
+
+ORS -> AR: checkIfOperationIsScheduled(OperationRequestID)
+
+activate AR
+
+AR --> ORS: false
+
+deactivate AR
+
+ORS --> ORS: false
+
+deactivate ORS
+
+ORS -> ORR: removeOperationRequest(operationRequest)
+
+activate ORR
+
+ORR --> ORS: true
+
+deactivate ORR
+
+ORS -> PMI: notifyOperationRequestRemoved(operationRequest)
+
+activate PMI
+
+PMI --> ORS:
+
+deactivate PMI
+
+ORS --> ORC: true
+
+deactivate ORS
+
+ORC --> UI: true
+
+deactivate ORC
+
+UI --> Doctor: Operation request removed successfully
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml
