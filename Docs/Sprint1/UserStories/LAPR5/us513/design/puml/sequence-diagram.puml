@@ -58,11 +58,13 @@ PC -> PS: validateEmail(email)
 
 activate PS
 
-PS -> PR: findPatientByEmail(email)
+PS -> PR: patientExists(email)
 
 activate PR
 
 PR --> PS: result
+
+deactivate PR
 
 alt "Patient not found"
 
@@ -86,9 +88,15 @@ else "Patient found"
 
     PS --> PC: true
 
+    deactivate PS
+
     PC --> API: true
 
+    deactivate PC
+
     API --> IAM: true
+
+    deactivate API
 
     IAM --> P: shows "User Registrered, check your email"
 end
