@@ -8384,19 +8384,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lucas\\.nuget\\packages\\": {}
+    "C:\\Users\\diogo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lucas\\Universidade\\3º Ano\\1º Semestre\\LAPR5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+      "projectUniqueName": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
       "projectName": "sem_5_24_25_043",
-      "projectPath": "C:\\Users\\lucas\\Universidade\\3º Ano\\1º Semestre\\LAPR5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
-      "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lucas\\Universidade\\3º Ano\\1º Semestre\\LAPR5\\sem_5_24_25_043\\src\\obj\\",
+      "projectPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+      "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

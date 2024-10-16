@@ -45,15 +45,3 @@
 
 **Q: Can the same doctor who requests a surgery perform it?**  
 **A:** Not necessarily. The planning module may assign different doctors based on availability and optimization.
-
-**Q: The 'operation request' has the 'priority' attribute. What priorities are there?**  
-**A:** Elective, Urgent, and Emergency Surgery Classifications.
-- Elective Surgery: A planned procedure that is not life-threatening and can be scheduled at a convenient time (e.g., joint replacement, cataract surgery).
-- Urgent Surgery: Needs to be done sooner but is not an immediate emergency. Typically, within days (e.g., certain types of cancer surgeries).
-- Emergency Surgery: Needs immediate intervention to save life, limb, or function. Typically performed within hours (e.g., ruptured aneurysm, trauma).
-
-**Q: In the staff's 'Availability Slots', will the "temporal gap" be every hour, customizable, or another option?**  
-**A:** The staff's availability is usually in 15-minute blocks
-
-**Q: For the appointment's 'Date and Time' attribute, is there a specific format?**  
-**A:** YYYY/MM/DD HH:MM
