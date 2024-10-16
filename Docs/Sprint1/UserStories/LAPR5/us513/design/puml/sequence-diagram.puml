@@ -27,8 +27,8 @@ actor "Patient" as P
 
 participant "External IAM Provider" as IAM
 participant "API" as API
-participant ":PatientRegistrationController" as PRC
-participant ":PatientRegistrationService" as PRS
+participant ":PatientController" as PC
+participant ":PatientService" as PS
 participant ":PatientRepository" as PR
 participant ":EmailService" as ES
 
@@ -50,25 +50,25 @@ IAM -> API: validate patient email
 
 activate API
 
-API -> PRC: validateEmail(email)
+API -> PC: validateEmail(email)
 
-activate PRC
+activate PC
 
-PRC -> PRS: validateEmail(email)
+PC -> PS: validateEmail(email)
 
-activate PRS
+activate PS
 
-PRS -> PR: findPatientByEmail(email)
+PS -> PR: findPatientByEmail(email)
 
 activate PR
 
-PR --> PRS: result
+PR --> PS: result
 
 alt "Patient not found"
 
-    PRS --> PRC: false
+    PS --> PC: false
 
-    PRC --> API: false
+    PC --> API: false
 
     API --> IAM: false
 
@@ -76,17 +76,17 @@ alt "Patient not found"
 
 else "Patient found"
 
-    PRS -> ES: sendPatientRegistrationEmail(email)
+    PS -> ES: sendPatientRegistrationEmail(email)
 
     activate ES
 
-    ES --> PRS: 
+    ES --> PS: 
 
     deactivate ES
 
-    PRS --> PRC: true
+    PS --> PC: true
 
-    PRC --> API: true
+    PC --> API: true
 
     API --> IAM: true
 
