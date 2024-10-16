@@ -2,11 +2,9 @@ using System.Text.RegularExpressions;
 
 public class StaffEmail
 {
-    private static readonly Regex EmailRegex = new Regex(
-        @"^[a-zA-Z0-9]+@[^@\s]+\.[^@\s]+$",
-        RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-    private string email { get; }
+
+    public string email { get; }
 
     public StaffEmail(string value)
     {
@@ -17,9 +15,11 @@ public class StaffEmail
         email = value;
     }
 
+    public StaffEmail() { }
+
     private static bool IsValidEmail(string email)
     {
-        return EmailRegex.IsMatch(email);
+        return new Regex(@"^[a-zA-Z0-9]+@[^@\s]+\.[^@\s]+$").IsMatch(email);
     }
 
     public override string ToString()

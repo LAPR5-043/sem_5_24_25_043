@@ -1,8 +1,11 @@
+using System.Reflection;
+using System.Runtime.Serialization;
 using src.Domain.Shared;
 
 public class SpecializationName : EntityId {
 
-    private string name { get;}
+    public string name { get;}
+
 
     public SpecializationName(string name) : base(name) {
         if (string.IsNullOrEmpty(name)){
@@ -11,13 +14,18 @@ public class SpecializationName : EntityId {
         this.name = name;
     }    
 
+    public SpecializationName() : base(null ){}
+
+
+
     public override string ToString(){
         return name;
     }
 
     protected override object createFromString(string text)
     {
-        throw new NotImplementedException();
+
+        return text;
     }
 
     public override string AsString()

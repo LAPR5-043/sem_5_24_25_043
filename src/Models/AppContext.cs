@@ -21,6 +21,20 @@ public class AppContext : DbContext
         modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
 
+        // Seed data
+        string cardiologyId = "Cardiology";
+        string neurologyId = "Neurology";
+
+        modelBuilder.Entity<Specialization>().HasData(
+            new Specialization("Cardiology", "Heart specialist") { Id = new SpecializationName(cardiologyId) },
+            new Specialization("Neurology", "Brain specialist") { Id = new SpecializationName(neurologyId) }
+        );
+
+        modelBuilder.Entity<Staff>().HasData(
+            new Staff("John", "Doe", "N202100001", true, "923456890", "johndoe@example.com", cardiologyId, null) { Id = new LicenseNumber("N202100001") } ,
+            new Staff("Jane", "Smith", "D202100002", true, "987654210", "janesmith@example.com", neurologyId, null) { Id = new LicenseNumber("D202100002") });
+  
+
     }
 
 }

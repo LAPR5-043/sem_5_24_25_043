@@ -17,7 +17,7 @@ namespace src.Domain.Shared
                 } 
         }
 
-        protected EntityId(Object value)
+        public EntityId(Object value)
         {
             if (value.GetType() == typeof(String))
                 this.ObjValue = createFromString((String)value);

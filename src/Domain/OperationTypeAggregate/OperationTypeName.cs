@@ -1,10 +1,12 @@
 public class OperationTypeName{
 
-    public string name { get; set; }
+    public string name { get; private set; }
 
     public OperationTypeName(string name){
         setName(name);
     }
+
+    public OperationTypeName(){}
 
     public string getName(){
         return name;

@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public class OperationType  : Entity <OperationTypeID>{
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    private OperationTypeID operationTypeID { get; set; }
-    private IsActive isActive { get; set;}
-    private OperationTypeName operationType { get; set; }
-    private EstimatedDuration estimatedDuration { get; set; }
+    public OperationTypeID operationTypeID { get; private set; }
+ 
+    public IsActive isActive { get; private set;}
+
+    public OperationTypeName operationType { get; private set; }
+
+    public EstimatedDuration estimatedDuration { get; private set; }
 
 
     public OperationType(long operationTypeID, bool isActive, string operationType, int hours, int minutes){
@@ -18,7 +19,7 @@ public class OperationType  : Entity <OperationTypeID>{
         this.operationType = new OperationTypeName(operationType);
         this.estimatedDuration = new EstimatedDuration(hours, minutes);
     }
-
+    public OperationType(){}
     public long operationTypeId(){
         return operationTypeID.GetId();
     }
@@ -47,7 +48,7 @@ public class OperationType  : Entity <OperationTypeID>{
         this.isActive = new IsActive(isActive);
     }
 
-    
+
 
 
 

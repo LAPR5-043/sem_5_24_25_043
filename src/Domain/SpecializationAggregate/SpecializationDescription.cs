@@ -2,7 +2,7 @@ using src.Domain.Shared;
 
 public class SpecializationDescription : IValueObject {
 
-    private string description { get;}
+    public string description { get;}
 
     public SpecializationDescription(string description){
         if (string.IsNullOrEmpty(description)){
@@ -10,6 +10,8 @@ public class SpecializationDescription : IValueObject {
         }
         this.description = description;
     }    
+
+    public SpecializationDescription(){}
 
     public override string ToString(){
         return description;

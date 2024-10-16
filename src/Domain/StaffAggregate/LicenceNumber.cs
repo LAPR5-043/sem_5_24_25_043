@@ -3,20 +3,21 @@ using src.Domain.Shared;
 
 public class LicenseNumber : EntityId
 {
-    private static readonly string Pattern = @"^[NDO](19|20)\d{2}\d{5}$";
-    private string LicenseNumberValue { get; }
+    public string LicenseNumberValue { get; private set; }
 
     public LicenseNumber(string value) : base(value)
     {
-        string valueStr = value.ToString();
-        if (!Regex.IsMatch(valueStr, Pattern))
+        if (!Regex.IsMatch(value, @"^[NDO](19|20)\d{2}\d{5}$"))
         {
             throw new ArgumentException("License number format is invalid.");
         }
         LicenseNumberValue = value;
     }
-    
 
+    protected LicenseNumber() : base(null)
+    {
+    }
+      
     public override string ToString()
     {
         return LicenseNumberValue.ToString();
@@ -32,9 +33,14 @@ public class LicenseNumber : EntityId
         return LicenseNumberValue.Equals(license.LicenseNumberValue);
     }
 
-    protected override object createFromString(string text)
+    public override int GetHashCode()
     {
-        return new LicenseNumber(text);
+        return LicenseNumberValue.GetHashCode();
+    }
+
+    protected override Object createFromString(string text)
+    {
+        return text;
     }
 
     public override string AsString()
