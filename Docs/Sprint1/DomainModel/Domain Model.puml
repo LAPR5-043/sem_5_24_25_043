@@ -99,6 +99,9 @@ package "User Aggregate" {
 
 }
 
+note top of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
+
+
 package "Patient Aggregate" {
 
     entity Patient <<entity>><<root>> {
