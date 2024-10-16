@@ -21,7 +21,7 @@ This is a new feature being developed for the first time in the system. Its purp
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it does not have any dependencies to other user stories.*
+*Regarding this requirement we understand that it has a dependency regarding US 5.1.8 because the patient needs to be already registered in the system is order to self-register as a user in the system.*
 
 ## 3. Analysis
 
