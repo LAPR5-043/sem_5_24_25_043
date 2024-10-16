@@ -1,0 +1,17 @@
+@startuml
+
+actor "Doctor" as Doctor
+actor "Planning Module" as Planning
+
+usecase "Remove Operation Requisition" as UC_RemoveRequisition
+usecase "Confirm Deletion" as UC_ConfirmDeletion
+usecase "Update Schedules" as UC_UpdateSchedules
+usecase "Notify Planning Module" as UC_NotifyPlanning
+
+Doctor -> UC_RemoveRequisition
+UC_RemoveRequisition --> UC_ConfirmDeletion
+UC_RemoveRequisition --> UC_NotifyPlanning
+UC_NotifyPlanning --> Planning
+UC_NotifyPlanning --> UC_UpdateSchedules
+
+@enduml
