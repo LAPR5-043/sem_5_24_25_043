@@ -253,3 +253,14 @@ C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\refint\sem_5_24_25_04
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.pdb
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.genruntimeconfig.cache
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\ref\sem_5_24_25_043.dll
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.csproj.AssemblyReference.cache
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.AssemblyInfoInputs.cache
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.AssemblyInfo.cs
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.csproj.CoreCompileInputs.cache
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.sourcelink.json
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.dll
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\refint\sem_5_24_25_043.dll
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.pdb

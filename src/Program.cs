@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using sem_5_24_25_043.Models;
+using AppContext = src.Models.AppContext;
 
 
 namespace sem_5_24_25_043
@@ -12,8 +12,8 @@ namespace sem_5_24_25_043
 
             // Add services to the container.
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<TodoContext>(opt =>
-                opt.UseInMemoryDatabase("TodoList"));
+            builder.Services.AddDbContext<AppContext>(opt =>
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("TodoContext")));;
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
