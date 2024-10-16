@@ -35,76 +35,152 @@ skinparam card {
 
 ' Aggregates
 
-package "User Aggregate" {
+package "Patient Aggregate" {
 
-    entity User <<entity>><<root>> {
+    entity Patient <<entity>><<root>> {
     }
 
-    card Username <<Value Object>>
-    card Email <<Value Object>>
+    card PatientFirstName <<Value Object>>
+    card PatientLastName <<Value Object>>
+    card PatientFullName <<Value Object>>
+    card DateOfBirth <<Value Object>>
+    card Gender <<Value Object>>
+    card MedicalRecordNumber <<Value Object>>
+    card ContactInformation <<Value Object>>
+    card AllergiesAndConditions <<Value Object>>
+    card EmergencyContact <<Value Object>>
+    card AppointmentHistory <<Value Object>>
+    'card AppointmentHistory <<Value Object>>
 
-    enum Role <<enumeration>> {
-        Admin
-        Doctor
-        Nurse
-        Technician
-        Patient
+    ' Atributos Contact Information
+    card PatientEmail <<Value Object>>
+    card PhoneNumber <<Value Object>>
+
+    ' Atributos Appointment History
+    card AppointmentId <<Value Object>>
+
+    ' Relationships Contact Information
+    ContactInformation "1"-->"1" PatientEmail
+    ContactInformation "1"-->"1" PhoneNumber
+
+    ' Relationships Appointment History
+    AppointmentHistory "1" --> "*" AppointmentId 
+
+
+    ' Relationships inside the Patient aggregate
+    Patient "1" -u-> "1" PatientFirstName
+    Patient "1" -u-> "1" PatientLastName
+    Patient "1" -u-> "1" PatientFullName
+    Patient "1" -u-> "1" DateOfBirth
+    Patient "1" -u-> "1" Gender
+    Patient "1" --> "1" MedicalRecordNumber
+    Patient "1" --> "1" ContactInformation
+    Patient "1" --> "*" AllergiesAndConditions
+    Patient "1" --> "1" EmergencyContact
+    Patient "1" --> "1" AppointmentHistory
+
+}
+
+package "Staff Aggregate" {
+
+    entity Staff <<entity>><<root>> {
     }
 
-    ' Relationships inside the User aggregate
+    card StaffID <<Value Object>>
+    card StaffFirstName <<Value Object>>
+    card StaffLastName <<Value Object>>
+    card StaffFullName <<Value Object>>
+    card LicenseNumber <<Value Object>>
+    card isActives <<Value Object>>
 
-    User "1" -u-> "1" Username
-    User "1" -u-> "1" Email
-    User "1" -u-> "1" Role
+    'specialization é entidade
+    card StaffContactInformation <<Value Object>>
+    card AvailabilitySlots <<Value Object>>
+    entity TimeSlots <<Value Object>> {
+        StartDate
+        EndDate
+        Occupied
+    }
+
+    ' Atributos Contact Information
+    card StaffEmail <<Value Object>>
+    card StaffPhoneNumber <<Value Object>>
+
+    'Relationships Contact Information
+    StaffContactInformation "1" -d-> "1" StaffEmail
+    StaffContactInformation "1" -d-> "1" StaffPhoneNumber
+
+    'Relationships inside the Staff aggregate
+    Staff "1" --> "1" StaffFirstName
+    Staff "1" --> "1" StaffLastName
+    Staff "1" --> "1" StaffFullName
+    Staff "1" -d-> "1" StaffID
+    Staff "1" --> "1" LicenseNumber
+    Staff "1" -d-> "1" StaffContactInformation
+    Staff "1" --> "1" AvailabilitySlots
+    Staff "1" --> "1" isActives
+    AvailabilitySlots "1" -d-> "*" TimeSlots
 
 
 }
 
-note top of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
+package "Operation Request Aggregate" {
 
-package "Operation Type Aggregate" {
-
-    entity OperationType <<entity>><<root>> {
+    entity OperationRequest <<entity>><<root>> {
     }
 
-    card OperationTypeID <<Value Object>>
-    card OperationTypeName <<Value Object>>
-    card EstimatedDuration <<Value Object>>
-    card isActive <<Value Object>>
-    'Ligar a Specialization
-    
+    card ID <<Value Object>>
+    card PatientID <<Value Object>>
+    card DoctorID <<Value Object>>
+    card OperationTypeId <<Value Object>>
+    card DeadlineDate <<Value Object>>
+    card Priority <<Value Object>>
+
     'Relationships
-    OperationType "1" -u-> "1" OperationTypeID
-    OperationType "1" -u-> "1" OperationTypeName
-    OperationType "1" -l-> "1" EstimatedDuration
-    OperationType "1" -u-> "1" isActive
-    
+    OperationRequest "1" -d-> "1" ID
+    OperationRequest "1" -d-> "1" PatientID
+    OperationRequest "1" -d-> "1" DoctorID
+    OperationRequest "1" -d-> "1" OperationTypeId
+    OperationRequest "1" -d-> "1" DeadlineDate
+    OperationRequest "1" -d-> "1" Priority
+
 
 }
 
-package "Specialization Aggregate" {
+package "Appointment Aggregate" {
 
-    entity Specialization <<entity>><<root>> {
+    entity Appointment <<entity>><<root>> {
     }
 
-    card SpecializationName <<Value Object>>
-    card SpecializationDescription <<Value Object>>
+    card AppointmentID <<Value Object>>
+    card RequestID <<Value Object>>
+    card RoomID <<Value Object>>
+    card DateAndTime <<Value Object>>
+    enum Status <<enumeration>> {
+        Scheduled
+        Completed
+        Cancelled
+    }
 
     'Relationships
-    Specialization "1"-->"1" SpecializationName
-    Specialization "1"-->"1" SpecializationDescription
+    Appointment "1" --> "1" AppointmentID
+    Appointment "1" --> "1" RequestID
+    Appointment "1" --> "1" RoomID
+    Appointment "1" --> "1" DateAndTime
+    Appointment "1" --> "1" Status
+
 
 }
+
 
 ' Relationships
 
+' US 5.1.3, mas ficou esclarecido que NÃO é o patient que dá book, mas sim o Planning Module
+Patient "1" ----> "*" Appointment: books
 
-OperationType "*" --> "*" Specialization
+Staff "*" -d--> "*" OperationRequest: submits and edits
 
-
-
-User "1" --> "1..*" OperationType: adds
-
+Appointment "*" --> "*" Staff
 
 
 
