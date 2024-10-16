@@ -31,21 +31,25 @@ Q: 5.1.3 Clarification about the verification of the email AC
 
 A: 
 
-imagine the following scenario,
-a patient is admitted to the hospital and a clerk registers their patient record with email abc@abc.com. that's the patient personal email.
-afterwards, that same patient wants to self-register in the system.
-the system use external IAM provider xyz
-the patient will create an account in the IAM provider, e.g., abc12@xy2z.com and will use that identity to self-register as patient abc@abc.com
-the system needs to send a verification email to abc@abc.com
-when the patient follows the link sent to their personal email, the system will be able to "connect" the two emails as identifying the same person, and provide access to the system
+```
+Imagine the following scenario:
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+A patient is admitted to the hospital and a clerk registers their patient record with the email `abc@abc.com`. That's the patient's personal email.
 
+Afterwards, that same patient wants to self-register in the system. The system uses an external IAM provider, XYZ. The patient will create an account in the IAM provider, e.g., `abc12@xy2z.com`, and will use that identity to self-register as patient `abc@abc.com`.
+
+The system needs to send a verification email to `abc@abc.com`. When the patient follows the link sent to their personal email, the system will be able to "connect" the two emails as identifying the same person, and provide access to the system.
+
+```
+
+![Analysis](analysis/svg/analysis.svg)
+
+![Analysis](analysis/svg/use_case.svg)
 
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
+![Design](design/svg/sequence-diagram.svg)
 
 ### 4.1. Realization
 

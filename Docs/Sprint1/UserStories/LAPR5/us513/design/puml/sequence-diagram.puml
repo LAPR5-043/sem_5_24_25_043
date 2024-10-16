@@ -1,0 +1,103 @@
+@startuml
+
+
+title US 5.1.3 - As a Patient, I want to self-register so that I can use the application
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor "Patient" as P
+
+participant "External IAM Provider" as IAM
+participant "API" as API
+participant ":PatientRegistrationController" as PRC
+participant ":PatientRegistrationService" as PRS
+participant ":PatientRepository" as PR
+
+activate P
+
+P -> IAM: Tries to self-register
+
+activate IAM
+
+IAM -> P: Asks for login details
+
+deactivate IAM
+
+P -> IAM: Provides login details
+
+activate IAM
+
+IAM -> API: validate patient email
+
+activate API
+
+API -> PRC: validateEmail(email)
+
+activate PRC
+
+PRC -> PRS: validateEmail(email)
+
+activate PRS
+
+PRS -> PR: findPatientByEmail(email)
+
+activate PR
+
+PR --> PRS: result
+
+alt "Patient not found"
+
+    PRS -> PRC: false
+
+    PRC -> API: false
+
+    API -> IAM: false
+
+    IAM -> P: shows "Patient not found"
+
+else "Patient found"
+
+    PRS -> PRS: sendVerificationEmail(email)
+
+    PRS -> PRC: true
+
+    PRC -> API: true
+
+    API -> IAM: true
+
+    IAM -> P: shows "User Registrered, check your email"
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml

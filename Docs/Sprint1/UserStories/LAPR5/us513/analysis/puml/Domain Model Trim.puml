@@ -53,12 +53,15 @@ package "User Aggregate" {
 
     ' Relationships inside the User aggregate
 
-    User "1"-->"1" Username
-    User "1"-->"1" Email
-    User "1"-->"1" Role
+    User "1" -u-> "1" Username
+    User "1" -u-> "1" Email
+    User "1" -u-> "1" Role
 
 
 }
+
+note top of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
+
 
 package "Patient Aggregate" {
 
@@ -85,21 +88,20 @@ package "Patient Aggregate" {
     ContactInformation "1"-->"1" PhoneNumber
 
     ' Relationships inside the Patient aggregate
-    Patient "1"-->"1" PatientFirstName
-    Patient "1"-->"1" PatientLastName
-    Patient "1"-->"1" PatientFullName
-    Patient "1"-->"1" DateOfBirth
-    Patient "1"--> "1" Gender
-    Patient "1"-->"1" MedicalRecordNumber
-    Patient "1"--> "1" ContactInformation
-    Patient "1"--> "*" AllergiesAndConditions
-    Patient "1"--> "1" EmergencyContact
+    Patient "1" -u-> "1" PatientFirstName
+    Patient "1" -u-> "1" PatientLastName
+    Patient "1" -u-> "1" PatientFullName
+    Patient "1" -u-> "1" DateOfBirth
+    Patient "1" -u-> "1" Gender
+    Patient "1" --> "1" MedicalRecordNumber
+    Patient "1" --> "1" ContactInformation
+    Patient "1" --> "*" AllergiesAndConditions
+    Patient "1" --> "1" EmergencyContact
 
 }
 
 ' Relationships
 
-Patient "1" -d-> "1" User
-
+User "1" -u-> "0..*" Patient
 
 @enduml
