@@ -1,16 +1,23 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using src.Domain.Shared;
 
 public class Staff : Entity<LicenseNumber>, IAggregateRoot
-{
+{  
+    public StaffFirstName firstName { get; private set; }
+
+    public StaffLastName lastName { get; private set;}
+
+    public StaffFullName fullName { get;private set; }
+
+    public LicenseNumber StaffId { get;private set; }
+
+    public IsActive activeStatus { get;private set; }
+
+    public SpecializationName specializationId { get;private set; }
     
-    private StaffFirstName firstName { get; set; }
-    private StaffLastName lastName { get; set;}
-    private StaffFullName fullName { get;set; }
-    private LicenseNumber license { get;set; }
-    private IsActive activeStatus { get;set; }
-    private SpecializationName specializationId { get;set; }
-    private StaffContactInformation contactInformation { get;set; }
-    private AvailabilitySlots availability { get; set;}
+    public StaffContactInformation contactInformation { get;private set; }
+    public AvailabilitySlots availability { get;private set;}
 
     
     public Staff(string firstName,string lastName, string license, bool isActive,
@@ -19,11 +26,15 @@ public class Staff : Entity<LicenseNumber>, IAggregateRoot
         this.firstName = new StaffFirstName(firstName);
         this.lastName = new StaffLastName(lastName);
         this.fullName = new StaffFullName(this.firstName, this.lastName);
-        this.license = new LicenseNumber(license);
+        this.StaffId = new LicenseNumber(license);
         this.specializationId = new SpecializationName(specializationName);
         activeStatus = new IsActive(isActive);
         contactInformation = new StaffContactInformation(staffEmail, staffPhoneNumber);
         availability = availabilitySlots;
+    }
+    public Staff(){
+        this.StaffId = null;      
+        
     }
 
     public string FirstName(){
@@ -39,7 +50,7 @@ public class Staff : Entity<LicenseNumber>, IAggregateRoot
     }
 
     public string License(){
-        return license.ToString();
+        return StaffId.ToString();
     }
 
     public bool IsActive(){
@@ -71,7 +82,7 @@ public class Staff : Entity<LicenseNumber>, IAggregateRoot
     }
 
     public void changeLicense(string license){
-        this.license = new LicenseNumber(license);
+        this.StaffId = new LicenseNumber(license);
     }
 
     public void changeActiveStatus(bool isActive){

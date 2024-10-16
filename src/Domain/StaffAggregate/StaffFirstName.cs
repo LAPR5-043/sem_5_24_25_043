@@ -3,11 +3,7 @@ using System.Text.RegularExpressions;
 
 public class StaffFirstName
 {
-    private static readonly Regex NameRegex = new Regex(
-        @"^[a-zA-Z]+$",
-        RegexOptions.Compiled);
-
-    private string name { get; }
+    public string name { get; private set;}
 
     public StaffFirstName(string value)
     {
@@ -18,9 +14,11 @@ public class StaffFirstName
         name = value;
     }
 
+    public StaffFirstName() { }
+
     private static bool IsValidName(string name)
     {
-        return !string.IsNullOrWhiteSpace(name) && NameRegex.IsMatch(name);
+        return !string.IsNullOrWhiteSpace(name) && new Regex(@"^[a-zA-Z]+$").IsMatch(name);
     }
 
     public override string ToString()

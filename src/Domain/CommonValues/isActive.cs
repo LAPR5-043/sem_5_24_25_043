@@ -1,6 +1,9 @@
 public class IsActive
 {
-    private bool active { get; }
+    public bool active { get; private set;}
+
+    public IsActive() {}
+
     public IsActive(bool isActive) {  
         active = isActive;
     }

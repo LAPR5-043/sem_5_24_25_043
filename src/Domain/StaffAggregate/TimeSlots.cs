@@ -10,4 +10,6 @@ public class TimeSlots
         EndDate = endDate;
         Occupied = occupied;
     }
+
+    public TimeSlots () {}
 }

@@ -1,62 +1,83 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Infrastructure.Shared;
 
 namespace src.Infrastructure.OperationTypes
 {
-internal class StaffEntityTypeConfiguration : IEntityTypeConfiguration<Staff>
+    internal class StaffEntityTypeConfiguration : IEntityTypeConfiguration<Staff>
     {
         public void Configure(EntityTypeBuilder<Staff> builder)
         {
-            // cf. https://www.entityframeworktutorial.net/efcore/fluent-api-in-entity-framework-core.aspx
-            
-            //builder.ToTable("Categories", SchemaNames.DDDSample1);
-            builder.HasKey(b => b.Id);
-            builder.Property(b => b.Id).HasColumnName("Name(Id)").IsRequired();
-            // Configure private fields
-            builder.Property<string>("name")
-                   .HasField("firstName")
-                   .HasColumnName("FirstName")
-                   .IsRequired();
+            // Configure StaffId as the primary key
+            //builder.HasKey(b => b.Id, e => e.LicenseNumberValue);
 
-            builder.Property<string>("lastName")
-                   .HasField("Value")
-                   .HasColumnName("LastName")
-                   .IsRequired();
+            // Configure the foreign key for Specialization
+            builder.HasOne<Specialization>()
+                   .WithMany()
+                   .HasForeignKey(b => b.specializationId)
+                   .HasAnnotation("Relationship", "OneToOne");
 
-            builder.Property<string>("license")
-                   .HasField("LicenseNumberValue")
+            // Create a value converter for LicenseNumber
+            var licenseNumberConverter = new ValueConverter<LicenseNumber, string>(
+                v => v.AsString(), // Convert LicenseNumberValue to string
+                v => new LicenseNumber(v)// Convert string to LicenseNumberValue
+            );
+
+            // Create a value converter for StaffEmail
+            var emailConverter = new ValueConverter<StaffEmail, string>(
+                v => v.email, // Convert StaffEmail to string
+                v => new StaffEmail(v) // Convert string to StaffEmail
+            );
+
+            // Create a value converter for StaffPhoneNumber
+            var phoneConverter = new ValueConverter<StaffPhoneNumber, string>(
+                v => v.phoneNumber, // Convert StaffPhoneNumber to string
+                v => new StaffPhoneNumber(v) // Convert string to StaffPhoneNumber
+            );
+
+            // Apply the value converter to the LicenseNumber property
+            builder.Property(b => b.Id)
+                   .HasConversion(licenseNumberConverter)
                    .HasColumnName("LicenseNumber")
-                   .IsRequired();
-
-            builder.Property<bool>("activeStatus")
-                   .HasField("active")
-                   .HasColumnName("ActiveStatus")
-                   .IsRequired();
-
-            builder.Property<string>("contactInformation")
-                   .HasField("contactInformation")
-                   .HasColumnName("ContactInformation")
-                   .IsRequired();
-
-            builder.Property<string>("specialization")
-                   .HasField("name")
-                   .HasField("description")
-                   .HasColumnName("Specialization")
-                   .IsRequired();
+                   .IsRequired().HasAnnotation("Key", true);
 
             
-            builder.Property<string>("specializationId")
-                .HasColumnName("SpecializationId")
-                .IsRequired();
+            builder.OwnsOne(b => b.StaffId, f =>
+            {
+                f.Property(e => e.LicenseNumberValue).HasColumnName("LicenseNumber").IsRequired();
+            });
 
-            builder.HasOne<SpecializationName>("specializationId")
-                .WithOne()
-                .HasForeignKey("specializationId");
+            builder.OwnsOne(b => b.firstName, f =>
+            {
+                f.Property(e => e.name).HasColumnName("FirstName").IsRequired();
+            });
+            builder.OwnsOne(b => b.lastName, f =>
+            {
+                f.Property(e => e.Value).HasColumnName("LastName").IsRequired();
+            });
+            builder.OwnsOne(b => b.activeStatus, ia =>
+            {
+                ia.Property(e => e.active).HasColumnName("Active").IsRequired().HasConversion(new IsActiveValueConverter());
+            });
 
+            builder.OwnsOne(b => b.contactInformation, ci =>
+            {
+                ci.Property(e => e.phoneNumber)
+                    .HasColumnName("PhoneNumber")
+                    .IsRequired()
+                    .HasConversion(phoneConverter);
+                ci.Property(e => e.email)
+                    .HasColumnName("Email")
+                    .IsRequired()
+                    .HasConversion(emailConverter);
+            });
 
-            //builder.Property<bool>("_active").HasColumnName("Active");
+          //  builder.OwnsOne(b => b.specializationId, a => a.Property(e => e.Value).HasColumnName("SpecializationId").IsRequired());
+
+            // Ignore availability if it's not needed
+            builder.Ignore(b => b.availability);
+            
         }
-
     }
 }

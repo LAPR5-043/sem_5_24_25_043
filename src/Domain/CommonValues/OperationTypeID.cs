@@ -1,10 +1,14 @@
 using src.Domain.Shared;
 
 public class OperationTypeID : EntityId {
-    private long Id { get; set;}
+    public long Id { get; private set; }
 
-    public OperationTypeID(long value) : base(value) {
+    public OperationTypeID(long value) :base (value){
         SetId(value);
+    }
+
+    protected OperationTypeID() : base(null)
+    {
     }
 
     public long GetId(){
