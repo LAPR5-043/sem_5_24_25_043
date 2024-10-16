@@ -14,15 +14,15 @@ namespace sem_5_24_25_043.Controllers
     [ApiController]
     public class OperationTypesController : ControllerBase
     {
-        private readonly AppContext _context;
+       
 
         private ManageOperationTypeService manageOperationTypeService;
 
 
-        public OperationTypesController(AppContext context)
+        public OperationTypesController()
         {
-             manageOperationTypeService = new ManageOperationTypeService(_context);
-            _context = context;
+             manageOperationTypeService = new ManageOperationTypeService();
+            
         }
 
         // GET: api/OperationTypes

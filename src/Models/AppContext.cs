@@ -12,10 +12,14 @@ public class AppContext : DbContext
     }
 
     public DbSet<OperationType> OperationTypes { get; set; } = null!;
+    public DbSet<Specialization> Specializations { get; set; } = null!;
+    public DbSet<Staff> Staffs { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new OperationTypeEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new SpecializationEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
 
     }
 

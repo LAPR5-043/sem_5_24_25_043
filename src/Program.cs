@@ -12,9 +12,10 @@ namespace sem_5_24_25_043
 
             // Add services to the container.
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<AppContext>(opt =>
-                opt.UseSqlServer(builder.Configuration.GetConnectionString("TodoContext")));;
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddDbContext<AppContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<Repositories>();
+             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

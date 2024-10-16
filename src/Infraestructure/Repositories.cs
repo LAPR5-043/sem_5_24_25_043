@@ -10,6 +10,8 @@ public class Repositories {
     private static readonly object _lock = new object();
     private static AppContext appContext = new AppContext(new DbContextOptionsBuilder<AppContext>().Options);
     public static OperationTypeRepository operationTypeRepository = new OperationTypeRepository(appContext);
+    public static SpecializationRepository specializationRepository = new SpecializationRepository(appContext);
+    public static StaffRepository staffRepository = new StaffRepository(appContext);
     private Repositories()
     {
     }
@@ -35,6 +37,18 @@ public class Repositories {
         return operationTypeRepository;
     }    
 
+
+    public StaffRepository getStaffRepository()
+    {   
+        return staffRepository;
+    }
+
+    public SpecializationRepository getSpecializationRepository()
+    {   
+        return specializationRepository;
+    }
+
+    
 
 
 

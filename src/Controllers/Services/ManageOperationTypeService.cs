@@ -9,12 +9,11 @@ namespace src.Controllers.Services;
 
 public class ManageOperationTypeService 
 {
-    private readonly AppContext _context;
     private OperationTypeRepository operationTypeRepository = Repositories.GetInstance().getOperationTypeRepository();
 
-    public ManageOperationTypeService( AppContext context)
+    public ManageOperationTypeService()
     {
-        _context = context;
+        
     }
     
     public async Task<bool> deactivateOperationTypeAsync(OperationType operationType, bool isActive){
