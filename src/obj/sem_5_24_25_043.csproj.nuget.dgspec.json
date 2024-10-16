@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj": {}
+    "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/sem_5_24_25_043.csproj": {}
   },
   "projects": {
-    "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj": {
+    "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/sem_5_24_25_043.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+        "projectUniqueName": "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/sem_5_24_25_043.csproj",
         "projectName": "sem_5_24_25_043",
-        "projectPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
-        "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\obj\\",
+        "projectPath": "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/sem_5_24_25_043.csproj",
+        "packagesPath": "/Users/tiagoabreu/.nuget/packages/",
+        "outputPath": "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/tiagoabreu/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -43,6 +43,18 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AWSSDK.CognitoIdentityProvider": {
+              "target": "Package",
+              "version": "[3.7.403.15, )"
+            },
+            "AWSSDK.Core": {
+              "target": "Package",
+              "version": "[3.7.400.34, )"
+            },
+            "Amazon.Extensions.CognitoAuthentication": {
+              "target": "Package",
+              "version": "[2.5.5, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -91,7 +103,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -20,7 +20,7 @@ public class OperationType  : Entity <OperationTypeID>{
     }
 
     public long operationTypeId(){
-        return operationTypeID.getID();
+        return operationTypeID.GetId();
     }
 
     public bool isOperationActive(){

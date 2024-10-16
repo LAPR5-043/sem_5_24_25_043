@@ -1,31 +1,22 @@
-using src.Domain.Shared;
+public class OperationTypeID{
+    private long Id { get; set;}
 
-public class OperationTypeID : EntityId { 
-    private long id { get; set;}
-
-    public OperationTypeID(long id) : base(id){
-        setID(id);
+    public OperationTypeID(long id){
+        SetId(id);
     }
 
-    public long getID(){
-        return id;
+    public long GetId(){
+        return Id;
     }
 
 
-    private void setID(long id){
+    private void SetId(long id){
         if (id < 0) {
             throw new ArgumentException("ID cannot be negative.");
         }
-        this.id = id;
+        this.Id = id;
     }
 
-    protected override object createFromString(string text)
-    {
-        throw new NotImplementedException();
-    }
 
-    public override string AsString()
-    {
-        throw new NotImplementedException();
-    }
+
 }
