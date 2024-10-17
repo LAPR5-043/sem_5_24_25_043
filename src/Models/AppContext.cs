@@ -30,6 +30,22 @@ public class AppContext : DbContext
             new Specialization("Neurology", "Brain specialist") { Id = new SpecializationName(neurologyId) }
         );
 
+        modelBuilder.Entity<Staff>(entity =>
+        {
+            entity.HasKey(e => e.staffID);
+            entity.Property(e => e.firstName).IsRequired();
+            entity.Property(e => e.lastName).IsRequired();
+            entity.Property(e => e.email).IsRequired();
+            entity.Property(e => e.phoneNumber).IsRequired();
+            entity.Property(e => e.licenseNumber).IsRequired();
+            entity.Property(e => e.isActive).IsRequired();
+            entity.Property(e => e.specializationID).IsRequired();
+
+            // Configure the constructor binding
+            entity.HasData(
+                new Staff("1", "John", "Doe", "john.doe@example.com", "1234567890", "LN12345", true, "SPEC001")
+            );
+        });
         //modelBuilder.Entity<Staff>().HasData(
 
 

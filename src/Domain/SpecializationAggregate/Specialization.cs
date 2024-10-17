@@ -12,6 +12,11 @@ public class Specialization : Entity<SpecializationName>, IAggregateRoot {
         this.specializationDescription = new SpecializationDescription(specializationDescription);
     }
 
+    public Specialization(SpecializationName specializationName, SpecializationDescription specializationDescription){
+        this.specializationName = specializationName;
+        this.specializationDescription = specializationDescription;
+    }
+
     public Specialization() {
     
     }
