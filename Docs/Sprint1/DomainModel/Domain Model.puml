@@ -111,7 +111,11 @@ package "Patient Aggregate" {
     card PatientLastName <<Value Object>>
     card PatientFullName <<Value Object>>
     card DateOfBirth <<Value Object>>
-    card Gender <<Value Object>>
+    enum Gender <<enumeration>> {
+        Male
+        Female
+    }
+
     card MedicalRecordNumber <<Value Object>>
     card AllergiesAndConditions <<Value Object>>
     card EmergencyContact <<Value Object>>
