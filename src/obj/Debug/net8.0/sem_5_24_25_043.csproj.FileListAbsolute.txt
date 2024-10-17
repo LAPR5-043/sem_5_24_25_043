@@ -519,3 +519,14 @@ C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Amazon.Extensions.CognitoAuthentication.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\AWSSDK.CognitoIdentity.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\AWSSDK.CognitoIdentityProvider.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.Extensions.Options.dll

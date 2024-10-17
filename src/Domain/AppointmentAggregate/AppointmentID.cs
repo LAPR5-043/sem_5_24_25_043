@@ -66,8 +66,4 @@ namespace sem_5_24_25_043.Domain.AppointmentAggregate
             throw new NotImplementedException();
         }
     }
-<<<<<<< HEAD
-    
-=======
 }
->>>>>>> 75afb5b5d7476c01c016f81d306bc51faf615e25
