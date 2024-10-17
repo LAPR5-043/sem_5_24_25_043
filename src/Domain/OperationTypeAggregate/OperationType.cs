@@ -7,12 +7,20 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
     public bool isActive { get; private set; }
     public List<string> specialization {get; private set;}
 
-    public OperationType(string operationTypeName, int hours, int minutes)
+    public OperationType(string operationTypeName, int hours, int minutes, bool isActive, List<string> specialization)
     {
         this.operationTypeName = new OperationTypeName(operationTypeName);
         this.estimatedDuration = new EstimatedDuration(hours, minutes);
+        this.isActive = isActive;
     }
 
+    public OperationType(OperationTypeName operationTypeName, EstimatedDuration estimatedDuration, bool isActive, List<string> specialization)
+    {
+        this.operationTypeName = operationTypeName;
+        this.estimatedDuration = estimatedDuration;
+        this.isActive = isActive;
+        this.specialization = specialization;
+    }
     public OperationType()
     {
     }

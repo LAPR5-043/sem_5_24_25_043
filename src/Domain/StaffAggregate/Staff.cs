@@ -40,6 +40,21 @@ public class Staff : Entity<StaffID>, IAggregateRoot {
         this.specializationID = specializationID;
     }
 
+    public Staff(StaffID staffID, StaffFirstName firstName, StaffLastName lastName,
+                StaffEmail email, StaffPhoneNumber phoneNumber, LicenseNumber licenseNumber,
+                bool isActive, AvailabilitySlots availabilitySlots, string specializationID){
+        this.staffID = staffID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fullName = new StaffFullName(this.firstName, this.lastName);
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.licenseNumber = licenseNumber;
+        this.isActive = isActive;
+        this.availabilitySlots = availabilitySlots;
+        this.specializationID = specializationID;
+    }
+
     public void changeFirstName(string firstName){
         this.firstName = new StaffFirstName(firstName);
     }
