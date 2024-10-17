@@ -1,4 +1,4 @@
-@startuml
+"@startuml Domain Model"
 hide circle
 hide methods
 allow_mixing
