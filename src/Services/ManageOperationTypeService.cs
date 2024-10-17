@@ -9,6 +9,8 @@ namespace src.Controllers.Services;
 
 public class ManageOperationTypeService 
 {
+
+    #TODO repositorio
     private OperationTypeRepository operationTypeRepository = Repositories.GetInstance().getOperationTypeRepository();
 
     public ManageOperationTypeService()
