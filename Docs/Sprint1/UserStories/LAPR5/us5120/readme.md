@@ -25,11 +25,46 @@
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+**Questions and Answers with the client:**
+
+```
+Q: In the document with the surgeries, they all have 3 phases and respective duration:
+
+-Anesthesia/patient preparation
+-Surgery
+-Cleaning
+
+Can we assume while creating a new operation type, that the surgery must always have this 3 phases?
+```
+
+```
+A: yes
+
+```
+```
+Q: Na criação de um novo tipo de operação,
+
+Temos um nome , 3 fases temporal da Cirurgia, lista "requeridas" de (especialidades, quantidade ).
+
+Esse novo tipo de operação  não deve ter uma especialidade para alem das requeridas de modo segundo 5.1.16 AC2 um médico só pode marcar Cirurgia da sua especialidade?
+
+O processo é criar o novo tipo de operação e depois adicionar a lista de especialidades requeridas?
+
+```
+
+```
+A: sim. o tipo de operação está associado com uma dada especialidade. a lista de especialidaes faz parte integrante do tipo de operação. a criação é efetuada num único passo e não em dois passos como sugeres
+
+```
+
+
+![Analysis](analysis/svg/analysis.svg)
+
+![Analysis](analysis/svg/use_case.svg)
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
+![Design](design/svg/sequence-diagram.svg)
 
 ### 4.1. Realization
 

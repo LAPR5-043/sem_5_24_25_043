@@ -20,16 +20,18 @@
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to the planning module, as it needs to be notified and updated.*
+*Regarding this requirement we understand that it relates to the planning module, as it needs to be notified and updated. It also has a dependency to US 5.1.19 because the Doctor needs to select the operation request to delete.*
 
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![Analysis](analysis/svg/analysis.svg)
+
+![Analysis](analysis/svg/use_case.svg)
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
+![Design](design/svg/sequence-diagram.svg)
 
 ### 4.1. Realization
 

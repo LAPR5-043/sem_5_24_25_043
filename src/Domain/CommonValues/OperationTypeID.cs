@@ -1,8 +1,14 @@
-public class OperationTypeID{
-    private long Id { get; set;}
+using src.Domain.Shared;
 
-    public OperationTypeID(long id){
-        SetId(id);
+public class OperationTypeID : EntityId {
+    public long Id { get; private set; }
+
+    public OperationTypeID(long value) :base (value){
+        SetId(value);
+    }
+
+    protected OperationTypeID() : base(null)
+    {
     }
 
     public long GetId(){
@@ -17,6 +23,13 @@ public class OperationTypeID{
         this.Id = id;
     }
 
+    protected override object createFromString(string text)
+    {
+        throw new NotImplementedException();
+    }
 
-
+    public override string AsString()
+    {
+        throw new NotImplementedException();
+    }
 }

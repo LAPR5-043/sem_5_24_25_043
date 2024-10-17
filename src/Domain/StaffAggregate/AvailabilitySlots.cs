@@ -6,4 +6,6 @@ public class AvailabilitySlots
     {
         Slots = slots;
     }
+
+    public AvailabilitySlots () {}
 }

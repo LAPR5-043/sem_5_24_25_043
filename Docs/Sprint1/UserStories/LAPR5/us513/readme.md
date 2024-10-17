@@ -2,8 +2,6 @@
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
 This is a new feature being developed for the first time in the system. Its purpose is to allow patients to register in the system as well as book appointments online. 
 
 ## 2. Requirements
@@ -23,15 +21,38 @@ This is a new feature being developed for the first time in the system. Its purp
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it does not have any dependencies to other user stories.*
+*Regarding this requirement we understand that it has a dependency regarding US 5.1.8 because the patient needs to be already registered in the system is order to self-register as a user in the system.*
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+**Questions and Answers with the client:**
+
+```
+
+Q: 5.1.3 Clarification about the verification of the email AC
+
+```
+```
+A: 
+
+Imagine the following scenario:
+
+A patient is admitted to the hospital and a clerk registers their patient record with the email `abc@abc.com`. That's the patient's personal email.
+
+Afterwards, that same patient wants to self-register in the system. The system uses an external IAM provider, XYZ. The patient will create an account in the IAM provider, e.g., `abc12@xy2z.com`, and will use that identity to self-register as patient `abc@abc.com`.
+
+The system needs to send a verification email to `abc@abc.com`. When the patient follows the link sent to their personal email, the system will be able to "connect" the two emails as identifying the same person, and provide access to the system.
+
+```
+
+![Analysis](analysis/svg/analysis.svg)
+
+![Analysis](analysis/svg/use_case.svg)
+
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
+![Design](design/svg/sequence-diagram.svg)
 
 ### 4.1. Realization
 

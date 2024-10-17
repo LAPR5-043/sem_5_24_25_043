@@ -1,0 +1,21 @@
+@startuml
+
+actor "Backoffice User" as User
+actor "Admin" as Admin
+
+usecase "Log In" as UC_LogIn
+usecase "Access Backoffice Features" as UC_AccessFeatures
+usecase "Role-Based Access Control" as UC_RBAC
+usecase "Account Lockout" as UC_AccountLockout
+usecase "Session Expiry" as UC_SessionExpiry
+usecase "Send Notification" as UC_SendNotification
+
+User -> UC_LogIn
+UC_LogIn --> UC_AccessFeatures
+UC_LogIn --> UC_RBAC
+UC_LogIn --> UC_AccountLockout
+UC_LogIn --> UC_SessionExpiry
+UC_AccountLockout --> UC_SendNotification
+UC_SendNotification --> Admin
+
+@enduml

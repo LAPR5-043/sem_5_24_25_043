@@ -3,11 +3,8 @@ using System.Text.RegularExpressions;
 
 public class StaffPhoneNumber
 {
-    private static readonly Regex PhoneNumberRegex = new Regex(
-        @"^9\d{8}$",
-        RegexOptions.Compiled);
 
-    private string phoneNumber { get; }
+    public string phoneNumber { get; }
 
     public StaffPhoneNumber(string value)
     {
@@ -18,9 +15,10 @@ public class StaffPhoneNumber
         phoneNumber = value;
     }
 
+    public StaffPhoneNumber() { }
     private static bool isValidPhoneNumber(string phoneNumber)
     {
-        return PhoneNumberRegex.IsMatch(phoneNumber);
+        return new Regex(@"^9\d{8}$").IsMatch(phoneNumber);
     }
 
     public override string ToString()

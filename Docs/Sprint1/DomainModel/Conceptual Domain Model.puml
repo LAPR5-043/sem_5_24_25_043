@@ -101,7 +101,7 @@ end note
 
 
 ' Relationships
-User "1" -- "1" Patient : is <
+User "1" -- "1" Patient : is < 
 User "1" -- "1" Staff : is <
 User "1" -- "*" OperationType : adds >
 

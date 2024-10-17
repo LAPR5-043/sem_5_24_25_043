@@ -1,0 +1,17 @@
+@startuml
+
+actor "Admin" as Admin
+
+usecase "Add New Operation Type" as UC_AddOperationType
+usecase "Input Operation Details" as UC_InputDetails
+usecase "Validate Operation Name" as UC_ValidateName
+usecase "Log Creation" as UC_LogCreation
+usecase "Make Available for Scheduling" as UC_MakeAvailable
+
+Admin -> UC_AddOperationType
+UC_AddOperationType --> UC_InputDetails
+UC_AddOperationType --> UC_ValidateName
+UC_AddOperationType --> UC_LogCreation
+UC_AddOperationType --> UC_MakeAvailable
+
+@enduml
