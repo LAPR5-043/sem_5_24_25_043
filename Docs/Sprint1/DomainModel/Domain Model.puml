@@ -113,7 +113,6 @@ package "Patient Aggregate" {
     card DateOfBirth <<Value Object>>
     card Gender <<Value Object>>
     card MedicalRecordNumber <<Value Object>>
-    card ContactInformation <<Value Object>>
     card AllergiesAndConditions <<Value Object>>
     card EmergencyContact <<Value Object>>
     card AppointmentHistory <<Value Object>>
@@ -126,10 +125,6 @@ package "Patient Aggregate" {
     ' Atributos Appointment History
     card AppointmentId <<Value Object>>
 
-    ' Relationships Contact Information
-    ContactInformation "1"-->"1" PatientEmail
-    ContactInformation "1"-->"1" PhoneNumber
-
     ' Relationships Appointment History
     AppointmentHistory "1" --> "*" AppointmentId 
 
@@ -141,10 +136,11 @@ package "Patient Aggregate" {
     Patient "1" -u-> "1" DateOfBirth
     Patient "1" -u-> "1" Gender
     Patient "1" --> "1" MedicalRecordNumber
-    Patient "1" --> "1" ContactInformation
     Patient "1" --> "*" AllergiesAndConditions
     Patient "1" --> "1" EmergencyContact
     Patient "1" --> "1" AppointmentHistory
+    Patient "1" --> "1" PatientEmail
+    Patient "1" --> "1" PhoneNumber
 
 }
 
@@ -158,10 +154,10 @@ package "Staff Aggregate" {
     card StaffLastName <<Value Object>>
     card StaffFullName <<Value Object>>
     card LicenseNumber <<Value Object>>
-    card isActives <<Value Object>>
+    card isActives <<Boolean>>
 
     'specialization é entidade
-    card StaffContactInformation <<Value Object>>
+
     card AvailabilitySlots <<Value Object>>
     entity TimeSlots <<Value Object>> {
         StartDate
@@ -173,9 +169,6 @@ package "Staff Aggregate" {
     card StaffEmail <<Value Object>>
     card StaffPhoneNumber <<Value Object>>
 
-    'Relationships Contact Information
-    StaffContactInformation "1" -d-> "1" StaffEmail
-    StaffContactInformation "1" -d-> "1" StaffPhoneNumber
 
     'Relationships inside the Staff aggregate
     Staff "1" --> "1" StaffFirstName
@@ -183,10 +176,11 @@ package "Staff Aggregate" {
     Staff "1" --> "1" StaffFullName
     Staff "1" -d-> "1" StaffID
     Staff "1" --> "1" LicenseNumber
-    Staff "1" -d-> "1" StaffContactInformation
     Staff "1" --> "1" AvailabilitySlots
     Staff "1" --> "1" isActives
     AvailabilitySlots "1" -d-> "*" TimeSlots
+    Staff "1" -d-> "1" StaffEmail
+    Staff "1" -d-> "1" StaffPhoneNumber
 
 
 }
@@ -236,7 +230,7 @@ package "Operation Type Aggregate" {
     card OperationTypeID <<Value Object>>
     card OperationTypeName <<Value Object>>
     card EstimatedDuration <<Value Object>>
-    card isActive <<Value Object>>
+    card isActive <<Boolean>>
     'Ligar a Specialization
     
     'Relationships
