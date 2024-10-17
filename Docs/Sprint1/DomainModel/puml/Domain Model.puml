@@ -324,7 +324,7 @@ Staff "*" -d--> "*" OperationRequest: submits and edits
 
 OperationType "*" --> "*" Specialization
 
-Appointment "1" -d-> "1" SurgeryRoom
+
 Appointment "*" --> "*" Staff
 'Alterada relação 1-para-1  ->  *-para-*
 
