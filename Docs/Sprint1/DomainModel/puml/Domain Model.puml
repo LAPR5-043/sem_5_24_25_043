@@ -295,7 +295,11 @@ package "Surgery Room Aggregate" {
     }
 
     card RoomNumber <<Value Object>>
-    card Type <<Value Object>>
+    enum Type <<enumeration>> {
+         Operating
+         Consultation 
+         ICU
+    }
     card Capacity <<Value Object>>
     enum CurrentStatus <<enumeration>> {
         Available
