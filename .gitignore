@@ -21,7 +21,6 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-
 # dotenv environment variable files
 .env
 .env.development.local
