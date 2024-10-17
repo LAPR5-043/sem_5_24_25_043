@@ -108,6 +108,8 @@ namespace Domain.PatientAggregate
         /// <param name="allergyOrCondition">The allergy or condition to add.</param>
         public void AddAllergyOrCondition(string allergyOrCondition)
         {
+            var condition = new AllergiesAndConditions(allergyOrCondition);
+            allergiesAndConditions.Add(condition);
         }
 
         /// <summary>
@@ -116,6 +118,11 @@ namespace Domain.PatientAggregate
         /// <param name="allergyOrCondition">The allergy or condition to remove.</param>
         public void RemoveAllergyOrCondition(string allergyOrCondition)
         {
+            var condition = allergiesAndConditions.FirstOrDefault(a => a.Condition == allergyOrCondition);
+            if (condition != null)
+            {
+                allergiesAndConditions.Remove(condition);
+            }
         }
 
         /// <summary>
@@ -124,6 +131,7 @@ namespace Domain.PatientAggregate
         /// <param name="appointmentId">The ID of the appointment to add.</param>
         public void AddAppointment(int appointmentId)
         {
+            appointmentHistory.AddAppointment(appointmentId);
         }
 
         /// <summary>
@@ -132,6 +140,7 @@ namespace Domain.PatientAggregate
         /// <param name="appointmentId">The ID of the appointment to remove.</param>
         public void RemoveAppointment(int appointmentId)
         {
+            appointmentHistory.RemoveAppointment(appointmentId);
         }
 
         /// <summary>
@@ -141,6 +150,8 @@ namespace Domain.PatientAggregate
         /// <param name="emergencyContactPhoneNumber">The phone number of the emergency contact.</param>
         public void UpdateEmergencyContact(string emergencyContactName, int emergencyContactPhoneNumber)
         {
+
+            emergencyContact = new EmergencyContact(emergencyContactName, emergencyContactPhoneNumber);
         }
 
         /// <summary>
@@ -150,6 +161,11 @@ namespace Domain.PatientAggregate
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            var other = (Patient)obj;
+            return medicalRecordNumber.Equals(other.medicalRecordNumber);
         }
 
         /// <summary>
@@ -158,6 +174,7 @@ namespace Domain.PatientAggregate
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+            return medicalRecordNumber.GetHashCode();
         }
 
         /// <summary>
@@ -166,6 +183,15 @@ namespace Domain.PatientAggregate
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
+            return $"MedicalRecordNumber: {medicalRecordNumber},\n" +
+                   $"FullName: {fullName},\n" +
+                   $"Email: {email},\n" +
+                   $"PhoneNumber: {phoneNumber},\n" +
+                   $"EmergencyContact: {emergencyContact},\n" +
+                   $"DateOfBirth: {dateOfBirth},\n" +
+                   $"Gender: {gender},\n" +
+                   $"AllergiesAndConditions: {string.Join(", ", allergiesAndConditions)},\n" +
+                   $"AppointmentHistory: {appointmentHistory}";
         }
     }
 
