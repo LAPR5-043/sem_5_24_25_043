@@ -88,6 +88,18 @@ namespace Domain.PatientAggregate
         /// <param name="gender">The gender of the patient.</param>
         public Patient(int medicalRecordNumber, string firstName, string lastName, string email, int phoneNumber, string emergencyContactName, int emergencyContactPhoneNumber, string dayOfBirth, string monthOfBirth, string yearOfBirth, string gender)
         {
+
+            this.medicalRecordNumber = new MedicalRecordNumber(medicalRecordNumber);
+            this.firstName = new PatientFirstName(firstName);
+            this.lastName = new PatientLastName(lastName);
+            this.fullName = new PatientFullName(firstName, lastName);
+            this.email = new PatientEmail(email);
+            this.phoneNumber = new PatientPhoneNumber(phoneNumber);
+            this.emergencyContact = new EmergencyContact(emergencyContactName, emergencyContactPhoneNumber);
+            this.dateOfBirth = new DateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth);
+            this.gender = GenderExtensions.FromString(gender);
+            this.allergiesAndConditions = new List<AllergiesAndConditions>();
+            this.appointmentHistory = new AppointmentHistory();
         }
 
         /// <summary>

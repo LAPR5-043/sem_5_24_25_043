@@ -213,7 +213,12 @@ package "Operation Request Aggregate" {
     card DoctorID <<Value Object>>
     card OperationTypeId <<Value Object>>
     card DeadlineDate <<Value Object>>
-    card Priority <<Value Object>>
+    enum Priority <<enumeration>> {
+        Elective
+        Urgent
+        Emergency
+    }
+
 
     'Relationships
     OperationRequest "1" -d-> "1" ID
