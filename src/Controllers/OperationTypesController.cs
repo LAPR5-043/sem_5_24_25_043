@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using sem_5_24_25_043.Models;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ using src.Controllers.Services;
 
 namespace sem_5_24_25_043.Controllers
 {
-    [Route("api/[controller]")]
+   /* [Route("api/[controller]")]
     [ApiController]
     public class OperationTypesController : ControllerBase
     {
@@ -101,5 +101,5 @@ namespace sem_5_24_25_043.Controllers
         }
 
 
-    }
+    }*/
 }

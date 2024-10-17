@@ -1,16 +1,28 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using src.Domain.Shared;
 
 public class Staff : Entity<StaffID>, IAggregateRoot {
 
     public StaffID staffID { get; private set; }
+    [Required]
     public StaffFirstName firstName { get; private set; }
+    [Required]
     public StaffLastName lastName { get; private set;}
+    [Required]
     public StaffFullName fullName { get; private set;}
+    [Required]
     public StaffEmail email { get; private set;}
+    [Required]
     public StaffPhoneNumber phoneNumber { get; private set;}
+    [Required]
     public LicenseNumber licenseNumber { get; private set;}
+    [Required]
     public bool isActive { get; private set; }
+    [Required]    
     public AvailabilitySlots availabilitySlots { get; private set; }
+    [Required]
+    [ForeignKey("Specialization")]
     public string specializationID { get; private set; }
 
     public Staff(string staffID, string firstName, string lastName, string email, 

@@ -1,5 +1,6 @@
 using src.Domain.Shared;
-
+using Microsoft.EntityFrameworkCore;
+[Owned]
 public class SpecializationName : EntityId  
 {
     public string specializationName { get; }

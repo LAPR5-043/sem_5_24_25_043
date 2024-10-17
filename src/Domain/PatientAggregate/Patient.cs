@@ -118,7 +118,7 @@ namespace Domain.PatientAggregate
         /// <param name="allergyOrCondition">The allergy or condition to remove.</param>
         public void RemoveAllergyOrCondition(string allergyOrCondition)
         {
-            var condition = allergiesAndConditions.FirstOrDefault(a => a.Condition == allergyOrCondition);
+            var condition = allergiesAndConditions.FirstOrDefault(a => a.allergiesAndConditions == allergyOrCondition);
             if (condition != null)
             {
                 allergiesAndConditions.Remove(condition);
