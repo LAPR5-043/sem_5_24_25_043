@@ -1,6 +1,7 @@
 using NuGet.Packaging.Signing;
 using src.Domain.Shared;
-
+using Microsoft.EntityFrameworkCore;
+[Owned]
 public class TimeSlot : IValueObject
 {
     public Timestamp startDate { get; }

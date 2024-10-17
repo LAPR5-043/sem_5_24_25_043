@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using sem_5_24_25_043.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +17,12 @@ namespace src.Controllers
 
         private ManageStaffService manageStaffService;
 
+        private readonly AppContext _appContext;
 
-        public StaffController()
+        public StaffController(AppContext appContext)
         {
-             manageStaffService = new ManageStaffService();
-
+            _appContext = appContext;
+            manageStaffService = new ManageStaffService(_appContext);
         }
 
         // GET: api/Staff

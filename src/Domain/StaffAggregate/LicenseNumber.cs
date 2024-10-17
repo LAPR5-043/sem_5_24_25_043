@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using src.Domain.Shared;
 
+[Owned]
 public class LicenseNumber : IValueObject {
 
     public string licenseNumber { get; }

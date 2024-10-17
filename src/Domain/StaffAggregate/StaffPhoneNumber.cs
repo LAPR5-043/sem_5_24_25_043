@@ -1,5 +1,6 @@
 using src.Domain.Shared;
-
+using Microsoft.EntityFrameworkCore;
+[Owned]
 public class StaffPhoneNumber : IValueObject
 {
     public string phoneNumber { get; }

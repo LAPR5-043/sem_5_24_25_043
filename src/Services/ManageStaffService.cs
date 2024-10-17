@@ -1,20 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using sem_5_24_25_043.Models;
-using src.Infrastructure.OperationTypes;
 using AppContext= src.Models.AppContext;
 
 namespace src.Controllers.Services;
 
 public class ManageStaffService 
 {
-    private StaffRepository staffRepository = Repositories.GetInstance().getStaffRepository();
+    private  StaffRepository staffRepository;
+    private  SpecializationRepository specializationRepository;
 
-    public ManageStaffService()
+    public ManageStaffService(AppContext appContext)
     {
-        
+        staffRepository = new StaffRepository(appContext.Staffs);
+        specializationRepository = new SpecializationRepository(appContext.Specializations);
     }
+
 
     public async Task<OkObjectResult> getAllStaffAsync()
     {
@@ -47,11 +48,11 @@ public class ManageStaffService
         }
         if (email != null)
         {
-            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.email == email);
+            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.Email == email);
         }
         if (specialization != null)
         {
-            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.SpecializationName == specialization);
+            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.SpecializationID == specialization);
         }
 
         if (!string.IsNullOrEmpty(sortBy))
@@ -65,10 +66,10 @@ public class ManageStaffService
                     resultDtos = ascending ? resultDtos.OrderBy(s => s.LastName) : resultDtos.OrderByDescending(s => s.LastName);
                     break;
                 case "email":
-                    resultDtos = ascending ? resultDtos.OrderBy(s => s.email) : resultDtos.OrderByDescending(s => s.email);
+                    resultDtos = ascending ? resultDtos.OrderBy(s => s.Email) : resultDtos.OrderByDescending(s => s.Email);
                     break;
                 case "specialization":
-                    resultDtos = ascending ? resultDtos.OrderBy(s => s.SpecializationName) : resultDtos.OrderByDescending(s => s.SpecializationName);
+                    resultDtos = ascending ? resultDtos.OrderBy(s => s.SpecializationID) : resultDtos.OrderByDescending(s => s.SpecializationID);
                     break;
                 default:
                     break;
@@ -80,7 +81,7 @@ public class ManageStaffService
 
     internal async Task<StaffDto> getStaffAsync(string id)
     {
-        var staff = await staffRepository.GetByIdAsync(id);
+        var staff = await staffRepository.GetByIdAsync(new StaffID(id));
         return new StaffDto(staff);
     }
 }

@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using sem_5_24_25_043.Models;
-using src.Infrastructure.OperationTypes;
+
 using AppContext= src.Models.AppContext;
 
 namespace src.Controllers.Services;
 
 public class ManageOperationTypeService 
 {
+/*
 
-    #TODO repositorio
     private OperationTypeRepository operationTypeRepository = Repositories.GetInstance().getOperationTypeRepository();
 
     public ManageOperationTypeService()
@@ -102,5 +101,5 @@ public class ManageOperationTypeService
 
 
         return op;
-    }
+    }*/
 }

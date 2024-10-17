@@ -1,3 +1,5 @@
+using src.Domain.Shared;
+
 public class EstimatedDuration : IValueObject
 {
     public int hours { get; }

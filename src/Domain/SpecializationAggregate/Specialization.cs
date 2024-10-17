@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using src.Domain.Shared;
 
 public class Specialization : Entity<SpecializationName>, IAggregateRoot {
+    [Key]
     public SpecializationName specializationName { get; private set; }
+    [Required]
     public SpecializationDescription specializationDescription { get; private set;}
 
     public Specialization(string specializationName, string specializationDescription){
