@@ -17,14 +17,15 @@ namespace Domain.SurgeryRoomAggregate
     /// </summary>
     public static class CurrentStatusExtensions
     {
-        public static string ToFriendlyString(this CurrentStatus status)
+        public static CurrentStatus FromString(string status)
         {
-            return status switch
+            return status.ToLower() switch
             {
-                CurrentStatus.Available => "Available",
-                CurrentStatus.Occupied => "Occupied",
-                CurrentStatus.UnderMaintenance => "Under Maintenance",
-                _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+                "available" => CurrentStatus.Available,
+                "occupied" => CurrentStatus.Occupied,
+                "undermaintenance" => CurrentStatus.UnderMaintenance,
+                _ => throw new ArgumentException("Invalid status value")
+
             };
         }
     }

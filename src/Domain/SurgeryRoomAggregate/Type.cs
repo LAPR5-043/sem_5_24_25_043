@@ -16,14 +16,15 @@ namespace Domain.SurgeryRoomAggregate
     /// </summary>
     public static class TypeExtensions
     {
-        public static string ToFriendlyString(this Type type)
+        public static Type FromString(string type)
         {
-            return type switch
+            return type.ToLower() switch
             {
-                Type.OperatingRoom => "Operating Room",
-                Type.ConsultationRoom => "Consultation Room",
-                Type.RecoveryRoom => "Recovery Room",
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+                "operatingroom" => Type.OperatingRoom,
+                "consultationroom" => Type.ConsultationRoom,
+                "recoveryroom" => Type.RecoveryRoom,
+                _ => throw new ArgumentException("Invalid type value")
+
             };
         }
     }
