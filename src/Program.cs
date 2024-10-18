@@ -64,11 +64,15 @@ namespace sem_5_24_25_043
             }
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API");
+                    c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+                });
+            //}
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
