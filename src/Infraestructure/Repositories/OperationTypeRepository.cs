@@ -5,7 +5,7 @@ using AppContext = src.Models.AppContext;
 
 
 
-public class OperationTypeRepository : BaseRepository<OperationType, OperationTypeName>, IOperationTypeRepository
+/*public class OperationTypeRepository : BaseRepository<OperationType, OperationTypeName>, IOperationTypeRepository
 {
     private readonly AppContext context;
 
@@ -13,4 +13,4 @@ public class OperationTypeRepository : BaseRepository<OperationType, OperationTy
     {
         this.context = context;
     }
-}
+}*/

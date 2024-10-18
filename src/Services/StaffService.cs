@@ -81,9 +81,37 @@ public class StaffService : IStaffService
         return new ActionResult<IEnumerable<StaffDto>>(resultDtos);
     }
 
-    internal async Task<StaffDto> getStaffAsync(string id)
+    public async Task<StaffDto> CreateStaffAsync(StaffDto staffDto)
+    {
+        if (staffDto == null)
+        {
+        throw new ArgumentNullException(nameof(staffDto));
+        }
+
+        staffDto.AvailabilitySlots = staffDto.AvailabilitySlots ?? new List<string>();
+
+        var staff = new Staff();
+        staff.firstName = new StaffFirstName(staffDto.FirstName);
+        staff.lastName = new StaffLastName(staffDto.LastName);
+        staff.email = new StaffEmail(staffDto.Email);
+        staff.phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber);
+        staff.licenseNumber = new LicenseNumber(staffDto.LicenseNumber);
+        staff.isActive = staffDto.IsActive;
+        staff.availabilitySlots = new AvailabilitySlots();
+        staff.specializationID = staffDto.SpecializationID;
+    
+
+        
+
+        await staffRepository.AddAsync(staff);
+        await unitOfWork.CommitAsync();
+        return new StaffDto(staff);
+    }
+
+    public async Task<StaffDto> getStaffAsync(string id)
     {
         var staff = await staffRepository.GetByIdAsync(new StaffID(id));
         return new StaffDto(staff);
     }
+
 }

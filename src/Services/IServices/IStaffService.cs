@@ -1,10 +1,16 @@
 using System;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using src.Domain.Shared;
 
 namespace src.Services.IServices
 {
     public interface IStaffService
     {
-        
+        Task<OkObjectResult> getAllStaffAsync();
+        Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy);
+        Task<StaffDto> CreateStaffAsync(StaffDto staffDto);
+        Task<StaffDto> getStaffAsync(string id);
     }
 }

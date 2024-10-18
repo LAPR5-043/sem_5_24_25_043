@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using src.Models;
 using AppContext = src.Models.AppContext;
 using src.Controllers.Services;
+using src.Services.IServices;
 
 namespace src.Controllers
 {
@@ -14,9 +15,9 @@ namespace src.Controllers
 
     public class StaffController : ControllerBase
     {
-        private readonly StaffService service;
+        private readonly IStaffService service;
 
-        public StaffController(StaffService service)
+        public StaffController(IStaffService service)
         {
             this.service = service;
         }
@@ -30,7 +31,7 @@ namespace src.Controllers
         }
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
-        [HttpGet]
+        [HttpGet("filtered")]
         public async Task<ActionResult<IEnumerable<Staff>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
                                                                                 [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
@@ -53,6 +54,24 @@ namespace src.Controllers
                 return NotFound();
             }
             return Ok(staff);
+        }
+
+        // POST: api/Staff
+        [HttpPost]
+        public async Task<ActionResult<StaffDto>> CreateStaff([FromBody] StaffDto staffDto)
+        {
+            if (staffDto == null)
+            {
+                return BadRequest("Staff data is null.");
+            }
+
+            var createdStaff = await service.CreateStaffAsync(staffDto);
+            if (createdStaff == null)
+            {
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+            return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
         }
 
         

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 public class StaffDto
 {
@@ -35,6 +36,21 @@ public class StaffDto
         this.AvailabilitySlots = generateAvailabilitySlots(staff.availabilitySlots);
         this.SpecializationID = staff.specializationID;
 
+    }
+
+    [JsonConstructor]
+    public StaffDto(    string StaffID, string FirstName, string LastName, string FullName, string Email, string PhoneNumber, string LicenseNumber, bool IsActive, List<String> AvailabilitySlots, string SpecializationID)
+    {
+        this.StaffID = StaffID;
+        this.FirstName = FirstName;
+        this.LastName = LastName;
+        this.FullName = FullName;
+        this.Email = Email;
+        this.PhoneNumber = PhoneNumber;
+        this.LicenseNumber = LicenseNumber;
+        this.IsActive = IsActive;
+        this.AvailabilitySlots = AvailabilitySlots ?? new List<string>();
+        this.SpecializationID = SpecializationID;
     }
 
     private List<String>? generateAvailabilitySlots(AvailabilitySlots availabilitySlots)

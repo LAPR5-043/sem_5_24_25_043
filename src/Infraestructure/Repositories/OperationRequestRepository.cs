@@ -6,7 +6,7 @@ using src.Models;
 using AppContext = src.Models.AppContext;
 
 
-public class OperationRequestRepository : BaseRepository<OperationRequest, OperationRequestID>, IOperationRequestRepository
+/*public class OperationRequestRepository : BaseRepository<OperationRequest, OperationRequestID>, IOperationRequestRepository
 {
     private readonly AppContext context;
 
@@ -14,4 +14,4 @@ public class OperationRequestRepository : BaseRepository<OperationRequest, Opera
     {
         this.context = context;
     }
-}
+}*/

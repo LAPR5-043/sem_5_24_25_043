@@ -18,14 +18,15 @@ public class AppContext : DbContext
     {
     }
 
-    public DbSet<Appointment> Appointments { get; set; } = null!;
-    public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
-    public DbSet<OperationType> OperationTypes { get; set; } = null!;
-    public DbSet<Patient> Patients { get; set; } = null!;
-    public DbSet<Specialization> Specializations { get; set; } = null!;
     public DbSet<Staff> Staffs { get; set; } = null!;
+    //public DbSet<Appointment> Appointments { get; set; } = null!;
+    //public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
+    //public DbSet<OperationType> OperationTypes { get; set; } = null!;
+    //public DbSet<Patient> Patients { get; set; } = null!;
+    //public DbSet<Specialization> Specializations { get; set; } = null!;
+    //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
 
-    public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
+  
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
