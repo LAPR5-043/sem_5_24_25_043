@@ -56,8 +56,8 @@ namespace sem_5_24_25_043
 
             // Repos
             services.AddScoped<StaffRepository>();
-            services.AddScoped<OperationTypeRepository>();
-            services.AddScoped<SpecializationRepository>();
+            //services.AddScoped<OperationTypeRepository>();
+            //services.AddScoped<SpecializationRepository>();
 
             // Services
         }

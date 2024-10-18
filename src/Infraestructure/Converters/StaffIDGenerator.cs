@@ -13,7 +13,7 @@ public class StaffIDGenerator : ValueGenerator<StaffID>
 
         var staffType = entry.Property("email").CurrentValue.ToString().ToArray()[0];
 
-        var latestNumber = context.Staffs
+        var latestNumber = context.Staff
             .AsEnumerable()
             .Where(s => s.Id.Value.StartsWith($"{staffType}{currentYear}"))
             .OrderByDescending(s => s.Id)

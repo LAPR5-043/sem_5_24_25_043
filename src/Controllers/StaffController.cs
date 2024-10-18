@@ -13,23 +13,18 @@ namespace src.Controllers
     [ApiController]
     public class StaffController : ControllerBase
     {
-  
+        private readonly StaffService service;
 
-        private ManageStaffService manageStaffService;
-
-        private readonly AppContext _appContext;
-
-        public StaffController(AppContext appContext)
+        public StaffController(StaffService service)
         {
-            _appContext = appContext;
-            manageStaffService = new ManageStaffService(_appContext);
+            this.service = service;
         }
 
         // GET: api/Staff
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OperationType>>> GetStaffs()
         {
-            var operationTypes = await manageStaffService.getAllStaffAsync();
+            var operationTypes = await service.getAllStaffAsync();
             return Ok(operationTypes);
         }
 
@@ -38,7 +33,7 @@ namespace src.Controllers
         public async Task<ActionResult<IEnumerable<Staff>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
                                                                                 [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
-            var staff = await manageStaffService.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
+            var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {
                 return NotFound();
@@ -51,7 +46,7 @@ namespace src.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StaffDto>> GetStaff(string id)
         {
-            var staff = await manageStaffService.getStaffAsync(id);
+            var staff = await service.getStaffAsync(id);
             if (staff == null)
             {
                 return NotFound();

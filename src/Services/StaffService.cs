@@ -1,21 +1,22 @@
+using Domain.StaffAggregate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using src.Domain.Shared;
 using AppContext= src.Models.AppContext;
 
 namespace src.Controllers.Services;
 
-public class ManageStaffService 
+public class StaffService 
 {
-    private  StaffRepository staffRepository;
-  //  private  SpecializationRepository specializationRepository;
+    private  readonly IUnitOfWork unitOfWork;
+    private readonly IStaffRepository staffRepository;
 
-    public ManageStaffService(AppContext appContext)
+    public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository)
     {
-        staffRepository = new StaffRepository(appContext.Staffs);
-       // specializationRepository = new SpecializationRepository(appContext.Specializations);
+        this.unitOfWork = unitOfWork;
+        this.staffRepository = staffRepository;
     }
-
 
     public async Task<OkObjectResult> getAllStaffAsync()
     {
