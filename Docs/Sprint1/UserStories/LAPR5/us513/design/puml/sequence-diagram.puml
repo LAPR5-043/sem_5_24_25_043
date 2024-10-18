@@ -25,36 +25,24 @@ skinparam card {
 
 actor "Patient" as P
 
-participant "External IAM Provider" as IAM
 participant "API" as API
 participant ":PatientController" as PC
 participant ":PatientService" as PS
 participant ":PatientRepository" as PR
+participant "External IAM Provider" as IAM
 participant ":EmailService" as ES
 
 activate P
 
-P -> IAM: Tries to self-register
-
-activate IAM
-
-IAM -> P: Asks for login details
-
-deactivate IAM
-
-P -> IAM: Provides login details
-
-activate IAM
-
-IAM -> API: validate patient email
+P -> API: Tries to self-register (sends email, \npatient email, password, ...)
 
 activate API
 
-API -> PC: validateEmail(email)
+API -> PC: registerPatient(email, password, ...)
 
 activate PC
 
-PC -> PS: validateEmail(email)
+PC -> PS: registerPatient(email, password, ...)
 
 activate PS
 
@@ -72,13 +60,19 @@ alt "Patient not found"
 
     PC --> API: false
 
-    API --> IAM: false
-
-    IAM --> P: shows "Patient not found"
+    API --> P: returns "Patient not found"
 
 else "Patient found"
 
-    PS -> ES: sendPatientRegistrationEmail(email)
+    PS -> IAM: registers patient in IAM in pending state
+
+    activate IAM
+
+    IAM --> PS:
+
+    deactivate IAM
+
+    PS -> ES: sendPatientConfirmationEmail(email)
 
     activate ES
 
@@ -94,11 +88,8 @@ else "Patient found"
 
     deactivate PC
 
-    API --> IAM: true
+    API --> P: returns "User Registrered, check your email"
 
-    deactivate API
-
-    IAM --> P: shows "User Registrered, check your email"
 end
 
 
