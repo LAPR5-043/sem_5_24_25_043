@@ -1,11 +1,16 @@
+using Domain.OperationTypeAggregate;
 using Microsoft.EntityFrameworkCore;
 using src.Infrastructure.Shared;
+using AppContext = src.Models.AppContext;
 
 
-public class OperationTypeRepository : BaseRepository<OperationType, OperationTypeName>
+
+public class OperationTypeRepository : BaseRepository<OperationType, OperationTypeName>, IOperationTypeRepository
 {
-    public OperationTypeRepository(DbSet<OperationType> objs) : base(objs)
+    private readonly AppContext context;
+
+    public OperationTypeRepository(AppContext context) : base(context.OperationTypes)
     {
-        
+        this.context = context;
     }
 }

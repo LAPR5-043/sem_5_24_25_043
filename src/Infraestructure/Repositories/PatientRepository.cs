@@ -1,17 +1,16 @@
-using Domain.StaffAggregate;
+using Domain.PatientAggregate;
 using Microsoft.EntityFrameworkCore;
 using src.Infrastructure.Shared;
 using src.Models;
 using AppContext = src.Models.AppContext;
 
 
-public class StaffRepository : BaseRepository<Staff, StaffID>, IStaffRepository
+public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, IPatientRepository
 {
     private readonly AppContext context;
 
-    public StaffRepository(AppContext context) : base(context.Staffs)
+    public PatientRepository(AppContext context) : base(context.Patients)
     {
         this.context = context;
     }
 }
-

@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Domain.Shared;
+using src.Services.IServices;
 using AppContext= src.Models.AppContext;
 
 namespace src.Controllers.Services;
 
-public class StaffService 
+public class StaffService : IStaffService
 {
     private  readonly IUnitOfWork unitOfWork;
     private readonly IStaffRepository staffRepository;

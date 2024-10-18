@@ -1,18 +1,18 @@
+using Domain.SurgeryRoomAggregate;
 using Microsoft.EntityFrameworkCore;
+using src.Domain.SurgeryRoomAggregate;
 using src.Infrastructure.Shared;
 using src.Models;
-using Domain.SpecializationAggregate;
 using AppContext = src.Models.AppContext;
 
 
 namespace src.Infrastructure.Repositories
 {
-    public class SpecializationRepository : BaseRepository<Specialization, SpecializationName>, ISpecializationRepository
+    public class SurgeryRoomRepository : BaseRepository<SurgeryRoom, RoomNumber>, ISurgeryRoomRepository
     {
         private readonly AppContext context;
 
-        
-        public SpecializationRepository(AppContext context) : base(context.Specializations)
+        public SurgeryRoomRepository(AppContext context) : base(context.SurgeryRooms)
         {
             this.context = context;
         }

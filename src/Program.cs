@@ -6,6 +6,14 @@ using AppContext = src.Models.AppContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Domain.StaffAggregate;
+using Domain.OperationTypeAggregate;
+using Domain.AppointmentAggregate;
+using Domain.SurgeryRoomAggregate;
+using src.Infrastructure.Repositories;
+using Domain.SpecializationAggregate;
+using Domain.PatientAggregate;
+using Domain.OperationRequestAggregate;
 
 
 namespace sem_5_24_25_043
@@ -87,11 +95,23 @@ namespace sem_5_24_25_043
         {
 
             // Repos
-            services.AddScoped<StaffRepository>();
-            //services.AddScoped<OperationTypeRepository>();
-            //services.AddScoped<SpecializationRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
+            services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+            services.AddScoped<IStaffRepository, StaffRepository>();
+            services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
+            
 
             // Services
+            services.AddScoped<AuthService>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
+            services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+            
         }
     }
 }

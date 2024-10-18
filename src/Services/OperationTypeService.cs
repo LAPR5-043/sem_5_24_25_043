@@ -1,13 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.OperationTypeAggregate;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
+using src.Domain.Shared;
+using src.Services.IServices;
 using AppContext= src.Models.AppContext;
 
 namespace src.Controllers.Services;
 
-public class ManageOperationTypeService 
+public class OperationTypeService : IOperationTypeService
 {
+
+    private readonly IUnitOfWork unitOfWork;
+    private readonly IOperationTypeRepository operationTypeRepository;
+
+
+    public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository operationTypeRepository)
+    {
+        this.unitOfWork = unitOfWork;
+        this.operationTypeRepository = operationTypeRepository;
+    }
 /*
 
     private OperationTypeRepository operationTypeRepository = Repositories.GetInstance().getOperationTypeRepository();
