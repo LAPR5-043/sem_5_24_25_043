@@ -25,7 +25,7 @@ skinparam card {
 
 actor "Admin" as A
 
-participant "CreatePatientProfileUI" as UI
+participant "API" as API
 participant "PatientController" as PC
 participant "PatientService" as PS
 participant "Patient" as P
@@ -35,19 +35,11 @@ participant "PatientRepository" as PR
 
 activate A
 
-A -> UI: Create Patient Profile
+A -> API: Calls API to create a new Patient \nand Provides patient details \n(firs name, last name,\n contact information, etc.)
 
-activate UI
+activate API
 
-UI -> A: Ask for patient details
-
-deactivate UI
-
-A -> UI: Provide patient details (firs name, last name,\n contact information, etc.)
-
-activate UI
-
-UI -> PC: createPatientProfile(...)
+API -> PC: createPatientProfile(...)
 
 activate PC
 
@@ -109,13 +101,13 @@ PS --> PC: true
 
 deactivate PS
 
-PC --> UI: true
+PC --> API: true
 
 deactivate PC
 
-UI --> A: Patient profile created successfully
+API --> A: return Patient profile created successfully
 
-deactivate UI
+deactivate API
 
 deactivate A
 
