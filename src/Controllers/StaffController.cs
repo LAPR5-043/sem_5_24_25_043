@@ -11,6 +11,7 @@ namespace src.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class StaffController : ControllerBase
     {
   
