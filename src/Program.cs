@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using src.Controllers.Services;
 using AppContext = src.Models.AppContext;
@@ -16,7 +17,11 @@ namespace sem_5_24_25_043
             builder.Services.AddControllers();
             builder.Services.AddDbContext<AppContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Register Repos and Services
+            RegisteredServices(builder.Services);
+
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -44,6 +49,17 @@ namespace sem_5_24_25_043
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static void RegisteredServices(IServiceCollection services)
+        {
+
+            // Repos
+            services.AddScoped<StaffRepository>();
+            services.AddScoped<OperationTypeRepository>();
+            services.AddScoped<SpecializationRepository>();
+
+            // Services
         }
     }
 }
