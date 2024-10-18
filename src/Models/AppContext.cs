@@ -1,5 +1,6 @@
 using Domain.OperationRequestAggregate;
 using Domain.PatientAggregate;
+using Infrastructure.PatientRepository;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Sempi5.Infrastructure.StaffRepository;
@@ -18,11 +19,11 @@ public class AppContext : DbContext
     {
     }
 
-    public DbSet<Staff> Staffs { get; set; } = null!;
+    public DbSet<Staff> Staffs { get; set; }
     //public DbSet<Appointment> Appointments { get; set; } = null!;
     //public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
     //public DbSet<OperationType> OperationTypes { get; set; } = null!;
-    //public DbSet<Patient> Patients { get; set; } = null!;
+    public DbSet<Patient> Patients { get; set; }
     //public DbSet<Specialization> Specializations { get; set; } = null!;
     //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
 
@@ -31,20 +32,9 @@ public class AppContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new StaffEntityTypeConfiguration());
-        // Seed data
-        string cardiologyId = "Cardiology";
-        string neurologyId = "Neurology";
-
-       /*modelBuilder.Entity<Specialization>().HasData(
-            new Specialization("Cardiology", "Heart specialist") { Id = new SpecializationName(cardiologyId) },
-            new Specialization("Neurology", "Brain specialist") { Id = new SpecializationName(neurologyId) }
-        );*/ 
-
-    
-       
-        //modelBuilder.Entity<Staff>().HasData(
-
+        modelBuilder.ApplyConfiguration<Staff>(new StaffEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration<Patient>(new PatientEntityTypeConfiguration());
+        base.OnModelCreating(modelBuilder);
 
     }
 

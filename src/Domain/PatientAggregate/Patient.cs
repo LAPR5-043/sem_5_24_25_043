@@ -68,9 +68,9 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Initializes a new instance of the <see cref="Patient"/> class.
         /// </summary>
-        public Patient()
+        /*public Patient()
         {
-        }
+        }*/
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Patient"/> class with specified details.
@@ -86,7 +86,7 @@ namespace Domain.PatientAggregate
         /// <param name="monthOfBirth">The month of birth of the patient.</param>
         /// <param name="yearOfBirth">The year of birth of the patient.</param>
         /// <param name="gender">The gender of the patient.</param>
-        public Patient(int medicalRecordNumber, string firstName, string lastName, string email, int phoneNumber, string emergencyContactName, int emergencyContactPhoneNumber, string dayOfBirth, string monthOfBirth, string yearOfBirth, string gender)
+        /*public Patient(int medicalRecordNumber, string firstName, string lastName, string email, int phoneNumber, string emergencyContactName, int emergencyContactPhoneNumber, string dayOfBirth, string monthOfBirth, string yearOfBirth, string gender)
         {
 
             this.medicalRecordNumber = new MedicalRecordNumber(medicalRecordNumber);
@@ -100,7 +100,7 @@ namespace Domain.PatientAggregate
             this.gender = GenderExtensions.FromString(gender);
             this.allergiesAndConditions = new List<AllergiesAndConditions>();
             this.appointmentHistory = new AppointmentHistory();
-        }
+        }*/
 
         /// <summary>
         /// Adds an allergy or condition to the patient's record.

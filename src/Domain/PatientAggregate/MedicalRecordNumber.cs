@@ -11,19 +11,19 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The medical record number
         /// </summary>
-        public int medicalRecordNumber { get; }
+        public string medicalRecordNumber { get; }
+
+        public MedicalRecordNumber() : base(null)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MedicalRecordNumber"/> class
         /// </summary>
         /// <param name="medicalRecordNumber"></param>
         /// <exception cref="ArgumentException"></exception>
-        public MedicalRecordNumber(int medicalRecordNumber) : base(medicalRecordNumber)
+        public MedicalRecordNumber(string medicalRecordNumber) : base(medicalRecordNumber)
         {
-            if (medicalRecordNumber <= 0)
-            {
-                throw new ArgumentException("Medical record number must be a positive integer");
-            }
 
             this.medicalRecordNumber = medicalRecordNumber;
         }
@@ -69,7 +69,7 @@ namespace Domain.PatientAggregate
 
         public override string AsString()
         {
-            throw new NotImplementedException();
+            return medicalRecordNumber.ToString();
         }
     }
 }

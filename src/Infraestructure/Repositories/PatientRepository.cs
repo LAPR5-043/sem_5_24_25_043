@@ -5,7 +5,7 @@ using src.Models;
 using AppContext = src.Models.AppContext;
 
 
-/*public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, IPatientRepository
+public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, IPatientRepository
 {
     private readonly AppContext context;
 
@@ -13,4 +13,4 @@ using AppContext = src.Models.AppContext;
     {
         this.context = context;
     }
-}*/
+}

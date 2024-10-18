@@ -10,7 +10,7 @@ namespace Sempi5.Infrastructure.StaffRepository
     {
         public void Configure(EntityTypeBuilder<Staff> builder)
         {
-            builder.ToTable("Staff");
+            builder.ToTable("Staffs");
             builder.HasKey(t => t.Id);
 
             builder.Property(p => p.Id)
