@@ -45,15 +45,19 @@
           "dependencies": {
             "AWSSDK.CognitoIdentityProvider": {
               "target": "Package",
-              "version": "[3.7.403.15, )"
+              "version": "[3.7.403.17, )"
             },
             "AWSSDK.Core": {
               "target": "Package",
-              "version": "[3.7.400.34, )"
+              "version": "[3.7.400.36, )"
             },
             "Amazon.Extensions.CognitoAuthentication": {
               "target": "Package",
               "version": "[2.5.5, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.10, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
