@@ -1,14 +1,13 @@
 using NuGet.Packaging.Signing;
 using src.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
-[Owned]
+using System;
 public class TimeSlot : IValueObject
 {
-    public Timestamp startDate { get; }
-    public Timestamp endDate { get; }
+    public DateTime startDate { get; }
+    public DateTime endDate { get; }
     public bool occupied { get; private set; }
 
-    public TimeSlot(Timestamp startDate, Timestamp endDate, bool occupied){
+    public TimeSlot(DateTime startDate, DateTime endDate, bool occupied){
         this.startDate = startDate;
         this.endDate = endDate;
         this.occupied = occupied;
@@ -40,7 +39,7 @@ public class TimeSlot : IValueObject
 
     public override string ToString()
     {
-        return startDate + " - " + endDate + " " + (occupied ? "Occupied" : "Free");
+        return startDate.ToString() + "," + endDate.ToString() + "," + (occupied ? "true" : "false");
     }
 
 }

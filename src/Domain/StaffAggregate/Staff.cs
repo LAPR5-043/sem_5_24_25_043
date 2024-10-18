@@ -4,28 +4,28 @@ using src.Domain.Shared;
 
 public class Staff : Entity<StaffID>, IAggregateRoot {
 
-    public StaffID staffID { get; private set; }
-    [Required]
-    public StaffFirstName firstName { get; private set; }
-    [Required]
-    public StaffLastName lastName { get; private set;}
-    [Required]
-    public StaffFullName fullName { get; private set;}
-    [Required]
-    public StaffEmail email { get; private set;}
-    [Required]
-    public StaffPhoneNumber phoneNumber { get; private set;}
-    [Required]
-    public LicenseNumber licenseNumber { get; private set;}
-    [Required]
-    public bool isActive { get; private set; }
-    [Required]    
-    public AvailabilitySlots availabilitySlots { get; private set; }
-    [Required]
-    [ForeignKey("Specialization")]
-    public string specializationID { get; private set; }
+    public StaffID staffID { get; set; }
+    //[Required]
+    public StaffFirstName firstName { get;  set; }
+    //[Required]
+    public StaffLastName lastName { get;  set;}
+   // [Required]
+    public StaffFullName fullName { get;  set;}
+    //[Required]
+    public StaffEmail email { get;  set;}
+    //[Required]
+    public StaffPhoneNumber phoneNumber { get;  set;}
+    //[Required]
+    public LicenseNumber licenseNumber { get;  set;}
+    //[Required]
+    public bool isActive { get;  set; }
+    //[Required]    
+    public AvailabilitySlots availabilitySlots { get; set; }
+    //[Required]
+    //[ForeignKey("Specialization")]
+    public string specializationID { get;  set; }
 
-    public Staff(string staffID, string firstName, string lastName, string email, 
+    /*public Staff(string staffID, string firstName, string lastName, string email, 
                 string phoneNumber, string licenseNumber, bool isActive,
                  string specializationID){
         this.staffID = new StaffID(staffID);
@@ -53,7 +53,7 @@ public class Staff : Entity<StaffID>, IAggregateRoot {
         this.isActive = isActive;
         this.availabilitySlots = availabilitySlots;
         this.specializationID = specializationID;
-    }
+    }*/
 
     public void changeFirstName(string firstName){
         this.firstName = new StaffFirstName(firstName);

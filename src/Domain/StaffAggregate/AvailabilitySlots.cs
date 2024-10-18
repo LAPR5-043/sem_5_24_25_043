@@ -1,8 +1,5 @@
 using src.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
 
-
-[Owned]
 public class AvailabilitySlots : IValueObject   {
     public List<TimeSlot> slots { get; }
 

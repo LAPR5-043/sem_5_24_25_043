@@ -1,6 +1,5 @@
 using src.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
-[Owned]
+
 public class StaffID  : EntityId {
 
     public string id { get; }

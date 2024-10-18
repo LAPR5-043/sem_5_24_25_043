@@ -1,6 +1,4 @@
 using src.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
-[Owned]
 public class StaffFirstName  : IValueObject{
 
     public string firstName { get; }

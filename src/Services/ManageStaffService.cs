@@ -8,12 +8,12 @@ namespace src.Controllers.Services;
 public class ManageStaffService 
 {
     private  StaffRepository staffRepository;
-    private  SpecializationRepository specializationRepository;
+  //  private  SpecializationRepository specializationRepository;
 
     public ManageStaffService(AppContext appContext)
     {
         staffRepository = new StaffRepository(appContext.Staffs);
-        specializationRepository = new SpecializationRepository(appContext.Specializations);
+       // specializationRepository = new SpecializationRepository(appContext.Specializations);
     }
 
 

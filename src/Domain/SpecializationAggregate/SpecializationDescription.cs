@@ -1,6 +1,5 @@
 using src.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
-[Owned]
+
 public class SpecializationDescription : IValueObject
 {
     public string specializationDescription { get; }

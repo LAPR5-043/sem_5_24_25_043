@@ -1,11 +1,9 @@
 using src.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
-[Owned]
 public class StaffFullName  : IValueObject {
     public string fullName { get; }
     
     public StaffFullName(StaffFirstName firstName, StaffLastName lastName) {
-        this.fullName = firstName.ToString() + " " + lastName.ToString();
+        this.fullName = firstName.ToString() + "," + lastName.ToString();
     }
 
     public StaffFullName() {
