@@ -13,23 +13,23 @@ namespace src.Domain.AppointmentAggregate
         /// <summary>
         /// Represents the ID of the appointment.
         /// </summary>
-        public AppointmentID appointmentID { get; private set; }
+        public AppointmentID appointmentID { get; set; }
         /// <summary>
         /// Represents the ID of the request.
         /// </summary>
-        public int requestID { get; private set; }
+        public int requestID { get; set; }
         /// <summary>
         /// Represents the ID of the room.
         /// </summary>
-        public int roomID { get; private set; }
+        public int roomID { get; set; }
         /// <summary>
         /// Represents the date and time of the appointment.
         /// </summary>
-        public DateAndTime dateAndTime { get; private set; }
+        public DateAndTime dateAndTime { get; set; }
         /// <summary>
         /// Represents the status of the appointment.
         /// </summary>
-        public Status status { get; private set; }
+        public Status status { get; set; }
         /// <summary>
         /// Default constructor required by Entity Framework.
         /// </summary>

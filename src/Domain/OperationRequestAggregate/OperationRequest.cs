@@ -13,27 +13,27 @@ namespace Domain.OperationRequestAggregate
         /// <summary>
         /// Represents the ID of the operation request.
         /// </summary>
-        public OperationRequestID operationRequestID { get; private set; }
+        public OperationRequestID operationRequestID { get; set; }
         /// <summary>
         /// Represents the ID of the patient.
         /// </summary>
-        public int patientID { get; private set; }
+        public int patientID { get; set; }
         /// <summary>
         /// Represents the ID of the doctor.
         /// </summary>
-        public int doctorID { get; private set; }
+        public int doctorID { get; set; }
         /// <summary>
         /// Represents the ID of the operation type.
         /// </summary>
-        public int operationTypeID { get; private set; }
+        public int operationTypeID { get; set; }
         /// <summary>
         /// Represents the deadline date of the operation request.
         /// </summary>
-        public DeadlineDate deadlineDate { get; private set; }
+        public DeadlineDate deadlineDate { get; set; }
         /// <summary>
         /// Represents the priority of the operation request.
         /// </summary>
-        public Priority priority { get; private set; }
+        public Priority priority { get; set; }
 
         /// <summary>
         /// Default constructor required by Entity Framework.

@@ -13,57 +13,57 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Gets the medical record number of the patient.
         /// </summary>
-        public MedicalRecordNumber medicalRecordNumber { get; private set; }
+        public MedicalRecordNumber medicalRecordNumber { get; set; }
 
         /// <summary>
         /// Gets the first name of the patient.
         /// </summary>
-        public PatientFirstName firstName { get; private set; }
+        public PatientFirstName firstName { get; set; }
 
         /// <summary>
         /// Gets the last name of the patient.
         /// </summary>
-        public PatientLastName lastName { get; private set; }
+        public PatientLastName lastName { get; set; }
 
         /// <summary>
         /// Gets the full name of the patient.
         /// </summary>
-        public PatientFullName fullName { get; private set; }
+        public PatientFullName fullName { get; set; }
 
         /// <summary>
         /// Gets the email of the patient.
         /// </summary>
-        public PatientEmail email { get; private set; }
+        public PatientEmail email { get; set; }
 
         /// <summary>
         /// Gets the phone number of the patient.
         /// </summary>
-        public PatientPhoneNumber phoneNumber { get; private set; }
+        public PatientPhoneNumber phoneNumber { get; set; }
 
         /// <summary>
         /// Gets the emergency contact of the patient.
         /// </summary>
-        public EmergencyContact emergencyContact { get; private set; }
+        public EmergencyContact emergencyContact { get; set; }
 
         /// <summary>
         /// Gets the date of birth of the patient.
         /// </summary>
-        public DateOfBirth dateOfBirth { get; private set; }
+        public DateOfBirth dateOfBirth { get; set; }
 
         /// <summary>
         /// Gets the gender of the patient.
         /// </summary>
-        public Gender gender { get; private set; }
+        public Gender gender { get; set; }
 
         /// <summary>
         /// Gets the list of allergies and conditions of the patient.
         /// </summary>
-        public List<AllergiesAndConditions> allergiesAndConditions { get; private set; }
+        public List<AllergiesAndConditions> allergiesAndConditions { get; set; }
 
         /// <summary>
         /// Gets the appointment history of the patient.
         /// </summary>
-        public AppointmentHistory appointmentHistory { get; private set; }
+        public AppointmentHistory appointmentHistory { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Patient"/> class.

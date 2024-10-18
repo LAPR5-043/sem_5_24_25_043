@@ -15,19 +15,19 @@ namespace src.Domain.SurgeryRoomAggregate
         /// <summary>
         /// Represents the ID of the surgery room.
         /// </summary>
-        public RoomNumber roomNumber { get; private set; }
+        public RoomNumber roomNumber { get; set; }
         /// <summary>
         /// Represents the type of the surgery room.
         /// </summary>
-        public Type type { get; private set; }
+        public Type type { get; set; }
         /// <summary>
         /// Represents the capacity of the surgery room.
         /// </summary>
-        public Capacity capacity { get; private set; }
+        public Capacity capacity { get; set; }
         /// <summary>
         /// Represents the current status of the surgery room.
         /// </summary>
-        public CurrentStatus currentStatus { get; private set; }
+        public CurrentStatus currentStatus { get; set; }
         /// <summary>
         /// Represents the surgery room constructor.
         /// </summary>

@@ -3,9 +3,9 @@ using src.Domain.Shared;
 
 public class Specialization : Entity<SpecializationName>, IAggregateRoot {
    // [Key]
-    public SpecializationName specializationName { get; private set; }
+    public SpecializationName specializationName { get; set; }
     //[Required]
-    public SpecializationDescription specializationDescription { get; private set;}
+    public SpecializationDescription specializationDescription { get; set;}
 
     public Specialization(string specializationName, string specializationDescription){
         this.specializationName = new SpecializationName(specializationName);

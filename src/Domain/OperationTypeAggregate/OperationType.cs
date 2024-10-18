@@ -2,10 +2,10 @@ using src.Domain.Shared;
 
 public class OperationType : Entity<OperationTypeName>, IAggregateRoot
 {
-    public OperationTypeName operationTypeName { get; private set; }
-    public EstimatedDuration estimatedDuration { get; private set; }
-    public bool isActive { get; private set; }
-    public List<string> specialization {get; private set;}
+    public OperationTypeName operationTypeName { get; set; }
+    public EstimatedDuration estimatedDuration { get; set; }
+    public bool isActive { get; set; }
+    public List<string> specialization {get; set;}
 
     public OperationType(string operationTypeName, int hours, int minutes, bool isActive, List<string> specialization)
     {
