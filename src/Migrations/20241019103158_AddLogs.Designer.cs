@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
@@ -11,9 +12,11 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20241019103158_AddLogs")]
+    partial class AddLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,38 +86,6 @@ namespace sem_5_24_25_043.Migrations
                         .IsUnique();
 
                     b.ToTable("Patients", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1",
-                            allergiesAndConditions = "[]",
-                            appointmentHistory = "{}",
-                            dateOfBirth = "1/1/1999",
-                            email = "john@email.com",
-                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919919919}",
-                            firstName = "John",
-                            fullName = "John Doe",
-                            gender = "Male",
-                            lastName = "Doe",
-                            medicalRecordNumber = 1,
-                            phoneNumber = "919919919"
-                        },
-                        new
-                        {
-                            Id = "2",
-                            allergiesAndConditions = "[]",
-                            appointmentHistory = "{}",
-                            dateOfBirth = "1/1/1999",
-                            email = "Jane@email.com",
-                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919999119}",
-                            firstName = "Jane",
-                            fullName = "Jane Does",
-                            gender = "Male",
-                            lastName = "Does",
-                            medicalRecordNumber = 2,
-                            phoneNumber = "919991919"
-                        });
                 });
 
             modelBuilder.Entity("Log", b =>

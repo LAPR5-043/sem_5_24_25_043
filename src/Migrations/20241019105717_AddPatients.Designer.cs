@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
@@ -11,9 +12,11 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20241019105717_AddPatients")]
+    partial class AddPatients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,7 +93,7 @@ namespace sem_5_24_25_043.Migrations
                             Id = "1",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
-                            dateOfBirth = "1/1/1999",
+                            dateOfBirth = "01/01/1999 00:00:00",
                             email = "john@email.com",
                             emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919919919}",
                             firstName = "John",
@@ -105,7 +108,7 @@ namespace sem_5_24_25_043.Migrations
                             Id = "2",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
-                            dateOfBirth = "1/1/1999",
+                            dateOfBirth = "01/01/1999 00:00:00",
                             email = "Jane@email.com",
                             emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919999119}",
                             firstName = "Jane",

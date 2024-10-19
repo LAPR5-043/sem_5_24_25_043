@@ -10,13 +10,13 @@ public class LongIDGenerator : ValueGenerator<LongId>
         var context = (AppContext)entry.Context;
 
 
-        var latestNumber = context.Staffs
+        var latestNumber = context.Logs
             .AsEnumerable()
             .OrderByDescending(s => s.Id)
             .Select(s => s.Id)
             .FirstOrDefault();
 
-        var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.Value.Substring(6)) + 1 : 1;
+        var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.AsString()) + 1 : 1;
         LongId longID = new LongId(sequentialNumber);
 
         entry.Property("Id").CurrentValue = longID  ;
