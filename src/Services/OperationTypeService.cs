@@ -22,6 +22,31 @@ public class OperationTypeService : IOperationTypeService
         this.operationTypeRepository = operationTypeRepository;
     }
 
+    public async Task<bool> CreateOperationTypeAsync(OperationTypeDto operationType)
+    {
+        if (operationType == null)
+        {
+            throw new ArgumentNullException(nameof(operationType) , "Operation type data is null.");
+        }
+
+        if (operationTypeRepository.OperationTypeExists(operationType.OperationTypeName))
+        {
+            throw new InvalidOperationException("Operation type already exists.");
+        }
+
+        var newOperationType = new OperationType();
+        newOperationType.Id = new OperationTypeName(operationType.OperationTypeName);
+        newOperationType.operationTypeName = new OperationTypeName(operationType.OperationTypeName);
+        newOperationType.estimatedDuration = new EstimatedDuration(int.Parse(operationType.EstimatedDurationHours), int.Parse(operationType.EstimatedDurationMinutes));
+        newOperationType.isActive = operationType.IsActive;
+        newOperationType.specializations = operationType.Specializations.ToDictionary(s => s.Key, s => int.Parse(s.Value));
+    
+        await operationTypeRepository.AddAsync(newOperationType);
+        await unitOfWork.CommitAsync();
+
+        return newOperationType != null;
+    }
+
     public async Task<bool> deactivateOperationTypeAsync(string id){
         var operationType = await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
         if (operationType == null)

@@ -11,20 +11,19 @@ public class OperationTypeEntityTypeConfiguration : IEntityTypeConfiguration<Ope
         {
             builder.ToTable("OperationTypes");
 
-            builder.HasKey(t => t.Id);
+            builder.HasKey(p => p.operationTypeName);
 
-            builder.Property(p => p.Id)
+            builder.Property(t => t.Id)
                 .HasConversion(
-                    v => v.AsString(),        
-                    v => new OperationTypeName(v)
-                )
-                .IsRequired();
-            
+                    v => v.AsString(),
+                    v => new OperationTypeName(v))
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+
             builder.Property(t => t.operationTypeName)
                 .HasConversion(
-                    v => v.AsString(),        
-                    v => new OperationTypeName(v)
-                )
+                    v => v.AsString(),
+                    v => new OperationTypeName(v))
                 .IsRequired();
             
             builder.Property(t => t.estimatedDuration)
@@ -37,10 +36,14 @@ public class OperationTypeEntityTypeConfiguration : IEntityTypeConfiguration<Ope
             builder.Property(t => t.isActive)
                 .IsRequired();
 
-            builder.Property(t => t.specialization)
-                .IsRequired();          
+              builder.Property(t => t.specializations)
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                    v => JsonSerializer.Deserialize<Dictionary<string, int>>(v, new JsonSerializerOptions()) ?? new Dictionary<string, int>()
+                )
+                .IsRequired();
                     
-                    
+                  
             
    }
 

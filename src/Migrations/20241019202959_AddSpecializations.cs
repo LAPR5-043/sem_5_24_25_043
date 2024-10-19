@@ -7,7 +7,7 @@
 namespace sem_5_24_25_043.Migrations
 {
     /// <inheritdoc />
-    public partial class Migration1 : Migration
+    public partial class AddSpecializations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,15 +31,15 @@ namespace sem_5_24_25_043.Migrations
                 name: "OperationTypes",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    operationTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    operationTypeName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     estimatedDuration = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
-                    specialization = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    specializations = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationTypes", x => x.Id);
+                    table.PrimaryKey("PK_OperationTypes", x => x.operationTypeName);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,11 +87,11 @@ namespace sem_5_24_25_043.Migrations
 
             migrationBuilder.InsertData(
                 table: "OperationTypes",
-                columns: new[] { "Id", "estimatedDuration", "isActive", "operationTypeName", "specialization" },
+                columns: new[] { "operationTypeName", "Id", "estimatedDuration", "isActive", "specializations" },
                 values: new object[,]
                 {
-                    { "Heart Surgery", "3:15", true, "Heart Surgery", "[\"Cardiology\"]" },
-                    { "Knee Surgery", "2:0", true, "Knee Surgery", "[\"Orthopedics\"]" }
+                    { "Heart Surgery", "Heart Surgery", "3:15", true, "{\"Cardiology\":1}" },
+                    { "Knee Surgery", "Knee Surgery", "2:0", true, "{\"Orthopedics\":2}" }
                 });
 
             migrationBuilder.InsertData(

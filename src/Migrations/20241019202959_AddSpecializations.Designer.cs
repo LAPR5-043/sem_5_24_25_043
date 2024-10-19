@@ -12,8 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241019175614_Migration1")]
-    partial class Migration1
+    [Migration("20241019202959_AddSpecializations")]
+    partial class AddSpecializations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,8 +150,12 @@ namespace sem_5_24_25_043.Migrations
 
             modelBuilder.Entity("OperationType", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("operationTypeName")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("estimatedDuration")
                         .IsRequired()
@@ -160,34 +164,30 @@ namespace sem_5_24_25_043.Migrations
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("operationTypeName")
+                    b.Property<string>("specializations")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("specialization")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("operationTypeName");
 
                     b.ToTable("OperationTypes", (string)null);
 
                     b.HasData(
                         new
                         {
+                            operationTypeName = "Heart Surgery",
                             Id = "Heart Surgery",
                             estimatedDuration = "3:15",
                             isActive = true,
-                            operationTypeName = "Heart Surgery",
-                            specialization = "[\"Cardiology\"]"
+                            specializations = "{\"Cardiology\":1}"
                         },
                         new
                         {
+                            operationTypeName = "Knee Surgery",
                             Id = "Knee Surgery",
                             estimatedDuration = "2:0",
                             isActive = true,
-                            operationTypeName = "Knee Surgery",
-                            specialization = "[\"Orthopedics\"]"
+                            specializations = "{\"Orthopedics\":2}"
                         });
                 });
 

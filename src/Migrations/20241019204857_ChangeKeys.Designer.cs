@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
@@ -11,9 +12,11 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20241019204857_ChangeKeys")]
+    partial class ChangeKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,13 +27,9 @@ namespace sem_5_24_25_043.Migrations
 
             modelBuilder.Entity("Domain.PatientAggregate.Patient", b =>
                 {
-                    b.Property<string>("medicalRecordNumber")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Id")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("allergiesAndConditions")
                         .IsRequired()
@@ -68,11 +67,15 @@ namespace sem_5_24_25_043.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("medicalRecordNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("phoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("medicalRecordNumber");
+                    b.HasKey("Id");
 
                     b.HasIndex("email")
                         .IsUnique();
@@ -88,7 +91,6 @@ namespace sem_5_24_25_043.Migrations
                     b.HasData(
                         new
                         {
-                            medicalRecordNumber = "1",
                             Id = "1",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
@@ -99,11 +101,11 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John Doe",
                             gender = "Male",
                             lastName = "Doe",
+                            medicalRecordNumber = "1",
                             phoneNumber = "919919919"
                         },
                         new
                         {
-                            medicalRecordNumber = "2",
                             Id = "2",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
@@ -114,6 +116,7 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane Does",
                             gender = "Male",
                             lastName = "Does",
+                            medicalRecordNumber = "2",
                             phoneNumber = "919991919"
                         });
                 });
@@ -147,12 +150,8 @@ namespace sem_5_24_25_043.Migrations
 
             modelBuilder.Entity("OperationType", b =>
                 {
-                    b.Property<string>("operationTypeName")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("estimatedDuration")
                         .IsRequired()
@@ -161,29 +160,33 @@ namespace sem_5_24_25_043.Migrations
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("operationTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("specializations")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("operationTypeName");
+                    b.HasKey("Id");
 
                     b.ToTable("OperationTypes", (string)null);
 
                     b.HasData(
                         new
                         {
-                            operationTypeName = "Heart Surgery",
                             Id = "Heart Surgery",
                             estimatedDuration = "3:15",
                             isActive = true,
+                            operationTypeName = "Heart Surgery",
                             specializations = "{\"Cardiology\":1}"
                         },
                         new
                         {
-                            operationTypeName = "Knee Surgery",
                             Id = "Knee Surgery",
                             estimatedDuration = "2:0",
                             isActive = true,
+                            operationTypeName = "Knee Surgery",
                             specializations = "{\"Orthopedics\":2}"
                         });
                 });

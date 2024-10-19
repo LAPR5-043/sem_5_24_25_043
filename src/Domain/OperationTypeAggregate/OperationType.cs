@@ -5,25 +5,26 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
     public OperationTypeName operationTypeName { get; set; }
     public EstimatedDuration estimatedDuration { get; set; }
     public bool isActive { get; set; }
-    public List<string> specialization {get; set;}
+    public Dictionary<string, int> specializations { get; set; }
 
-    public OperationType(string operationTypeName, int hours, int minutes, bool isActive, List<string> specialization)
+    /*public OperationType(string operationTypeName, int hours, int minutes, bool isActive, Dictionary<string, int> specialization)
     {
         this.operationTypeName = new OperationTypeName(operationTypeName);
         this.estimatedDuration = new EstimatedDuration(hours, minutes);
         this.isActive = isActive;
+        this.specializations = specialization;
     }
 
-    public OperationType(OperationTypeName operationTypeName, EstimatedDuration estimatedDuration, bool isActive, List<string> specialization)
+    public OperationType(OperationTypeName operationTypeName, EstimatedDuration estimatedDuration, bool isActive, Dictionary<string, int> specialization)
     {
         this.operationTypeName = operationTypeName;
         this.estimatedDuration = estimatedDuration;
         this.isActive = isActive;
-        this.specialization = specialization;
+        this.specializations = specialization;
     }
     public OperationType()
     {
-    }
+    }*/
 
     public void changeOperationTypeName(string operationTypeName)
     {
@@ -51,7 +52,6 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
         return operationTypeName.Equals(operationType.operationTypeName) && estimatedDuration.Equals(operationType.estimatedDuration);
     }
 
-    
     public override int GetHashCode()
     {
         return operationTypeName.GetHashCode();
@@ -59,7 +59,7 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
 
     public override string ToString()
     {
-        return operationTypeName.AsString();
+        return operationTypeName.operationTypeName;
     }
 
     public void changeStatus()

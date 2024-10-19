@@ -27,8 +27,8 @@ namespace src.Controllers
             return NotFound(new { message = "Patient not found." });
         }
 
-        // POST: api/Patient
-        [HttpPost]
+        // POST: api/Patient/Create
+        [HttpPost("Create")]
         public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
         {
             if (patientDto == null)

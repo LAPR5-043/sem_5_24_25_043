@@ -52,20 +52,24 @@ public class AppContext : DbContext
                          allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() }            
         );
 
-        List<string> specializations1 = new List<string>();
-        specializations1.Add("Cardiology");
-
-        List<string> specializations2 = new List<string>();
-        specializations2.Add("Orthopedics");
-        
-
         modelBuilder.Entity<OperationType>().HasData(
-            new OperationType { Id = new OperationTypeName("Heart Surgery"), operationTypeName = new OperationTypeName("Heart Surgery"), 
-            estimatedDuration = new EstimatedDuration(3,15),isActive = true, specialization = specializations1},
-            new OperationType { Id = new OperationTypeName("Knee Surgery"), operationTypeName = new OperationTypeName("Knee Surgery"), 
-            estimatedDuration = new EstimatedDuration(2,0),isActive = true, specialization = specializations2}
-            
-        );
+                new OperationType
+                {
+                    Id = new OperationTypeName("Heart Surgery"),
+                    operationTypeName = new OperationTypeName("Heart Surgery"),
+                    estimatedDuration = new EstimatedDuration(3, 15),
+                    isActive = true,
+                    specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
+                },
+                new OperationType
+                {
+                    Id = new OperationTypeName("Knee Surgery"),
+                    operationTypeName = new OperationTypeName("Knee Surgery"),
+                    estimatedDuration = new EstimatedDuration(2, 0),
+                    isActive = true,
+                    specializations = new Dictionary<string, int> { { "Orthopedics", 2 } }
+                }
+            );
     }
 
       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

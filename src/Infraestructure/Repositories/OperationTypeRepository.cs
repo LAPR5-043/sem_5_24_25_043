@@ -14,6 +14,11 @@ public class OperationTypeRepository : BaseRepository<OperationType, OperationTy
         this.context = context;
     }
 
+    public bool OperationTypeExists(string name)
+    {
+        return context.OperationTypes.Any(e => e.operationTypeName.Equals(new OperationTypeName(name)));
+    }
+
     public async Task UpdateAsync(OperationType operationType)
     {
         context.Entry(operationType).State = EntityState.Modified;
