@@ -68,7 +68,7 @@ namespace Infrastructure.PatientRepository
 
             builder.Property(p => p.dateOfBirth)
                 .HasConversion(
-                    v => v.ToString(),
+                    v => v.dateOfBirth.Day + "/" + v.dateOfBirth.Month + "/" + v.dateOfBirth.Year,
                     v => ConvertToDateOfBirth(v)
                 )
                 .IsRequired();
@@ -101,8 +101,8 @@ namespace Infrastructure.PatientRepository
 
         private static DateOfBirth ConvertToDateOfBirth(string v)
         {
-            var parts = v.Split('-');
-            return new DateOfBirth(parts[2], parts[1], parts[0]);
+            var parts = v.Split('/');
+            return new DateOfBirth(parts[0], parts[1], parts[2].Split(' ')[0]);
         }
 
         private static PatientFullName ConvertToPatientFullName(string v)

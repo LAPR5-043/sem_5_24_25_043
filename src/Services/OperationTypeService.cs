@@ -21,32 +21,18 @@ public class OperationTypeService : IOperationTypeService
         this.unitOfWork = unitOfWork;
         this.operationTypeRepository = operationTypeRepository;
     }
-/*
 
-    private OperationTypeRepository operationTypeRepository = Repositories.GetInstance().getOperationTypeRepository();
+    public async Task<bool> deactivateOperationTypeAsync(string id){
+        var operationType = await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
+        if (operationType == null)
+        {
+            return false;
+        }
+        operationType.changeStatus();
 
-    public ManageOperationTypeService()
-    {
-        
-    }
-    
-    public async Task<bool> deactivateOperationTypeAsync(OperationType operationType, bool isActive){
-        operationType.changeOperationStatus(isActive);
-        try
-        {
-            await operationTypeRepository.UpdateAsync(operationType);
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!operationTypeRepository.OperationTypeExists(operationType.operationTypeId()))
-            {
-                return false;
-            }
-            else
-            {
-                throw;
-            }
-        }
+        await operationTypeRepository.UpdateAsync(operationType);
+        await unitOfWork.CommitAsync();
+     
 
         return true;
     }
@@ -57,62 +43,12 @@ public class OperationTypeService : IOperationTypeService
         return new OkObjectResult(result);
     }
 
-    public async Task<ActionResult<OperationType>> getOperationTypeAsync(long id)
+    public async Task<ActionResult<OperationType>> getOperationTypeAsync(string id)
     {
        
-         return  await operationTypeRepository.GetByIdAsync(id);
-    }
-
-    public void deleteOperationType(ActionResult<OperationType> op)
-    {
-        if (op.Value != null)
-        {
-            operationTypeRepository.Remove(op.Value);
-
-        }
-    }
-
-    public async Task<bool> updateOperationTypeAsync(OperationType? value, OperationTypeDto operationTypeDto)
-    {
-        value.changeOperationType(operationTypeDto.OperationTypeName);
-        value.changeOperationDuration(operationTypeDto.Hours, operationTypeDto.Minutes);
-        value.changeOperationStatus(operationTypeDto.IsActive);
-       
-
-
-        try
-        {
-            await operationTypeRepository.UpdateAsync(value);
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!operationTypeRepository.OperationTypeExists(value.operationTypeId()))
-            {
-                return false;
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return true;
+         return  await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
     }
 
 
-    public async Task<OperationType> AddOperationTypeAsync(OperationTypeDto operationTypeDto)
-    {
-        OperationType op = new OperationType(
-                operationTypeDto.OperationTypeID,
-                operationTypeDto.IsActive,
-                operationTypeDto.OperationTypeName,
-                operationTypeDto.Hours,
-                operationTypeDto.Minutes
-            );
-           
-        operationTypeRepository.AddAsync(op);   
 
-
-        return op;
-    }*/
 }

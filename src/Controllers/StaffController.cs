@@ -70,7 +70,6 @@ namespace src.Controllers
             {
                 return StatusCode(500, "A problem happened while handling your request.");
             }
-
             return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
         }
 
@@ -83,7 +82,7 @@ namespace src.Controllers
             {
                 return NotFound();
             }
-            return NoContent();
+            return Ok(new { message = "Patient deativated with success." });
         }
         
 

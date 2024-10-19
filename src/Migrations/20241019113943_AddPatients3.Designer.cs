@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
@@ -11,9 +12,11 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20241019113943_AddPatients3")]
+    partial class AddPatients3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,49 +145,6 @@ namespace sem_5_24_25_043.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Logs", (string)null);
-                });
-
-            modelBuilder.Entity("OperationType", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("estimatedDuration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("operationTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("specialization")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OperationTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "Heart Surgery",
-                            estimatedDuration = "3:15",
-                            isActive = true,
-                            operationTypeName = "Heart Surgery",
-                            specialization = "[\"Cardiology\"]"
-                        },
-                        new
-                        {
-                            Id = "Knee Surgery",
-                            estimatedDuration = "2:0",
-                            isActive = true,
-                            operationTypeName = "Knee Surgery",
-                            specialization = "[\"Cardiology\"]"
-                        });
                 });
 
             modelBuilder.Entity("Staff", b =>
