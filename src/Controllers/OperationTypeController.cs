@@ -23,6 +23,21 @@ namespace src.Controllers
             this.service = service;
         }
 
+        // GET: api/OperationType
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getOperationTypes()
+        {
+            var operationTypes = await service.getAllOperationTypesAsync();
+            return Ok(operationTypes);
+        }
+
+        // GET: api/OperationType/Filters?name=&specialization=&status=
+        [HttpGet("Filtered")]
+        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
+        {
+            var operationTypes = await service.getFilteredOperationTypesAsync(name, specialization, status);
+            return Ok(operationTypes);
+        }
         // PUT: api/OperationType/ChangeStatus/Knee Surgery
         [HttpPut("/ChangeStatus/{id}")]
         public async Task<IActionResult> deactivateOperationType(string id)
@@ -44,7 +59,7 @@ namespace src.Controllers
                 return BadRequest(new { message = "Invalid operation type data." });
             }
 
-            var result = await service.CreateOperationTypeAsync(operationType);
+            var result = await service.createOperationTypeAsync(operationType);
             if (result)
             {
                 return Ok(new { message = "Operation type created successfully." });

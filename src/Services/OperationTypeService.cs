@@ -14,15 +14,17 @@ public class OperationTypeService : IOperationTypeService
 
     private readonly IUnitOfWork unitOfWork;
     private readonly IOperationTypeRepository operationTypeRepository;
+    private readonly ILogService logService;
 
 
-    public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository operationTypeRepository)
+    public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository operationTypeRepository, ILogService logService)
     {
         this.unitOfWork = unitOfWork;
         this.operationTypeRepository = operationTypeRepository;
+        this.logService = logService;
     }
 
-    public async Task<bool> CreateOperationTypeAsync(OperationTypeDto operationType)
+    public async Task<bool> createOperationTypeAsync(OperationTypeDto operationType)
     {
         if (operationType == null)
         {
@@ -43,6 +45,8 @@ public class OperationTypeService : IOperationTypeService
     
         await operationTypeRepository.AddAsync(newOperationType);
         await unitOfWork.CommitAsync();
+        // TODO: Falta
+        await logService.CreateLogAsync("Operation type created. ID: " + newOperationType.Id.Value, "colocar@emailtoken.aqui");
 
         return newOperationType != null;
     }
@@ -61,12 +65,42 @@ public class OperationTypeService : IOperationTypeService
 
         return true;
     }
-    
-    public async Task<ActionResult<IEnumerable<OperationType>>> getAllOperationTypesAsync()
+
+    // GET: api/OperationType/Filters?name=&specialization=&status=&
+    public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getFilteredOperationTypesAsync(string name, string specialization, string status)
+    {
+        var operationTypesList = await operationTypeRepository.GetAllAsync();
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            operationTypesList = operationTypesList.Where(o => o.operationTypeName.Value.Contains(name)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(specialization))
+        {
+            operationTypesList = operationTypesList.Where(o => o.specializations.ContainsKey(specialization)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(status))
+        {
+            operationTypesList = operationTypesList.Where(o => o.isActive == bool.Parse(status)).ToList();
+        }
+
+        var operationTypeDtos = operationTypesList.Select(o => new OperationTypeDto(o)).ToList();
+        return operationTypeDtos;
+    }
+    public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getAllOperationTypesAsync()
     {
         var result = await operationTypeRepository.GetAllAsync();
-        return new OkObjectResult(result);
+        IEnumerable<OperationTypeDto> operationTypeDtos = new List<OperationTypeDto>();
+        
+        if (result != null)
+        {
+            operationTypeDtos = result.Select(o => new OperationTypeDto(o)).ToList();
+        }
+        return operationTypeDtos.ToList();
     }
+
 
     public async Task<ActionResult<OperationType>> getOperationTypeAsync(string id)
     {
@@ -74,6 +108,5 @@ public class OperationTypeService : IOperationTypeService
          return  await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
     }
 
-
-
+    
 }

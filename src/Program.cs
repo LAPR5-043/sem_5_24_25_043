@@ -82,7 +82,7 @@ namespace sem_5_24_25_043
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend API");
                     c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
                 });
             //}
@@ -103,7 +103,6 @@ namespace sem_5_24_25_043
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             //services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
             services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
-            //services.AddScoped<IPatientRepository, PatientRepository>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
@@ -120,7 +119,6 @@ namespace sem_5_24_25_043
             services.AddScoped<IOperationTypeService, OperationTypeService>();
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             //services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
-            //services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             
         }
