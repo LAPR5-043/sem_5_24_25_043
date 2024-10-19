@@ -42,4 +42,22 @@ public class TimeSlot : IValueObject
         return startDate.ToString() + "," + endDate.ToString() + "," + (occupied ? "true" : "false");
     }
 
+    public static List<TimeSlot> timeSlotsFromString(List<string> slots)
+{
+    List<TimeSlot> timeSlots = new List<TimeSlot>();
+    foreach (var slot in slots)
+    {
+        var parts = slot.Split(',');
+        if (parts.Length == 3)
+        {
+            DateTime startDate = DateTime.Parse(parts[0]);
+            DateTime endDate = DateTime.Parse(parts[1]);
+            bool occupied = bool.Parse(parts[2]);
+
+            timeSlots.Add(new TimeSlot(startDate, endDate, occupied));
+        }
+    }
+    return timeSlots;
+}
+
 }

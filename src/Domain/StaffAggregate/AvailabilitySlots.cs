@@ -8,6 +8,7 @@ public class AvailabilitySlots : IValueObject   {
     }
 
     public AvailabilitySlots() {
+        this.slots = new List<TimeSlot>();
     }
 
     public override bool Equals(object obj) {

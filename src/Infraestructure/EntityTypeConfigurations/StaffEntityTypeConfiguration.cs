@@ -29,6 +29,7 @@ namespace Sempi5.Infrastructure.StaffRepository
                     v => new StaffID(v)
                 )
                 .IsRequired();
+            
                     
                     
             builder.Property(t => t.licenseNumber)
