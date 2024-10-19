@@ -65,7 +65,22 @@ namespace Domain.PatientAggregate
         public override string ToString()
         {
             return dateOfBirth.ToString();
-        }       
+        }
+
+        public string Day()
+        {
+            return dateOfBirth.Day.ToString();
+        }
+
+        public string Month()
+        {
+            return dateOfBirth.Month.ToString();
+        }
+
+        public string Year()
+        {
+            return dateOfBirth.Year.ToString();
+        }
     }
 }
     

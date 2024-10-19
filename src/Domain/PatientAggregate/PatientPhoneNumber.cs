@@ -11,15 +11,15 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The phone number
         /// </summary>
-        public int phoneNumber { get; }
+        public string phoneNumber { get; }
         /// <summary>
         /// Constructor for the PatientPhoneNumber class
         /// </summary>
         /// <param name="phoneNumber"></param>
         /// <exception cref="ArgumentException"></exception>
-        public PatientPhoneNumber(int phoneNumber)
+        public PatientPhoneNumber(string phoneNumber)
         {
-            if (phoneNumber.ToString().Length != 9)
+            if (phoneNumber.Length != 9)
             {
                 throw new ArgumentException("Phone number must be 9 digits long");
             }
@@ -55,7 +55,7 @@ namespace Domain.PatientAggregate
         /// <returns></returns>
         public override string ToString()
         {
-            return phoneNumber.ToString();
+            return phoneNumber;
         }
     }
 }

@@ -42,13 +42,13 @@ public class AppContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
-            new Patient { Id=new MedicalRecordNumber(1), medicalRecordNumber = new MedicalRecordNumber(1), firstName = new PatientFirstName("John"), lastName = new PatientLastName("Doe"),
-                         fullName = new PatientFullName("John","Doe"),email = new PatientEmail("john@email.com"), phoneNumber = new PatientPhoneNumber(919919919),
-                          emergencyContact = new EmergencyContact("Jane", 919919919), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
+            new Patient { Id=new MedicalRecordNumber("1"), medicalRecordNumber = new MedicalRecordNumber("1"), firstName = new PatientFirstName("John"), lastName = new PatientLastName("Doe"),
+                         fullName = new PatientFullName("John","Doe"),email = new PatientEmail("john@email.com"), phoneNumber = new PatientPhoneNumber("919919919"),
+                          emergencyContact = new EmergencyContact("Jane", "919919919"), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
                          allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() },
-            new Patient {Id=new MedicalRecordNumber(2), medicalRecordNumber = new MedicalRecordNumber(2), firstName = new PatientFirstName("Jane"), lastName = new PatientLastName("Does"),
-                         fullName = new PatientFullName("Jane","Does"),email = new PatientEmail("Jane@email.com"), phoneNumber = new PatientPhoneNumber(919991919),
-                          emergencyContact = new EmergencyContact("Jane", 919999119), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
+            new Patient {Id=new MedicalRecordNumber("2"), medicalRecordNumber = new MedicalRecordNumber("2"), firstName = new PatientFirstName("Jane"), lastName = new PatientLastName("Does"),
+                         fullName = new PatientFullName("Jane","Does"),email = new PatientEmail("Jane@email.com"), phoneNumber = new PatientPhoneNumber("919991919"),
+                          emergencyContact = new EmergencyContact("Jane", "919999119"), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
                          allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() }            
         );
 

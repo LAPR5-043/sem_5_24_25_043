@@ -1,11 +1,5 @@
+using Domain.PatientAggregate;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using src.Models;
-using AppContext = src.Models.AppContext;
-using src.Controllers.Services;
 using src.Services.IServices;
 
 namespace src.Controllers
@@ -22,16 +16,46 @@ namespace src.Controllers
             this.service = service;
         }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePatient(int id)
-    {
-        var result = await service.DeletePatientAsync(id);
-        if (result)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePatient(string id)
         {
-            return Ok(new { message = "Patient deleted successfully." });
+            var result = await service.DeletePatientAsync(id);
+            if (result)
+            {
+                return Ok(new { message = "Patient deleted successfully." });
+            }
+            return NotFound(new { message = "Patient not found." });
         }
-        return NotFound(new { message = "Patient not found." });
-    }
+
+        // POST: api/Patient
+        [HttpPost]
+        public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
+        {
+            if (patientDto == null)
+            {
+            return BadRequest(new { message = "Invalid patient data." });
+            }
+
+            var createdPatient = await service.CreatePatientAsync(patientDto);
+            if (createdPatient != null)
+            {
+            return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
+            }
+
+            return StatusCode(500, new { message = "An error occurred while creating the patient." });
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPatientById(int id)
+        {
+            var patient = await service.GetPatientByIdAsync(id);
+            if (patient != null)
+            {
+            return Ok(patient);
+            }
+
+            return NotFound(new { message = "Patient not found." });
+        }
 
 
     }

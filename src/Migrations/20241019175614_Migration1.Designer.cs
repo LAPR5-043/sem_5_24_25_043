@@ -12,8 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241019113943_AddPatients3")]
-    partial class AddPatients3
+    [Migration("20241019175614_Migration1")]
+    partial class Migration1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,13 @@ namespace sem_5_24_25_043.Migrations
 
             modelBuilder.Entity("Domain.PatientAggregate.Patient", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("medicalRecordNumber")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("allergiesAndConditions")
                         .IsRequired()
@@ -67,14 +71,11 @@ namespace sem_5_24_25_043.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("medicalRecordNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("phoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("medicalRecordNumber");
 
                     b.HasIndex("email")
                         .IsUnique();
@@ -90,32 +91,32 @@ namespace sem_5_24_25_043.Migrations
                     b.HasData(
                         new
                         {
+                            medicalRecordNumber = "1",
                             Id = "1",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
                             dateOfBirth = "1/1/1999",
                             email = "john@email.com",
-                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919919919}",
+                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":\"919919919\"}",
                             firstName = "John",
                             fullName = "John Doe",
                             gender = "Male",
                             lastName = "Doe",
-                            medicalRecordNumber = 1,
                             phoneNumber = "919919919"
                         },
                         new
                         {
+                            medicalRecordNumber = "2",
                             Id = "2",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
                             dateOfBirth = "1/1/1999",
                             email = "Jane@email.com",
-                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919999119}",
+                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":\"919999119\"}",
                             firstName = "Jane",
                             fullName = "Jane Does",
                             gender = "Male",
                             lastName = "Does",
-                            medicalRecordNumber = 2,
                             phoneNumber = "919991919"
                         });
                 });
@@ -145,6 +146,49 @@ namespace sem_5_24_25_043.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Logs", (string)null);
+                });
+
+            modelBuilder.Entity("OperationType", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("estimatedDuration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("operationTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("specialization")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OperationTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "Heart Surgery",
+                            estimatedDuration = "3:15",
+                            isActive = true,
+                            operationTypeName = "Heart Surgery",
+                            specialization = "[\"Cardiology\"]"
+                        },
+                        new
+                        {
+                            Id = "Knee Surgery",
+                            estimatedDuration = "2:0",
+                            isActive = true,
+                            operationTypeName = "Knee Surgery",
+                            specialization = "[\"Orthopedics\"]"
+                        });
                 });
 
             modelBuilder.Entity("Staff", b =>

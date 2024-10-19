@@ -15,14 +15,14 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The phone number of the emergency contact
         /// </summary>
-        public int phoneNumber { get; }
+        public string phoneNumber { get; }
         /// <summary>
         /// Default constructor
         /// </summary>
         public EmergencyContact()
         {
             name = string.Empty;
-            phoneNumber = 0;
+            phoneNumber = string.Empty;
         }
         /// <summary>
         /// Constructor with parameters
@@ -30,14 +30,14 @@ namespace Domain.PatientAggregate
         /// <param name="name"></param>
         /// <param name="phoneNumber"></param>
         /// <exception cref="ArgumentException"></exception>
-        public EmergencyContact(string name, int phoneNumber)
+        public EmergencyContact(string name, string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Name cannot be empty");
             }
 
-            if (phoneNumber.ToString().Length != 9)
+            if (phoneNumber.Length != 9)
             {
                 throw new ArgumentException("Phone number must be 9 digits long");
             }

@@ -64,6 +64,12 @@ namespace src.Domain.PatientAggregate
         {
             return appointments.ToString();
         }
+
+        public List<int> Appointments()
+        {
+            return appointments;
+        }
+
         /// <summary>
         /// Adds an appointment to the list.
         /// </summary>

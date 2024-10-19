@@ -8,7 +8,7 @@ namespace Infrastructure.Converters
     {
         public PatientPhoneNumberConverter() : base(
             v => v.phoneNumber.ToString(),
-            v => new PatientPhoneNumber(int.Parse(v)))
+            v => new PatientPhoneNumber(v))
         {
         }
     }

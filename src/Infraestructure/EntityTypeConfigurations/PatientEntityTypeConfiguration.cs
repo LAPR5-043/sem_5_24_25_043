@@ -12,13 +12,15 @@ namespace Infrastructure.PatientRepository
         public void Configure(EntityTypeBuilder<Patient> builder)
         {
             builder.ToTable("Patients");
+            builder.HasKey(p => p.medicalRecordNumber);
 
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id)
+
+            builder.Property(t => t.Id)
                 .HasConversion(
                     v => v.AsString(),
-                    v => new MedicalRecordNumber(int.Parse(v))
+                    v => new MedicalRecordNumber(v)
                 )
+                .HasValueGenerator<MedicalRecordNumberGenerator>()
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
@@ -50,15 +52,18 @@ namespace Infrastructure.PatientRepository
 
             builder.Property(p => p.email)
                 .HasConversion(
-                    v => v.ToString(),
+                    v => v.email,
                     v => new PatientEmail(v)
                 )
                 .IsRequired();
 
             builder.Property(p => p.phoneNumber)
-                .HasConversion(new PatientPhoneNumberConverter())
+                .HasConversion(
+                    v => v.phoneNumber,
+                    v => new PatientPhoneNumber(v)
+                )
                 .IsRequired();
-
+                
             builder.Property(p => p.emergencyContact)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
@@ -81,18 +86,19 @@ namespace Infrastructure.PatientRepository
                 .IsRequired();
 
             builder.Property(p => p.allergiesAndConditions)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<List<AllergiesAndConditions>>(v, (JsonSerializerOptions)null)
-                )
-                .IsRequired();
+            .HasConversion(
+                v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : "[]", // Serialize or assign empty JSON array
+                v => JsonSerializer.Deserialize<List<AllergiesAndConditions>>(v, (JsonSerializerOptions)null) ?? new List<AllergiesAndConditions>() // Ensure a list is returned
+            )
+            .IsRequired();
 
             builder.Property(p => p.appointmentHistory)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<AppointmentHistory>(v, (JsonSerializerOptions)null)
-                )
-                .IsRequired();
+            .HasConversion(
+                v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : "[]", // Serialize or assign empty JSON array
+                v => JsonSerializer.Deserialize<AppointmentHistory>(v, (JsonSerializerOptions)null) ?? new AppointmentHistory() // Ensure a list is returned
+            )
+            .IsRequired();
+
 
             builder.HasIndex(p => p.email).IsUnique();
             builder.HasIndex(p => p.phoneNumber).IsUnique();

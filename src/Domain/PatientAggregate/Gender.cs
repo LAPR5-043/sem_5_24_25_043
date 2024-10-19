@@ -7,7 +7,7 @@ namespace Domain.PatientAggregate
     /// Represents the Gender of a patient
     /// </summary>
     public enum Gender {
-        Male ,
+        Male,
         Female
     }
 

@@ -11,7 +11,7 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The medical record number
         /// </summary>
-        public int medicalRecordNumber { get; }
+        public string medicalRecordNumber { get; }
 
         public MedicalRecordNumber() : base(null)
         {
@@ -22,7 +22,7 @@ namespace Domain.PatientAggregate
         /// </summary>
         /// <param name="medicalRecordNumber"></param>
         /// <exception cref="ArgumentException"></exception>
-        public MedicalRecordNumber(int medicalRecordNumber) : base(medicalRecordNumber)
+        public MedicalRecordNumber(string medicalRecordNumber) : base(medicalRecordNumber)
         {
 
             this.medicalRecordNumber = medicalRecordNumber;
@@ -59,17 +59,17 @@ namespace Domain.PatientAggregate
         /// <returns></returns>
         public override string ToString()
         {
-            return medicalRecordNumber.ToString();
+            return medicalRecordNumber;
         }
 
         protected override object createFromString(string text)
         {
-            throw new NotImplementedException();
+            return new String(text);
         }
 
         public override string AsString()
         {
-            return medicalRecordNumber.ToString();
+            return medicalRecordNumber;
         }
     }
 }

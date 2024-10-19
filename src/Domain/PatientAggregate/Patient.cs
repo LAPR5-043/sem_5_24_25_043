@@ -58,12 +58,12 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Gets the list of allergies and conditions of the patient.
         /// </summary>
-        public List<AllergiesAndConditions> allergiesAndConditions { get; set; }
+        public List<AllergiesAndConditions> allergiesAndConditions { get; set; } = new List<AllergiesAndConditions>();
 
         /// <summary>
         /// Gets the appointment history of the patient.
         /// </summary>
-        public AppointmentHistory appointmentHistory { get; set; }
+        public AppointmentHistory appointmentHistory { get; set; } = new AppointmentHistory();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Patient"/> class.
@@ -148,7 +148,7 @@ namespace Domain.PatientAggregate
         /// </summary>
         /// <param name="emergencyContactName">The name of the emergency contact.</param>
         /// <param name="emergencyContactPhoneNumber">The phone number of the emergency contact.</param>
-        public void UpdateEmergencyContact(string emergencyContactName, int emergencyContactPhoneNumber)
+        public void UpdateEmergencyContact(string emergencyContactName, string emergencyContactPhoneNumber)
         {
 
             emergencyContact = new EmergencyContact(emergencyContactName, emergencyContactPhoneNumber);

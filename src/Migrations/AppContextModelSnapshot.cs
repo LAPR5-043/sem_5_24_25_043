@@ -24,9 +24,13 @@ namespace sem_5_24_25_043.Migrations
 
             modelBuilder.Entity("Domain.PatientAggregate.Patient", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("medicalRecordNumber")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("allergiesAndConditions")
                         .IsRequired()
@@ -64,14 +68,11 @@ namespace sem_5_24_25_043.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("medicalRecordNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("phoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("medicalRecordNumber");
 
                     b.HasIndex("email")
                         .IsUnique();
@@ -87,32 +88,32 @@ namespace sem_5_24_25_043.Migrations
                     b.HasData(
                         new
                         {
+                            medicalRecordNumber = "1",
                             Id = "1",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
                             dateOfBirth = "1/1/1999",
                             email = "john@email.com",
-                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919919919}",
+                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":\"919919919\"}",
                             firstName = "John",
                             fullName = "John Doe",
                             gender = "Male",
                             lastName = "Doe",
-                            medicalRecordNumber = 1,
                             phoneNumber = "919919919"
                         },
                         new
                         {
+                            medicalRecordNumber = "2",
                             Id = "2",
                             allergiesAndConditions = "[]",
                             appointmentHistory = "{}",
                             dateOfBirth = "1/1/1999",
                             email = "Jane@email.com",
-                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":919999119}",
+                            emergencyContact = "{\"name\":\"Jane\",\"phoneNumber\":\"919999119\"}",
                             firstName = "Jane",
                             fullName = "Jane Does",
                             gender = "Male",
                             lastName = "Does",
-                            medicalRecordNumber = 2,
                             phoneNumber = "919991919"
                         });
                 });
@@ -183,7 +184,7 @@ namespace sem_5_24_25_043.Migrations
                             estimatedDuration = "2:0",
                             isActive = true,
                             operationTypeName = "Knee Surgery",
-                            specialization = "[\"Cardiology\"]"
+                            specialization = "[\"Orthopedics\"]"
                         });
                 });
 
