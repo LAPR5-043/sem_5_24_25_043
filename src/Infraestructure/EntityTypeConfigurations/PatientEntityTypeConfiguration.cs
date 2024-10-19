@@ -17,16 +17,13 @@ namespace Infrastructure.PatientRepository
             builder.Property(p => p.Id)
                 .HasConversion(
                     v => v.AsString(),
-                    v => new MedicalRecordNumber(v)
+                    v => new MedicalRecordNumber(int.Parse(v))
                 )
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
             builder.Property(p => p.medicalRecordNumber)
-                .HasConversion(
-                    v => v.ToString(),
-                    v => new MedicalRecordNumber(v)
-                )
+                .HasConversion(new MedicalRecordNumberConverter())
                 .IsRequired();
 
 

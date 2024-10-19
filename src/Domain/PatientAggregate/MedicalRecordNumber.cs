@@ -11,7 +11,7 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The medical record number
         /// </summary>
-        public string medicalRecordNumber { get; }
+        public int medicalRecordNumber { get; }
 
         public MedicalRecordNumber() : base(null)
         {
@@ -22,7 +22,7 @@ namespace Domain.PatientAggregate
         /// </summary>
         /// <param name="medicalRecordNumber"></param>
         /// <exception cref="ArgumentException"></exception>
-        public MedicalRecordNumber(string medicalRecordNumber) : base(medicalRecordNumber)
+        public MedicalRecordNumber(int medicalRecordNumber) : base(medicalRecordNumber)
         {
 
             this.medicalRecordNumber = medicalRecordNumber;
