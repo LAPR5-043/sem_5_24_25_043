@@ -74,6 +74,17 @@ namespace src.Controllers
             return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
         }
 
+        // PUT: api/Staff/isActive/5
+        [HttpPut("/isActive/{id}")]
+        public async Task<IActionResult> UpdateIsActive(string id)
+        {
+            var result = await service.UpdateIsActiveAsync(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
         
 
 

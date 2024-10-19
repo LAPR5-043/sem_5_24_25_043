@@ -17,6 +17,7 @@ using Domain.OperationRequestAggregate;
 using src.Services.IServices;
 using src.Domain.Shared;
 using src.Infrastructure;
+using Domain.LogAggregate;
 
 
 namespace sem_5_24_25_043
@@ -104,6 +105,7 @@ namespace sem_5_24_25_043
             //services.AddScoped<IPatientRepository, PatientRepository>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
             //services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
             
 
@@ -111,6 +113,7 @@ namespace sem_5_24_25_043
             services.AddScoped<AuthService>();
             services.AddScoped<IStaffService, StaffService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ILogService, LogService>();
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             //services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
             //services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();

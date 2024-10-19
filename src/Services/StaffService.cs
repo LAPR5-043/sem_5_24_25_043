@@ -12,12 +12,19 @@ public class StaffService : IStaffService
 {
     private  readonly IUnitOfWork unitOfWork;
     private readonly IStaffRepository staffRepository;
+    private readonly ILogService logService;
 
-    public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository)
+    private static string staffDeactivateLog1 = "Staff status changed with success";
+    private static string staffDeactivateLog2 = ";StaffId:";
+    private static string staffDeactivateLog3 = ";NewStatus:";
+
+    public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, ILogService logService)
     {
         this.unitOfWork = unitOfWork;
         this.staffRepository = staffRepository;
+        this.logService = logService;
     }
+
 
     public async Task<OkObjectResult> getAllStaffAsync()
     {
@@ -118,6 +125,20 @@ public class StaffService : IStaffService
     {
         var staff = await staffRepository.GetByIdAsync(new StaffID(id));
         return new StaffDto(staff);
+    }
+
+    public async Task<bool> UpdateIsActiveAsync(string id)
+    {
+        var staff = await staffRepository.GetByIdAsync(new StaffID(id));
+        if (staff == null)
+        {
+            return false;
+        }
+        staff.isActive = !staff.isActive;
+        staffRepository.UpdateAsync(staff);
+        await unitOfWork.CommitAsync();
+        await logService.CreateLogAsync(staffDeactivateLog1 + staffDeactivateLog2 + staff.staffID + staffDeactivateLog3 + staff.isActive, "colocar@emailtoken.aqui");  
+        return true;
     }
 
     

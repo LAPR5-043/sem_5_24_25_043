@@ -1,14 +1,14 @@
 using NuGet.Packaging.Signing;
 using src.Domain.Shared;
 
-public class Log 
+public class Log : Entity<LongId>
 {
-    public long logId { get; private set; }
-    public string action { get; private set;}
-    public Timestamp timestamp { get; private set; }
-    public string email { get; private set; }
+    public LongId logId { get;  set; }
+    public string action { get;  set;}
+    public DateTime timestamp { get;  set; }
+    public string email { get;  set; }
 
-    public Log(string action, Timestamp timestamp, string email)
+    public Log(string action, DateTime timestamp, string email)
     {
         this.action = action;
         this.timestamp = timestamp;
@@ -17,6 +17,7 @@ public class Log
 
     public Log()
     {
+        
     }
 
     public override bool Equals(object obj)
@@ -35,7 +36,7 @@ public class Log
 
     public override string ToString()
     {
-        return action + " " + timestamp + " " + email;
+        return action + " " + timestamp.ToShortTimeString() + " " + email;
     }   
 
 }

@@ -13,5 +13,10 @@ public class StaffRepository : BaseRepository<Staff, StaffID>, IStaffRepository
     {
         this.context = context;
     }
+
+    public void UpdateAsync(Staff staff)
+    {
+        context.Entry(staff).State = EntityState.Modified;
+    }
 }
 

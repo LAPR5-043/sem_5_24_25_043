@@ -20,10 +20,11 @@ public class AppContext : DbContext
     }
 
     public DbSet<Staff> Staffs { get; set; }
+    public DbSet<Log> Logs { get; set; }
+    public DbSet<Patient> Patients { get; set; }
     //public DbSet<Appointment> Appointments { get; set; } = null!;
     //public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
     //public DbSet<OperationType> OperationTypes { get; set; } = null!;
-    public DbSet<Patient> Patients { get; set; }
     //public DbSet<Specialization> Specializations { get; set; } = null!;
     //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
 
@@ -34,6 +35,7 @@ public class AppContext : DbContext
     {
         modelBuilder.ApplyConfiguration<Staff>(new StaffEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<Patient>(new PatientEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration<Log>(new LogEntityTypeConfiguration());
         base.OnModelCreating(modelBuilder);
 
     }

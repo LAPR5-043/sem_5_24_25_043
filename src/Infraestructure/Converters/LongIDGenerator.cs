@@ -1,0 +1,29 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
+using AppContext = src.Models.AppContext;
+
+
+public class LongIDGenerator : ValueGenerator<LongId>
+{
+    public override LongId Next(EntityEntry entry)
+    {
+        var context = (AppContext)entry.Context;
+
+
+        var latestNumber = context.Staffs
+            .AsEnumerable()
+            .OrderByDescending(s => s.Id)
+            .Select(s => s.Id)
+            .FirstOrDefault();
+
+        var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.Value.Substring(6)) + 1 : 1;
+        LongId longID = new LongId(sequentialNumber);
+
+        entry.Property("Id").CurrentValue = longID  ;
+        entry.Property("logId").CurrentValue = longID  ;
+
+        return new LongId(sequentialNumber);
+    }
+
+    public override bool GeneratesTemporaryValues => false;
+}
