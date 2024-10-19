@@ -24,7 +24,10 @@ public class StaffIDGenerator : ValueGenerator<StaffID>
 
         var newNumber = $"{staffType}{currentYear}{sequentialNumber:D5}";
 
-        entry.Property("Id").CurrentValue = new StaffID(newNumber);
+        StaffID staffID = new StaffID(newNumber);
+
+        entry.Property("Id").CurrentValue = staffID  ;
+        entry.Property("staffID").CurrentValue = staffID  ;
 
         return new StaffID(newNumber);
     }

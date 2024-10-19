@@ -33,52 +33,57 @@ public class StaffService : IStaffService
     public async Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy )
     {   
         bool ascending = true;
-        var result = await staffRepository.GetAllAsync();
-        IEnumerable<StaffDto> resultDtos =  new List<StaffDto>();
-        foreach (var staff in result)
+        var staffList = await staffRepository.GetAllAsync();
+        var query = staffList.AsQueryable();
+
+        if (!string.IsNullOrEmpty(firstName))
         {
-            resultDtos.Append(new StaffDto(staff));
+            query = query.Where(s => s.firstName.firstName.Contains(firstName));
         }
 
-        if (firstName != null)
+        if (!string.IsNullOrEmpty(lastName))
         {
-            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.FirstName == firstName);
+            query = query.Where(s => s.lastName.lastName.Contains(lastName));
         }
-        if (lastName != null)
+
+        if (!string.IsNullOrEmpty(email))
         {
-            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.LastName == lastName);
+            query = query.Where(s => s.email.email.Contains(email));
         }
-        if (email != null)
+
+        if (!string.IsNullOrEmpty(specialization))
         {
-            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.Email == email);
+            query = query.Where(s => s.specializationID == specialization);
         }
-        if (specialization != null)
-        {
-            resultDtos = (List<StaffDto>)resultDtos.Where(s => s.SpecializationID == specialization);
-        }
+
+        query = query.Where(s => s.isActive == true);
 
         if (!string.IsNullOrEmpty(sortBy))
         {
             switch (sortBy.ToLower())
             {
                 case "firstname":
-                    resultDtos = ascending ? resultDtos.OrderBy(s => s.FirstName) : resultDtos.OrderByDescending(s => s.FirstName);
+                    query = query.OrderBy(s => s.firstName.firstName);
                     break;
                 case "lastname":
-                    resultDtos = ascending ? resultDtos.OrderBy(s => s.LastName) : resultDtos.OrderByDescending(s => s.LastName);
+                    query = query.OrderBy(s => s.lastName.lastName);
                     break;
                 case "email":
-                    resultDtos = ascending ? resultDtos.OrderBy(s => s.Email) : resultDtos.OrderByDescending(s => s.Email);
+                    query = query.OrderBy(s => s.email.email);
                     break;
                 case "specialization":
-                    resultDtos = ascending ? resultDtos.OrderBy(s => s.SpecializationID) : resultDtos.OrderByDescending(s => s.SpecializationID);
+                    query = query.OrderBy(s => s.specializationID);
                     break;
                 default:
+                    query = query.OrderBy(s => s.firstName.firstName);
                     break;
             }
         }
 
-        return new ActionResult<IEnumerable<StaffDto>>(resultDtos);
+        var result = query.ToList();
+        var resultDtos = result.Select(s => new StaffDto(s)).ToList();
+
+        return resultDtos;
     }
 
     public async Task<StaffDto> CreateStaffAsync(StaffDto staffDto)
@@ -93,11 +98,12 @@ public class StaffService : IStaffService
         var staff = new Staff();
         staff.firstName = new StaffFirstName(staffDto.FirstName);
         staff.lastName = new StaffLastName(staffDto.LastName);
+        staff.fullName = new StaffFullName(staff.firstName, staff.lastName);
         staff.email = new StaffEmail(staffDto.Email);
         staff.phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber);
         staff.licenseNumber = new LicenseNumber(staffDto.LicenseNumber);
         staff.isActive = staffDto.IsActive;
-        staff.availabilitySlots = new AvailabilitySlots();
+        staff.availabilitySlots = new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots));
         staff.specializationID = staffDto.SpecializationID;
     
 
@@ -113,5 +119,7 @@ public class StaffService : IStaffService
         var staff = await staffRepository.GetByIdAsync(new StaffID(id));
         return new StaffDto(staff);
     }
+
+    
 
 }

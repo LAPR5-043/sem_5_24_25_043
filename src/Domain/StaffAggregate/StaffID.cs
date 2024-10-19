@@ -1,6 +1,6 @@
 using src.Domain.Shared;
 
-public class StaffID  : EntityId {
+public class StaffID  : EntityId{
 
     public string id { get; }
 
