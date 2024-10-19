@@ -5,7 +5,7 @@ using AppContext = src.Models.AppContext;
 
 
 
-/*public class OperationTypeRepository : BaseRepository<OperationType, OperationTypeName>, IOperationTypeRepository
+public class OperationTypeRepository : BaseRepository<OperationType, OperationTypeName>, IOperationTypeRepository
 {
     private readonly AppContext context;
 
@@ -13,4 +13,9 @@ using AppContext = src.Models.AppContext;
     {
         this.context = context;
     }
-}*/
+
+    public async Task UpdateAsync(OperationType operationType)
+    {
+        context.Entry(operationType).State = EntityState.Modified;
+    }
+}

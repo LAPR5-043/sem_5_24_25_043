@@ -102,7 +102,7 @@ namespace sem_5_24_25_043
             // Repos
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             //services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
-            //services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
+            services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
             //services.AddScoped<IPatientRepository, PatientRepository>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
@@ -117,6 +117,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IOperationTypeService, OperationTypeService>();
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             //services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
             //services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();

@@ -32,7 +32,7 @@ public class EstimatedDuration : IValueObject
 
     public override string ToString()
     {
-        return hours + " hours " + minutes + " minutes";
+        return hours + ":" + minutes ;
     }
 
 }

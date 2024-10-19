@@ -61,4 +61,9 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
     {
         return operationTypeName.AsString();
     }
+
+    public void changeStatus()
+    {
+        this.isActive = !this.isActive;
+    }
 }

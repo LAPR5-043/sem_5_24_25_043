@@ -23,10 +23,10 @@ public class AppContext : DbContext
     public DbSet<Staff> Staffs { get; set; }
     public DbSet<Log> Logs { get; set; }
     public DbSet<Patient> Patients { get; set; }
-    
+    public DbSet<OperationType> OperationTypes { get; set; } = null!;
+
     //public DbSet<Appointment> Appointments { get; set; } = null!;
     //public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
-    //public DbSet<OperationType> OperationTypes { get; set; } = null!;
     //public DbSet<Specialization> Specializations { get; set; } = null!;
     //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
 
@@ -38,6 +38,7 @@ public class AppContext : DbContext
         modelBuilder.ApplyConfiguration<Staff>(new StaffEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<Patient>(new PatientEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<Log>(new LogEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration<OperationType>(new OperationTypeEntityTypeConfiguration());
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
@@ -51,6 +52,20 @@ public class AppContext : DbContext
                          allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() }            
         );
 
+        List<string> specializations1 = new List<string>();
+        specializations1.Add("Cardiology");
+
+        List<string> specializations2 = new List<string>();
+        specializations2.Add("Orthopedics");
+        
+
+        modelBuilder.Entity<OperationType>().HasData(
+            new OperationType { Id = new OperationTypeName("Heart Surgery"), operationTypeName = new OperationTypeName("Heart Surgery"), 
+            estimatedDuration = new EstimatedDuration(3,15),isActive = true, specialization = specializations1},
+            new OperationType { Id = new OperationTypeName("Knee Surgery"), operationTypeName = new OperationTypeName("Knee Surgery"), 
+            estimatedDuration = new EstimatedDuration(2,0),isActive = true, specialization = specializations2}
+            
+        );
     }
 
       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
