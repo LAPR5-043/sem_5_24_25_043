@@ -44,11 +44,8 @@ public class AppContext : DbContext
         modelBuilder.ApplyConfiguration<Patient>(new PatientEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<Log>(new LogEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<OperationType>(new OperationTypeEntityTypeConfiguration());
-<<<<<<< HEAD
         modelBuilder.ApplyConfiguration<OperationRequest>(new OperationRequestEntityTypeConfiguration());
-=======
         modelBuilder.ApplyConfiguration<PendingRequest>(new PendingRequestEntityTypeConfiguration());
->>>>>>> c4c6a789b394c45b947c60e69f2a4bc76022ea71
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
