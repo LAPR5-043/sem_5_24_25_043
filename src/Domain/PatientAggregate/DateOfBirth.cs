@@ -81,6 +81,11 @@ namespace Domain.PatientAggregate
         {
             return dateOfBirth.Year.ToString();
         }
+        public DateOfBirth FromString(string dateOfBirth)
+        {
+            string[] date = dateOfBirth.Split("/");
+            return new DateOfBirth(date[0], date[1], date[2]);
+        }
     }
 }
     

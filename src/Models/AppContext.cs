@@ -22,6 +22,7 @@ public class AppContext : DbContext
 
     public DbSet<Staff> Staffs { get; set; }
     public DbSet<Log> Logs { get; set; }
+    public DbSet<PendingRequest> PendingRequests { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<OperationType> OperationTypes { get; set; } = null!;
 
@@ -39,6 +40,7 @@ public class AppContext : DbContext
         modelBuilder.ApplyConfiguration<Patient>(new PatientEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<Log>(new LogEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<OperationType>(new OperationTypeEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration<PendingRequest>(new PendingRequestEntityTypeConfiguration());
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
