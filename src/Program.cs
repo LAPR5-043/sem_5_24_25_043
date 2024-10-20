@@ -26,9 +26,12 @@ namespace sem_5_24_25_043
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+   
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -97,6 +100,8 @@ namespace sem_5_24_25_043
             app.Run();
         }
 
+
+
         private static void RegisteredServices(IServiceCollection services)
         {
 
@@ -108,6 +113,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IStaffRepository, StaffRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IPendingRequestRepository, PendingRequestRepository>();
             //services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             
@@ -119,6 +125,7 @@ namespace sem_5_24_25_043
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IOperationTypeService, OperationTypeService>();
+            services.AddScoped<IPendingRequestService, PendingRequestService>();
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IOperationRequestService, OperationRequestService>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();

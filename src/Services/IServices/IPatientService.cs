@@ -11,5 +11,8 @@ namespace src.Services.IServices
 
         Task<PatientDto> GetPatientByIdAsync(int id);
 
+        Task<Patient> GetPatientEntityByIdAsync(int id);
+        Task<bool> UpdatePatientAsync(int id, PatientDto patientDto);
+        bool AcceptRequests(List<long> requestIds);
     }
 }

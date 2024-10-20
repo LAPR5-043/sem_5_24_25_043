@@ -1,12 +1,14 @@
-public class PendingRequest {
+using src.Domain.Shared;
 
-    public string requestID { get; private set;}
-    public string userId { get; private set;}
-    public string attributeName { get; private set;}
-    public string pendingValue { get; private set;}
-    public string oldValue { get; private set;}
+public class PendingRequest : Entity<LongId> {
 
+    public LongId requestID { get;  set;}
+    public string userId { get;  set;}
+    public string attributeName { get;  set;}
+    public string pendingValue { get;  set;}
+    public string oldValue { get;  set;}
 
+    /*
     public PendingRequest(string requestID, string userId, string attributeName, string pendingValue, string oldValue)
     {
         this.requestID = requestID;
@@ -14,7 +16,7 @@ public class PendingRequest {
         this.attributeName = attributeName;
         this.pendingValue = pendingValue;
         this.oldValue = oldValue;
-    }
+    }*/
 
     public PendingRequest()
     {
@@ -28,7 +30,7 @@ public class PendingRequest {
         }
 
         PendingRequest pendingRequest = (PendingRequest)obj;
-        return this.requestID == pendingRequest.requestID;  
+        return this.requestID.Value == pendingRequest.requestID.Value;  
     }
 
     public override int GetHashCode() {

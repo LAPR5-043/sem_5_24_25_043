@@ -57,6 +57,47 @@ namespace src.Controllers
             return NotFound(new { message = "Patient not found." });
         }
 
+        [HttpPut("personalData/{id}")]
+
+        public async Task<IActionResult> UpdatePatient(int id, [FromBody] PatientDto patientDto)
+        {
+            if (patientDto == null)
+            {
+            return BadRequest(new { message = "Invalid patient data." });
+            }
+
+            var patientExists = await service.GetPatientByIdAsync(id);
+            if (patientExists==null)
+            {
+                return NotFound(new { message = "Patient not found." });
+            }
+
+            var result = await service.UpdatePatientAsync(id, patientDto);
+
+            if (result){
+                return Ok(new { message = "Patient updated successfully." });
+            }
+
+
+            return NotFound(new { message = "Patient not found." });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> AcceptPatientPendingRequests( [FromBody] List<long> requestIds)
+        {
+            if (requestIds == null)
+            {
+            return BadRequest(new { message = "Invalid pending requests data." });
+            }
+
+            var accepted = service.AcceptRequests(requestIds);
+            if (accepted)
+            {
+            return Ok(new { message = "Patient requests accepted successfully." });
+            }
+
+            return NotFound(new { message = "Patient requests not found." });
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
@@ -11,9 +12,11 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20241020125954_AddPendingRequests")]
+    partial class AddPendingRequests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,59 +24,6 @@ namespace sem_5_24_25_043.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.OperationRequestAggregate.OperationRequest", b =>
-                {
-                    b.Property<string>("operationRequestID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("deadlineDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("doctorID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("operationTypeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("patientID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("priority")
-                        .HasColumnType("int");
-
-                    b.HasKey("operationRequestID");
-
-                    b.ToTable("OperationRequests", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            operationRequestID = "1",
-                            Id = "1",
-                            deadlineDate = "01/01/2025 00:00:00",
-                            doctorID = 1,
-                            operationTypeID = 1,
-                            patientID = 1,
-                            priority = 2
-                        },
-                        new
-                        {
-                            operationRequestID = "2",
-                            Id = "2",
-                            deadlineDate = "01/01/2025 00:00:00",
-                            doctorID = 2,
-                            operationTypeID = 2,
-                            patientID = 2,
-                            priority = 0
-                        });
-                });
 
             modelBuilder.Entity("Domain.PatientAggregate.Patient", b =>
                 {
