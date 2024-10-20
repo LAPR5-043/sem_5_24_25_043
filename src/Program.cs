@@ -19,6 +19,7 @@ using src.Domain.Shared;
 using src.Infrastructure;
 using Domain.LogAggregate;
 using src.Services.Services;
+using src.Services;
 
 
 namespace sem_5_24_25_043
@@ -101,13 +102,14 @@ namespace sem_5_24_25_043
 
             // Repos
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-            //services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
+            services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
             services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             //services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
+            //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             
 
             // Services
@@ -118,7 +120,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IOperationTypeService, OperationTypeService>();
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-            //services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
+            services.AddScoped<IOperationRequestService, OperationRequestService>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             
         }

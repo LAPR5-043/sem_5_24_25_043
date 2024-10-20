@@ -3,11 +3,15 @@ using Domain.PatientAggregate;
 using Infrastructure.PatientRepository;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
+using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using Sempi5.Infrastructure.StaffRepository;
+using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using src.Domain;
 using src.Domain.AppointmentAggregate;
+using src.Domain.OperationRequestAggregate;
 using src.Domain.PatientAggregate;
 using src.Domain.SurgeryRoomAggregate;
+
 
 namespace src.Models;
 
@@ -26,7 +30,7 @@ public class AppContext : DbContext
     public DbSet<OperationType> OperationTypes { get; set; } = null!;
 
     //public DbSet<Appointment> Appointments { get; set; } = null!;
-    //public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
+    public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
     //public DbSet<Specialization> Specializations { get; set; } = null!;
     //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
 
@@ -39,6 +43,7 @@ public class AppContext : DbContext
         modelBuilder.ApplyConfiguration<Patient>(new PatientEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<Log>(new LogEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<OperationType>(new OperationTypeEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration<OperationRequest>(new OperationRequestEntityTypeConfiguration());
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
@@ -70,6 +75,30 @@ public class AppContext : DbContext
                     specializations = new Dictionary<string, int> { { "Orthopedics", 2 } }
                 }
             );
+
+        modelBuilder.Entity<OperationRequest>().HasData(
+                new OperationRequest
+                {
+                    
+                    Id = new OperationRequestID("1"),
+                    operationRequestID = new OperationRequestID("1"),
+                    patientID = 1,
+                    doctorID = 1,
+                    operationTypeID = 1,
+                    deadlineDate = new DeadlineDate(1, 1, 2025),
+                    priority = Priority.Emergency
+                },
+                new OperationRequest
+                {
+                    Id = new OperationRequestID("2"),
+                    operationRequestID = new OperationRequestID("2"),
+                    patientID = 2,
+                    doctorID = 2,
+                    operationTypeID = 2,
+                    deadlineDate = new DeadlineDate(1, 1, 2025),
+                    priority = Priority.Effective
+                }
+        );
     }
 
       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

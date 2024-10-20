@@ -45,7 +45,7 @@ namespace Domain.OperationRequestAggregate
         /// <param name="monthDeadline"></param>
         /// <param name="yearDeadline"></param>
         /// <param name="priority"></param>
-        public OperationRequest(int patientID, int doctorID, int operationTypeID, int dayDeadline, int monthDeadline, int yearDeadline, string priority)
+        /*public OperationRequest(int patientID, int doctorID, int operationTypeID, int dayDeadline, int monthDeadline, int yearDeadline, string priority)
         {
             this.operationRequestID = new OperationRequestID(Guid.NewGuid());
             this.patientID = patientID;
@@ -53,7 +53,7 @@ namespace Domain.OperationRequestAggregate
             this.operationTypeID = operationTypeID;
             this.deadlineDate = new DeadlineDate(dayDeadline, monthDeadline, yearDeadline);
             this.priority = PriorityExtensions.FromString(priority);
-        }
+        }*/
         /// <summary>
         /// Override of the equality operator.
         /// </summary>

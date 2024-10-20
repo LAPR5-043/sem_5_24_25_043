@@ -1,3 +1,5 @@
+using Domain.OperationRequestAggregate;
+using src.Domain.OperationRequestAggregate;
 using src.Domain.Shared;
 
 namespace sem_5_24_25_043.Domain.OperationRequestAggregate
@@ -6,17 +8,21 @@ namespace sem_5_24_25_043.Domain.OperationRequestAggregate
     /// Value object representing the ID of an operation request.
     /// </summary>
     public class OperationRequestID : EntityId
-    {   
-        public Guid ID { get; }
+    {
+        public string ID { get; set; }
 
         /// <summary>
         /// Default constructor required by Entity Framework.
         /// </summary>
         /// <param name="ID"></param>
-        public OperationRequestID(Guid ID) : base(ID)
+        public OperationRequestID(string ID) : base(ID)
         {
             this.ID = ID;
         }
+        public OperationRequestID() : base(null)
+        {
+        }
+
         /// <summary>
         /// Override of the equality operator.
         /// </summary>
@@ -46,7 +52,7 @@ namespace sem_5_24_25_043.Domain.OperationRequestAggregate
         /// <returns></returns>
         public override string ToString()
         {
-            return ID.ToString();
+            return ID;
         }
         /// <summary>
         /// Override of the createFromString method.
@@ -56,7 +62,7 @@ namespace sem_5_24_25_043.Domain.OperationRequestAggregate
         /// <exception cref="NotImplementedException"></exception>
         protected override object createFromString(string text)
         {
-            throw new NotImplementedException();
+            return new String(text);
         }
         /// <summary>
         /// Override of the AsString method.
@@ -65,7 +71,7 @@ namespace sem_5_24_25_043.Domain.OperationRequestAggregate
         /// <exception cref="NotImplementedException"></exception>
         public override string AsString()
         {
-            throw new NotImplementedException();
+            return ID;
         }
     }
 }

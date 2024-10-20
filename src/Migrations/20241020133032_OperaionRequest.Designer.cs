@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
@@ -11,9 +12,11 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20241020133032_OperaionRequest")]
+    partial class OperaionRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,8 +58,8 @@ namespace sem_5_24_25_043.Migrations
                     b.HasData(
                         new
                         {
-                            operationRequestID = "1",
-                            Id = "1",
+                            operationRequestID = "337df494-a1dc-4669-9fe5-f04ae12da079",
+                            Id = "898816fe-04c9-44f4-861e-1a4d1de6f738",
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = 1,
                             operationTypeID = 1,
@@ -65,8 +68,8 @@ namespace sem_5_24_25_043.Migrations
                         },
                         new
                         {
-                            operationRequestID = "2",
-                            Id = "2",
+                            operationRequestID = "9c78b5bc-9649-4416-8e70-7cb775416896",
+                            Id = "59a0d98c-af5d-412d-9b84-3ee0c9555408",
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = 2,
                             operationTypeID = 2,
