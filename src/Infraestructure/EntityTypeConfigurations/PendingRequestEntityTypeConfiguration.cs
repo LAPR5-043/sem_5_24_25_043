@@ -1,10 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Text.Json;
-using Infrastructure.Converters;
-using Microsoft.CodeAnalysis.Elfie.Model;
-
+using src.Infrastructure.Converters; 
 
 public class PendingRequestEntityTypeConfiguration : IEntityTypeConfiguration<PendingRequest>
     {
@@ -19,7 +15,7 @@ public class PendingRequestEntityTypeConfiguration : IEntityTypeConfiguration<Pe
                     v => v.AsString(),        
                     v => new LongId(long.Parse(v))
                 )
-                .HasValueGenerator<LongIDGenerator>()
+                .HasValueGenerator<PendingRequestsIDGenerator>()
                 .IsRequired()
                 .ValueGeneratedOnAdd();
             
@@ -28,7 +24,10 @@ public class PendingRequestEntityTypeConfiguration : IEntityTypeConfiguration<Pe
                     v => v.AsString(),        
                     v => new LongId(long.Parse(v))
                 )
-                .IsRequired();
+                .HasValueGenerator<RequestsIDGenerator>()
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+                builder.HasIndex(t => t.requestID).IsUnique();
             
             builder.Property(t => t.attributeName)
                 .IsRequired();
@@ -47,3 +46,4 @@ public class PendingRequestEntityTypeConfiguration : IEntityTypeConfiguration<Pe
 
 
 }
+

@@ -1,1 +1,1 @@
-Patient.firstName;Patient.lastName;Patient.email;Patient.phoneNumber;Patient.DateOfBirth
+firstName;lastName;email;phoneNumber;DateOfBirth

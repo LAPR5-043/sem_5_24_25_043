@@ -9,10 +9,10 @@ namespace src.Services.IServices
 
         Task<PatientDto> CreatePatientAsync(PatientDto patientDto);
 
-        Task<PatientDto> GetPatientByIdAsync(int id);
+        Task<PatientDto> GetPatientByIdAsync(string id);
 
-        Task<Patient> GetPatientEntityByIdAsync(int id);
-        Task<bool> UpdatePatientAsync(int id, PatientDto patientDto);
+        Task<Patient> GetPatientEntityByIdAsync(string id);
+        Task<bool> UpdatePatientAsync(string id, PatientDto patientDto);
         bool AcceptRequests(List<long> requestIds);
     }
 }
