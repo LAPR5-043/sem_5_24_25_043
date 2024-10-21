@@ -1,6 +1,7 @@
 using Domain.PatientAggregate;
 using Microsoft.AspNetCore.Mvc;
 using src.Services.IServices;
+using src.Services.Services;
 
 namespace src.Controllers
 {
@@ -26,6 +27,27 @@ namespace src.Controllers
             }
             return NotFound(new { message = "Patient not found." });
         }
+
+        [HttpPost("signin-patient")]
+        public async Task<ActionResult<string>> SignInPatientAsync(string email, string patientEmail, string password)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(patientEmail) || string.IsNullOrEmpty(password))
+            {
+            return BadRequest("Email, patient email, and password must be provided.");
+            }
+
+            try
+            {
+            await service.RegisterNewPatientIAMAsync(email, patientEmail, password);
+            return Ok(new { message = "Patient signed in successfully." });
+            }
+            catch (Exception ex)
+            {
+            // Log the exception (ex) here if necessary
+            return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
 
         // POST: api/Patient/Create
         [HttpPost("Create")]

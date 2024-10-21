@@ -85,20 +85,40 @@ public class AuthService
     var emailAttribute = response.UserAttributes.FirstOrDefault(attr => attr.Name == "email");
     return emailAttribute?.Value;
 }
-    public async Task<bool> registerNewPatient(String? email, String? PatientEmail, String? password)
+    public async Task<bool> RegisterNewPatientAsync(string? email, string? patientEmail, string? password)
     {
-        var signUpRequest = new SignUpRequest
+        var signUpRequest = new AdminCreateUserRequest
         {
-            ClientId = _clientId,
+            UserPoolId = _userPoolId,
             Username = email,
-            Password = password,
+            TemporaryPassword = password,
             UserAttributes = new List<AttributeType>
             {
-                new AttributeType { Name = "custom:PersonalMail", Value = PatientEmail }
-            }
+                new AttributeType { Name = "custom:PersonalMail", Value = patientEmail },
+                new AttributeType { Name = "email", Value = email },
+                new AttributeType { Name = "email_verified", Value = "false" }
+            },
+            DesiredDeliveryMediums = new List<string> { "EMAIL" },
+            MessageAction = "SUPPRESS"
+        };
+        
+        Console.WriteLine("Creating user: " + email);
+
+        var response = await _provider.AdminCreateUserAsync(signUpRequest);
+
+        Console.WriteLine("Created user: " + response.User.Username);
+        
+        // Disable the user immediately after creation
+        var adminDisableUserRequest = new AdminDisableUserRequest
+        {
+            UserPoolId = _userPoolId,
+            Username = email
         };
 
-        await _provider.SignUpAsync(signUpRequest);
-        return true;
+        await _provider.AdminDisableUserAsync(adminDisableUserRequest);
+
+        Console.WriteLine("Disabled user: " + response.User.Username);
+
+        return response.User != null;
     }
 }
