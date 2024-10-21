@@ -68,7 +68,7 @@ namespace src.Controllers
             }
             return StatusCode(500, new { message = "An error occurred while creating the operation type." });
         }
-        [HttpPut("edit/{id}")]
+        [HttpPatch("edit/{id}")]
         public async Task<IActionResult> editOperationType(string id, [FromBody] OperationTypeDto operationType)
         {
             if (operationType == null)
