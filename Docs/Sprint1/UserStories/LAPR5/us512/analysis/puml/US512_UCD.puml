@@ -1,0 +1,23 @@
+"@startuml Use Case Diagram for US 5.1.2"
+
+left to right direction
+
+actor "Backoffice User" as user
+actor "External IAM System" as IAM
+
+usecase "Request Password Reset" as request
+usecase "Provide Email" as provide_email
+usecase "Reset Link Email" as reset_email
+usecase "Provide New Password" as provide_password
+
+user -- request : request
+request -- IAM : "receive request"
+
+user -- provide_email : provide
+
+user -- reset_email : "receive email"
+reset_email -- IAM : "send link"
+
+user -- provide_password : provide
+
+@enduml

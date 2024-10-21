@@ -1,0 +1,96 @@
+"@startuml Domain Model excerpt for US 5.1.2"
+hide circle
+hide methods
+allow_mixing
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+package "User Aggregate" {
+
+    entity User <<entity>><<root>> {
+    }
+
+    card Username <<Value Object>>
+    card Email <<Value Object>>
+
+    enum Role <<enumeration>> {
+        Admin
+        Doctor
+        Nurse
+        Technician
+        Patient
+    }
+
+    ' Relationships inside the User aggregate
+    User "1"-u->"1" Username
+    User "1"-u->"1" Email
+    User "1"-u->"1" Role
+}
+note left of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
+
+
+
+package "Staff Aggregate" {
+
+    entity Staff <<entity>><<root>> {
+    }
+
+    card StaffID <<Value Object>>
+    card StaffFirstName <<Value Object>>
+    card StaffLastName <<Value Object>>
+    card StaffFullName <<Value Object>>
+    card LicenseNumber <<Value Object>>
+    card isActives <<Boolean>>
+
+    'specialization é entidade
+
+    card AvailabilitySlots <<Value Object>>
+    entity TimeSlots <<Value Object>> {
+        StartDate
+        EndDate
+        Occupied
+    }
+
+    ' Atributos Contact Information
+    card StaffEmail <<Value Object>>
+    card StaffPhoneNumber <<Value Object>>
+
+
+    'Relationships inside the Staff aggregate
+    Staff "1" --> "1" StaffFirstName
+    Staff "1" --> "1" StaffLastName
+    Staff "1" --> "1" StaffFullName
+    Staff "1" -d-> "1" StaffID
+    Staff "1" --> "1" LicenseNumber
+    Staff "1" --> "1" AvailabilitySlots
+    Staff "1" --> "1" isActives
+    AvailabilitySlots "1" -d-> "*" TimeSlots
+    Staff "1" -d-> "1" StaffEmail
+    Staff "1" -d-> "1" StaffPhoneNumber
+
+
+}
+
+Staff "1" -u->  "1" User : "edits"
+
+@enduml
