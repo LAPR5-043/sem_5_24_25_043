@@ -1,0 +1,91 @@
+"@startuml Domain Model excerpt for US 5.1.2"
+hide circle
+hide methods
+allow_mixing
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+package "User Aggregate" {
+
+    entity User <<entity>><<root>> {
+    }
+
+    card Username <<Value Object>>
+    card Email <<Value Object>>
+
+    enum Role <<enumeration>> {
+        Admin
+        Doctor
+        Nurse
+        Technician
+        Patient
+    }
+
+    ' Relationships inside the User aggregate
+    User "1"-u->"1" Username
+    User "1"-u->"1" Email
+    User "1"-u->"1" Role
+}
+note left of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
+
+
+package "Patient Aggregate" {
+
+    entity Patient <<entity>><<root>> {
+    }
+
+    card PatientFirstName <<Value Object>>
+    card PatientLastName <<Value Object>>
+    card PatientFullName <<Value Object>>
+    card DateOfBirth <<Value Object>>
+    card Gender <<Value Object>>
+    card MedicalRecordNumber <<Value Object>>
+    card ContactInformation <<Value Object>>
+    card AllergiesAndConditions <<Value Object>>
+    card EmergencyContact <<Value Object>>
+    'card AppointmentHistory <<Value Object>>
+
+    ' Contact Information Attributes
+    card PatientEmail <<Value Object>>
+    card PhoneNumber <<Value Object>>
+
+    ' Relationships Contact Information
+    ContactInformation "1"-->"1" PatientEmail
+    ContactInformation "1"-->"1" PhoneNumber
+
+    ' Relationships inside the Patient aggregate
+    Patient "1"-->"1" PatientFirstName
+    Patient "1"-->"1" PatientLastName
+    Patient "1"-->"1" PatientFullName
+    Patient "1"-->"1" DateOfBirth
+    Patient "1"--> "1" Gender
+    Patient "1"-->"1" MedicalRecordNumber
+    Patient "1"--> "1" ContactInformation
+    Patient "1"--> "*" AllergiesAndConditions
+    Patient "1"--> "1" EmergencyContact
+
+}
+
+Patient "1" -u->  "1" User : "edits"
+
+@enduml

@@ -1,0 +1,32 @@
+"@startuml Use Case Diagram for US 5.1.5"
+
+left to right direction
+
+actor Patient as patient
+actor "External IAM System" as IAM
+
+usecase "Request Account Deletion" as request
+usecase "Confirmation Email" as confirmation_email
+usecase "Confirm Deletion" as confirm
+usecase "Account Deletion" as acc_delete
+usecase "Deletion Notification" as notification
+usecase "System Log" as log
+
+patient -- request : request
+request -- IAM : "receive request"
+
+patient -- confirmation_email : "receive email"
+confirmation_email -- IAM : "send email"
+
+patient -- confirm : confirms
+confirm -- IAM : "receives"
+
+acc_delete -up- IAM : "deletes"
+
+patient -- notification : "receives"
+notification -- IAM : sends
+
+IAM -- log : logs
+
+
+@enduml
