@@ -8,6 +8,7 @@ using AppContext = src.Models.AppContext;
 using src.Controllers.Services;
 using src.Services.IServices;
 using Domain.OperationTypeAggregate;
+using Microsoft.AspNetCore.Authorization;
 
 namespace src.Controllers
 {
@@ -51,6 +52,7 @@ namespace src.Controllers
         }
 
         // POST: api/OperationType/Create
+        [Authorize]
         [HttpPost("Create")]
         public async Task<IActionResult> createOperationType([FromBody] OperationTypeDto operationType)
         {
@@ -66,6 +68,22 @@ namespace src.Controllers
             }
             return StatusCode(500, new { message = "An error occurred while creating the operation type." });
         }
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> editOperationType(string id, [FromBody] OperationTypeDto operationType)
+        {
+            if (operationType == null)
+            {
+                return BadRequest(new { message = "Invalid operation type data." });
+            }
+
+            var result = await service.editOperationTypeAsync(id, operationType);
+            if (result)
+            {
+                return Ok(new { message = "Operation type edited successfully." });
+            }
+            return StatusCode(500, new { message = "An error occurred while editing the operation type." });
+        }
+        
 
     }
 }

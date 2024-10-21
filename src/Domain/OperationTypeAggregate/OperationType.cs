@@ -7,7 +7,7 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
     public bool isActive { get; set; }
     public Dictionary<string, int> specializations { get; set; }
 
-    /*public OperationType(string operationTypeName, int hours, int minutes, bool isActive, Dictionary<string, int> specialization)
+    public OperationType(string operationTypeName, int hours, int minutes, bool isActive, Dictionary<string, int> specialization)
     {
         this.operationTypeName = new OperationTypeName(operationTypeName);
         this.estimatedDuration = new EstimatedDuration(hours, minutes);
@@ -24,7 +24,7 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
     }
     public OperationType()
     {
-    }*/
+    }
 
     public void changeOperationTypeName(string operationTypeName)
     {
