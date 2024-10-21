@@ -9,13 +9,50 @@ namespace src.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class OperationRequestController : ControllerBase 
+    public class OperationRequestController : ControllerBase
     {
         private readonly IOperationRequestService service;
 
         public OperationRequestController(IOperationRequestService service)
         {
             this.service = service;
+        }
+
+
+        // GET: 1
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OperationRequest>>> GetOperationRequest()
+        {
+            var operationTypes = await service.getAllOperationRequestsAsync();
+            return Ok(operationTypes);
+        }
+
+        /*
+        //GET /api/OperationRequest/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
+        [HttpGet("filtered")]
+        public async Task<ActionResult<IEnumerable<OperationRequest>>> GetOperationRequestsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
+                                                                                [FromQuery] string? operationType, [FromQuery] string? priority, string? sortBy)
+        {
+            var operationRequest = await service.getOperationRequestsFilteredAsync(firstName, lastName, operationType, priority, sortBy);
+            if (operationRequest == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(operationRequest);
+        }
+        */
+
+        // GET: api/OperationRequest/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OperationRequest>> GetOperationRequest(string id)
+        {
+            var operationRequest = await service.getOperationRequestAsync(id);
+            if (operationRequest == null)
+            {
+                return NotFound();
+            }
+            return Ok(operationRequest);
         }
 
         [HttpDelete("{id}")]
@@ -28,7 +65,7 @@ namespace src.Controllers
             }
 
             var result = await service.DeleteOperationRequestAsync(id);
-            
+
             if (result)
             {
                 return Ok(new { message = "Operation request deleted successfully." });
