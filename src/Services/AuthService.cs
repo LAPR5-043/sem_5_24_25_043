@@ -63,4 +63,42 @@ public class AuthService
 
         await _provider.ConfirmSignUpAsync(request);
     }
+  //  public async Task GetUserGroupsByEmailAsync(string email)
+  //  {
+  //      var request = new AdminListGroupsForUserRequest
+  //      {
+  //          UserPoolId = _userPoolId,
+  //          Username = email
+  //      };
+//
+  //      var response = await _provider.AdminListGroupsForUserAsync(request);
+  //      return response.Groups.Select(g => g.GroupName);
+  //  }
+    public async Task<string?> GetUserEmailByTokenAsync(string authToken)
+{
+    var request = new GetUserRequest
+    {
+        AccessToken = authToken
+    };
+
+    var response = await _provider.GetUserAsync(request);
+    var emailAttribute = response.UserAttributes.FirstOrDefault(attr => attr.Name == "email");
+    return emailAttribute?.Value;
+}
+    public async Task<bool> registerNewPatient(String? email, String? PatientEmail, String? password)
+    {
+        var signUpRequest = new SignUpRequest
+        {
+            ClientId = _clientId,
+            Username = email,
+            Password = password,
+            UserAttributes = new List<AttributeType>
+            {
+                new AttributeType { Name = "custom:PersonalMail", Value = PatientEmail }
+            }
+        };
+
+        await _provider.SignUpAsync(signUpRequest);
+        return true;
+    }
 }
