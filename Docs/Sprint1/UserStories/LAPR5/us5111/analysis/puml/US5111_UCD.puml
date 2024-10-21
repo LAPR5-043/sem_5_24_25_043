@@ -1,0 +1,17 @@
+"@startuml Use Case Diagram for US 5.1.11"
+
+left to right direction
+
+actor Admin as admin
+
+usecase "Search Patient Profile" as search
+usecase "View Patient Profile" as view
+usecase "Edit Patient Profile" as edit
+usecase "Remove Patient Profile" as remove
+
+admin -- search : searches
+admin -- view : views
+admin -- edit : edits
+admin -- remove : removes
+
+@enduml

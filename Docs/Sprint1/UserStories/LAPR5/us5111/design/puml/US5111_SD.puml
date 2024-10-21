@@ -1,0 +1,109 @@
+@startuml
+title Sequence Diagram Title
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor Admin
+participant "ListPatientUI" as UI
+participant "PatientController" as Controller
+participant "PatientService" as userService
+participant "AuthService" as auth
+participant "Repositoriess" as Repo
+participant "PatientRepository" as userRepo
+participant "Patient" as user
+participant "PatientDTO" as userDTO
+
+activate Admin
+Admin -> UI: I want to list patients based on some attributes
+
+activate UI
+UI --> Admin : Which attributes do you want to use?
+deactivate UI
+
+Admin -> UI : attributes (attribute)
+
+activate UI
+UI -> Controller: listPatients(attributes)
+
+activate Controller
+Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
+
+activate auth
+auth --> Controller:  true
+deactivate auth
+
+Controller -> userService : listPatients(attributes)
+
+activate userService
+userService -> Repo : getPatientRepository()
+
+activate Repo
+Repo --> userService : patientRepository
+deactivate Repo
+
+userService -> userRepo : getPatientsByAttributes(attributes)
+
+activate userRepo
+loop for each patient, check if they have the required attributes
+        userRepo -> user : getAtribbuteX()
+
+        activate user
+        user -> userRepo : atributteX
+        deactivate user
+    alt patient has the required attributes
+
+        userRepo -> userRepo : add(patient)
+    end
+
+end
+userRepo --> userService : patientList
+deactivate userRepo
+
+loop for each patient
+    userService -> userDTO : new PatientDTO(patient)
+
+    activate userDTO
+    userDTO --> userService : patientDTO
+    deactivate userDTO
+
+    userService -> userService : add(patientDTO)
+end
+
+userService --> Controller : patientDTOList
+deactivate userService
+
+Controller --> UI : patientDTOList
+deactivate Controller
+
+UI --> Admin : patientDTOList
+deactivate UI
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml
