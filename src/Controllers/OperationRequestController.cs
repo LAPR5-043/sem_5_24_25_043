@@ -36,5 +36,24 @@ namespace src.Controllers
 
             return NotFound(new { message = "Operation request not found." });
         }
+
+        //PUT 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
+        {
+            if (operationRequestDto == null)
+            {
+                return BadRequest(new { message = "Invalid operation request data." });
+            }
+
+            var result = await service.UpdateOperationRequestAsync(id, operationRequestDto);
+
+            if (result)
+            {
+                return Ok(new { message = "Operation request updated successfully." });
+            }
+
+            return NotFound(new { message = "Operation request not found." });
+        }
     }
 }

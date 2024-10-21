@@ -2,6 +2,7 @@ using System;
 using Domain.AppointmentAggregate;
 using Domain.OperationRequestAggregate;
 using sem_5_24_25_043.Domain.OperationRequestAggregate;
+using src.Domain.OperationRequestAggregate;
 using src.Domain.Shared;
 using src.Services.IServices;
 
@@ -47,6 +48,30 @@ namespace src.Services
 
         }
 
+        public async Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto){
+            
+            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+
+            if (operationRequest == null)
+            {
+                return false;
+            }
+            
+            try{
+                
+                operationRequest.patientID = operationRequestDto.patientID;
+                operationRequest.doctorID = operationRequestDto.doctorID;
+                operationRequest.operationTypeID = operationRequestDto.operationType;
+                operationRequest.deadlineDate = new DeadlineDate(operationRequestDto.day, operationRequestDto.month, operationRequestDto.year);
+                operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.priority);
+                await operationRequestRepository.updateAsync(operationRequest);
+            }catch(Exception e){
+                return false;
+            }
+
+            return true;
+
+        }
         /*private async Task<bool> EnsureOperationIsNotScheduledAsync(int id)
         {
             var appointment = await appointmentRepository.CheckIfOperationIsScheduled(id);

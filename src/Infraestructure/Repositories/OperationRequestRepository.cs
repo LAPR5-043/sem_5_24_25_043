@@ -14,4 +14,9 @@ public class OperationRequestRepository : BaseRepository<OperationRequest, Opera
     {
         this.context = context;
     }
+
+    public  Task updateAsync(OperationRequest operationRequest){
+        context.OperationRequests.Update(operationRequest);
+        return context.SaveChangesAsync();
+    }
 }

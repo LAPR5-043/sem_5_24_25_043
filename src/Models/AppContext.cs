@@ -85,8 +85,8 @@ public class AppContext : DbContext
                     Id = new OperationRequestID("1"),
                     operationRequestID = new OperationRequestID("1"),
                     patientID = 1,
-                    doctorID = 1,
-                    operationTypeID = 1,
+                    doctorID = "s202400001",
+                    operationTypeID = "Knee Surgery",
                     deadlineDate = new DeadlineDate(1, 1, 2025),
                     priority = Priority.Emergency
                 },
@@ -95,8 +95,8 @@ public class AppContext : DbContext
                     Id = new OperationRequestID("2"),
                     operationRequestID = new OperationRequestID("2"),
                     patientID = 2,
-                    doctorID = 2,
-                    operationTypeID = 2,
+                    doctorID = "s202400002",
+                    operationTypeID = "Heart Surgery",
                     deadlineDate = new DeadlineDate(1, 1, 2025),
                     priority = Priority.Effective
                 }

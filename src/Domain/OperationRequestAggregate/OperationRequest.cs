@@ -21,11 +21,11 @@ namespace Domain.OperationRequestAggregate
         /// <summary>
         /// Represents the ID of the doctor.
         /// </summary>
-        public int doctorID { get; set; }
+        public string doctorID { get; set; }
         /// <summary>
         /// Represents the ID of the operation type.
         /// </summary>
-        public int operationTypeID { get; set; }
+        public string operationTypeID { get; set; }
         /// <summary>
         /// Represents the deadline date of the operation request.
         /// </summary>
