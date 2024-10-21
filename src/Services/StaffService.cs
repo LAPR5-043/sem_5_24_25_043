@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Domain.Shared;
 using src.Services.IServices;
-using AppContext= src.Models.AppContext;
+using AppContext = src.Models.AppContext;
 
 namespace src.Controllers.Services;
 
 public class StaffService : IStaffService
 {
-    private  readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork unitOfWork;
     private readonly IStaffRepository staffRepository;
     private readonly ILogService logService;
 
@@ -24,12 +24,31 @@ public class StaffService : IStaffService
         this.staffRepository = staffRepository;
         this.logService = logService;
     }
+    private Boolean validateStaffInformation(string email, string phoneNumber)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber))
+        {
+            throw new Exception("Invalid patient data.");
+        }
+
+        if (!email.Contains("@"))
+        {
+            throw new Exception("Invalid email.");
+        }
+
+        if (phoneNumber.Length != 9)
+        {
+            throw new Exception("Invalid phone number.");
+        }
+
+        return staffRepository.StaffExists(email, phoneNumber);
+    }
 
 
     public async Task<OkObjectResult> getAllStaffAsync()
     {
         var result = await staffRepository.GetAllAsync();
-        IEnumerable<StaffDto> resultDtos =  new List<StaffDto>();
+        IEnumerable<StaffDto> resultDtos = new List<StaffDto>();
         foreach (var staff in result)
         {
             resultDtos.Append(new StaffDto(staff));
@@ -37,8 +56,8 @@ public class StaffService : IStaffService
         return new OkObjectResult(resultDtos);
     }
 
-    public async Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy )
-    {   
+    public async Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy)
+    {
         bool ascending = true;
         var staffList = await staffRepository.GetAllAsync();
         var query = staffList.AsQueryable();
@@ -93,11 +112,22 @@ public class StaffService : IStaffService
         return resultDtos;
     }
 
+    public async Task<StaffDto> getStaffAsync(string id)
+    {
+        var staff = await staffRepository.GetByIdAsync(new StaffID(id));
+        return new StaffDto(staff);
+    }
+
     public async Task<StaffDto> CreateStaffAsync(StaffDto staffDto)
     {
         if (staffDto == null)
         {
-        throw new ArgumentNullException(nameof(staffDto));
+            throw new ArgumentNullException(nameof(staffDto), "Patient data is null.");
+        }
+
+        if (!validateStaffInformation(staffDto.Email, staffDto.PhoneNumber))
+        {
+            throw new Exception("Staff already exists.");
         }
 
         staffDto.AvailabilitySlots = staffDto.AvailabilitySlots ?? new List<string>();
@@ -112,18 +142,10 @@ public class StaffService : IStaffService
         staff.isActive = staffDto.IsActive;
         staff.availabilitySlots = new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots));
         staff.specializationID = staffDto.SpecializationID;
-    
-
-        
 
         await staffRepository.AddAsync(staff);
         await unitOfWork.CommitAsync();
-        return new StaffDto(staff);
-    }
 
-    public async Task<StaffDto> getStaffAsync(string id)
-    {
-        var staff = await staffRepository.GetByIdAsync(new StaffID(id));
         return new StaffDto(staff);
     }
 
@@ -137,10 +159,10 @@ public class StaffService : IStaffService
         staff.isActive = !staff.isActive;
         staffRepository.UpdateAsync(staff);
         await unitOfWork.CommitAsync();
-        await logService.CreateLogAsync(staffDeactivateLog1 + staffDeactivateLog2 + staff.staffID + staffDeactivateLog3 + staff.isActive, "colocar@emailtoken.aqui");  
+        await logService.CreateLogAsync(staffDeactivateLog1 + staffDeactivateLog2 + staff.staffID + staffDeactivateLog3 + staff.isActive, "colocar@emailtoken.aqui");
         return true;
     }
 
-    
+
 
 }

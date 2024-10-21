@@ -18,5 +18,12 @@ public class StaffRepository : BaseRepository<Staff, StaffID>, IStaffRepository
     {
         context.Entry(staff).State = EntityState.Modified;
     }
+
+    public bool StaffExists(string email, string phoneNumber)
+    {
+        return context.Staffs
+            .AsEnumerable()
+            .Any(p => p.email.email == email || p.phoneNumber.phoneNumber == phoneNumber);
+    }
 }
 
