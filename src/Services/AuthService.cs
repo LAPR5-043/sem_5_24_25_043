@@ -106,7 +106,7 @@ public class AuthService
 
         var response = await _provider.AdminCreateUserAsync(signUpRequest);
 
-        Console.WriteLine("Created user: " + response.User.Username);
+        Console.WriteLine("Created user: " + response.User.Username); // Não está a cehgar aqui
         
         // Disable the user immediately after creation
         var adminDisableUserRequest = new AdminDisableUserRequest
