@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Domain.PatientAggregate;
+using sem_5_24_25_043;
 using src.Domain.PatientAggregate;
 using src.Domain.Shared;
 using src.Services.IServices;
@@ -14,19 +15,21 @@ namespace src.Services.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IPatientRepository patientRepository;
         private readonly ILogService logService;
+        private readonly AuthService authService;
         private readonly ISensitiveDataService sensitiveDataService;
         private readonly IPendingRequestService pendingRequestService;
         private readonly IEmailService emailService;
         private static string patientDeleteLog1 = "Patient deleted with success;PatientId:";
 
-        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, AuthService authService)
         {
             this.unitOfWork = unitOfWork;
             this.patientRepository = patientRepository;
             this.logService = logService;
             this.sensitiveDataService = new SensitiveDataService();
             this.pendingRequestService = pendingRequestService;
-            this.emailService = new EmailService();
+            this.emailService = emailService;
+            this.authService = authService;
         }
 
 
@@ -320,6 +323,26 @@ namespace src.Services.Services
 
             // Fallback to default conversion
             return Convert.ChangeType(value, targetType);
+        }
+
+        public async Task RegisterNewPatientIAMAsync(string email, string patientEmail, string password)
+        {
+            var result = patientRepository.PatientExists(patientEmail);
+
+            Console.WriteLine("Patient Exists: " + result);
+
+            if (!result)
+            {
+                throw new InvalidOperationException("Patient Does Not Exist");
+            }
+
+            await authService.RegisterNewPatientAsync(email, patientEmail, password);
+
+            Console.WriteLine("Patient Registered in IAM System"); 
+
+            await unitOfWork.CommitAsync();
+
+            await logService.CreateLogAsync("New patient registered in the IAM system; PatientEmail:" + email, email);
         }
     }
 }

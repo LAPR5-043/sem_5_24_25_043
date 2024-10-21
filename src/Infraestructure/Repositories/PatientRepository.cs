@@ -21,4 +21,10 @@ public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, I
             .Any(p => p.email.email == email || p.phoneNumber.phoneNumber == phoneNumber);
     }
 
+    public bool PatientExists(string email)
+    {
+        return context.Patients
+            .AsEnumerable()
+            .Any(p => p.email.email == email);
+    }
 }
