@@ -17,6 +17,44 @@ namespace src.Controllers
             this.service = service;
         }
 
+
+        // GET: api/Patient
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatients()
+        {
+            var operationTypes = await service.getAllPatientsAsync();
+            return Ok(operationTypes);
+        }
+
+        //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
+        [HttpGet("filtered")]
+        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
+                                                                        [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
+        {
+            var patient = await service.getPatientsFilteredAsync(firstName, lastName, email, phoneNumber, medicalRecordNumber, dateOfBirth, gender, sortBy);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(patient);
+        }
+
+        // GET: api/Patient/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> getPatientById(string id)
+        {
+            var patient = await service.getPatientByIdAsync(id);
+            if (patient == null)
+            {
+                return NotFound(new { message = "Patient not found." });
+
+            }
+
+            return Ok(patient);
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(string id)
         {
@@ -33,18 +71,18 @@ namespace src.Controllers
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(patientEmail) || string.IsNullOrEmpty(password))
             {
-            return BadRequest("Email, patient email, and password must be provided.");
+                return BadRequest("Email, patient email, and password must be provided.");
             }
 
             try
             {
-            await service.RegisterNewPatientIAMAsync(email, patientEmail, password);
-            return Ok(new { message = "Patient signed in successfully." });
+                await service.RegisterNewPatientIAMAsync(email, patientEmail, password);
+                return Ok(new { message = "Patient signed in successfully." });
             }
             catch (Exception ex)
             {
-            // Log the exception (ex) here if necessary
-            return StatusCode(500, "An error occurred while processing your request.");
+                // Log the exception (ex) here if necessary
+                return StatusCode(500, "An error occurred while processing your request.");
             }
         }
 
@@ -55,29 +93,18 @@ namespace src.Controllers
         {
             if (patientDto == null)
             {
-            return BadRequest(new { message = "Invalid patient data." });
+                return BadRequest(new { message = "Invalid patient data." });
             }
 
             var createdPatient = await service.CreatePatientAsync(patientDto);
             if (createdPatient != null)
             {
-            return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
+                return CreatedAtAction(nameof(getPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
             }
 
             return StatusCode(500, new { message = "An error occurred while creating the patient." });
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPatientById(string id)
-        {
-            var patient = await service.GetPatientByIdAsync(id);
-            if (patient != null)
-            {
-            return Ok(patient);
-            }
-
-            return NotFound(new { message = "Patient not found." });
-        }
 
         [HttpPut("personalData/{id}")]
 
@@ -85,18 +112,19 @@ namespace src.Controllers
         {
             if (patientDto == null)
             {
-            return BadRequest(new { message = "Invalid patient data." });
+                return BadRequest(new { message = "Invalid patient data." });
             }
 
-            var patientExists = await service.GetPatientByIdAsync(id);
-            if (patientExists==null)
+            var patientExists = await service.getPatientByIdAsync(id);
+            if (patientExists == null)
             {
                 return NotFound(new { message = "Patient not found." });
             }
 
             var result = await service.UpdatePatientAsync(id, patientDto);
 
-            if (result){
+            if (result)
+            {
                 return Ok(new { message = "Patient updated successfully." });
             }
 
@@ -109,9 +137,9 @@ namespace src.Controllers
         {
             if (requestIds == null)
             {
-            return BadRequest(new { message = "Invalid pending requests data." });
-            }   
-            
+                return BadRequest(new { message = "Invalid pending requests data." });
+            }
+
 
             List<long> requests = new List<long>();
 
@@ -126,7 +154,7 @@ namespace src.Controllers
             var accepted = service.AcceptRequests(requests);
             if (accepted)
             {
-            return Ok(new { message = "Patient requests accepted successfully." });
+                return Ok(new { message = "Patient requests accepted successfully." });
             }
 
             return NotFound(new { message = "Patient requests not found." });

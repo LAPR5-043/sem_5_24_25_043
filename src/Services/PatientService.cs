@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Domain.PatientAggregate;
+using Microsoft.AspNetCore.Mvc;
 using sem_5_24_25_043;
 using src.Domain.PatientAggregate;
 using src.Domain.Shared;
@@ -32,7 +33,109 @@ namespace src.Services.Services
             this.authService = authService;
         }
 
+        public async Task<OkObjectResult> getAllPatientsAsync()
+        {
+            var result = await patientRepository.GetAllAsync();
+            IEnumerable<PatientDto> resultDtos = new List<PatientDto>();
+            foreach (var patient in result)
+            {
+                resultDtos.Append(new PatientDto(patient));
+            }
+            return new OkObjectResult(resultDtos);
 
+        }
+
+
+        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy)
+        {
+            bool ascending = true;
+            var patientList = await patientRepository.GetAllAsync();
+            var query = patientList.AsQueryable();
+
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                query = query.Where(p => p.firstName.firstName.Contains(firstName));
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                query = query.Where(p => p.lastName.lastName.Contains(lastName));
+            }
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                query = query.Where(p => p.email.email.Contains(email));
+            }
+
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                query = query.Where(p => p.phoneNumber.phoneNumber.Contains(phoneNumber));
+            }
+
+            if (!string.IsNullOrEmpty(medicalRecordNumber))
+            {
+                query = query.Where(p => p.medicalRecordNumber.medicalRecordNumber.Contains(medicalRecordNumber));
+            }
+
+            if (!string.IsNullOrEmpty(dateOfBirth))
+            {
+                query = query.Where(p => p.dateOfBirth.ToString().Contains(dateOfBirth));
+            }
+
+            if (!string.IsNullOrEmpty(gender) && Enum.TryParse(gender, true, out Gender genderEnumValue))
+            {
+                query = query.Where(p => p.gender == genderEnumValue);
+            }
+
+
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                switch (sortBy.ToLower())
+                {
+                    case "firstname":
+                        query = query.OrderBy(p => p.firstName.firstName);
+                        break;
+                    case "lastname":
+                        query = query.OrderBy(p => p.lastName.lastName);
+                        break;
+                    case "email":
+                        query = query.OrderBy(p => p.email.email);
+                        break;
+                    case "phonenumber":
+                        query = query.OrderBy(p => p.phoneNumber.phoneNumber);
+                        break;
+                    case "medicalrecordnumber":
+                        query = query.OrderBy(p => p.medicalRecordNumber.medicalRecordNumber);
+                        break;
+                    case "dateofbirth":
+                        query = query.OrderBy(p => p.dateOfBirth.dateOfBirth);
+                        break;
+                    case "gender":
+                        query = query.OrderBy(p => p.gender);
+                        break;
+                    default:
+                        query = query.OrderBy(p => p.firstName.firstName);
+                        break;
+                }
+            }
+
+            var result = query.ToList();
+            var resultDtos = result.Select(s => new PatientDto(s)).ToList();
+
+            return resultDtos;
+        }
+
+        public Task<PatientDto> getPatientByIdAsync(string id)
+        {
+            var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
+            if (patient == null)
+            {
+                throw new Exception("Patient not found.");
+            }
+
+            return Task.FromResult(new PatientDto(patient.Result));
+        }
 
         public async Task<bool> DeletePatientAsync(string id)
         {
@@ -44,7 +147,7 @@ namespace src.Services.Services
             patientRepository.Remove(patient);
             await unitOfWork.CommitAsync();
 
-            await logService.CreateLogAsync("Patient deleted with success;PatientId:" + id, "colocar@emailtoken.aqui"); 
+            await logService.CreateLogAsync("Patient deleted with success;PatientId:" + id, "colocar@emailtoken.aqui");
             return true;
         }
 
@@ -112,28 +215,29 @@ namespace src.Services.Services
         }*/
 
         public async Task<bool> UpdatePatientAsync(string id, PatientDto patientDto)
-        {   
+        {
             bool result;
             List<long> pendingRequestIds = new List<long>();
-            Patient patientTemp = dtoToPatient( patientDto);
+            Patient patientTemp = dtoToPatient(patientDto);
 
             if (patientDto == null)
             {
                 throw new ArgumentNullException(nameof(patientDto), "Patient data is null.");
             }
-            
+
             var patient = await patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
 
-            
+
             if (patient == null)
             {
-               
+
                 throw new Exception("Patient not found.");
             }
-            
+
             Patient patient1 = patient;
-            
-            try{
+
+            try
+            {
                 if (patient1 != null)
                 {
                     foreach (PropertyInfo property in patient1.GetType().GetProperties())
@@ -148,7 +252,7 @@ namespace src.Services.Services
 
                             if (tempValue != null && !tempValue.Equals(originalValue))
                             {
-                                PendingRequest p =  await pendingRequestService.AddPendingRequestAsync(
+                                PendingRequest p = await pendingRequestService.AddPendingRequestAsync(
                                     patient1.medicalRecordNumber.AsString(),
                                     originalValue.ToString(),
                                     tempValue.ToString(),
@@ -160,7 +264,7 @@ namespace src.Services.Services
                         }
                         else
                         {
-                          
+
                             var tempValue = property.GetValue(patientTemp);
                             var originalValue = property.GetValue(patient1);
 
@@ -168,13 +272,13 @@ namespace src.Services.Services
                             {
                                 if (property.PropertyType.IsAssignableFrom(tempValue.GetType()))
                                 {
-                                
+
                                     property.SetValue(patient1, tempValue);
 
-                                   await logService.CreateLogAsync(
-                                        "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
-                                        patient1.email.ToString()
-                                    );
+                                    await logService.CreateLogAsync(
+                                         "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
+                                         patient1.email.ToString()
+                                     );
                                 }
                                 else
                                 {
@@ -182,35 +286,39 @@ namespace src.Services.Services
                                 }
                             }
                         }
-                    }    
-                
-                    string url = buildUrl(pendingRequestIds);
-                    await emailService.SendEmailAsync(patient1.email.ToString(), "Patient data update", url); 
-                }
-               unitOfWork.CommitAsync();
+                    }
 
-            } catch (Exception e){
+                    string url = buildUrl(pendingRequestIds);
+                    await emailService.SendEmailAsync(patient1.email.ToString(), "Patient data update", url);
+                }
+                unitOfWork.CommitAsync();
+
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e.StackTrace);
                 return false;
 
             }
 
-           
+
             return true;
 
-        
+
         }
 
         private string buildUrl(List<long> pendingRequestIds)
         {
             string url = "https://localhost:7258/api/patient/acceptPendingRequests?requestIds=";
-            for(int i = 0; i < pendingRequestIds.Count; i++)
-            {   
-                if(i == pendingRequestIds.Count - 1)
+            for (int i = 0; i < pendingRequestIds.Count; i++)
+            {
+                if (i == pendingRequestIds.Count - 1)
                 {
                     url += pendingRequestIds[i];
                     break;
-                }else{
+                }
+                else
+                {
                     url += pendingRequestIds[i] + ",";
                 }
             }
@@ -232,37 +340,26 @@ namespace src.Services.Services
                 gender = GenderExtensions.FromString(patientDto.Gender),
                 allergiesAndConditions = patientDto.AllergiesAndConditions == null ? null : dtoToAllergiesAndConditions(patientDto.AllergiesAndConditions),
                 appointmentHistory = patientDto.AppointmentHistory == null ? null : new AppointmentHistory()
-             };
+            };
         }
 
         private List<AllergiesAndConditions> dtoToAllergiesAndConditions(List<string> allergiesAndConditions)
-        {   
+        {
             List<AllergiesAndConditions> allergiesAndConditionsList = new List<AllergiesAndConditions>();
             if (allergiesAndConditions == null || allergiesAndConditions.Count == 0)
             {
                 return allergiesAndConditionsList;
             }
             foreach (string allergyOrCondition in allergiesAndConditions)
-            {   
+            {
                 if (!string.IsNullOrEmpty(allergyOrCondition))
                 {
                     allergiesAndConditionsList.Add(new AllergiesAndConditions(allergyOrCondition));
                 }
-                
+
             }
 
             return allergiesAndConditionsList;
-        }
-
-        public Task<PatientDto> GetPatientByIdAsync(string id)
-        {
-             var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
-            if (patient == null)
-            {
-                throw new Exception("Patient not found.");
-            }
-
-            return Task.FromResult(new PatientDto(patient.Result));
         }
 
         public Task<Patient> GetPatientEntityByIdAsync(string id)
@@ -276,24 +373,26 @@ namespace src.Services.Services
             return Task.FromResult(patient.Result);
         }
 
-        public bool AcceptRequests(List<long> requestIds){
+        public bool AcceptRequests(List<long> requestIds)
+        {
 
 
             foreach (long pendingRequest in requestIds)
             {
-                PendingRequest request =  pendingRequestService.GetByIdAsync(new LongId(pendingRequest));
-                if(request == null){
+                PendingRequest request = pendingRequestService.GetByIdAsync(new LongId(pendingRequest));
+                if (request == null)
+                {
                     return false;
                 }
-                
-                Patient p = GetPatientEntityByIdAsync(request.userId).Result ;
-                
+
+                Patient p = GetPatientEntityByIdAsync(request.userId).Result;
+
                 PropertyInfo property = p.GetType().GetProperty(request.attributeName.Split(".")[1]);
                 if (property != null && property.CanWrite)
                 {
                     object value = ConvertToCustomType(request.pendingValue, property.PropertyType);
                     property.SetValue(p, value, null);
-                    logService.CreateLogAsync("PatientId:" + request.userId+";Attribute:" + request.attributeName + ";updated with success;", p.email.email);
+                    logService.CreateLogAsync("PatientId:" + request.userId + ";Attribute:" + request.attributeName + ";updated with success;", p.email.email);
                 }
                 else
                 {
@@ -338,7 +437,7 @@ namespace src.Services.Services
 
             await authService.RegisterNewPatientAsync(email, patientEmail, password);
 
-            Console.WriteLine("Patient Registered in IAM System"); 
+            Console.WriteLine("Patient Registered in IAM System");
 
             await unitOfWork.CommitAsync();
 
