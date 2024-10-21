@@ -1,0 +1,23 @@
+"@startuml Use Case Diagram for US 5.1.12"
+
+left to right direction
+
+actor Admin as admin
+
+usecase "Create Staff Profile" as create
+usecase "Input Staff Details" as input
+usecase "Generate Unique Staff ID" as generate
+usecase "Validate Email is Unique" as validate_email
+usecase "Validate Phone is Unique" as validate_phone
+usecase "Store Profile Securely" as store
+usecase "Role-Based Access Control" as control
+
+admin -- create
+create -- input
+create -- generate
+create -- validate_email
+create -- validate_phone
+create -- store
+store -- control
+
+@enduml
