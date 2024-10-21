@@ -100,7 +100,7 @@ namespace src.Services.Services
             return patientRepository.PatientExists(email, phoneNumber);
         }
 
-        public Task<Patient> GetPatientByIdAsync(int id)
+        /*public Task<Patient> GetPatientByIdAsync(string id)
         {
             var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id.ToString()));
             if (patient == null)
@@ -109,9 +109,9 @@ namespace src.Services.Services
             }
 
             return Task.FromResult(patient.Result);
-        }
+        }*/
 
-        public Task<bool> UpdatePatientAsync(int id, PatientDto patientDto)
+        public async Task<bool> UpdatePatientAsync(string id, PatientDto patientDto)
         {   
             bool result;
             List<long> pendingRequestIds = new List<long>();
@@ -121,56 +121,100 @@ namespace src.Services.Services
             {
                 throw new ArgumentNullException(nameof(patientDto), "Patient data is null.");
             }
+            
+            var patient = await patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
 
-            var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id.ToString()));
-
+            
             if (patient == null)
             {
+               
                 throw new Exception("Patient not found.");
             }
-
-            Patient patient1 = patient.Result;
+            
+            Patient patient1 = patient;
             
             try{
                 if (patient1 != null)
                 {
-                    foreach (PropertyInfo property in patient.GetType().GetProperties())
+                    foreach (PropertyInfo property in patient1.GetType().GetProperties())
                     {
-                        
                         var propertyName = property.Name;
-                        var propertyValue = patient.GetType().Name+"."+ propertyName;
-                        if (sensitiveDataService.isSensitive(propertyValue) )
+                        var propertyValue = patient.GetType().Name + "." + propertyName;
+
+                        if (sensitiveDataService.isSensitive(propertyValue))
                         {
-                            PendingRequest p = pendingRequestService.AddPendingRequest(patient1.medicalRecordNumber.AsString(), property.GetValue(patient1).ToString(),
-                            property.GetValue(patientTemp).ToString(),propertyValue);
+                            var tempValue = property.GetValue(patientTemp);
+                            var originalValue = property.GetValue(patient1);
 
+                            if (tempValue != null && !tempValue.Equals(originalValue))
+                            {
+                                PendingRequest p =  await pendingRequestService.AddPendingRequestAsync(
+                                    patient1.medicalRecordNumber.AsString(),
+                                    originalValue.ToString(),
+                                    tempValue.ToString(),
+                                    propertyValue
+                                );
 
-
-                            pendingRequestIds.Add(p.requestID.Value);
-                            
-                        }else{
-                            property.SetValue(patient1, property.GetValue(patientTemp));
-                            logService.CreateLogAsync("Patient updated with success;PatientId:" + id+ ";Value Changed:"+ property.Name+";NewValue:" + property.GetValue(patientTemp).ToString(), patient1.email.ToString());
+                                pendingRequestIds.Add(p.requestID.Value);
+                            }
                         }
-                    }
-                }
+                        else
+                        {
+                          
+                            var tempValue = property.GetValue(patientTemp);
+                            var originalValue = property.GetValue(patient1);
 
-                     var baseUrl = "https://localhost:5055/api/PendingRequest/AcceptPatientPendingRequests";
-                    var queryString = string.Join("&", pendingRequestIds.Select(id => $"patientIds={id}"));
-                    string url = $"{baseUrl}?{queryString}";
-                    emailService.SendEmailAsync(patient1.email.ToString(), "Patient data update", url); 
+                            if (tempValue != null && !tempValue.Equals(originalValue))
+                            {
+                                if (property.PropertyType.IsAssignableFrom(tempValue.GetType()))
+                                {
+                                
+                                    property.SetValue(patient1, tempValue);
+
+                                   await logService.CreateLogAsync(
+                                        "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
+                                        patient1.email.ToString()
+                                    );
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Type mismatch for property {propertyName}. Expected {property.PropertyType}, but got {tempValue.GetType()}.");
+                                }
+                            }
+                        }
+                    }    
                 
-               
+                    string url = buildUrl(pendingRequestIds);
+                    await emailService.SendEmailAsync(patient1.email.ToString(), "Patient data update", url); 
+                }
+               unitOfWork.CommitAsync();
 
             } catch (Exception e){
-                result = false;
-                return Task.FromResult(result);
+                Console.WriteLine(e.StackTrace);
+                return false;
+
             }
 
-            result = true;
-            return Task.FromResult(result);
+           
+            return true;
 
         
+        }
+
+        private string buildUrl(List<long> pendingRequestIds)
+        {
+            string url = "https://localhost:7258/api/patient/acceptPendingRequests?requestIds=";
+            for(int i = 0; i < pendingRequestIds.Count; i++)
+            {   
+                if(i == pendingRequestIds.Count - 1)
+                {
+                    url += pendingRequestIds[i];
+                    break;
+                }else{
+                    url += pendingRequestIds[i] + ",";
+                }
+            }
+            return url;
         }
 
         private Patient dtoToPatient(PatientDto patientDto)
@@ -192,18 +236,44 @@ namespace src.Services.Services
         }
 
         private List<AllergiesAndConditions> dtoToAllergiesAndConditions(List<string> allergiesAndConditions)
-        {
-            return allergiesAndConditions.Select(a => new AllergiesAndConditions(a)).ToList();
+        {   
+            List<AllergiesAndConditions> allergiesAndConditionsList = new List<AllergiesAndConditions>();
+            if (allergiesAndConditions == null || allergiesAndConditions.Count == 0)
+            {
+                return allergiesAndConditionsList;
+            }
+            foreach (string allergyOrCondition in allergiesAndConditions)
+            {   
+                if (!string.IsNullOrEmpty(allergyOrCondition))
+                {
+                    allergiesAndConditionsList.Add(new AllergiesAndConditions(allergyOrCondition));
+                }
+                
+            }
+
+            return allergiesAndConditionsList;
         }
 
-        Task<PatientDto> IPatientService.GetPatientByIdAsync(int id)
+        public Task<PatientDto> GetPatientByIdAsync(string id)
         {
-            throw new NotImplementedException();
+             var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
+            if (patient == null)
+            {
+                throw new Exception("Patient not found.");
+            }
+
+            return Task.FromResult(new PatientDto(patient.Result));
         }
 
-        public Task<Patient> GetPatientEntityByIdAsync(int id)
+        public Task<Patient> GetPatientEntityByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
+            if (patient == null)
+            {
+                throw new Exception("Patient not found.");
+            }
+
+            return Task.FromResult(patient.Result);
         }
 
         public bool AcceptRequests(List<long> requestIds){
@@ -211,12 +281,12 @@ namespace src.Services.Services
 
             foreach (long pendingRequest in requestIds)
             {
-                PendingRequest request = pendingRequestService.GetByIdAsync(new LongId(pendingRequest));
+                PendingRequest request =  pendingRequestService.GetByIdAsync(new LongId(pendingRequest));
                 if(request == null){
                     return false;
                 }
                 
-                Patient p = GetPatientEntityByIdAsync(int.Parse(request.userId)).Result ;
+                Patient p = GetPatientEntityByIdAsync(request.userId).Result ;
                 
                 PropertyInfo property = p.GetType().GetProperty(request.attributeName.Split(".")[1]);
                 if (property != null && property.CanWrite)

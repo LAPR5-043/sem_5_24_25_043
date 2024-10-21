@@ -15,11 +15,20 @@ namespace Domain.PatientAggregate
     {
         public static Gender FromString(string gender)
         {
-            return gender.ToLower() switch
+            if (string.IsNullOrWhiteSpace(gender))
+            {
+                throw new ArgumentException("Gender value cannot be null or empty");
+            }
+
+            gender = gender.Trim().ToLower();
+
+            Console.WriteLine($"Converting gender string: {gender}"); 
+
+            return gender switch
             {
                 "male" => Gender.Male,
                 "female" => Gender.Female,
-                _ => throw new ArgumentException("Invalid gender value")
+                _ => throw new ArgumentException($"Invalid gender value: {gender}")
             };
         }
     }

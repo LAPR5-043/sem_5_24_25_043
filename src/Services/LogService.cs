@@ -27,7 +27,7 @@ public class LogService : ILogService
         log.timestamp = DateTime.Now;
         
         await _logRepository.AddAsync(log);
-        await unitOfWork.CommitAsync();
+        
         return true;
     }
 

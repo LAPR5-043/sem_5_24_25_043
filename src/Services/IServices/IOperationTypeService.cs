@@ -11,5 +11,6 @@ namespace src.Services.IServices
         Task<ActionResult<IEnumerable<OperationTypeDto>>> getAllOperationTypesAsync();
         Task<ActionResult<IEnumerable<OperationTypeDto>>> getFilteredOperationTypesAsync(string name, string specialization, string status);
         Task<ActionResult<OperationType>> getOperationTypeAsync(string id);
+        Task<bool> editOperationTypeAsync(string id, OperationTypeDto operationType);
     }
 }

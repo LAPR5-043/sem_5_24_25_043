@@ -25,18 +25,19 @@ namespace src.Services.Services
             
         }
 
-        public PendingRequest AddPendingRequest(string userID, string oldValue, string newValue, string type)
+        public async Task<PendingRequest> AddPendingRequestAsync(string userID, string oldValue, string newValue, string type)
         {
             PendingRequest pendingRequest = new PendingRequest();
             pendingRequest.userId = userID;
             pendingRequest.oldValue = oldValue;
             pendingRequest.pendingValue = newValue;
             pendingRequest.attributeName = type;
-            PendingRequest result = pendingRequestRepository.AddAsync(pendingRequest).Result;
-            unitOfWork.CommitAsync();
+            PendingRequest result = await pendingRequestRepository.AddAsync(pendingRequest);
+            unitOfWork.CommitAsync().Wait();
 
             return result;
         }
+
 
         public PendingRequest GetByIdAsync(LongId id)
         {

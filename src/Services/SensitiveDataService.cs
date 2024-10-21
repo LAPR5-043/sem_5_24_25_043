@@ -16,7 +16,7 @@ namespace src.Services.Services
 
         public bool isSensitive(string propertyValue)
         {
-            if (sensitiveData.Contains(propertyValue))
+            if (sensitiveData.Contains(propertyValue.Split(".")[1]))
             {
                 return true;
             }

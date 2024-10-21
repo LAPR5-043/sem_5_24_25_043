@@ -1,6 +1,6 @@
 using src.Domain.Shared;
 
-public class LongId : EntityId
+public class LongId : EntityId,  IComparable<LongId>
 {
     public long Value { get; private set; }
 
@@ -37,5 +37,10 @@ public class LongId : EntityId
     public override string AsString()
     {
         return Value.ToString();
+    }
+    public int CompareTo(LongId other)
+    {
+        if (other == null) return 1;
+        return Value.CompareTo(other.Value);
     }
 }

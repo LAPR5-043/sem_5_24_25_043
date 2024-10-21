@@ -24,15 +24,17 @@ namespace src.Controllers
 
         // GET: api/Staff
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OperationType>>> GetStaffs()
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffs()
         {
-            var operationTypes = await service.getAllStaffAsync();
-            return Ok(operationTypes);
+            var staffs = await service.getAllStaffAsync();
+            List<StaffDto> dtos = new List<StaffDto>();
+
+            return Ok(staffs);
         }
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
         [HttpGet("filtered")]
-        public async Task<ActionResult<IEnumerable<Staff>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
                                                                                 [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);

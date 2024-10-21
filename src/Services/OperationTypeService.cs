@@ -108,5 +108,19 @@ public class OperationTypeService : IOperationTypeService
          return  await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
     }
 
-    
+    public async Task<bool> editOperationTypeAsync(string id, OperationTypeDto operationTypeDTO)
+    {
+        var operationTypeToEdit = await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
+        if (operationTypeToEdit == null)
+        {
+            return false;
+        }
+        operationTypeToEdit.operationTypeName = new OperationTypeName(operationTypeDTO.OperationTypeName);
+        operationTypeToEdit.estimatedDuration = new EstimatedDuration(int.Parse(operationTypeDTO.EstimatedDurationHours), int.Parse(operationTypeDTO.EstimatedDurationMinutes));
+        operationTypeToEdit.isActive = operationTypeDTO.IsActive;
+        operationTypeToEdit.specializations = operationTypeDTO.Specializations.ToDictionary(s => s.Key, s => int.Parse(s.Value));
+        await operationTypeRepository.UpdateAsync(operationTypeToEdit);
+        await unitOfWork.CommitAsync();
+        return true;
+    }
 }

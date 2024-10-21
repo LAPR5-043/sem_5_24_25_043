@@ -24,6 +24,8 @@ public class AppContext : DbContext
     {
     }
 
+    
+
     public DbSet<Staff> Staffs { get; set; }
     public DbSet<Log> Logs { get; set; }
     public DbSet<PendingRequest> PendingRequests { get; set; }
@@ -34,8 +36,6 @@ public class AppContext : DbContext
     public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
     //public DbSet<Specialization> Specializations { get; set; } = null!;
     //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
-
-  
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

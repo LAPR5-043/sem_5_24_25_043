@@ -68,7 +68,7 @@ namespace src.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPatientById(int id)
+        public async Task<IActionResult> GetPatientById(string id)
         {
             var patient = await service.GetPatientByIdAsync(id);
             if (patient != null)
@@ -81,7 +81,7 @@ namespace src.Controllers
 
         [HttpPut("personalData/{id}")]
 
-        public async Task<IActionResult> UpdatePatient(int id, [FromBody] PatientDto patientDto)
+        public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)
         {
             if (patientDto == null)
             {
@@ -104,15 +104,26 @@ namespace src.Controllers
             return NotFound(new { message = "Patient not found." });
         }
 
-        [HttpPut]
-        public async Task<IActionResult> AcceptPatientPendingRequests( [FromBody] List<long> requestIds)
+        [HttpPut("acceptPendingRequests")]
+        public async Task<IActionResult> AcceptPatientPendingRequests([FromQuery] string requestIds)
         {
             if (requestIds == null)
             {
             return BadRequest(new { message = "Invalid pending requests data." });
+            }   
+            
+
+            List<long> requests = new List<long>();
+
+            foreach (var requestId in requestIds.Split(','))
+            {
+                if (long.TryParse(requestId, out long id))
+                {
+                    requests.Add(id);
+                }
             }
 
-            var accepted = service.AcceptRequests(requestIds);
+            var accepted = service.AcceptRequests(requests);
             if (accepted)
             {
             return Ok(new { message = "Patient requests accepted successfully." });
