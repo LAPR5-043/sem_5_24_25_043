@@ -57,21 +57,41 @@ public class StaffDto
     /// </summary>
     public string? SpecializationID { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StaffDto"/> class.
+    /// </summary>
     public StaffDto(Staff staff)
     {
 
-        this.StaffID = staff.staffID.AsString();
-        this.FirstName = staff.firstName.ToString();
-        this.LastName = staff.lastName.ToString();
-        this.Email = staff.email.ToString();
-        this.PhoneNumber = staff.phoneNumber.ToString();
-        this.LicenseNumber = staff.licenseNumber.ToString();
-        this.IsActive = staff.isActive;
-        this.AvailabilitySlots = generateAvailabilitySlots(staff.availabilitySlots);
-        this.SpecializationID = staff.specializationID;
+        if (staff == null)
+        {
+            throw new ArgumentNullException(nameof(staff), "Staff cannot be null.");
+        }
+
+        StaffID = staff.staffID.AsString();
+        FirstName = staff.firstName.ToString();
+        LastName = staff.lastName.ToString();
+        Email = staff.email.ToString();
+        PhoneNumber = staff.phoneNumber.ToString();
+        LicenseNumber = staff.licenseNumber.ToString();
+        IsActive = staff.isActive;
+        AvailabilitySlots = generateAvailabilitySlots(staff.availabilitySlots);
+        SpecializationID = staff.specializationID;
 
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StaffDto"/> class.
+    /// </summary>
+    /// <param name="StaffID"></param>
+    /// <param name="FirstName"></param>
+    /// <param name="LastName"></param>
+    /// <param name="Email"></param>
+    /// <param name="PhoneNumber"></param>
+    /// <param name="LicenseNumber"></param>
+    /// <param name="IsActive"></param>
+    /// <param name="AvailabilitySlots"></param>
+    /// <param name="SpecializationID"></param>
     [JsonConstructor]
     public StaffDto(string StaffID, string FirstName, string LastName, string Email, string PhoneNumber, string LicenseNumber, bool IsActive, List<String> AvailabilitySlots, string SpecializationID)
     {
