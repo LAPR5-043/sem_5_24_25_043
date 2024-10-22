@@ -24,7 +24,7 @@ public class MedicalRecordNumberGenerator : ValueGenerator<MedicalRecordNumber>
 
         MedicalRecordNumber medicalRecordNumber = new MedicalRecordNumber(newNumber);
 
-        entry.Property("medicalRecordNumber").CurrentValue = medicalRecordNumber;
+        entry.Property("MedicalRecordNumber").CurrentValue = medicalRecordNumber;
 
         return medicalRecordNumber;
     }

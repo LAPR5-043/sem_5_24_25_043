@@ -21,8 +21,6 @@ namespace Domain.PatientAggregate
         public PatientPhoneNumber(string phoneNumber)
         {
 
-            Console.WriteLine($"Validating phone number: '{phoneNumber}'");
-
             if (!Regex.IsMatch(phoneNumber, @"^\+\d{1,3}\d{9,15}$"))
             {
                 throw new ArgumentException("Phone number is invalid");
