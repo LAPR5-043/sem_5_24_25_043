@@ -56,6 +56,7 @@ namespace src.Controllers
             {
                 return Unauthorized();
             }
+            
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {

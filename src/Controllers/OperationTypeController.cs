@@ -30,7 +30,7 @@ namespace src.Controllers
         
         [HttpGet]
        // [Authorize]
-        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getOperationTypes()
+        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetOperationTypes()
         {
             var operationTypes = await service.getAllOperationTypesAsync();
             return Ok(operationTypes);
@@ -38,14 +38,14 @@ namespace src.Controllers
 
         // GET: api/OperationType/Filters?name=&specialization=&status=
         [HttpGet("Filtered")]
-        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
+        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
         {
             var operationTypes = await service.getFilteredOperationTypesAsync(name, specialization, status);
             return Ok(operationTypes);
         }
         // PUT: api/OperationType/ChangeStatus/Knee Surgery
         [HttpPut("/ChangeStatus/{id}")]
-        public async Task<IActionResult> deactivateOperationType(string id)
+        public async Task<IActionResult> DeactivateOperationType(string id)
         {
             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
 
@@ -66,6 +66,13 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> createOperationType([FromBody] OperationTypeDto operationType)
         {
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
+
             if (operationType == null)
             {
                 return BadRequest(new { message = "Invalid operation type data." });

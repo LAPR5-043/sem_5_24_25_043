@@ -13,6 +13,6 @@ namespace src.Services.IServices
         Task<StaffDto> CreateStaffAsync(StaffDto staffDto);
         Task<StaffDto> GetStaffAsync(string id);
         Task<bool> UpdateIsActiveAsync(string id);
-        string GetIdFromEmailAsync(string doctorEmail);
+        Task<string> GetIdFromEmailAsync(string doctorEmail);
     }
 }
