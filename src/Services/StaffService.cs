@@ -149,7 +149,7 @@ public class StaffService : IStaffService
         return new StaffDto(staff);
     }
 
-    public async Task<bool> UpdateIsActiveAsync(string id)
+    public async Task<bool> UpdateIsActiveAsync(string id, String adminEmail)
     {
         var staff = await staffRepository.GetByIdAsync(new StaffID(id));
         if (staff == null)
@@ -159,9 +159,10 @@ public class StaffService : IStaffService
         staff.isActive = !staff.isActive;
         staffRepository.UpdateAsync(staff);
         await unitOfWork.CommitAsync();
-        await logService.CreateLogAsync(staffDeactivateLog1 + staffDeactivateLog2 + staff.staffID + staffDeactivateLog3 + staff.isActive, "colocar@emailtoken.aqui");
+        await logService.CreateLogAsync(staffDeactivateLog1 + staffDeactivateLog2 + staff.staffID + staffDeactivateLog3 + staff.isActive, adminEmail);
         return true;
     }
+
 
     public async Task<string> GetIdFromEmailAsync(string doctorEmail)
     {
