@@ -12,31 +12,18 @@ namespace Domain.AppointmentAggregate
         /// The date and time of the appointment.
         /// </summary>
         public DateTime Value { get; }
-        /// <summary>
-        /// Default constructor required by Entity Framework.
-        /// </summary>
-        /// <param name="day"></param>
-        /// <param name="month"></param>
-        /// <param name="year"></param>
-        /// <param name="hour"></param>
-        /// <param name="minute"></param>
-        /// <exception cref="ArgumentException"></exception>
-        public DateAndTime(int day, int month, int year, int hour, int minute)
+
+        // Parameterless constructor for EF Core
+        private DateAndTime() { }
+
+        public DateAndTime(DateTime value)
         {
-            var date = new DateTime(year, month, day, hour, minute, 0, DateTimeKind.Utc);
-
-            if (date == DateTime.MinValue)
-            {
-                throw new ArgumentException("Date and time cannot be empty");
-            }
-
-            this.Value = date;
+            Value = value;
         }
+
         /// <summary>
         /// Override of the equality operator.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -45,20 +32,20 @@ namespace Domain.AppointmentAggregate
             }
 
             var other = (DateAndTime)obj;
-            return Value == other.Value;
+            return Value.Equals(other.Value);
         }
+
         /// <summary>
         /// Override of the GetHashCode method.
         /// </summary>
-        /// <returns></returns>
         public override int GetHashCode()
         {
             return Value.GetHashCode();
         }
+
         /// <summary>
         /// Override of the ToString method.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return Value.ToString("yyyy-MM-dd HH:mm:ss");

@@ -41,14 +41,15 @@ namespace src.Domain.AppointmentAggregate
         /// <param name="hour"></param>
         /// <param name="minute"></param>
         /// <param name="status"></param>
-        public Appointment(int requestID, int roomID, int day, int month, int year, int hour, int minute, string status)
+        /*public Appointment(string ID, int requestID, int roomID, int day, int month, int year, int hour, int minute, string status)
         {
-            this.appointmentID = new AppointmentID(Guid.NewGuid());
+            this.appointmentID = new AppointmentID(ID);
             this.requestID = requestID;
             this.roomID = roomID;
-            this.dateAndTime = new DateAndTime(day, month, year, hour, minute);
+            this.dateAndTime = new DateAndTime(new DateTime(year, month, day, hour, minute, 0));
             this.status = StatusExtensions.FromString(status);
-        }
+        }*/
+
         /// <summary>
         /// Change the status of the appointment.
         /// </summary>
@@ -57,6 +58,7 @@ namespace src.Domain.AppointmentAggregate
         {
             this.status = StatusExtensions.FromString(status);
         }
+
         /// <summary>
         /// Change the date and time of the appointment.
         /// </summary>
@@ -67,8 +69,9 @@ namespace src.Domain.AppointmentAggregate
         /// <param name="minute"></param>
         public void ChangeDateAndTime(int day, int month, int year, int hour, int minute)
         {
-            this.dateAndTime = new DateAndTime(day, month, year, hour, minute);
+            this.dateAndTime = new DateAndTime(new DateTime(year, month, day, hour, minute, 0));
         }
+
         /// <summary>
         /// Change the room of the appointment.
         /// </summary>

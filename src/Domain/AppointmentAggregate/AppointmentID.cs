@@ -9,16 +9,25 @@ namespace sem_5_24_25_043.Domain.AppointmentAggregate
     /// </summary>
     public class AppointmentID : EntityId 
     {
-        public Guid ID { get; }
+        public string ID { get; }
 
         /// <summary>
         /// Default constructor required by Entity Framework.
         /// </summary>
         /// <param name="ID"></param>
-        public AppointmentID(Guid ID) : base(ID)
+        public AppointmentID(string ID) : base(ID)
         {
             this.ID = ID;
         }
+
+        /// <summary>
+        /// Parameterless constructor required by Entity Framework.
+        /// </summary>
+        protected AppointmentID() : base(null)
+        {
+        }
+
+  
         /// <summary>
         /// Override of the equality operator.
         /// </summary>
@@ -58,12 +67,12 @@ namespace sem_5_24_25_043.Domain.AppointmentAggregate
         /// <exception cref="NotImplementedException"></exception>
         protected override object createFromString(string text)
         {
-            throw new NotImplementedException();
+            return new String(text);
         }
 
         public override string AsString()
         {
-            throw new NotImplementedException();
+            return ID;
         }
     }
 }
