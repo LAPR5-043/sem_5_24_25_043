@@ -27,11 +27,17 @@ namespace src.Controllers
         }
 
         // GET: api/OperationType
-        
         [HttpGet]
-       // [Authorize]
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetOperationTypes()
         {
+
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
+
             var operationTypes = await service.getAllOperationTypesAsync();
             return Ok(operationTypes);
         }
@@ -40,9 +46,17 @@ namespace src.Controllers
         [HttpGet("Filtered")]
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
         {
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
+
             var operationTypes = await service.getFilteredOperationTypesAsync(name, specialization, status);
             return Ok(operationTypes);
         }
+        
         // PUT: api/OperationType/ChangeStatus/Knee Surgery
         [HttpPut("/ChangeStatus/{id}")]
         public async Task<IActionResult> DeactivateOperationType(string id)
@@ -63,7 +77,7 @@ namespace src.Controllers
 
         // POST: api/OperationType/Create
         [HttpPost("Create")]
-        public async Task<IActionResult> createOperationType([FromBody] OperationTypeDto operationType)
+        public async Task<IActionResult> CreateOperationType([FromBody] OperationTypeDto operationType)
         {
             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
 
@@ -77,9 +91,11 @@ namespace src.Controllers
                 return BadRequest(new { message = "Invalid operation type data." });
             }
 
+            var adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
+
             try
             {
-                var result = await service.createOperationTypeAsync(operationType);
+                var result = await service.createOperationTypeAsync(operationType, adminEmail);
 
                 if (result)
                 {
@@ -95,7 +111,7 @@ namespace src.Controllers
         }
    
         [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> editOperationType(string id, [FromBody] OperationTypeDto operationType)
+        public async Task<IActionResult> EditOperationType(string id, [FromBody] OperationTypeDto operationType)
         {
             
             if (operationType == null)

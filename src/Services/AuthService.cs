@@ -138,6 +138,4 @@ public class AuthService
         return jwtToken.Claims.Where(claim => claim.Type == "cognito:groups").Select(claim => claim.Value);
     }
 
-
-
 }
