@@ -12,7 +12,7 @@ namespace src.Controllers
     [ApiController]
 
     public class PatientController : ControllerBase
-    {   
+    {
         /// <summary>
         /// Patient service
         /// </summary>
@@ -26,13 +26,47 @@ namespace src.Controllers
             this.service = service;
         }
 
-
-        // GET: api/Patient
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatients()
+        /// <summary>
+        /// Create a new patient
+        /// </summary>
+        /// <param name="patientDto"></param>
+        /// <returns></returns>
+        // POST: api/Patient/Create
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
         {
-            var operationTypes = await service.GetAllPatientsAsync();
-            return Ok(operationTypes);
+            if (patientDto == null)
+            {
+                return BadRequest(new { message = "Invalid patient data." });
+            }
+
+            var createdPatient = await service.CreatePatientAsync(patientDto);
+            if (createdPatient != null)
+            {
+                return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
+            }
+
+            return StatusCode(500, new { message = "An error occurred while creating the patient." });
+        }
+
+        [HttpPost("signin-patient")]
+        public async Task<ActionResult<string>> SignInPatientAsync(string email, string patientEmail, string password)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(patientEmail) || string.IsNullOrEmpty(password))
+            {
+                return BadRequest("Email, patient email, and password must be provided.");
+            }
+
+            try
+            {
+                await service.RegisterNewPatientIAMAsync(email, patientEmail, password);
+                return Ok(new { message = "Patient signed in successfully." });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if necessary
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
@@ -74,50 +108,6 @@ namespace src.Controllers
             }
             return NotFound(new { message = "Patient not found." });
         }
-
-        [HttpPost("signin-patient")]
-        public async Task<ActionResult<string>> SignInPatientAsync(string email, string patientEmail, string password)
-        {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(patientEmail) || string.IsNullOrEmpty(password))
-            {
-                return BadRequest("Email, patient email, and password must be provided.");
-            }
-
-            try
-            {
-                await service.RegisterNewPatientIAMAsync(email, patientEmail, password);
-                return Ok(new { message = "Patient signed in successfully." });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (ex) here if necessary
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
-        }
-
-        /// <summary>
-        /// Create a new patient
-        /// </summary>
-        /// <param name="patientDto"></param>
-        /// <returns></returns>
-        // POST: api/Patient/Create
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
-        {
-            if (patientDto == null)
-            {
-                return BadRequest(new { message = "Invalid patient data." });
-            }
-
-            var createdPatient = await service.CreatePatientAsync(patientDto);
-            if (createdPatient != null)
-            {
-                return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
-            }
-
-            return StatusCode(500, new { message = "An error occurred while creating the patient." });
-        }
-
 
         [HttpPut("personalData/{id}")]
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)
