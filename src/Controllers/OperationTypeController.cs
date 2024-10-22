@@ -62,7 +62,6 @@ namespace src.Controllers
         }
 
         // POST: api/OperationType/Create
-        [Authorize]
         [HttpPost("Create")]
         public async Task<IActionResult> createOperationType([FromBody] OperationTypeDto operationType)
         {
@@ -79,15 +78,15 @@ namespace src.Controllers
             }
 
             var result = await service.createOperationTypeAsync(operationType);
+
             if (result)
             {
                 return Ok(new { message = "Operation type created successfully." });
             }
             return StatusCode(500, new { message = "An error occurred while creating the operation type." });
         }
-        [Authorize]
+   
         [HttpPatch("edit/{id}")]
-        
         public async Task<IActionResult> editOperationType(string id, [FromBody] OperationTypeDto operationType)
         {
             
