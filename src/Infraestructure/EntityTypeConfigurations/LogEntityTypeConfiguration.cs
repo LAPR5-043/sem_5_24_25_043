@@ -28,7 +28,9 @@ public class LogEntityTypeConfiguration : IEntityTypeConfiguration<Log>
                     v => v.AsString(),        
                     v => new LongId(long.Parse(v))
                 )
-                .IsRequired();
+                .HasValueGenerator<LongId2Generator>()
+                .IsRequired()
+                .ValueGeneratedOnAdd();
             
             builder.Property(t => t.action)
                 .IsRequired();

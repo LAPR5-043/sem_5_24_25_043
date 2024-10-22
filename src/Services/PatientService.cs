@@ -286,6 +286,7 @@ namespace src.Services.Services
                                          "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
                                          patient1.email.ToString()
                                      );
+                                     await unitOfWork.CommitAsync();
                                 }
                                 else
                                 {
@@ -298,7 +299,7 @@ namespace src.Services.Services
                     string url = buildUrl(pendingRequestIds);
                     await emailService.SendEmailAsync(patient1.email.ToString(), "Patient data update", url);
                 }
-                unitOfWork.CommitAsync();
+                await unitOfWork.CommitAsync();
 
             }
             catch (Exception e)

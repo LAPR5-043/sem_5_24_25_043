@@ -4,24 +4,24 @@ using System.Text.Json.Serialization;
 public class StaffDto
 {
 
-    public string StaffID { get; set; }
+    public string? StaffID { get; set; }
 
-    public string FirstName { get; set; }
+    public string? FirstName { get; set; }
 
-    public string LastName { get; set; }
+    public string? LastName { get; set; }
 
-    public string FullName { get; set; }
+    public string? FullName { get; set; }
 
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
-    public string LicenseNumber { get; set; }
+    public string? LicenseNumber { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
-    public List<String> AvailabilitySlots { get; set; }
-    public string SpecializationID { get; set; }
+    public List<String>? AvailabilitySlots { get; set; }
+    public string? SpecializationID { get; set; }
 
     public StaffDto(Staff staff){
 

@@ -12,8 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241019202959_AddSpecializations")]
-    partial class AddSpecializations
+    [Migration("20241022122924_ResetDB")]
+    partial class ResetDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,62 @@ namespace sem_5_24_25_043.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.OperationRequestAggregate.OperationRequest", b =>
+                {
+                    b.Property<string>("operationRequestID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("deadlineDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("doctorID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("operationTypeID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("patientID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("priority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("operationRequestID");
+
+                    b.ToTable("OperationRequests", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            operationRequestID = "1",
+                            Id = "1",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "s202400001",
+                            operationTypeID = "Knee Surgery",
+                            patientID = 1,
+                            priority = "Emergency"
+                        },
+                        new
+                        {
+                            operationRequestID = "2",
+                            Id = "2",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "s202400002",
+                            operationTypeID = "Heart Surgery",
+                            patientID = 2,
+                            priority = "Effective"
+                        });
+                });
 
             modelBuilder.Entity("Domain.PatientAggregate.Patient", b =>
                 {
@@ -155,6 +211,7 @@ namespace sem_5_24_25_043.Migrations
 
                     b.Property<string>("Id")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("estimatedDuration")
@@ -189,6 +246,41 @@ namespace sem_5_24_25_043.Migrations
                             isActive = true,
                             specializations = "{\"Orthopedics\":2}"
                         });
+                });
+
+            modelBuilder.Entity("PendingRequest", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("attributeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("oldValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("pendingValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("requestID")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("userId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("requestID")
+                        .IsUnique();
+
+                    b.ToTable("PendingRequests", (string)null);
                 });
 
             modelBuilder.Entity("Staff", b =>
@@ -248,6 +340,36 @@ namespace sem_5_24_25_043.Migrations
                         .IsUnique();
 
                     b.ToTable("Staffs", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "D202400001",
+                            availabilitySlots = "",
+                            email = "D202400001@medopt.com",
+                            firstName = "John",
+                            fullName = "John,Doe",
+                            isActive = true,
+                            lastName = "Doe",
+                            licenseNumber = "123456",
+                            phoneNumber = "919919919",
+                            specializationID = "Cardiology",
+                            staffID = "D202400001"
+                        },
+                        new
+                        {
+                            Id = "D202400011",
+                            availabilitySlots = "",
+                            email = "D202400011@medopt.com",
+                            firstName = "Carlos",
+                            fullName = "Carlos,Moedas",
+                            isActive = true,
+                            lastName = "Moedas",
+                            licenseNumber = "121236",
+                            phoneNumber = "919911319",
+                            specializationID = "Orthopedics",
+                            staffID = "D202400011"
+                        });
                 });
 #pragma warning restore 612, 618
         }

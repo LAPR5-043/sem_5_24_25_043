@@ -7,7 +7,7 @@
 namespace sem_5_24_25_043.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSpecializations : Migration
+    public partial class ResetDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,23 @@ namespace sem_5_24_25_043.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Logs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OperationRequests",
+                columns: table => new
+                {
+                    operationRequestID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    patientID = table.Column<int>(type: "int", nullable: false),
+                    doctorID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    operationTypeID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    deadlineDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    priority = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OperationRequests", x => x.operationRequestID);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +82,22 @@ namespace sem_5_24_25_043.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PendingRequests",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    requestID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    userId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    attributeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    pendingValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    oldValue = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PendingRequests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Staffs",
                 columns: table => new
                 {
@@ -86,6 +119,15 @@ namespace sem_5_24_25_043.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "OperationRequests",
+                columns: new[] { "operationRequestID", "Id", "deadlineDate", "doctorID", "operationTypeID", "patientID", "priority" },
+                values: new object[,]
+                {
+                    { "1", "1", "01/01/2025 00:00:00", "s202400001", "Knee Surgery", 1, "Emergency" },
+                    { "2", "2", "01/01/2025 00:00:00", "s202400002", "Heart Surgery", 2, "Effective" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "OperationTypes",
                 columns: new[] { "operationTypeName", "Id", "estimatedDuration", "isActive", "specializations" },
                 values: new object[,]
@@ -101,6 +143,15 @@ namespace sem_5_24_25_043.Migrations
                 {
                     { "1", "1", "[]", "{}", "1/1/1999", "john@email.com", "{\"name\":\"Jane\",\"phoneNumber\":\"919919919\"}", "John", "John Doe", "Male", "Doe", "919919919" },
                     { "2", "2", "[]", "{}", "1/1/1999", "Jane@email.com", "{\"name\":\"Jane\",\"phoneNumber\":\"919999119\"}", "Jane", "Jane Does", "Male", "Does", "919991919" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Staffs",
+                columns: new[] { "Id", "availabilitySlots", "email", "firstName", "fullName", "isActive", "lastName", "licenseNumber", "phoneNumber", "specializationID", "staffID" },
+                values: new object[,]
+                {
+                    { "D202400001", "", "D202400001@medopt.com", "John", "John,Doe", true, "Doe", "123456", "919919919", "Cardiology", "D202400001" },
+                    { "D202400011", "", "D202400011@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "121236", "919911319", "Orthopedics", "D202400011" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -119,6 +170,12 @@ namespace sem_5_24_25_043.Migrations
                 name: "IX_Patients_phoneNumber",
                 table: "Patients",
                 column: "phoneNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PendingRequests_requestID",
+                table: "PendingRequests",
+                column: "requestID",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -147,10 +204,16 @@ namespace sem_5_24_25_043.Migrations
                 name: "Logs");
 
             migrationBuilder.DropTable(
+                name: "OperationRequests");
+
+            migrationBuilder.DropTable(
                 name: "OperationTypes");
 
             migrationBuilder.DropTable(
                 name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "PendingRequests");
 
             migrationBuilder.DropTable(
                 name: "Staffs");

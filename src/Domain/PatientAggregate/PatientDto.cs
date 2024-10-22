@@ -12,63 +12,63 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Gets or sets the medical record number of the patient.
         /// </summary>
-        public string MedicalRecordNumber { get; set; }
+        public string? MedicalRecordNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the first name of the patient.
         /// </summary>
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name of the patient.
         /// </summary>
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the full name of the patient.
         /// </summary>
-        public string FullName => $"{FirstName} {LastName}";
+        public string? FullName => $"{FirstName} {LastName}";
 
         /// <summary>
         /// Gets or sets the email of the patient.
         /// </summary>
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>
         /// Gets or sets the phone number of the patient.
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the emergency contact.
         /// </summary>
-        public string EmergencyContactName { get; set; }
+        public string? EmergencyContactName { get; set; }
 
         /// <summary>
         /// Gets or sets the phone number of the emergency contact.
         /// </summary>
-        public string EmergencyContactPhoneNumber { get; set; }
+        public string? EmergencyContactPhoneNumber { get; set; }
 
-        public string DayOfBirth { get; set; }
+        public string? DayOfBirth { get; set; }
 
-        public string MonthOfBirth { get; set; }
+        public string? MonthOfBirth { get; set; }
 
-        public string YearOfBirth { get; set; }
+        public string? YearOfBirth { get; set; }
 
         /// <summary>
         /// Gets or sets the gender of the patient.
         /// </summary>
-        public string Gender { get; set; }
+        public string? Gender { get; set; }
 
         /// <summary>
         /// Gets or sets the list of allergies and conditions of the patient.
         /// </summary>
-        public List<string> AllergiesAndConditions { get; set; }
+        public List<string>? AllergiesAndConditions { get; set; }
 
         /// <summary>
         /// Gets or sets the appointment history of the patient.
         /// </summary>
-        public List<string> AppointmentHistory { get; set; }
+        public List<string>? AppointmentHistory { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientDto"/> class.

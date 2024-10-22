@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 using AppContext = src.Models.AppContext;
 
 
-public class LongIDGenerator : ValueGenerator<LongId>
+public class LongId2Generator : ValueGenerator<LongId>
 {
     public override LongId Next(EntityEntry entry)
     {
@@ -19,8 +19,8 @@ public class LongIDGenerator : ValueGenerator<LongId>
         var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.AsString()) + 1 : 1;
         LongId longID = new LongId(sequentialNumber);
 
-        entry.Property(nameof(Log.Id)).CurrentValue = longID  ;
 
+        entry.Property(nameof(Log.logId)).CurrentValue = longID  ;
 
         context.SaveChanges();
 
