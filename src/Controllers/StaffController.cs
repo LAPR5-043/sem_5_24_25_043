@@ -43,15 +43,6 @@ namespace src.Controllers
             return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
         }
 
-        // GET: api/Staff
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffs()
-        {
-            var staffs = await service.getAllStaffAsync();
-            List<StaffDto> dtos = new List<StaffDto>();
-
-            return Ok(staffs);
-        }
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
         [HttpGet("filtered")]
