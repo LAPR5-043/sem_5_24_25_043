@@ -59,6 +59,12 @@ namespace src.Controllers
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
                                                                                 [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {
@@ -66,7 +72,7 @@ namespace src.Controllers
             }
             
            
-            Console.WriteLine(AuthService.GetInternalEmailFromToken(HttpContext));
+            
             return Ok(staff);
         }
 
