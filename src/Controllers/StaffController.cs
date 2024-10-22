@@ -43,15 +43,6 @@ namespace src.Controllers
             return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
         }
 
-        // GET: api/Staff
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffs()
-        {
-            var staffs = await service.getAllStaffAsync();
-            List<StaffDto> dtos = new List<StaffDto>();
-
-            return Ok(staffs);
-        }
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
         [HttpGet("filtered")]
@@ -59,6 +50,12 @@ namespace src.Controllers
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
                                                                                 [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {
@@ -66,7 +63,7 @@ namespace src.Controllers
             }
             
            
-            Console.WriteLine(AuthService.GetInternalEmailFromToken(HttpContext));
+            
             return Ok(staff);
         }
 

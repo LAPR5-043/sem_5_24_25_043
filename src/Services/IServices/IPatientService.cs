@@ -9,7 +9,7 @@ namespace src.Services.IServices
         Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy);
         Task<PatientDto> GetPatientByIdAsync(string id);
 
-        Task<bool> DeletePatientAsync(string id);
+        Task<bool> DeletePatientAsync(string id, string adminEmail);
 
         Task<PatientDto> CreatePatientAsync(PatientDto patientDto);
 

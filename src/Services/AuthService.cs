@@ -129,6 +129,15 @@ public class AuthService
     var handler = new JwtSecurityTokenHandler();
     var jwtToken = handler.ReadJwtToken(token);
     return jwtToken.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-    
 }
+    public static IEnumerable<string> GetGroupsFromToken(HttpContext httpContext)
+    {
+        var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        return jwtToken.Claims.Where(claim => claim.Type == "cognito:groups").Select(claim => claim.Value);
+    }
+    
+
+
 }

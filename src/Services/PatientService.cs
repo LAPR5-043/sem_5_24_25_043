@@ -124,7 +124,7 @@ namespace src.Services.Services
             return Task.FromResult(new PatientDto(patient.Result));
         }
 
-        public async Task<bool> DeletePatientAsync(string id)
+        public async Task<bool> DeletePatientAsync(string id, string adminEmail)
         {
             var patient = await patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
             if (patient == null)
@@ -134,7 +134,7 @@ namespace src.Services.Services
             patientRepository.Remove(patient);
             await unitOfWork.CommitAsync();
 
-            await logService.CreateLogAsync("Patient deleted with success;PatientId:" + id, "colocar@emailtoken.aqui");
+            await logService.CreateLogAsync("Patient deleted with success;PatientId:" + id, adminEmail);
             return true;
         }
 

@@ -1,5 +1,6 @@
 using Domain.PatientAggregate;
 using Microsoft.AspNetCore.Mvc;
+using sem_5_24_25_043;
 using src.Services.IServices;
 using src.Services.Services;
 
@@ -101,7 +102,14 @@ namespace src.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(string id)
         {
-            var result = await service.DeletePatientAsync(id);
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+            string adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
+            var result = await service.DeletePatientAsync(id, adminEmail);
             if (result)
             {
                 return Ok(new { message = "Patient deleted successfully." });
