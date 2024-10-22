@@ -58,7 +58,7 @@ namespace src.Services
         {
 
             // Check if the doctor is the one that created the Operation Request
-            var doctorID = staffService.GetIdFromEmailAsync(doctorEmail);
+            var doctorID = await staffService.GetIdFromEmailAsync(doctorEmail);
 
             OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
 
