@@ -28,7 +28,9 @@ public class StaffRepository : BaseRepository<Staff, StaffID>, IStaffRepository
 
     public async Task<Staff> GetStaffByEmail(string doctorEmail)
     {
-        return (await context.Staffs.FirstOrDefaultAsync(s => s.email.email == doctorEmail))!;
+        return context.Staffs
+            .AsEnumerable()
+            .FirstOrDefault(s => s.email.email == doctorEmail)!;
     }
 }
 

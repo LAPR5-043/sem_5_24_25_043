@@ -77,12 +77,20 @@ namespace src.Controllers
                 return BadRequest(new { message = "Invalid operation type data." });
             }
 
-            var result = await service.createOperationTypeAsync(operationType);
-
-            if (result)
+            try
             {
-                return Ok(new { message = "Operation type created successfully." });
+                var result = await service.createOperationTypeAsync(operationType);
+
+                if (result)
+                {
+                    return Ok(new { message = "Operation type created successfully." });
+                }
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+
             return StatusCode(500, new { message = "An error occurred while creating the operation type." });
         }
    
