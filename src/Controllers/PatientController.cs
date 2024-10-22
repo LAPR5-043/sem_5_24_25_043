@@ -5,13 +5,22 @@ using src.Services.Services;
 
 namespace src.Controllers
 {
+    /// <summary>
+    /// Patient controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
 
     public class PatientController : ControllerBase
-    {
+    {   
+        /// <summary>
+        /// Patient service
+        /// </summary>
         private readonly IPatientService service;
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="service"></param>
         public PatientController(IPatientService service)
         {
             this.service = service;
@@ -22,7 +31,7 @@ namespace src.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PatientDto>>> getPatients()
         {
-            var operationTypes = await service.getAllPatientsAsync();
+            var operationTypes = await service.GetAllPatientsAsync();
             return Ok(operationTypes);
         }
 
@@ -31,7 +40,7 @@ namespace src.Controllers
         public async Task<ActionResult<IEnumerable<PatientDto>>> getPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
                                                                         [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
         {
-            var patient = await service.getPatientsFilteredAsync(firstName, lastName, email, phoneNumber, medicalRecordNumber, dateOfBirth, gender, sortBy);
+            var patient = await service.GetPatientsFilteredAsync(firstName, lastName, email, phoneNumber, medicalRecordNumber, dateOfBirth, gender, sortBy);
             if (patient == null)
             {
                 return NotFound();
@@ -42,9 +51,9 @@ namespace src.Controllers
 
         // GET: api/Patient/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> getPatientById(string id)
+        public async Task<IActionResult> GetPatientById(string id)
         {
-            var patient = await service.getPatientByIdAsync(id);
+            var patient = await service.GetPatientByIdAsync(id);
             if (patient == null)
             {
                 return NotFound(new { message = "Patient not found." });
@@ -86,7 +95,11 @@ namespace src.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Create a new patient
+        /// </summary>
+        /// <param name="patientDto"></param>
+        /// <returns></returns>
         // POST: api/Patient/Create
         [HttpPost("Create")]
         public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
@@ -99,7 +112,7 @@ namespace src.Controllers
             var createdPatient = await service.CreatePatientAsync(patientDto);
             if (createdPatient != null)
             {
-                return CreatedAtAction(nameof(getPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
+                return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
             }
 
             return StatusCode(500, new { message = "An error occurred while creating the patient." });
@@ -107,7 +120,6 @@ namespace src.Controllers
 
 
         [HttpPut("personalData/{id}")]
-
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)
         {
             if (patientDto == null)
@@ -115,7 +127,7 @@ namespace src.Controllers
                 return BadRequest(new { message = "Invalid patient data." });
             }
 
-            var patientExists = await service.getPatientByIdAsync(id);
+            var patientExists = await service.GetPatientByIdAsync(id);
             if (patientExists == null)
             {
                 return NotFound(new { message = "Patient not found." });

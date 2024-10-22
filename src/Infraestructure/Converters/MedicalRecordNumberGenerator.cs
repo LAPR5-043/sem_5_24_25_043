@@ -13,12 +13,12 @@ public class MedicalRecordNumberGenerator : ValueGenerator<MedicalRecordNumber>
 
         var latestNumber = context.Patients
             .AsEnumerable()
-            .Where(mr => mr.Id.medicalRecordNumber.StartsWith(currentYearMonth))
+            .Where(mr => mr.medicalRecordNumber.ToString().StartsWith(currentYearMonth))
             .OrderByDescending(mr => mr.medicalRecordNumber)
             .Select(mr => mr.medicalRecordNumber)
             .FirstOrDefault();
 
-        var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.medicalRecordNumber.Substring(6)) + 1 : 1;
+        var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.ToString().Substring(6)) + 1 : 1;
 
         var newNumber = $"{currentYearMonth}{sequentialNumber:D6}";
 

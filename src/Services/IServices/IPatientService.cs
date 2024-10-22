@@ -6,9 +6,9 @@ namespace src.Services.IServices
 {
     public interface IPatientService
     {
-        Task<OkObjectResult> getAllPatientsAsync();
-        Task<ActionResult<IEnumerable<PatientDto>>> getPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy);
-        Task<PatientDto> getPatientByIdAsync(string id);
+        Task<OkObjectResult> GetAllPatientsAsync();
+        Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy);
+        Task<PatientDto> GetPatientByIdAsync(string id);
 
         Task<bool> DeletePatientAsync(string id);
 

@@ -35,23 +35,23 @@ participant "PatientRepository" as PR
 
 activate A
 
-A -> API: Calls API to create a new Patient \nand Provides patient details \n(firs name, last name,\n contact information, etc.)
+A -> API: /api/Patient/Create
 
 activate API
 
-API -> PC: createPatientProfile(...)
+API -> PC: CreatePatient(...)
 
 activate PC
 
-PC -> PS: createPatientProfile(...)
+PC -> PS: CreatePatientAsync(...)
 
 activate PS
 
-PS -> PS: validatePatientInformation(email, phone number)
+PS -> PS: ValidatePatientInformation(email, phone number)
 
 activate PS
 
-PS -> PR: patientExists(email, phone number)
+PS -> PR: PatientExists(email, phone number)
 
 activate PR
 
@@ -59,27 +59,9 @@ PR --> PS: false
 
 deactivate PR
 
-PS --> PS: false
-
 deactivate PS
 
 
-
-PS -> PS: generatePatientID()
-
-activate PS
-
-PS -> PR: lastPatientID()
-
-activate PR
-
-PR --> PS: lastPatientID
-
-deactivate PR
-
-PS --> PS: lastPatientID + 1
-
-deactivate PS
 
 PS -> P: new Patient(...)
 
@@ -89,7 +71,7 @@ P --> PS: patient
 
 deactivate P
 
-PS -> PR: save(patient)
+PS -> PR: AddAsync(patient)
 
 activate PR
 
@@ -105,7 +87,7 @@ PC --> API: true
 
 deactivate PC
 
-API --> A: return Patient profile created successfully
+API --> A: Patient profile created successfully
 
 deactivate API
 

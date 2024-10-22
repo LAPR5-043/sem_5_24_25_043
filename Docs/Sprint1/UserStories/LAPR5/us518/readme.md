@@ -7,7 +7,7 @@
 
 ## 2. Requirements
 
-**US 5.1.8** As an Admin, I want to create a new patient profile, so that I can register their personal details and medical history.
+**US 5.1.8** As an Admin, I want to create a new patient profile, so that I can register their personal details.
 
 **Acceptance Criteria:**
 
@@ -44,6 +44,12 @@ Q: When an Admin creates a patient profile, should he already register them in t
 ```
 ```
 A: the admin register the patient (this does not create a user for that patient) optionally, the patient self-registers in the system by providing the same email that is currently recorded in their patient record and the system associates the user and the patient there is no option for someone who is not a patient of the system to register as a user
+```
+```
+Q: O Medical Record Number dum Patient tem o formato yyyyMMnnnnnn, em que yyyy é o ano, MM é o mês e nnnnnn é um número sequencial. Esta sequência de números é igual para todos os meses? Ou será possível, por exemplo, ter um Patient com 202409000001 e outro com 202411000001.
+```
+```
+A: o numero sequencial é dependente do ano e mês. os dois exemplos dados ("202409000001 e outro com 202411000001") são válidos
 ```
 
 ![Analysis](analysis/svg/analysis.svg)

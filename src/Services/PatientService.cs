@@ -33,7 +33,7 @@ namespace src.Services.Services
             this.authService = authService;
         }
 
-        public async Task<OkObjectResult> getAllPatientsAsync()
+        public async Task<OkObjectResult> GetAllPatientsAsync()
         {
             var result = await patientRepository.GetAllAsync();
             IEnumerable<PatientDto> resultDtos = new List<PatientDto>();
@@ -46,7 +46,7 @@ namespace src.Services.Services
         }
 
 
-        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy)
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy)
         {
             bool ascending = true;
             var patientList = await patientRepository.GetAllAsync();
@@ -126,7 +126,7 @@ namespace src.Services.Services
             return resultDtos;
         }
 
-        public Task<PatientDto> getPatientByIdAsync(string id)
+        public Task<PatientDto> GetPatientByIdAsync(string id)
         {
             var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
             if (patient == null)
@@ -151,6 +151,13 @@ namespace src.Services.Services
             return true;
         }
 
+        /// <summary>
+        /// Create a new patient
+        /// </summary>
+        /// <param name="patient"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public async Task<PatientDto> CreatePatientAsync(PatientDto patient)
         {
 
@@ -159,11 +166,11 @@ namespace src.Services.Services
                 throw new ArgumentNullException(nameof(patient), "Patient data is null.");
             }
 
-            Boolean validation = validatePatientInformation(patient.Email, patient.PhoneNumber);
+            Boolean validation = ValidatePatientInformation(patient.Email, patient.PhoneNumber);
 
             if (validation)
             {
-                throw new Exception("Patient already exists.");
+                throw new InvalidOperationException("Patient already exists.");
             }
 
             var newPatient = new Patient();
@@ -183,7 +190,7 @@ namespace src.Services.Services
             return new PatientDto(newPatient);
         }
 
-        private Boolean validatePatientInformation(string email, string phoneNumber)
+        private Boolean ValidatePatientInformation(string email, string phoneNumber)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber))
             {
