@@ -2,11 +2,12 @@ using System;
 using src.Domain.Shared;
 
 namespace Domain.PatientAggregate
-{   
+{
     /// <summary>
     /// Represents the Gender of a patient
     /// </summary>
-    public enum Gender {
+    public enum Gender
+    {
         Male,
         Female
     }
@@ -21,8 +22,6 @@ namespace Domain.PatientAggregate
             }
 
             gender = gender.Trim().ToLower();
-
-            Console.WriteLine($"Converting gender string: {gender}"); 
 
             return gender switch
             {
