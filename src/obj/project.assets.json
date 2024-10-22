@@ -8152,19 +8152,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rfns0\\.nuget\\packages\\": {}
+    "/Users/tiagoabreu/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+      "projectUniqueName": "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/sem_5_24_25_043.csproj",
       "projectName": "sem_5_24_25_043",
-      "projectPath": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
-      "packagesPath": "C:\\Users\\rfns0\\.nuget\\packages\\",
-      "outputPath": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\obj\\",
+      "projectPath": "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/sem_5_24_25_043.csproj",
+      "packagesPath": "/Users/tiagoabreu/.nuget/packages/",
+      "outputPath": "/Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\rfns0\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/tiagoabreu/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -8261,7 +8261,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

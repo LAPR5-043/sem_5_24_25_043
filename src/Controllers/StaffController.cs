@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using sem_5_24_25_043;
 using src.Models;
 using AppContext = src.Models.AppContext;
 using src.Controllers.Services;
@@ -52,15 +55,18 @@ namespace src.Controllers
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
         [HttpGet("filtered")]
-        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
-                                                                                [FromQuery] string? email, [FromQuery] string? specialization, [FromQuery] string? sortBy)
+        
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
+                                                                                [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {
                 return NotFound();
             }
-
+            
+           
+            Console.WriteLine(AuthService.GetInternalEmailFromToken(HttpContext));
             return Ok(staff);
         }
 

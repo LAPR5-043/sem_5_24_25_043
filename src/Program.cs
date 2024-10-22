@@ -18,6 +18,7 @@ using src.Services.IServices;
 using src.Domain.Shared;
 using src.Infrastructure;
 using Domain.LogAggregate;
+using Microsoft.OpenApi.Models;
 using src.Services.Services;
 using src.Services;
 
@@ -47,6 +48,7 @@ namespace sem_5_24_25_043
                 .AddJwtBearer(options =>
                 {
                     options.Authority = cognitoAuthority;
+                    options.MetadataAddress = $"https://cognito-idp.{builder.Configuration["AWS:Region"]}.amazonaws.com/{builder.Configuration["AWS:Cognito:UserPoolId"]}/.well-known/openid-configuration";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -54,8 +56,10 @@ namespace sem_5_24_25_043
                         ValidateAudience = true,
                         ValidAudience = builder.Configuration["AWS:Cognito:ClientId"],
                         ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
                         NameClaimType = "email",
                         RoleClaimType = "cognito:groups"
+                        
                     };
                 });
             
@@ -66,7 +70,33 @@ namespace sem_5_24_25_043
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend API", Version = "v1" });
+
+                // Add JWT Authentication
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }});
+            });
             
 
             var app = builder.Build();
@@ -87,6 +117,7 @@ namespace sem_5_24_25_043
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend API");
                     c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+                    
                 });
             //}
 
