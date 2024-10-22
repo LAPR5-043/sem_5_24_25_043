@@ -5,15 +5,30 @@ using src.Domain.AppointmentAggregate;
 using src.Infrastructure.Shared;
 using AppContext = src.Models.AppContext;
 
+/// <summary>
+/// Repository for appointments
+/// </summary>
 public class AppointmentRepository : BaseRepository<Appointment, AppointmentID>, IAppointmentRepository
 {
+    /// <summary>
+    /// App context
+    /// </summary>
     private readonly AppContext context;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="context"></param>
     public AppointmentRepository(AppContext context) : base(context.Appointments)
     {
         this.context = context;
     }
 
+    /// <summary>
+    /// Check if operation is scheduled
+    /// </summary>
+    /// <param name="requestID"></param>
+    /// <returns></returns>
     public async Task<bool> CheckIfOperationIsScheduled(int requestID)
     {
         return await context.Appointments.AnyAsync(a => a.requestID == requestID);

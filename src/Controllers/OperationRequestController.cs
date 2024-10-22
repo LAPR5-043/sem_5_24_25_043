@@ -17,10 +17,17 @@ namespace src.Controllers
         {
             this.service = service;
         }
-
+        
+        /// <summary>
+        /// Delete operation request by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="confirmDelete"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOperationRequest(int id, [FromHeader(Name = "X-Confirm-Delete")] bool confirmDelete)
         {
+            
             // Check confirmation before deletion
             if (!confirmDelete)
             {

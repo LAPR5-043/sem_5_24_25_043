@@ -9,14 +9,35 @@ using src.Services.IServices;
 
 namespace src.Services
 {
+    /// <summary>
+    /// Operation Request Service
+    /// </summary>
     public class OperationRequestService : IOperationRequestService
     {
+        /// <summary>
+        /// Unit of work
+        /// </summary>
         private readonly IUnitOfWork unitOfWork;
+        /// <summary>
+        /// Operation Request Repository
+        /// </summary>
         private readonly IOperationRequestRepository operationRequestRepository;
+        /// <summary>
+        /// Appointment Repository
+        /// </summary>
         private readonly IAppointmentRepository appointmentRepository;
+        /// <summary>
+        /// Planning Module Service
+        /// </summary>
         private readonly IPlanningModuleService planningModuleService;
 
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="unitOfWork"></param>
+        /// <param name="operationRequestRepository"></param>
+        /// <param name="appointmentRepository"></param>
+        /// <param name="planningModuleService"></param>
         public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository operationRequestRepository, IAppointmentRepository appointmentRepository, IPlanningModuleService planningModuleService)
         {
             this.unitOfWork = unitOfWork;
@@ -24,7 +45,12 @@ namespace src.Services
             this.appointmentRepository = appointmentRepository;
             this.planningModuleService = planningModuleService;
         }
-  
+        /// <summary>
+        /// Delete operation request by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<bool> DeleteOperationRequestAsync(int id)
         {
 
@@ -37,7 +63,7 @@ namespace src.Services
 
             var result = await appointmentRepository.CheckIfOperationIsScheduled(id);
 
-            Console.WriteLine("Result: " + result);
+            //Console.WriteLine("Result: " + result);
 
             if (result)
             {
@@ -89,17 +115,5 @@ namespace src.Services
             return true;
 
         }
-        /*private async Task<bool> EnsureOperationIsNotScheduledAsync(int id)
-        {
-            var appointment = await appointmentRepository.CheckIfOperationIsScheduled(id);
-
-            if (appointment)
-            {
-                return false;
-            }
-
-            return true;
-            
-        }*/
     }
 }

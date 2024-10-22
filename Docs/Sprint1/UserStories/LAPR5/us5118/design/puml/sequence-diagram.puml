@@ -1,7 +1,7 @@
 @startuml
 
 
-title US 5.1.18 - As a Doctor, I want to remove an operation requisition
+title US 5.1.18 - As a Doctor, I want to remove an operation reqAPPLICATIONsition
 
 skinparam classAttributeIconSize 0
 
@@ -25,7 +25,7 @@ skinparam card {
 
 actor "Doctor" as Doctor
 
-participant "RemoveOperationRequestUI" as UI
+participant "API" as APPLICATION
 participant "OperationRequestController" as ORC
 participant "AuthService" as AS
 participant "StaffRepository" as SR
@@ -38,11 +38,11 @@ participant "PlanningModuleInterface" as PMI
 
 activate Doctor
 
-Doctor -> UI: Request to remove operation request
+Doctor -> APPLICATION: HttpDelete(/api/operationRequests/{OperationRequestID})
 
-activate UI
+activate APPLICATION
 
-UI -> ORC: removeOperationRequest(OperationRequestID)
+APPLICATION -> ORC: DeleteOperationRequest(OperationRequestID)
 
 activate ORC
 
@@ -134,11 +134,11 @@ ORS --> ORC: true
 
 deactivate ORS
 
-ORC --> UI: true
+ORC --> APPLICATION: true
 
 deactivate ORC
 
-UI --> Doctor: Operation request removed successfully
+APPLICATION --> Doctor: Operation request removed successfully
 
 
 

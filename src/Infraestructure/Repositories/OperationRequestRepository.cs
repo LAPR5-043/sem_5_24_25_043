@@ -5,11 +5,20 @@ using src.Infrastructure.Shared;
 using src.Models;
 using AppContext = src.Models.AppContext;
 
-
+/// <summary>
+/// Operation Request Repository
+/// </summary>
 public class OperationRequestRepository : BaseRepository<OperationRequest, OperationRequestID>, IOperationRequestRepository
 {
+    /// <summary>
+    /// App context
+    /// </summary>
     private readonly AppContext context;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="context"></param>
     public OperationRequestRepository(AppContext context) : base(context.OperationRequests)
     {
         this.context = context;

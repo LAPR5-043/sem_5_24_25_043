@@ -25,6 +25,15 @@
 
 ## 3. Analysis
 
+**Questions and Answers with the client:**
+
+```
+Q: 
+```
+```
+A:
+```
+
 ![Analysis](analysis/svg/analysis.svg)
 
 ![Analysis](analysis/svg/use_case.svg)
