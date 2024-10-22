@@ -12,8 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241022153239_Reset")]
-    partial class Reset
+    [Migration("20241022172118_ResetDB")]
+    partial class ResetDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,7 +64,7 @@ namespace sem_5_24_25_043.Migrations
                             operationRequestID = "1",
                             Id = "1",
                             deadlineDate = "01/01/2025 00:00:00",
-                            doctorID = "s202400001",
+                            doctorID = "D202400001",
                             operationTypeID = "Knee Surgery",
                             patientID = 1,
                             priority = "Emergency"
@@ -73,6 +73,16 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "2",
                             Id = "2",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "D202400001",
+                            operationTypeID = "Heart Surgery",
+                            patientID = 2,
+                            priority = "Effective"
+                        },
+                        new
+                        {
+                            operationRequestID = "3",
+                            Id = "3",
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "s202400002",
                             operationTypeID = "Heart Surgery",
@@ -329,7 +339,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             Id = "D202400001",
                             availabilitySlots = "",
-                            email = "D202400001@medopt.com",
+                            email = "d123@doctor.com",
                             firstName = "John",
                             fullName = "John,Doe",
                             isActive = true,
@@ -388,7 +398,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             appointmentID = "1",
                             Id = "1",
-                            dateAndTime = "2024-10-22 16:32:39",
+                            dateAndTime = "2024-10-22 18:21:17",
                             requestID = 1,
                             roomID = 1,
                             status = "Scheduled"
