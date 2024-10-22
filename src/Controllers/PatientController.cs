@@ -102,8 +102,8 @@ namespace src.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(string id)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
             string adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
 
             if (!roles.Contains("admins"))
             {

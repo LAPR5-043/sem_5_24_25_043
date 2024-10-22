@@ -2,6 +2,7 @@ using System;
 using Domain.OperationRequestAggregate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sem_5_24_25_043;
 using src.Services.IServices;
 
 namespace src.Controllers
@@ -48,6 +49,13 @@ namespace src.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
         {
+
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("medic"))
+            {
+                return Unauthorized();
+            }
             if (operationRequestDto == null)
             {
                 return BadRequest(new { message = "Invalid operation request data." });
