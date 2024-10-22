@@ -190,6 +190,7 @@ namespace sem_5_24_25_043.Migrations
 
                     b.Property<string>("logId")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("timestamp")
@@ -331,7 +332,7 @@ namespace sem_5_24_25_043.Migrations
                             isActive = true,
                             lastName = "Doe",
                             licenseNumber = "123456",
-                            phoneNumber = "919919919",
+                            phoneNumber = "+351919919919",
                             specializationID = "Cardiology",
                             staffID = "D202400001"
                         },
@@ -345,7 +346,7 @@ namespace sem_5_24_25_043.Migrations
                             isActive = true,
                             lastName = "Moedas",
                             licenseNumber = "121236",
-                            phoneNumber = "919911319",
+                            phoneNumber = "+351919911319",
                             specializationID = "Orthopedics",
                             staffID = "D202400011"
                         });

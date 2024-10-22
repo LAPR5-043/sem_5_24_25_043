@@ -12,13 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-<<<<<<<< HEAD:src/Migrations/20241022134732_Redo.Designer.cs
-    [Migration("20241022134732_Redo")]
-    partial class Redo
-========
-    [Migration("20241022122924_ResetDB")]
-    partial class ResetDB
->>>>>>>> 6431705ccc56ec7769b9c84c2650bd6dc7ed5d3c:src/Migrations/20241022122924_ResetDB.Designer.cs
+    [Migration("20241022135932_Reset")]
+    partial class Reset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -198,6 +193,7 @@ namespace sem_5_24_25_043.Migrations
 
                     b.Property<string>("logId")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("timestamp")
@@ -339,7 +335,7 @@ namespace sem_5_24_25_043.Migrations
                             isActive = true,
                             lastName = "Doe",
                             licenseNumber = "123456",
-                            phoneNumber = "919919919",
+                            phoneNumber = "+351919919919",
                             specializationID = "Cardiology",
                             staffID = "D202400001"
                         },
@@ -353,7 +349,7 @@ namespace sem_5_24_25_043.Migrations
                             isActive = true,
                             lastName = "Moedas",
                             licenseNumber = "121236",
-                            phoneNumber = "919911319",
+                            phoneNumber = "+351919911319",
                             specializationID = "Orthopedics",
                             staffID = "D202400011"
                         });

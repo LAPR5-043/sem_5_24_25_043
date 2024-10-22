@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using src.Domain.Shared;
 
 public class StaffPhoneNumber : IValueObject
@@ -6,14 +7,11 @@ public class StaffPhoneNumber : IValueObject
 
     public StaffPhoneNumber(string phoneNumber)
     {
-        if (string.IsNullOrWhiteSpace(phoneNumber))
+        if (!Regex.IsMatch(phoneNumber, @"^\+\d{1,3}\d{9,15}$"))
         {
-            throw new System.ArgumentException("Phone Number cannot be null or empty");
+            throw new ArgumentException("Staff Phone number is invalid");
         }
-        if(phoneNumber.Length == 9 && phoneNumber[0] == '9' && phoneNumber.All(char.IsDigit))
-        {
-            throw new System.ArgumentException("Phone Number must be 10 digits");
-        }
+
         this.phoneNumber = phoneNumber;
     }
     public StaffPhoneNumber()
@@ -23,16 +21,17 @@ public class StaffPhoneNumber : IValueObject
 
     public override bool Equals(object obj)
     {
-        if(obj == null || GetType() != obj.GetType())
+        if (obj == null || GetType() != obj.GetType())
         {
             return false;
         }
-        
+
         StaffPhoneNumber staffPhoneNumber = (StaffPhoneNumber)obj;
         return phoneNumber == staffPhoneNumber.phoneNumber;
 
     }
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
         return phoneNumber.GetHashCode();
     }
     public override string ToString()
