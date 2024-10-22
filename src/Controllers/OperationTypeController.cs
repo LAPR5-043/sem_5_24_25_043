@@ -10,6 +10,7 @@ using src.Controllers.Services;
 using src.Services.IServices;
 using Domain.OperationTypeAggregate;
 using Microsoft.AspNetCore.Authorization;
+using sem_5_24_25_043;
 
 namespace src.Controllers
 {
@@ -46,6 +47,12 @@ namespace src.Controllers
         [HttpPut("/ChangeStatus/{id}")]
         public async Task<IActionResult> deactivateOperationType(string id)
         {
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
             var result = await service.deactivateOperationTypeAsync(id);
             if (result)
             {

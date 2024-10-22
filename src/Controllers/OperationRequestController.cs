@@ -57,6 +57,13 @@ namespace src.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
         {
+
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("medic"))
+            {
+                return Unauthorized();
+            }
             if (operationRequestDto == null)
             {
                 return BadRequest(new { message = "Invalid operation request data." });

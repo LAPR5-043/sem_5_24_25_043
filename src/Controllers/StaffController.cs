@@ -83,6 +83,12 @@ namespace src.Controllers
         [HttpPut("/isActive/{id}")]
         public async Task<IActionResult> UpdateIsActive(string id)
         {
+             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
             var result = await service.UpdateIsActiveAsync(id);
             if (!result)
             {

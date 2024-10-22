@@ -8152,11 +8152,16 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\rfns0\\.nuget\\packages\\": {}
+=======
+    "C:\\Users\\diogo\\.nuget\\packages\\": {}
+>>>>>>> 5933bc8a089805fbf064cb1999915dccc7663af4
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
       "projectName": "sem_5_24_25_043",
       "projectPath": "C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
@@ -8165,6 +8170,16 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\rfns0\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+      "projectUniqueName": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+      "projectName": "sem_5_24_25_043",
+      "projectPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\sem_5_24_25_043.csproj",
+      "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> 5933bc8a089805fbf064cb1999915dccc7663af4
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -8261,7 +8276,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+=======
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+>>>>>>> 5933bc8a089805fbf064cb1999915dccc7663af4
       }
     }
   },
@@ -8270,7 +8289,11 @@
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
+<<<<<<< HEAD
       "message": "Problem reading the cache file C:\\Main\\Java IntelliJ\\sem_5_24_25_043\\src\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+=======
+      "message": "Problem reading the cache file C:\\Users\\diogo\\Desktop\\isep\\cadeiras\\3ANO\\1semestre\\LAPR5\\lapr5\\sem_5_24_25_043\\src\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+>>>>>>> 5933bc8a089805fbf064cb1999915dccc7663af4
     }
   ]
 }
