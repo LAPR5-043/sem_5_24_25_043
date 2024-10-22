@@ -6,6 +6,16 @@ public class StaffEmail : IValueObject
 
     public StaffEmail(string email)
     {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            throw new System.ArgumentException("Email cannot be null or empty");
+        }
+
+        if (!email.Contains("@"))
+        {
+            throw new System.ArgumentException("Email must contain @");
+        }
+        
         this.email = email;
     }
     public StaffEmail()
