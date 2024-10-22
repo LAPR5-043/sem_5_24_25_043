@@ -14,8 +14,8 @@ public class AppointmentRepository : BaseRepository<Appointment, AppointmentID>,
         this.context = context;
     }
 
-    public async Task<bool> CheckIfOperationIsScheduled(int requestId)
+    public async Task<bool> CheckIfOperationIsScheduled(int requestID)
     {
-        return await context.Appointments.AnyAsync(a => a.requestID == requestId);
+        return await context.Appointments.AnyAsync(a => a.requestID == requestID);
     }
 }

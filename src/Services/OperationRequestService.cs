@@ -13,16 +13,18 @@ namespace src.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IOperationRequestRepository operationRequestRepository;
-        //private readonly IAppointmentRepository appointmentRepository;
+        private readonly IAppointmentRepository appointmentRepository;
+        private readonly IPlanningModuleService planningModuleService;
 
 
-        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository operationRequestRepository)
+        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository operationRequestRepository, IAppointmentRepository appointmentRepository, IPlanningModuleService planningModuleService)
         {
             this.unitOfWork = unitOfWork;
             this.operationRequestRepository = operationRequestRepository;
-            //this.appointmentRepository = appointmentRepository;
+            this.appointmentRepository = appointmentRepository;
+            this.planningModuleService = planningModuleService;
         }
-
+  
         public async Task<bool> DeleteOperationRequestAsync(int id)
         {
 
@@ -30,20 +32,24 @@ namespace src.Services
             
             if (operationRequest == null)
             {
-                return false;
+                throw new Exception("Operation Request not found");
             }
 
-            /*var result = await EnsureOperationIsNotScheduledAsync(id);
+            var result = await appointmentRepository.CheckIfOperationIsScheduled(id);
 
-            if (!result)
+            Console.WriteLine("Result: " + result);
+
+            if (result)
             {
-                return false;
-            }*/
+                throw new Exception("Operation Request is already scheduled");
+            }
 
             operationRequestRepository.Remove(operationRequest);
             await unitOfWork.CommitAsync();
 
             // TODO Planning Module
+
+            planningModuleService.NotifyOperationRequestDeleted(id);
 
             return true;
 

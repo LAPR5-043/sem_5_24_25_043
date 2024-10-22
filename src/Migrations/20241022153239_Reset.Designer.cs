@@ -12,8 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241022150911_Appointments")]
-    partial class Appointments
+    [Migration("20241022153239_Reset")]
+    partial class Reset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -388,7 +388,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             appointmentID = "1",
                             Id = "1",
-                            dateAndTime = "2024-10-22 16:09:10",
+                            dateAndTime = "2024-10-22 16:32:39",
                             requestID = 1,
                             roomID = 1,
                             status = "Scheduled"

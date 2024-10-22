@@ -13,6 +13,22 @@ namespace sem_5_24_25_043.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    appointmentID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    requestID = table.Column<int>(type: "int", nullable: false),
+                    roomID = table.Column<int>(type: "int", nullable: false),
+                    dateAndTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.appointmentID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Logs",
                 columns: table => new
                 {
@@ -119,6 +135,11 @@ namespace sem_5_24_25_043.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Appointments",
+                columns: new[] { "appointmentID", "Id", "dateAndTime", "requestID", "roomID", "status" },
+                values: new object[] { "1", "1", "2024-10-22 16:32:39", 1, 1, "Scheduled" });
+
+            migrationBuilder.InsertData(
                 table: "OperationRequests",
                 columns: new[] { "operationRequestID", "Id", "deadlineDate", "doctorID", "operationTypeID", "patientID", "priority" },
                 values: new object[,]
@@ -191,6 +212,9 @@ namespace sem_5_24_25_043.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
             migrationBuilder.DropTable(
                 name: "Logs");
 
