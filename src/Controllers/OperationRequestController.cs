@@ -43,14 +43,21 @@ namespace src.Controllers
                 return BadRequest(new { message = "Deletion not confirmed." });
             }
 
-            var result = await service.DeleteOperationRequestAsync(id, doctorEmail);
-            
-            if (result)
+            try
             {
-                return Ok(new { message = "Operation request deleted successfully." });
-            }
+                var result = await service.DeleteOperationRequestAsync(id, doctorEmail);
+                
+                if (result)
+                {
+                    return Ok(new { message = "Operation request deleted successfully." });
+                }
 
-            return NotFound(new { message = "Operation request not found." });
+                return NotFound(new { message = "Operation request not found." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the operation request.", error = ex.Message });
+            }
         }
 
         //PUT 
