@@ -36,6 +36,14 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
         {
+
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
+            {
+                return Unauthorized();
+            }
+            
             if (patientDto == null)
             {
                 return BadRequest(new { message = "Invalid patient data." });
