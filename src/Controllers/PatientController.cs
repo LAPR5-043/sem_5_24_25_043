@@ -49,13 +49,21 @@ namespace src.Controllers
                 return BadRequest(new { message = "Invalid patient data." });
             }
 
-            var createdPatient = await service.CreatePatientAsync(patientDto);
-            if (createdPatient != null)
+            try
             {
-                return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
-            }
+                var createdPatient = await service.CreatePatientAsync(patientDto);
+                if (createdPatient != null)
+                {
+                    return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
+                }
 
-            return StatusCode(500, new { message = "An error occurred while creating the patient." });
+                return StatusCode(500, new { message = "An error occurred while creating the patient." });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if necessary
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
+            }
         }
 
         [HttpPost("signin-patient")]
