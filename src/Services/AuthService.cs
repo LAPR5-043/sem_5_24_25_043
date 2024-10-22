@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Extensions.CognitoAuthentication;
@@ -121,4 +123,12 @@ public class AuthService
 
         return response.User != null;
     }
+   public static string GetInternalEmailFromToken(HttpContext httpContext)
+{
+    var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+    var handler = new JwtSecurityTokenHandler();
+    var jwtToken = handler.ReadJwtToken(token);
+    return jwtToken.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+    
+}
 }

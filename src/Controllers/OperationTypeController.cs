@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using src.Models;
 using AppContext = src.Models.AppContext;
@@ -25,7 +26,9 @@ namespace src.Controllers
         }
 
         // GET: api/OperationType
+        
         [HttpGet]
+       // [Authorize]
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getOperationTypes()
         {
             var operationTypes = await service.getAllOperationTypesAsync();
@@ -68,9 +71,12 @@ namespace src.Controllers
             }
             return StatusCode(500, new { message = "An error occurred while creating the operation type." });
         }
+        [Authorize]
         [HttpPatch("edit/{id}")]
+        
         public async Task<IActionResult> editOperationType(string id, [FromBody] OperationTypeDto operationType)
         {
+            
             if (operationType == null)
             {
                 return BadRequest(new { message = "Invalid operation type data." });
