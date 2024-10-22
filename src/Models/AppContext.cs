@@ -49,7 +49,36 @@ public class AppContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
+<<<<<<< HEAD
                 new Patient
+=======
+            new Patient { Id=new MedicalRecordNumber("1"), medicalRecordNumber = new MedicalRecordNumber("1"), firstName = new PatientFirstName("John"), lastName = new PatientLastName("Doe"),
+                         fullName = new PatientFullName("John","Doe"),email = new PatientEmail("john@email.com"), phoneNumber = new PatientPhoneNumber("919919919"),
+                          emergencyContact = new EmergencyContact("Jane", "919919919"), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
+                         allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() },
+            new Patient {Id=new MedicalRecordNumber("2"), medicalRecordNumber = new MedicalRecordNumber("2"), firstName = new PatientFirstName("Jane"), lastName = new PatientLastName("Does"),
+                         fullName = new PatientFullName("Jane","Does"),email = new PatientEmail("Jane@email.com"), phoneNumber = new PatientPhoneNumber("919991919"),
+                          emergencyContact = new EmergencyContact("Jane", "919999119"), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
+                         allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() }            
+        );
+        modelBuilder.Entity<Staff>().HasData(
+            new Staff {Id = new StaffID("D202400001"),  staffID = new StaffID("D202400001"), firstName = new StaffFirstName("John"), lastName = new StaffLastName("Doe"),
+                        fullName = new StaffFullName(new StaffFirstName("John"), new StaffLastName("Doe")), email = new StaffEmail("D202400001@medopt.com"),
+                        phoneNumber = new StaffPhoneNumber("919919919"), licenseNumber = new LicenseNumber("123456"), isActive = true, availabilitySlots = new AvailabilitySlots(),
+                        specializationID = "Cardiology" 
+                        },
+
+            new Staff { Id = new StaffID("D202400011"),staffID = new StaffID("D202400011"), firstName = new StaffFirstName("Carlos"), lastName = new StaffLastName("Moedas"),
+                        fullName = new StaffFullName(new StaffFirstName("Carlos"), new StaffLastName("Moedas")), email = new StaffEmail("D202400011@medopt.com"),
+                        phoneNumber = new StaffPhoneNumber("919911319"), licenseNumber = new LicenseNumber("121236"), isActive = true, availabilitySlots = new AvailabilitySlots(),
+                        specializationID = "Orthopedics" 
+                        }                        
+          
+        );
+
+        modelBuilder.Entity<OperationType>().HasData(
+                new OperationType
+>>>>>>> 6431705ccc56ec7769b9c84c2650bd6dc7ed5d3c
                 {
                     Id = new MedicalRecordNumber("1"),
                     MedicalRecordNumber = new MedicalRecordNumber("1"),

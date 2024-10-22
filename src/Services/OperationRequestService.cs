@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Domain.AppointmentAggregate;
 using Domain.OperationRequestAggregate;
 using sem_5_24_25_043.Domain.OperationRequestAggregate;
@@ -50,7 +51,7 @@ namespace src.Services
 
         public async Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto){
             
-            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+            OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
 
             if (operationRequest == null)
             {
@@ -58,14 +59,24 @@ namespace src.Services
             }
             
             try{
-                
-                operationRequest.patientID = operationRequestDto.patientID;
-                operationRequest.doctorID = operationRequestDto.doctorID;
-                operationRequest.operationTypeID = operationRequestDto.operationType;
-                operationRequest.deadlineDate = new DeadlineDate(operationRequestDto.day, operationRequestDto.month, operationRequestDto.year);
-                operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.priority);
+                if(operationRequestDto.patientID != null ){
+                    operationRequest.patientID = (int)operationRequestDto.patientID;     
+                }
+                if(operationRequestDto.doctorID != null || operationRequestDto.doctorID != ""){
+                    operationRequest.doctorID = operationRequestDto.doctorID;
+                }
+                if(operationRequestDto.operationType != null || operationRequestDto.operationType != ""){
+                    operationRequest.operationTypeID = operationRequestDto.operationType;
+                }
+                if( operationRequestDto.day != null || operationRequestDto.month != null || operationRequestDto.year != null){
+                    operationRequest.deadlineDate = new DeadlineDate((int)operationRequestDto.day, (int)operationRequestDto.month, (int)operationRequestDto.year);
+                }
+                if(operationRequestDto.priority != null || operationRequestDto.priority != ""){
+                    operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.priority);
+                }
                 await operationRequestRepository.updateAsync(operationRequest);
-            }catch(Exception e){
+            } catch (Exception e) {
+                Debug.WriteLine(e.StackTrace);
                 return false;
             }
 

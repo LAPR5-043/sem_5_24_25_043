@@ -6,6 +6,14 @@ public class StaffPhoneNumber : IValueObject
 
     public StaffPhoneNumber(string phoneNumber)
     {
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+        {
+            throw new System.ArgumentException("Phone Number cannot be null or empty");
+        }
+        if(phoneNumber.Length == 9 && phoneNumber[0] == '9' && phoneNumber.All(char.IsDigit))
+        {
+            throw new System.ArgumentException("Phone Number must be 10 digits");
+        }
         this.phoneNumber = phoneNumber;
     }
     public StaffPhoneNumber()

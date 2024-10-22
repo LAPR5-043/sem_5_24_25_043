@@ -6,6 +6,10 @@ public class SpecializationName : EntityId
     
     public SpecializationName(string specializationName) : base(specializationName)
     {
+        if (string.IsNullOrEmpty(specializationName))
+        {
+            throw new System.ArgumentException("Specialization Name cannot be null or empty");
+        }
         this.specializationName = specializationName;
     }
     public SpecializationName() : base (null)

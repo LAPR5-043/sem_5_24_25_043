@@ -6,8 +6,9 @@ using Infrastructure.Converters;
 using Microsoft.CodeAnalysis.Elfie.Model;
 using Domain.OperationRequestAggregate;
 using sem_5_24_25_043.Domain.OperationRequestAggregate;
+using src.Domain.OperationRequestAggregate;
 
-    public class OperationRequestEntityTypeConfiguration : IEntityTypeConfiguration<OperationRequest>
+public class OperationRequestEntityTypeConfiguration : IEntityTypeConfiguration<OperationRequest>
     {
         public void Configure(EntityTypeBuilder<OperationRequest> builder)
         {
@@ -47,6 +48,13 @@ using sem_5_24_25_043.Domain.OperationRequestAggregate;
                     v => parseDeadlineDate(v)
                 )
                 .IsRequired();
+
+            builder.Property(t => t.priority)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => PriorityExtensions.FromString(v)
+                )
+                .IsRequired();      
         }
         private DeadlineDate parseDeadlineDate(string dateString)
         {

@@ -6,6 +6,10 @@ public class SpecializationDescription : IValueObject
     
     public SpecializationDescription(string specializationDescription)
     {
+       if (string.IsNullOrEmpty(specializationDescription))
+        {
+            throw new System.ArgumentException("Specialization Name cannot be null or empty");
+        }
         this.specializationDescription = specializationDescription;
     }
     public SpecializationDescription()

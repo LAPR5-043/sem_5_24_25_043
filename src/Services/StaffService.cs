@@ -139,7 +139,7 @@ public class StaffService : IStaffService
         staff.email = new StaffEmail(staffDto.Email);
         staff.phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber);
         staff.licenseNumber = new LicenseNumber(staffDto.LicenseNumber);
-        staff.isActive = staffDto.IsActive;
+        staff.isActive = (bool)staffDto.IsActive;
         staff.availabilitySlots = new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots));
         staff.specializationID = staffDto.SpecializationID;
 

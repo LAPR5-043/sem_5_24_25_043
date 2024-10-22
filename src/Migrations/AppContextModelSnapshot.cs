@@ -47,8 +47,9 @@ namespace sem_5_24_25_043.Migrations
                     b.Property<int>("patientID")
                         .HasColumnType("int");
 
-                    b.Property<int>("priority")
-                        .HasColumnType("int");
+                    b.Property<string>("priority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("operationRequestID");
 
@@ -63,7 +64,7 @@ namespace sem_5_24_25_043.Migrations
                             doctorID = "s202400001",
                             operationTypeID = "Knee Surgery",
                             patientID = 1,
-                            priority = 2
+                            priority = "Emergency"
                         },
                         new
                         {
@@ -73,7 +74,7 @@ namespace sem_5_24_25_043.Migrations
                             doctorID = "s202400002",
                             operationTypeID = "Heart Surgery",
                             patientID = 2,
-                            priority = 0
+                            priority = "Effective"
                         });
                 });
 
@@ -318,6 +319,36 @@ namespace sem_5_24_25_043.Migrations
                         .IsUnique();
 
                     b.ToTable("Staffs", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "D202400001",
+                            availabilitySlots = "",
+                            email = "D202400001@medopt.com",
+                            firstName = "John",
+                            fullName = "John,Doe",
+                            isActive = true,
+                            lastName = "Doe",
+                            licenseNumber = "123456",
+                            phoneNumber = "919919919",
+                            specializationID = "Cardiology",
+                            staffID = "D202400001"
+                        },
+                        new
+                        {
+                            Id = "D202400011",
+                            availabilitySlots = "",
+                            email = "D202400011@medopt.com",
+                            firstName = "Carlos",
+                            fullName = "Carlos,Moedas",
+                            isActive = true,
+                            lastName = "Moedas",
+                            licenseNumber = "121236",
+                            phoneNumber = "919911319",
+                            specializationID = "Orthopedics",
+                            staffID = "D202400011"
+                        });
                 });
 #pragma warning restore 612, 618
         }

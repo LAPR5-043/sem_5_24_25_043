@@ -4,6 +4,13 @@ public class StaffFirstName  : IValueObject{
     public string firstName { get; }
 
     public StaffFirstName(string firstName){
+
+        if (string.IsNullOrWhiteSpace(firstName)){
+            throw new System.ArgumentException("First Name cannot be null or empty");
+        }
+        if(!firstName.All(char.IsLetter)){
+            throw new System.ArgumentException("First Name must contain only letters");
+        }
         this.firstName = firstName;
     }
     public StaffFirstName(){
