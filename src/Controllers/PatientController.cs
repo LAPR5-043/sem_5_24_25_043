@@ -12,7 +12,7 @@ namespace src.Controllers
     [ApiController]
 
     public class PatientController : ControllerBase
-    {   
+    {
         /// <summary>
         /// Patient service
         /// </summary>
@@ -24,15 +24,6 @@ namespace src.Controllers
         public PatientController(IPatientService service)
         {
             this.service = service;
-        }
-
-
-        // GET: api/Patient
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatients()
-        {
-            var operationTypes = await service.GetAllPatientsAsync();
-            return Ok(operationTypes);
         }
 
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=

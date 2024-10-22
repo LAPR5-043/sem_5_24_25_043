@@ -6,7 +6,6 @@ namespace src.Services.IServices
 {
     public interface IPatientService
     {
-        Task<OkObjectResult> GetAllPatientsAsync();
         Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy);
         Task<PatientDto> GetPatientByIdAsync(string id);
 

@@ -33,19 +33,6 @@ namespace src.Services.Services
             this.authService = authService;
         }
 
-        public async Task<OkObjectResult> GetAllPatientsAsync()
-        {
-            var result = await patientRepository.GetAllAsync();
-            IEnumerable<PatientDto> resultDtos = new List<PatientDto>();
-            foreach (var patient in result)
-            {
-                resultDtos.Append(new PatientDto(patient));
-            }
-            return new OkObjectResult(resultDtos);
-
-        }
-
-
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy)
         {
             bool ascending = true;
@@ -276,7 +263,7 @@ namespace src.Services.Services
                                          "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
                                          patient1.Email.ToString()
                                      );
-                                     await unitOfWork.CommitAsync();
+                                    await unitOfWork.CommitAsync();
                                 }
                                 else
                                 {
