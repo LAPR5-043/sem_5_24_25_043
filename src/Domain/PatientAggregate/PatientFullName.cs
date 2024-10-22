@@ -11,14 +11,15 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Full name of the patient.
         /// </summary>
-        public string fullName { get; }
+        public string Value { get; }
         /// <summary>
         /// Default constructor.
         /// </summary>
         public PatientFullName()
         {
-            fullName = string.Empty;
+            Value = string.Empty;
         }
+        
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -37,14 +38,14 @@ namespace Domain.PatientAggregate
                 throw new ArgumentException("Last name cannot be empty");
             }
 
-            fullName = firstName + " " + lastName;
+            Value = firstName + " " + lastName;
         }
         /// <summary>
         /// Equality check.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -52,23 +53,25 @@ namespace Domain.PatientAggregate
             }
 
             var other = (PatientFullName)obj;
-            return fullName == other.fullName;
+            return Value == other.Value;
         }
+
         /// <summary>
         /// Hash code.
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return fullName.GetHashCode();
+            return Value.GetHashCode();
         }
+
         /// <summary>
         /// String representation.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return fullName;
+            return Value;
         }
     }
 }

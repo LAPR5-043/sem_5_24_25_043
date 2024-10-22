@@ -54,37 +54,37 @@ namespace src.Services.Services
 
             if (!string.IsNullOrEmpty(firstName))
             {
-                query = query.Where(p => p.firstName.firstName.Contains(firstName));
+                query = query.Where(p => p.FirstName.Value.Contains(firstName));
             }
 
             if (!string.IsNullOrEmpty(lastName))
             {
-                query = query.Where(p => p.lastName.lastName.Contains(lastName));
+                query = query.Where(p => p.LastName.Value.Contains(lastName));
             }
 
             if (!string.IsNullOrEmpty(email))
             {
-                query = query.Where(p => p.email.email.Contains(email));
+                query = query.Where(p => p.Email.Value.Contains(email));
             }
 
             if (!string.IsNullOrEmpty(phoneNumber))
             {
-                query = query.Where(p => p.phoneNumber.phoneNumber.Contains(phoneNumber));
+                query = query.Where(p => p.PhoneNumber.Value.Contains(phoneNumber));
             }
 
             if (!string.IsNullOrEmpty(medicalRecordNumber))
             {
-                query = query.Where(p => p.medicalRecordNumber.medicalRecordNumber.Contains(medicalRecordNumber));
+                query = query.Where(p => p.MedicalRecordNumber.medicalRecordNumber.Contains(medicalRecordNumber));
             }
 
             if (!string.IsNullOrEmpty(dateOfBirth))
             {
-                query = query.Where(p => p.dateOfBirth.ToString().Contains(dateOfBirth));
+                query = query.Where(p => p.DateOfBirth.ToString().Contains(dateOfBirth));
             }
 
             if (!string.IsNullOrEmpty(gender) && Enum.TryParse(gender, true, out Gender genderEnumValue))
             {
-                query = query.Where(p => p.gender == genderEnumValue);
+                query = query.Where(p => p.Gender == genderEnumValue);
             }
 
 
@@ -94,28 +94,28 @@ namespace src.Services.Services
                 switch (sortBy.ToLower())
                 {
                     case "firstname":
-                        query = query.OrderBy(p => p.firstName.firstName);
+                        query = query.OrderBy(p => p.FirstName.Value);
                         break;
                     case "lastname":
-                        query = query.OrderBy(p => p.lastName.lastName);
+                        query = query.OrderBy(p => p.LastName.Value);
                         break;
                     case "email":
-                        query = query.OrderBy(p => p.email.email);
+                        query = query.OrderBy(p => p.Email.Value);
                         break;
                     case "phonenumber":
-                        query = query.OrderBy(p => p.phoneNumber.phoneNumber);
+                        query = query.OrderBy(p => p.PhoneNumber.Value);
                         break;
                     case "medicalrecordnumber":
-                        query = query.OrderBy(p => p.medicalRecordNumber.medicalRecordNumber);
+                        query = query.OrderBy(p => p.MedicalRecordNumber.medicalRecordNumber);
                         break;
                     case "dateofbirth":
-                        query = query.OrderBy(p => p.dateOfBirth.dateOfBirth);
+                        query = query.OrderBy(p => p.DateOfBirth.Value);
                         break;
                     case "gender":
-                        query = query.OrderBy(p => p.gender);
+                        query = query.OrderBy(p => p.Gender);
                         break;
                     default:
-                        query = query.OrderBy(p => p.firstName.firstName);
+                        query = query.OrderBy(p => p.FirstName.Value);
                         break;
                 }
             }
@@ -174,14 +174,14 @@ namespace src.Services.Services
             }
 
             var newPatient = new Patient();
-            newPatient.firstName = new PatientFirstName(patient.FirstName);
-            newPatient.lastName = new PatientLastName(patient.LastName);
-            newPatient.fullName = new PatientFullName(patient.FirstName, patient.LastName);
-            newPatient.email = new PatientEmail(patient.Email);
-            newPatient.phoneNumber = new PatientPhoneNumber(patient.PhoneNumber);
-            newPatient.emergencyContact = new EmergencyContact(patient.EmergencyContactName, patient.EmergencyContactPhoneNumber);
-            newPatient.dateOfBirth = new DateOfBirth(patient.DayOfBirth, patient.MonthOfBirth, patient.YearOfBirth);
-            newPatient.gender = GenderExtensions.FromString(patient.Gender);
+            newPatient.FirstName = new PatientFirstName(patient.FirstName);
+            newPatient.LastName = new PatientLastName(patient.LastName);
+            newPatient.FullName = new PatientFullName(patient.FirstName, patient.LastName);
+            newPatient.Email = new PatientEmail(patient.Email);
+            newPatient.PhoneNumber = new PatientPhoneNumber(patient.PhoneNumber);
+            newPatient.EmergencyContact = new EmergencyContact(patient.EmergencyContactName, patient.EmergencyContactPhoneNumber);
+            newPatient.DateOfBirth = new DateOfBirth(patient.DayOfBirth, patient.MonthOfBirth, patient.YearOfBirth);
+            newPatient.Gender = GenderExtensions.FromString(patient.Gender);
 
 
             await patientRepository.AddAsync(newPatient);
@@ -189,24 +189,14 @@ namespace src.Services.Services
 
             return new PatientDto(newPatient);
         }
-
+        /// <summary>
+        /// Validate if the patient already exists
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
         private Boolean ValidatePatientInformation(string email, string phoneNumber)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber))
-            {
-                throw new Exception("Invalid patient data.");
-            }
-
-            if (!email.Contains("@"))
-            {
-                throw new Exception("Invalid email.");
-            }
-
-            if (phoneNumber.Length != 9)
-            {
-                throw new Exception("Invalid phone number.");
-            }
-
             return patientRepository.PatientExists(email, phoneNumber);
         }
 
@@ -260,7 +250,7 @@ namespace src.Services.Services
                             if (tempValue != null && !tempValue.Equals(originalValue))
                             {
                                 PendingRequest p = await pendingRequestService.AddPendingRequestAsync(
-                                    patient1.medicalRecordNumber.AsString(),
+                                    patient1.MedicalRecordNumber.AsString(),
                                     originalValue.ToString(),
                                     tempValue.ToString(),
                                     propertyValue
@@ -284,7 +274,7 @@ namespace src.Services.Services
 
                                     await logService.CreateLogAsync(
                                          "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
-                                         patient1.email.ToString()
+                                         patient1.Email.ToString()
                                      );
                                 }
                                 else
@@ -296,7 +286,7 @@ namespace src.Services.Services
                     }
 
                     string url = buildUrl(pendingRequestIds);
-                    await emailService.SendEmailAsync(patient1.email.ToString(), "Patient data update", url);
+                    await emailService.SendEmailAsync(patient1.Email.ToString(), "Patient data update", url);
                 }
                 unitOfWork.CommitAsync();
 
@@ -336,17 +326,17 @@ namespace src.Services.Services
         {
             return new Patient
             {
-                medicalRecordNumber = string.IsNullOrEmpty(patientDto.MedicalRecordNumber) ? null : new MedicalRecordNumber(patientDto.MedicalRecordNumber),
-                firstName = string.IsNullOrEmpty(patientDto.FirstName) ? null : new PatientFirstName(patientDto.FirstName),
-                lastName = string.IsNullOrEmpty(patientDto.LastName) ? null : new PatientLastName(patientDto.LastName),
-                fullName = string.IsNullOrEmpty(patientDto.FirstName) || string.IsNullOrEmpty(patientDto.LastName) ? null : new PatientFullName(patientDto.FirstName, patientDto.LastName),
-                email = string.IsNullOrEmpty(patientDto.Email) ? null : new PatientEmail(patientDto.Email),
-                phoneNumber = string.IsNullOrEmpty(patientDto.PhoneNumber) ? null : new PatientPhoneNumber(patientDto.PhoneNumber),
-                emergencyContact = string.IsNullOrEmpty(patientDto.EmergencyContactName) || string.IsNullOrEmpty(patientDto.EmergencyContactPhoneNumber) ? null : new EmergencyContact(patientDto.EmergencyContactName, patientDto.EmergencyContactPhoneNumber),
-                dateOfBirth = string.IsNullOrEmpty(patientDto.DayOfBirth) || string.IsNullOrEmpty(patientDto.MonthOfBirth) || string.IsNullOrEmpty(patientDto.YearOfBirth) ? null : new DateOfBirth(patientDto.DayOfBirth, patientDto.MonthOfBirth, patientDto.YearOfBirth),
-                gender = GenderExtensions.FromString(patientDto.Gender),
-                allergiesAndConditions = patientDto.AllergiesAndConditions == null ? null : dtoToAllergiesAndConditions(patientDto.AllergiesAndConditions),
-                appointmentHistory = patientDto.AppointmentHistory == null ? null : new AppointmentHistory()
+                MedicalRecordNumber = string.IsNullOrEmpty(patientDto.MedicalRecordNumber) ? null : new MedicalRecordNumber(patientDto.MedicalRecordNumber),
+                FirstName = string.IsNullOrEmpty(patientDto.FirstName) ? null : new PatientFirstName(patientDto.FirstName),
+                LastName = string.IsNullOrEmpty(patientDto.LastName) ? null : new PatientLastName(patientDto.LastName),
+                FullName = string.IsNullOrEmpty(patientDto.FirstName) || string.IsNullOrEmpty(patientDto.LastName) ? null : new PatientFullName(patientDto.FirstName, patientDto.LastName),
+                Email = string.IsNullOrEmpty(patientDto.Email) ? null : new PatientEmail(patientDto.Email),
+                PhoneNumber = string.IsNullOrEmpty(patientDto.PhoneNumber) ? null : new PatientPhoneNumber(patientDto.PhoneNumber),
+                EmergencyContact = string.IsNullOrEmpty(patientDto.EmergencyContactName) || string.IsNullOrEmpty(patientDto.EmergencyContactPhoneNumber) ? null : new EmergencyContact(patientDto.EmergencyContactName, patientDto.EmergencyContactPhoneNumber),
+                DateOfBirth = string.IsNullOrEmpty(patientDto.DayOfBirth) || string.IsNullOrEmpty(patientDto.MonthOfBirth) || string.IsNullOrEmpty(patientDto.YearOfBirth) ? null : new DateOfBirth(patientDto.DayOfBirth, patientDto.MonthOfBirth, patientDto.YearOfBirth),
+                Gender = GenderExtensions.FromString(patientDto.Gender),
+                AllergiesAndConditions = patientDto.AllergiesAndConditions == null ? null : dtoToAllergiesAndConditions(patientDto.AllergiesAndConditions),
+                AppointmentHistory = patientDto.AppointmentHistory == null ? null : new AppointmentHistory()
             };
         }
 
@@ -399,7 +389,7 @@ namespace src.Services.Services
                 {
                     object value = ConvertToCustomType(request.pendingValue, property.PropertyType);
                     property.SetValue(p, value, null);
-                    logService.CreateLogAsync("PatientId:" + request.userId + ";Attribute:" + request.attributeName + ";updated with success;", p.email.email);
+                    logService.CreateLogAsync("PatientId:" + request.userId + ";Attribute:" + request.attributeName + ";updated with success;", p.Email.Value);
                 }
                 else
                 {

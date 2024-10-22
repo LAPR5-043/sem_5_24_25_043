@@ -12,7 +12,7 @@ namespace Infrastructure.PatientRepository
         public void Configure(EntityTypeBuilder<Patient> builder)
         {
             builder.ToTable("Patients");
-            builder.HasKey(p => p.medicalRecordNumber);
+            builder.HasKey(p => p.MedicalRecordNumber);
 
 
             builder.Property(t => t.Id)
@@ -24,75 +24,75 @@ namespace Infrastructure.PatientRepository
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
-            builder.Property(p => p.medicalRecordNumber)
+            builder.Property(p => p.MedicalRecordNumber)
                 .HasConversion(new MedicalRecordNumberConverter())
                 .IsRequired();
 
 
-            builder.Property(p => p.firstName)
+            builder.Property(p => p.FirstName)
                 .HasConversion(
                     v => v.ToString(),
                     v => new PatientFirstName(v)
                 )
                 .IsRequired();
 
-            builder.Property(p => p.lastName)
+            builder.Property(p => p.LastName)
                 .HasConversion(
                     v => v.ToString(),
                     v => new PatientLastName(v)
                 )
                 .IsRequired();
 
-            builder.Property(p => p.fullName)
+            builder.Property(p => p.FullName)
                 .HasConversion(
                     v => v.ToString(),
                     v => ConvertToPatientFullName(v)
                 )
                 .IsRequired();
 
-            builder.Property(p => p.email)
+            builder.Property(p => p.Email)
                 .HasConversion(
-                    v => v.email,
+                    v => v.Value,
                     v => new PatientEmail(v)
                 )
                 .IsRequired();
 
-            builder.Property(p => p.phoneNumber)
+            builder.Property(p => p.PhoneNumber)
                 .HasConversion(
-                    v => v.phoneNumber,
+                    v => v.Value,
                     v => new PatientPhoneNumber(v)
                 )
                 .IsRequired();
                 
-            builder.Property(p => p.emergencyContact)
+            builder.Property(p => p.EmergencyContact)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
                     v => JsonSerializer.Deserialize<EmergencyContact>(v, (JsonSerializerOptions)null)
                 )
                 .IsRequired();
 
-            builder.Property(p => p.dateOfBirth)
+            builder.Property(p => p.DateOfBirth)
                 .HasConversion(
-                    v => v.dateOfBirth.Day + "/" + v.dateOfBirth.Month + "/" + v.dateOfBirth.Year,
+                    v => v.Value.Day + "/" + v.Value.Month + "/" + v.Value.Year,
                     v => ConvertToDateOfBirth(v)
                 )
                 .IsRequired();
 
-            builder.Property(p => p.gender)
+            builder.Property(p => p.Gender)
                 .HasConversion(
                     v => v.ToString(),
                     v => GenderExtensions.FromString(v)
                 )
                 .IsRequired();
 
-            builder.Property(p => p.allergiesAndConditions)
+            builder.Property(p => p.AllergiesAndConditions)
             .HasConversion(
                 v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : "[]", // Serialize or assign empty JSON array
                 v => JsonSerializer.Deserialize<List<AllergiesAndConditions>>(v, (JsonSerializerOptions)null) ?? new List<AllergiesAndConditions>() // Ensure a list is returned
             )
             .IsRequired();
 
-            builder.Property(p => p.appointmentHistory)
+            builder.Property(p => p.AppointmentHistory)
             .HasConversion(
                 v => v != null ? JsonSerializer.Serialize(v, (JsonSerializerOptions)null) : "[]", // Serialize or assign empty JSON array
                 v => JsonSerializer.Deserialize<AppointmentHistory>(v, (JsonSerializerOptions)null) ?? new AppointmentHistory() // Ensure a list is returned
@@ -100,9 +100,9 @@ namespace Infrastructure.PatientRepository
             .IsRequired();
 
 
-            builder.HasIndex(p => p.email).IsUnique();
-            builder.HasIndex(p => p.phoneNumber).IsUnique();
-            builder.HasIndex(p => p.medicalRecordNumber).IsUnique();
+            builder.HasIndex(p => p.Email).IsUnique();
+            builder.HasIndex(p => p.PhoneNumber).IsUnique();
+            builder.HasIndex(p => p.MedicalRecordNumber).IsUnique();
         }
 
         private static DateOfBirth ConvertToDateOfBirth(string v)

@@ -13,9 +13,9 @@ public class MedicalRecordNumberGenerator : ValueGenerator<MedicalRecordNumber>
 
         var latestNumber = context.Patients
             .AsEnumerable()
-            .Where(mr => mr.medicalRecordNumber.ToString().StartsWith(currentYearMonth))
-            .OrderByDescending(mr => mr.medicalRecordNumber)
-            .Select(mr => mr.medicalRecordNumber)
+            .Where(mr => mr.MedicalRecordNumber.ToString().StartsWith(currentYearMonth))
+            .OrderByDescending(mr => mr.MedicalRecordNumber)
+            .Select(mr => mr.MedicalRecordNumber)
             .FirstOrDefault();
 
         var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.ToString().Substring(6)) + 1 : 1;

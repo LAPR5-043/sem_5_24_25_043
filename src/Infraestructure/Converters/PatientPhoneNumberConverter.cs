@@ -7,7 +7,7 @@ namespace Infrastructure.Converters
     public class PatientPhoneNumberConverter : ValueConverter<PatientPhoneNumber, string>
     {
         public PatientPhoneNumberConverter() : base(
-            v => v.phoneNumber.ToString(),
+            v => v.Value.ToString(),
             v => new PatientPhoneNumber(v))
         {
         }

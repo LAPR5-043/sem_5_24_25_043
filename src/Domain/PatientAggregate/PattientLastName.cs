@@ -11,13 +11,13 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The last name of the patient.
         /// </summary>
-        public string lastName { get; }
+        public string Value { get; }
         /// <summary>
         /// Default constructor required by Entity Framework.
         /// </summary>
         public PatientLastName()
         {
-            lastName = string.Empty;
+            Value = string.Empty;
         }
         /// <summary>
         /// Constructor for creating a new instance of PatientLastName.
@@ -31,14 +31,14 @@ namespace Domain.PatientAggregate
                 throw new ArgumentException("Last name cannot be empty");
             }
 
-            this.lastName = lastName;
+            this.Value = lastName;
         }
         /// <summary>
         /// Override of the equality operator.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -46,7 +46,7 @@ namespace Domain.PatientAggregate
             }
 
             var other = (PatientLastName)obj;
-            return lastName == other.lastName;
+            return Value == other.Value;
         }
         /// <summary>
         /// Override of the GetHashCode method.
@@ -54,7 +54,7 @@ namespace Domain.PatientAggregate
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return lastName.GetHashCode();
+            return Value.GetHashCode();
         }
         /// <summary>
         /// Override of the ToString method.
@@ -62,7 +62,7 @@ namespace Domain.PatientAggregate
         /// <returns></returns>
         public override string ToString()
         {
-            return lastName;
+            return Value;
         }
     }
 }

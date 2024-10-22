@@ -80,26 +80,41 @@ namespace Domain.PatientAggregate
                 throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
             }
 
-            MedicalRecordNumber = patient.medicalRecordNumber?.medicalRecordNumber ?? string.Empty;
-            FirstName = patient.firstName?.ToString() ?? string.Empty;
-            LastName = patient.lastName?.ToString() ?? string.Empty;
-            Email = patient.email?.ToString() ?? string.Empty;
-            PhoneNumber = patient.phoneNumber?.ToString() ?? string.Empty;
+            MedicalRecordNumber = patient.MedicalRecordNumber?.medicalRecordNumber ?? string.Empty;
+            FirstName = patient.FirstName?.ToString() ?? string.Empty;
+            LastName = patient.LastName?.ToString() ?? string.Empty;
+            Email = patient.Email?.ToString() ?? string.Empty;
+            PhoneNumber = patient.PhoneNumber?.ToString() ?? string.Empty;
 
-            EmergencyContactName = patient.emergencyContact?.name ?? string.Empty;
-            EmergencyContactPhoneNumber = patient.emergencyContact?.phoneNumber ?? string.Empty;
+            EmergencyContactName = patient.EmergencyContact?.Name ?? string.Empty;
+            EmergencyContactPhoneNumber = patient.EmergencyContact?.PhoneNumber ?? string.Empty;
 
-            DayOfBirth = patient.dateOfBirth?.Day() ?? string.Empty;
-            MonthOfBirth = patient.dateOfBirth?.Month() ?? string.Empty;
-            YearOfBirth = patient.dateOfBirth?.Year() ?? string.Empty;
+            DayOfBirth = patient.DateOfBirth?.Day() ?? string.Empty;
+            MonthOfBirth = patient.DateOfBirth?.Month() ?? string.Empty;
+            YearOfBirth = patient.DateOfBirth?.Year() ?? string.Empty;
 
-            Gender = patient.gender.ToString();
+            Gender = patient.Gender.ToString();
 
-            AllergiesAndConditions = patient.allergiesAndConditions?.Select(a => a.ToString()).ToList() ?? new List<string>();
-            AppointmentHistory = patient.appointmentHistory?.Appointments().Select(a => a.ToString()).ToList() ?? new List<string>();
+            AllergiesAndConditions = patient.AllergiesAndConditions?.Select(a => a.ToString()).ToList() ?? new List<string>();
+            AppointmentHistory = patient.AppointmentHistory?.Appointments().Select(a => a.ToString()).ToList() ?? new List<string>();
         }
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PatientDto"/> class.
+        /// </summary>
+        /// <param name="MedicalRecordNumber"></param>
+        /// <param name="FirstName"></param>
+        /// <param name="LastName"></param>
+        /// <param name="Email"></param>
+        /// <param name="PhoneNumber"></param>
+        /// <param name="EmergencyContactName"></param>
+        /// <param name="EmergencyContactPhoneNumber"></param>
+        /// <param name="DayOfBirth"></param>
+        /// <param name="MonthOfBirth"></param>
+        /// <param name="YearOfBirth"></param>
+        /// <param name="Gender"></param>
+        /// <param name="AllergiesAndConditions"></param>
+        /// <param name="AppointmentHistory"></param>
         [JsonConstructor]
         public PatientDto(string MedicalRecordNumber, string FirstName, string LastName, string Email, string PhoneNumber, string EmergencyContactName, 
         string EmergencyContactPhoneNumber, string DayOfBirth, string MonthOfBirth, string YearOfBirth, string Gender, List<string> AllergiesAndConditions, List<string> AppointmentHistory)

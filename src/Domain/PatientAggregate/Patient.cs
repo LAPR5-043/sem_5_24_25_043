@@ -13,57 +13,57 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Gets the medical record number of the patient.
         /// </summary>
-        public MedicalRecordNumber medicalRecordNumber { get; set; }
+        public MedicalRecordNumber MedicalRecordNumber { get; set; }
 
         /// <summary>
         /// Gets the first name of the patient.
         /// </summary>
-        public PatientFirstName firstName { get; set; }
+        public PatientFirstName FirstName { get; set; }
 
         /// <summary>
         /// Gets the last name of the patient.
         /// </summary>
-        public PatientLastName lastName { get; set; }
+        public PatientLastName LastName { get; set; }
 
         /// <summary>
         /// Gets the full name of the patient.
         /// </summary>
-        public PatientFullName fullName { get; set; }
+        public PatientFullName FullName { get; set; }
 
         /// <summary>
         /// Gets the email of the patient.
         /// </summary>
-        public PatientEmail email { get; set; }
+        public PatientEmail Email { get; set; }
 
         /// <summary>
         /// Gets the phone number of the patient.
         /// </summary>
-        public PatientPhoneNumber phoneNumber { get; set; }
+        public PatientPhoneNumber PhoneNumber { get; set; }
 
         /// <summary>
         /// Gets the emergency contact of the patient.
         /// </summary>
-        public EmergencyContact emergencyContact { get; set; }
+        public EmergencyContact EmergencyContact { get; set; }
 
         /// <summary>
         /// Gets the date of birth of the patient.
         /// </summary>
-        public DateOfBirth dateOfBirth { get; set; }
+        public DateOfBirth DateOfBirth { get; set; }
 
         /// <summary>
         /// Gets the gender of the patient.
         /// </summary>
-        public Gender gender { get; set; }
+        public Gender Gender { get; set; }
 
         /// <summary>
         /// Gets the list of allergies and conditions of the patient.
         /// </summary>
-        public List<AllergiesAndConditions> allergiesAndConditions { get; set; } = new List<AllergiesAndConditions>();
+        public List<AllergiesAndConditions> AllergiesAndConditions { get; set; } = new List<AllergiesAndConditions>();
 
         /// <summary>
         /// Gets the appointment history of the patient.
         /// </summary>
-        public AppointmentHistory appointmentHistory { get; set; } = new AppointmentHistory();
+        public AppointmentHistory AppointmentHistory { get; set; } = new AppointmentHistory();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Patient"/> class.
@@ -109,7 +109,7 @@ namespace Domain.PatientAggregate
         public void AddAllergyOrCondition(string allergyOrCondition)
         {
             var condition = new AllergiesAndConditions(allergyOrCondition);
-            allergiesAndConditions.Add(condition);
+            AllergiesAndConditions.Add(condition);
         }
 
         /// <summary>
@@ -118,10 +118,10 @@ namespace Domain.PatientAggregate
         /// <param name="allergyOrCondition">The allergy or condition to remove.</param>
         public void RemoveAllergyOrCondition(string allergyOrCondition)
         {
-            var condition = allergiesAndConditions.FirstOrDefault(a => a.allergiesAndConditions == allergyOrCondition);
+            var condition = AllergiesAndConditions.FirstOrDefault(a => a.Value == allergyOrCondition);
             if (condition != null)
             {
-                allergiesAndConditions.Remove(condition);
+                AllergiesAndConditions.Remove(condition);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Domain.PatientAggregate
         /// <param name="appointmentId">The ID of the appointment to add.</param>
         public void AddAppointment(int appointmentId)
         {
-            appointmentHistory.AddAppointment(appointmentId);
+            AppointmentHistory.AddAppointment(appointmentId);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Domain.PatientAggregate
         /// <param name="appointmentId">The ID of the appointment to remove.</param>
         public void RemoveAppointment(int appointmentId)
         {
-            appointmentHistory.RemoveAppointment(appointmentId);
+            AppointmentHistory.RemoveAppointment(appointmentId);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Domain.PatientAggregate
         public void UpdateEmergencyContact(string emergencyContactName, string emergencyContactPhoneNumber)
         {
 
-            emergencyContact = new EmergencyContact(emergencyContactName, emergencyContactPhoneNumber);
+            EmergencyContact = new EmergencyContact(emergencyContactName, emergencyContactPhoneNumber);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Domain.PatientAggregate
                 return false;
 
             var other = (Patient)obj;
-            return medicalRecordNumber.Equals(other.medicalRecordNumber);
+            return MedicalRecordNumber.Equals(other.MedicalRecordNumber);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Domain.PatientAggregate
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-            return medicalRecordNumber.GetHashCode();
+            return MedicalRecordNumber.GetHashCode();
         }
 
         /// <summary>
@@ -183,15 +183,15 @@ namespace Domain.PatientAggregate
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"MedicalRecordNumber: {medicalRecordNumber},\n" +
-                   $"FullName: {fullName},\n" +
-                   $"Email: {email},\n" +
-                   $"PhoneNumber: {phoneNumber},\n" +
-                   $"EmergencyContact: {emergencyContact},\n" +
-                   $"DateOfBirth: {dateOfBirth},\n" +
-                   $"Gender: {gender},\n" +
-                   $"AllergiesAndConditions: {string.Join(", ", allergiesAndConditions)},\n" +
-                   $"AppointmentHistory: {appointmentHistory}";
+            return $"MedicalRecordNumber: {MedicalRecordNumber},\n" +
+                   $"FullName: {FullName},\n" +
+                   $"Email: {Email},\n" +
+                   $"PhoneNumber: {PhoneNumber},\n" +
+                   $"EmergencyContact: {EmergencyContact},\n" +
+                   $"DateOfBirth: {DateOfBirth},\n" +
+                   $"Gender: {Gender},\n" +
+                   $"AllergiesAndConditions: {string.Join(", ", AllergiesAndConditions)},\n" +
+                   $"AppointmentHistory: {AppointmentHistory}";
         }
     }
 

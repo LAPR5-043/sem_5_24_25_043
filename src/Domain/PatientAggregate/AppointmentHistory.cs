@@ -11,13 +11,13 @@ namespace src.Domain.PatientAggregate
         /// <summary>
         /// List of appointment ids.
         /// </summary>
-        private List<int> appointments { get; }
+        private List<int> Value { get; }
         /// <summary>
         /// Default constructor.
         /// </summary>
         public AppointmentHistory()
         {
-            appointments = new List<int>();
+            Value = new List<int>();
         }
         /// <summary>
         /// Constructor that initializes the list of appointments.
@@ -31,7 +31,7 @@ namespace src.Domain.PatientAggregate
                 throw new ArgumentException("Appointments cannot be null");
             }
 
-            this.appointments = appointments;
+            this.Value = appointments;
         }
         /// <summary>
         /// Compares two instances of AppointmentHistory.
@@ -46,7 +46,7 @@ namespace src.Domain.PatientAggregate
             }
 
             var other = (AppointmentHistory)obj;
-            return appointments == other.appointments;
+            return Value == other.Value;
         }
         /// <summary>
         /// Returns the hash code of the appointments list.
@@ -54,7 +54,7 @@ namespace src.Domain.PatientAggregate
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return appointments.GetHashCode();
+            return Value.GetHashCode();
         }
         /// <summary>
         /// Returns the string representation of the appointments list.
@@ -62,12 +62,12 @@ namespace src.Domain.PatientAggregate
         /// <returns></returns>
         public override string ToString()
         {
-            return appointments.ToString();
+            return Value?.ToString() ?? string.Empty;
         }
 
         public List<int> Appointments()
         {
-            return appointments;
+            return Value;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace src.Domain.PatientAggregate
         /// <param name="appointmentId"></param>
         public void AddAppointment(int appointmentId)
         {
-            appointments.Add(appointmentId);
+            Value.Add(appointmentId);
         }
         /// <summary>
         /// Removes an appointment from the list.
@@ -84,7 +84,7 @@ namespace src.Domain.PatientAggregate
         /// <param name="appointmentId"></param>
         public void RemoveAppointment(int appointmentId)
         {
-            appointments.Remove(appointmentId);
+            Value.Remove(appointmentId);
         }
 
     }

@@ -33,7 +33,7 @@ public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, I
     {
         return context.Patients
             .AsEnumerable()
-            .Any(p => p.email.email == email || p.phoneNumber.phoneNumber == phoneNumber);
+            .Any(p => p.Email.Value == email || p.PhoneNumber.Value == phoneNumber);
     }
     
     /// <summary>
@@ -45,6 +45,6 @@ public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, I
     {
         return context.Patients
             .AsEnumerable()
-            .Any(p => p.email.email == email);
+            .Any(p => p.Email.Value == email);
     }
 }

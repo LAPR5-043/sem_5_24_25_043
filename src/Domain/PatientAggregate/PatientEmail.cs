@@ -11,14 +11,16 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The email of the patient
         /// </summary>
-        public string email { get; }
+        public string Value { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientEmail"/> class.
         /// </summary>
         public PatientEmail()
         {
-            email = string.Empty;
+            Value = string.Empty;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientEmail"/> class.
         /// </summary>
@@ -35,15 +37,22 @@ namespace Domain.PatientAggregate
             {
                 throw new ArgumentException("Email must contain @");
             }
+            
+            var atIndex = email.IndexOf("@");
+            if (atIndex == email.Length - 1 || !email.Substring(atIndex).Contains("."))
+            {
+                throw new ArgumentException("Email must contain a dot after @");
+            }
 
-            this.email = email;
+            this.Value = email;
         }
+
         /// <summary>
         /// Determines whether the specified object is equal to the current object
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -51,23 +60,25 @@ namespace Domain.PatientAggregate
             }
 
             var other = (PatientEmail)obj;
-            return email == other.email;
+            return Value == other.Value;
         }
+
         /// <summary>
         /// Serves as the default hash function
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return email.GetHashCode();
+            return Value.GetHashCode();
         }
+        
         /// <summary>
         /// Returns a string that represents the current object
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return email;
+            return Value;
         }
     }
 }

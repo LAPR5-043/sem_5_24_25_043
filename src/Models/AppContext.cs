@@ -49,32 +49,35 @@ public class AppContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
-            new Patient { Id=new MedicalRecordNumber("1"), medicalRecordNumber = new MedicalRecordNumber("1"), firstName = new PatientFirstName("John"), lastName = new PatientLastName("Doe"),
-                         fullName = new PatientFullName("John","Doe"),email = new PatientEmail("john@email.com"), phoneNumber = new PatientPhoneNumber("919919919"),
-                          emergencyContact = new EmergencyContact("Jane", "919919919"), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
-                         allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() },
-            new Patient {Id=new MedicalRecordNumber("2"), medicalRecordNumber = new MedicalRecordNumber("2"), firstName = new PatientFirstName("Jane"), lastName = new PatientLastName("Does"),
-                         fullName = new PatientFullName("Jane","Does"),email = new PatientEmail("Jane@email.com"), phoneNumber = new PatientPhoneNumber("919991919"),
-                          emergencyContact = new EmergencyContact("Jane", "919999119"), dateOfBirth = new DateOfBirth("01", "01", "1999"), gender = Gender.Male,
-                         allergiesAndConditions = new List<AllergiesAndConditions>(), appointmentHistory = new AppointmentHistory() }            
-        );
-
-        modelBuilder.Entity<OperationType>().HasData(
-                new OperationType
+                new Patient
                 {
-                    Id = new OperationTypeName("Heart Surgery"),
-                    operationTypeName = new OperationTypeName("Heart Surgery"),
-                    estimatedDuration = new EstimatedDuration(3, 15),
-                    isActive = true,
-                    specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
+                    Id = new MedicalRecordNumber("1"),
+                    MedicalRecordNumber = new MedicalRecordNumber("1"),
+                    FirstName = new PatientFirstName("John"),
+                    LastName = new PatientLastName("Doe"),
+                    FullName = new PatientFullName("John", "Doe"),
+                    Email = new PatientEmail("john@email.com"),
+                    PhoneNumber = new PatientPhoneNumber("+351919919919"),
+                    EmergencyContact = new EmergencyContact("Jane", "+351919919919"),
+                    DateOfBirth = new DateOfBirth("01", "01", "1999"),
+                    Gender = Gender.Male,
+                    AllergiesAndConditions = new List<AllergiesAndConditions>(),
+                    AppointmentHistory = new AppointmentHistory()
                 },
-                new OperationType
+                new Patient
                 {
-                    Id = new OperationTypeName("Knee Surgery"),
-                    operationTypeName = new OperationTypeName("Knee Surgery"),
-                    estimatedDuration = new EstimatedDuration(2, 0),
-                    isActive = true,
-                    specializations = new Dictionary<string, int> { { "Orthopedics", 2 } }
+                    Id = new MedicalRecordNumber("2"),
+                    MedicalRecordNumber = new MedicalRecordNumber("2"),
+                    FirstName = new PatientFirstName("Jane"),
+                    LastName = new PatientLastName("Does"),
+                    FullName = new PatientFullName("Jane", "Does"),
+                    Email = new PatientEmail("Jane@email.com"),
+                    PhoneNumber = new PatientPhoneNumber("+351919991919"),
+                    EmergencyContact = new EmergencyContact("Jane", "+351919999119"),
+                    DateOfBirth = new DateOfBirth("01", "01", "1999"),
+                    Gender = Gender.Male,
+                    AllergiesAndConditions = new List<AllergiesAndConditions>(),
+                    AppointmentHistory = new AppointmentHistory()
                 }
             );
 

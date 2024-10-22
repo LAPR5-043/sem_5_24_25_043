@@ -7,7 +7,7 @@
 namespace sem_5_24_25_043.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSpecializations : Migration
+    public partial class Redo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,23 @@ namespace sem_5_24_25_043.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Logs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OperationRequests",
+                columns: table => new
+                {
+                    operationRequestID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    patientID = table.Column<int>(type: "int", nullable: false),
+                    doctorID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    operationTypeID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    deadlineDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    priority = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OperationRequests", x => x.operationRequestID);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,22 +63,38 @@ namespace sem_5_24_25_043.Migrations
                 name: "Patients",
                 columns: table => new
                 {
-                    medicalRecordNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    phoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    emergencyContact = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    dateOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    allergiesAndConditions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    appointmentHistory = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedicalRecordNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmergencyContact = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AllergiesAndConditions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppointmentHistory = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Id = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.medicalRecordNumber);
+                    table.PrimaryKey("PK_Patients", x => x.MedicalRecordNumber);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PendingRequests",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    requestID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    userId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    attributeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    pendingValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    oldValue = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PendingRequests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,39 +119,45 @@ namespace sem_5_24_25_043.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "OperationTypes",
-                columns: new[] { "operationTypeName", "Id", "estimatedDuration", "isActive", "specializations" },
+                table: "OperationRequests",
+                columns: new[] { "operationRequestID", "Id", "deadlineDate", "doctorID", "operationTypeID", "patientID", "priority" },
                 values: new object[,]
                 {
-                    { "Heart Surgery", "Heart Surgery", "3:15", true, "{\"Cardiology\":1}" },
-                    { "Knee Surgery", "Knee Surgery", "2:0", true, "{\"Orthopedics\":2}" }
+                    { "1", "1", "01/01/2025 00:00:00", "s202400001", "Knee Surgery", 1, 2 },
+                    { "2", "2", "01/01/2025 00:00:00", "s202400002", "Heart Surgery", 2, 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Patients",
-                columns: new[] { "medicalRecordNumber", "Id", "allergiesAndConditions", "appointmentHistory", "dateOfBirth", "email", "emergencyContact", "firstName", "fullName", "gender", "lastName", "phoneNumber" },
+                columns: new[] { "MedicalRecordNumber", "AllergiesAndConditions", "AppointmentHistory", "DateOfBirth", "Email", "EmergencyContact", "FirstName", "FullName", "Gender", "Id", "LastName", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { "1", "1", "[]", "{}", "1/1/1999", "john@email.com", "{\"name\":\"Jane\",\"phoneNumber\":\"919919919\"}", "John", "John Doe", "Male", "Doe", "919919919" },
-                    { "2", "2", "[]", "{}", "1/1/1999", "Jane@email.com", "{\"name\":\"Jane\",\"phoneNumber\":\"919999119\"}", "Jane", "Jane Does", "Male", "Does", "919991919" }
+                    { "1", "[]", "{}", "1/1/1999", "john@email.com", "{\"Name\":\"Jane\",\"PhoneNumber\":\"\\u002B351919919919\"}", "John", "John Doe", "Male", "1", "Doe", "+351919919919" },
+                    { "2", "[]", "{}", "1/1/1999", "Jane@email.com", "{\"Name\":\"Jane\",\"PhoneNumber\":\"\\u002B351919999119\"}", "Jane", "Jane Does", "Male", "2", "Does", "+351919991919" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_email",
+                name: "IX_Patients_Email",
                 table: "Patients",
-                column: "email",
+                column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_medicalRecordNumber",
+                name: "IX_Patients_MedicalRecordNumber",
                 table: "Patients",
-                column: "medicalRecordNumber",
+                column: "MedicalRecordNumber",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_phoneNumber",
+                name: "IX_Patients_PhoneNumber",
                 table: "Patients",
-                column: "phoneNumber",
+                column: "PhoneNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PendingRequests_requestID",
+                table: "PendingRequests",
+                column: "requestID",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -147,10 +186,16 @@ namespace sem_5_24_25_043.Migrations
                 name: "Logs");
 
             migrationBuilder.DropTable(
+                name: "OperationRequests");
+
+            migrationBuilder.DropTable(
                 name: "OperationTypes");
 
             migrationBuilder.DropTable(
                 name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "PendingRequests");
 
             migrationBuilder.DropTable(
                 name: "Staffs");

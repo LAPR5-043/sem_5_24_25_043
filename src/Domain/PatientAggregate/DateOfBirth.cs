@@ -11,13 +11,14 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Date of birth of the patient
         /// </summary>
-        public DateTime dateOfBirth { get; }
+        public DateTime Value { get; }
+
         /// <summary>
         /// Default constructor
         /// </summary>
         public DateOfBirth()
         {
-            dateOfBirth = DateTime.MinValue;
+            Value = DateTime.MinValue;
         }
         /// <summary>
         /// Constructor for the date of birth
@@ -33,14 +34,14 @@ namespace Domain.PatientAggregate
                 throw new ArgumentException("Date of birth cannot be empty");
             }
 
-            dateOfBirth = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day), 0, 0, 0, DateTimeKind.Utc);
+            Value = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day), 0, 0, 0, DateTimeKind.Utc);
         }
         /// <summary>
         /// Equality check for the date of birth
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -48,7 +49,7 @@ namespace Domain.PatientAggregate
             }
 
             var other = (DateOfBirth)obj;
-            return dateOfBirth == other.dateOfBirth;
+            return Value == other.Value;
         }
         /// <summary>
         /// Hash code for the date of birth
@@ -56,7 +57,7 @@ namespace Domain.PatientAggregate
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return dateOfBirth.GetHashCode();
+            return Value.GetHashCode();
         }
         /// <summary>
         /// String representation of the date of birth
@@ -64,24 +65,24 @@ namespace Domain.PatientAggregate
         /// <returns></returns>
         public override string ToString()
         {
-            return dateOfBirth.ToString();
+            return Value.ToString();
         }
 
         public string Day()
         {
-            return dateOfBirth.Day.ToString();
+            return Value.Day.ToString();
         }
 
         public string Month()
         {
-            return dateOfBirth.Month.ToString();
+            return Value.Month.ToString();
         }
 
         public string Year()
         {
-            return dateOfBirth.Year.ToString();
+            return Value.Year.ToString();
         }
-        public DateOfBirth FromString(string dateOfBirth)
+        public static DateOfBirth FromString(string dateOfBirth)
         {
             string[] date = dateOfBirth.Split("/");
             return new DateOfBirth(date[0], date[1], date[2]);

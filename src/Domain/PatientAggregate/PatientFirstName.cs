@@ -7,14 +7,25 @@ namespace Domain.PatientAggregate
     /// Value object representing the first name of a patient.
     /// </summary>
     public class PatientFirstName : IValueObject
-    {
-        public string firstName { get; }
+    {   
+        /// <summary>
+        /// The first name of the patient
+        /// </summary>
+        public string Value { get; }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public PatientFirstName()
         {
-            firstName = string.Empty;
+            Value = string.Empty;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <exception cref="ArgumentException"></exception>
         public PatientFirstName(string firstName)
         {
             if (string.IsNullOrWhiteSpace(firstName))
@@ -22,10 +33,15 @@ namespace Domain.PatientAggregate
                 throw new ArgumentException("First name cannot be empty");
             }
 
-            this.firstName = firstName;
+            this.Value = firstName;
         }
 
-        public override bool Equals(object obj)
+        /// <summary>
+        /// Compares two first names for equality
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -33,17 +49,25 @@ namespace Domain.PatientAggregate
             }
 
             var other = (PatientFirstName)obj;
-            return firstName == other.firstName;
+            return Value == other.Value;
         }
-
+        
+        /// <summary>
+        /// Returns the hash code for the first name
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
-            return firstName.GetHashCode();
+            return Value.GetHashCode();
         }
 
+        /// <summary>
+        /// Returns the string representation of the first name
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return firstName;
+            return Value;
         }
     }
 }

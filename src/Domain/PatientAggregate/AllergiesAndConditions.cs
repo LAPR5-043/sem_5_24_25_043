@@ -11,18 +11,18 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Gets the allergies and conditions.
         /// </summary>
-        public string allergiesAndConditions { get; }
+        public string Value { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AllergiesAndConditions"/> class with an empty value.
+        /// Initializes a new instance of the <see cref="PatientAggregate.AllergiesAndConditions"/> class with an empty value.
         /// </summary>
         public AllergiesAndConditions()
         {
-            allergiesAndConditions = string.Empty;
+            Value = string.Empty;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AllergiesAndConditions"/> class with the specified value.
+        /// Initializes a new instance of the <see cref="PatientAggregate.AllergiesAndConditions"/> class with the specified value.
         /// </summary>
         /// <param name="allergiesAndConditions">The allergies and conditions.</param>
         /// <exception cref="ArgumentException">Thrown when the allergies and conditions are null or whitespace.</exception>
@@ -33,7 +33,7 @@ namespace Domain.PatientAggregate
                 throw new ArgumentException("Allergies and conditions cannot be empty");
             }
 
-            this.allergiesAndConditions = allergiesAndConditions;
+            this.Value = allergiesAndConditions;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Domain.PatientAggregate
             }
 
             var other = (AllergiesAndConditions)obj;
-            return allergiesAndConditions == other.allergiesAndConditions;
+            return Value == other.Value;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Domain.PatientAggregate
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-            return allergiesAndConditions.GetHashCode();
+            return Value.GetHashCode();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Domain.PatientAggregate
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return allergiesAndConditions;
+            return Value;
         }
     }
 }
