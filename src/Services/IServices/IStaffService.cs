@@ -11,7 +11,8 @@ namespace src.Services.IServices
         Task<OkObjectResult> getAllStaffAsync();
         Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy);
         Task<StaffDto> CreateStaffAsync(StaffDto staffDto);
-        Task<StaffDto> getStaffAsync(string id);
+        Task<StaffDto> GetStaffAsync(string id);
         Task<bool> UpdateIsActiveAsync(string id);
+        string GetIdFromEmailAsync(string doctorEmail);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using Domain.OperationRequestAggregate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sem_5_24_25_043;
 using src.Services.IServices;
 
 namespace src.Controllers
@@ -27,14 +28,22 @@ namespace src.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOperationRequest(int id, [FromHeader(Name = "X-Confirm-Delete")] bool confirmDelete)
         {
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("medic"))
+            {
+                return Unauthorized();
+            }
             
+            var doctorEmail = AuthService.GetInternalEmailFromToken(HttpContext);
+
             // Check confirmation before deletion
             if (!confirmDelete)
             {
                 return BadRequest(new { message = "Deletion not confirmed." });
             }
 
-            var result = await service.DeleteOperationRequestAsync(id);
+            var result = await service.DeleteOperationRequestAsync(id, doctorEmail);
             
             if (result)
             {

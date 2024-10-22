@@ -112,7 +112,7 @@ public class StaffService : IStaffService
         return resultDtos;
     }
 
-    public async Task<StaffDto> getStaffAsync(string id)
+    public async Task<StaffDto> GetStaffAsync(string id)
     {
         var staff = await staffRepository.GetByIdAsync(new StaffID(id));
         return new StaffDto(staff);
@@ -163,6 +163,9 @@ public class StaffService : IStaffService
         return true;
     }
 
-
-
+    public async Task<string> GetIdFromEmailAsync(string doctorEmail)
+    {
+        Staff staff = await staffRepository.GetStaffByEmail(doctorEmail);
+        return staff.staffID.ToString();
+    }
 }

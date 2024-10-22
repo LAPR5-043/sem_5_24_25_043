@@ -31,6 +31,8 @@ namespace src.Services
         /// </summary>
         private readonly IPlanningModuleService planningModuleService;
 
+        private readonly IStaffService staffService;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -38,12 +40,13 @@ namespace src.Services
         /// <param name="operationRequestRepository"></param>
         /// <param name="appointmentRepository"></param>
         /// <param name="planningModuleService"></param>
-        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository operationRequestRepository, IAppointmentRepository appointmentRepository, IPlanningModuleService planningModuleService)
+        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository operationRequestRepository, IAppointmentRepository appointmentRepository, IPlanningModuleService planningModuleService, IStaffService staffService)
         {
             this.unitOfWork = unitOfWork;
             this.operationRequestRepository = operationRequestRepository;
             this.appointmentRepository = appointmentRepository;
             this.planningModuleService = planningModuleService;
+            this.staffService = staffService;
         }
         /// <summary>
         /// Delete operation request by id
@@ -51,10 +54,15 @@ namespace src.Services
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> DeleteOperationRequestAsync(int id)
+        public async Task<bool> DeleteOperationRequestAsync(int id, string doctorEmail)
         {
 
-            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+            // Check if the doctor is the one that created the Operation Request
+            var doctorID = staffService.GetIdFromEmailAsync(doctorEmail);
+
+            OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+
+            await checkIfDoctorIsTheCreatorOfOperationRequestAsync(id, doctorID, operationRequest);
             
             if (operationRequest == null)
             {
@@ -79,6 +87,15 @@ namespace src.Services
 
             return true;
 
+        }
+
+        private async Task checkIfDoctorIsTheCreatorOfOperationRequestAsync(int id, string doctorID, OperationRequest operationRequest)
+        {
+
+            if (operationRequest.doctorID != doctorID)
+            {
+                throw new Exception("Doctor is not the creator of the Operation Request");
+            }
         }
 
         public async Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto){

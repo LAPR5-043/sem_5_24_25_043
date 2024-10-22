@@ -1,13 +1,13 @@
 @startuml
 
 
-title US 5.1.18 - As a Doctor, I want to remove an operation reqAPPLICATIONsition
+title US 5.1.18 - As a Doctor, I want to remove an operation reqAPIsition
 
 skinparam classAttributeIconSize 0
 
 skinparam class {
     LifeLineBorderColor DodgerBlue
-    LifeLineBackgroundColor APPLICATION
+    LifeLineBackgroundColor API
     BackgroundColor LemonChiffon
     ArrowColor Brown
     BorderColor SaddleBrown
@@ -17,7 +17,7 @@ skinparam packageStyle rectangle
 
 skinparam card {
     LifeLineBorderColor DodgerBlue
-    LifeLineBackgroundColor APPLICATION
+    LifeLineBackgroundColor API
     BackgroundColor LemonChiffon
     ArrowColor Brown
     BorderColor SaddleBrown
@@ -25,7 +25,7 @@ skinparam card {
 
 actor "Doctor" as Doctor
 
-participant "API" as APPLICATION
+participant "API" as API
 participant "OperationRequestController" as ORC
 participant "AuthService" as AS
 participant "StaffRepository" as SR
@@ -38,11 +38,11 @@ participant "PlanningModuleInterface" as PMI
 
 activate Doctor
 
-Doctor -> APPLICATION: HttpDelete(/api/operationRequests/{OperationRequestID})
+Doctor -> API: HttpDelete(/api/operationRequests/{OperationRequestID})
 
-activate APPLICATION
+activate API
 
-APPLICATION -> ORC: DeleteOperationRequest(OperationRequestID)
+API -> ORC: DeleteOperationRequest(OperationRequestID)
 
 activate ORC
 
@@ -134,11 +134,11 @@ ORS --> ORC: true
 
 deactivate ORS
 
-ORC --> APPLICATION: true
+ORC --> API: true
 
 deactivate ORC
 
-APPLICATION --> Doctor: Operation request removed successfully
+API --> Doctor: Operation request removed successfully
 
 
 

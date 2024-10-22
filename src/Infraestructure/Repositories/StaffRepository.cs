@@ -25,5 +25,10 @@ public class StaffRepository : BaseRepository<Staff, StaffID>, IStaffRepository
             .AsEnumerable()
             .Any(p => p.email.email == email || p.phoneNumber.phoneNumber == phoneNumber);
     }
+
+    public async Task<Staff> GetStaffByEmail(string doctorEmail)
+    {
+        return (await context.Staffs.FirstOrDefaultAsync(s => s.email.email == doctorEmail))!;
+    }
 }
 

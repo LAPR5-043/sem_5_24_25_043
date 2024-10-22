@@ -65,28 +65,28 @@ public class AuthService
 
         await _provider.ConfirmSignUpAsync(request);
     }
-  //  public async Task GetUserGroupsByEmailAsync(string email)
-  //  {
-  //      var request = new AdminListGroupsForUserRequest
-  //      {
-  //          UserPoolId = _userPoolId,
-  //          Username = email
-  //      };
-//
-  //      var response = await _provider.AdminListGroupsForUserAsync(request);
-  //      return response.Groups.Select(g => g.GroupName);
-  //  }
+    //  public async Task GetUserGroupsByEmailAsync(string email)
+    //  {
+    //      var request = new AdminListGroupsForUserRequest
+    //      {
+    //          UserPoolId = _userPoolId,
+    //          Username = email
+    //      };
+    //
+    //      var response = await _provider.AdminListGroupsForUserAsync(request);
+    //      return response.Groups.Select(g => g.GroupName);
+    //  }
     public async Task<string?> GetUserEmailByTokenAsync(string authToken)
-{
-    var request = new GetUserRequest
     {
-        AccessToken = authToken
-    };
+        var request = new GetUserRequest
+        {
+            AccessToken = authToken
+        };
 
-    var response = await _provider.GetUserAsync(request);
-    var emailAttribute = response.UserAttributes.FirstOrDefault(attr => attr.Name == "email");
-    return emailAttribute?.Value;
-}
+        var response = await _provider.GetUserAsync(request);
+        var emailAttribute = response.UserAttributes.FirstOrDefault(attr => attr.Name == "email");
+        return emailAttribute?.Value;
+    }
     public async Task<bool> RegisterNewPatientAsync(string? email, string? patientEmail, string? password)
     {
         var signUpRequest = new AdminCreateUserRequest
@@ -103,13 +103,13 @@ public class AuthService
             DesiredDeliveryMediums = new List<string> { "EMAIL" },
             MessageAction = "SUPPRESS"
         };
-        
+
         Console.WriteLine("Creating user: " + email);
 
         var response = await _provider.AdminCreateUserAsync(signUpRequest);
 
         Console.WriteLine("Created user: " + response.User.Username); // Não está a cehgar aqui
-        
+
         // Disable the user immediately after creation
         var adminDisableUserRequest = new AdminDisableUserRequest
         {
@@ -123,13 +123,13 @@ public class AuthService
 
         return response.User != null;
     }
-   public static string GetInternalEmailFromToken(HttpContext httpContext)
-{
-    var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-    var handler = new JwtSecurityTokenHandler();
-    var jwtToken = handler.ReadJwtToken(token);
-    return jwtToken.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-}
+    public static string GetInternalEmailFromToken(HttpContext httpContext)
+    {
+        var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        return jwtToken.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+    }
     public static IEnumerable<string> GetGroupsFromToken(HttpContext httpContext)
     {
         var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
@@ -137,7 +137,7 @@ public class AuthService
         var jwtToken = handler.ReadJwtToken(token);
         return jwtToken.Claims.Where(claim => claim.Type == "cognito:groups").Select(claim => claim.Value);
     }
-    
+
 
 
 }

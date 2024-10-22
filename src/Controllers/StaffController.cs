@@ -71,7 +71,7 @@ namespace src.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StaffDto>> GetStaff(string id)
         {
-            var staff = await service.getStaffAsync(id);
+            var staff = await service.GetStaffAsync(id);
             if (staff == null)
             {
                 return NotFound();

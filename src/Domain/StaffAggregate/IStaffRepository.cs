@@ -6,6 +6,6 @@ namespace Domain.StaffAggregate
     {
         void UpdateAsync(Staff staff);
         Boolean StaffExists(string email, string phoneNumber);
-
+        Task<Staff> GetStaffByEmail(string doctorEmail);
     }
 }
