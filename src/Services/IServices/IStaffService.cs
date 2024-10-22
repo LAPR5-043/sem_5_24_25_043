@@ -12,7 +12,7 @@ namespace src.Services.IServices
         Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy);
         Task<StaffDto> CreateStaffAsync(StaffDto staffDto);
         Task<StaffDto> GetStaffAsync(string id);
-        Task<bool> UpdateIsActiveAsync(string id);
+    Task<bool> UpdateIsActiveAsync(string id, string adminEmail);   
         Task<string> GetIdFromEmailAsync(string doctorEmail);
     }
 }

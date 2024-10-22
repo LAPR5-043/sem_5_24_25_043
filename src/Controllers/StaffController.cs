@@ -85,12 +85,12 @@ namespace src.Controllers
         public async Task<IActionResult> UpdateIsActive(string id)
         {
              IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
+            string adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
             if (!roles.Contains("admins"))
             {
                 return Unauthorized();
             }
-            var result = await service.UpdateIsActiveAsync(id);
+            var result = await service.UpdateIsActiveAsync(id,adminEmail);
             if (!result)
             {
                 return NotFound();
