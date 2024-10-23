@@ -8,7 +8,21 @@ public class EmailEncryptionService : IEncryptionEmailService
 
     public EmailEncryptionService(IConfiguration configuration)
     {
-        var keyString = configuration["EncryptionSettings:Key"]; // Or retrieve from environment or secrets manager
+        // Ensure the configuration is not null
+        if (configuration == null)
+        {
+            throw new ArgumentNullException(nameof(configuration));
+        }
+
+        // Read the encryption key from the configuration
+        var keyString = configuration["EncryptionSettings:Key"];
+
+        // Ensure the encryption key is not null or empty and has the correct length
+        if (string.IsNullOrEmpty(keyString) || keyString.Length < 48)
+        {
+            throw new InvalidOperationException("Encryption key is not configured properly or is of incorrect length.");
+        }
+
         _key = Encoding.UTF8.GetBytes(keyString.Substring(0, 32)); // Ensure it's 32 bytes
         _iv = Encoding.UTF8.GetBytes(keyString.Substring(32, 16)); // Ensure it's 16 bytes
     }

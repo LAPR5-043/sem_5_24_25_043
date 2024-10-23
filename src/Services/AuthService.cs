@@ -207,12 +207,11 @@ public class AuthService
             Username = email
         };
 
-
+        // Disable the user immediately after creation
         await _provider.AdminDisableUserAsync(adminDisableUserRequest);
 
-        // var accessToken = ...
-
-        _emailService.SendConfirmationEmail(email);
+        // Send the confirmation email
+        await _emailService.SendConfirmationEmail(email);
         
         return response.User != null;
     }

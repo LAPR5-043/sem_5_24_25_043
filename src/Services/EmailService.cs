@@ -8,6 +8,7 @@ namespace src.Services
     {
 
         private readonly IEncryptionEmailService encryptionEmailService;
+        private readonly string bannerImageUrl = "https://imgur.com/a/ODn2ztG";
         private readonly string smtpServer;
         private readonly int smtpPort;
         private readonly string senderEmail;
@@ -41,41 +42,49 @@ namespace src.Services
 
         public async Task SendEmailAsync(string recipientEmail, string subject, string body)
         {
-            List<string> attachmentPaths = null;
             try
             {
-                using (var client = new SmtpClient(smtpServer, smtpPort))
+                // Configure the SMTP client for SSL over port X
+                SmtpClient client = new SmtpClient(smtpServer, smtpPort)
                 {
-                    client.Credentials = new NetworkCredential(senderEmail, senderPassword);
-                    client.EnableSsl = true;
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(senderEmail, senderPassword),
+                    EnableSsl = true, // SSL is used on port 465
+                    DeliveryMethod = SmtpDeliveryMethod.Network
+                };
 
-                    var mailMessage = new MailMessage
-                    {
-                        From = new MailAddress(senderEmail),
-                        Subject = subject,
-                        Body = body,
-                        IsBodyHtml = true,
-                    };
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(senderEmail),
+                    Subject = subject,
+                    IsBodyHtml = true // HTML email content
+                };
 
-                    mailMessage.To.Add(recipientEmail);
+                mailMessage.To.Add(recipientEmail);
 
-                    // Add attachments if any
-                    if (attachmentPaths != null)
-                    {
-                        foreach (var attachmentPath in attachmentPaths)
-                        {
-                            mailMessage.Attachments.Add(new Attachment(attachmentPath));
-                        }
-                    }
+                // Construct HTML body with the banner image link
+                string htmlBody = $"<html><body><img src='{bannerImageUrl}' alt='Banner' /><br>{body}</body></html>";
 
-                    await client.SendMailAsync(mailMessage);
-                }
+                // Set the email body
+                mailMessage.Body = htmlBody;
+
+                // Send the email
+                await client.SendMailAsync(mailMessage);
+            }
+            catch (SmtpException smtpEx)
+            {
+                // Handle SMTP-specific exceptions
+                Console.WriteLine($"SMTP error while sending email to {recipientEmail}: {smtpEx.Message}");
+                throw new InvalidOperationException("Failed to send email due to SMTP error.", smtpEx);
             }
             catch (Exception ex)
             {
-                // Handle exceptions (e.g., log the error)
-                Console.WriteLine($"Error sending email: {ex.Message}");
+                // Handle general exceptions
+                Console.WriteLine($"General error while sending email to {recipientEmail}: {ex.Message}");
+                throw new InvalidOperationException("Failed to send email due to an unexpected error.", ex);
             }
         }
+
+
     }
 }
