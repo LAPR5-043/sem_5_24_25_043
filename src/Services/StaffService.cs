@@ -110,9 +110,9 @@ public class StaffService : IStaffService
             throw new ArgumentNullException(nameof(staffDto), "Staff data is null.");
         }
 
-        if (!validateStaffInformation(staffDto.Email, staffDto.PhoneNumber))
+        if (validateStaffInformation(staffDto.Email, staffDto.PhoneNumber))
         {
-            throw new Exception("Staff already exists.");
+            throw new InvalidOperationException("Staff already exists.");
         }
 
         staffDto.AvailabilitySlots = staffDto.AvailabilitySlots ?? new List<string>();

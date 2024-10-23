@@ -30,18 +30,34 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<StaffDto>> CreateStaff([FromBody] StaffDto staffDto)
         {
-            if (staffDto == null)
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("admins"))
             {
-                return BadRequest("Staff data is null.");
+                return Unauthorized();
             }
 
-            var createdStaff = await service.CreateStaffAsync(staffDto);
-            if (createdStaff == null)
+            if (staffDto == null)
             {
-                return StatusCode(500, "A problem happened while handling your request.");
+                return BadRequest(new { message = "Invalid staff data." });
             }
-            return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
+
+            try
+            {
+                var createdStaff = await service.CreateStaffAsync(staffDto);
+                if (createdStaff == null)
+                {
+                    return StatusCode(500, "A problem happened while handling your request.");
+                }
+                return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if necessary
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
+            }
         }
+
 
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=

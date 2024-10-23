@@ -23,7 +23,6 @@ namespace Sempi5.Infrastructure.StaffRepository
                 .ValueGeneratedOnAdd();
             
             builder.Property(t => t.staffID)
-
                 .HasConversion(
                     v => v.AsString(),
                     v => new StaffID(v)
@@ -90,13 +89,13 @@ namespace Sempi5.Infrastructure.StaffRepository
             builder.HasIndex(t => t.email).IsUnique();
             builder.HasIndex(t => t.licenseNumber).IsUnique();
             builder.HasIndex(t => t.phoneNumber).IsUnique();
-    }
+        }
                private static StaffFullName ConvertToStaffFullName(string v)
             {
                 var parts = v.Split(',');
                 return new StaffFullName(new StaffFirstName(parts[0]), new StaffLastName(parts[1]));
             }
-    }
+    }
 
 
 }
