@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using Domain.AppointmentAggregate;
 using Domain.OperationRequestAggregate;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using src.Domain.OperationRequestAggregate;
@@ -52,6 +53,26 @@ namespace src.Services
             this.staffService = staffService;
             this.logService = logService;
         }
+
+
+        public Task<ActionResult<IEnumerable<OperationRequestDto>>> GetOperationRequestFilteredAsync(string? firstName, string? lastName, string? operationType, string? priority, string? status, string? sortBy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> GetOperationRequestByIdAsync(string id)
+        {
+            var operationRequest = operationRequestRepository.GetByIdAsync(new OperationRequestID(id));
+            if (operationRequest == null)
+            {
+                throw new Exception("Operation Request not found.");
+            }
+
+            //return Task.FromResult(new OperationRequestDto(operationRequest.Result));
+            throw new NotImplementedException();
+        }
+
+
         /// <summary>
         /// Delete operation request by id
         /// </summary>
@@ -67,7 +88,7 @@ namespace src.Services
             OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
 
             await checkIfDoctorIsTheCreatorOfOperationRequestAsync(id, doctorID, operationRequest);
-            
+
             if (operationRequest == null)
             {
                 throw new Exception("Operation Request not found");
@@ -102,45 +123,54 @@ namespace src.Services
             }
         }
 
-        public async Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto, string email){
-            
+        public async Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto, string email)
+        {
+
             OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
 
-           // string doctor = await staffService.GetIdFromEmailAsync(email);
+            // string doctor = await staffService.GetIdFromEmailAsync(email);
 
-           /* if (!doctor.Equals(operationRequest.doctorID) == false)
-            {
-                return false;
-            }
+            /* if (!doctor.Equals(operationRequest.doctorID) == false)
+             {
+                 return false;
+             }
 
-            if (operationRequest == null)
+             if (operationRequest == null)
+             {
+                 return false;
+             }*/
+
+            try
             {
-                return false;
-            }*/
-            
-            try{
-                if(operationRequestDto.patientID != null ){
-                    operationRequest.patientID = (int)operationRequestDto.patientID; 
-                    await logService.CreateLogAsync("Update Operation Request"+ "Patient ID changed from " + operationRequest.patientID + " to " + operationRequestDto.patientID, email);    
+                if (operationRequestDto.patientID != null)
+                {
+                    operationRequest.patientID = (int)operationRequestDto.patientID;
+                    await logService.CreateLogAsync("Update Operation Request" + "Patient ID changed from " + operationRequest.patientID + " to " + operationRequestDto.patientID, email);
                 }
-                if(!operationRequestDto.doctorID.IsNullOrEmpty()){
+                if (!operationRequestDto.doctorID.IsNullOrEmpty())
+                {
                     operationRequest.doctorID = operationRequestDto.doctorID;
-                    await logService.CreateLogAsync("Update Operation Request"+ "Doctor ID changed from " + operationRequest.doctorID + " to " + operationRequestDto.doctorID, email);
+                    await logService.CreateLogAsync("Update Operation Request" + "Doctor ID changed from " + operationRequest.doctorID + " to " + operationRequestDto.doctorID, email);
                 }
-                if(!operationRequestDto.operationType.IsNullOrEmpty()){
+                if (!operationRequestDto.operationType.IsNullOrEmpty())
+                {
                     operationRequest.operationTypeID = operationRequestDto.operationType;
-                    await logService.CreateLogAsync("Update Operation Request"+ "Operation Type changed from " + operationRequest.operationTypeID + " to " + operationRequestDto.operationType, email);
+                    await logService.CreateLogAsync("Update Operation Request" + "Operation Type changed from " + operationRequest.operationTypeID + " to " + operationRequestDto.operationType, email);
                 }
-                if( operationRequestDto.day != null  && operationRequestDto.month != null  && operationRequestDto.year != null ){
+                if (operationRequestDto.day != null && operationRequestDto.month != null && operationRequestDto.year != null)
+                {
                     operationRequest.deadlineDate = new DeadlineDate((int)operationRequestDto.day, (int)operationRequestDto.month, (int)operationRequestDto.year);
-                    await logService.CreateLogAsync("Update Operation Request"+ "Deadline Date changed from " + operationRequest.deadlineDate + " to " + operationRequestDto.day + "/" + operationRequestDto.month + "/" + operationRequestDto.year, email);
+                    await logService.CreateLogAsync("Update Operation Request" + "Deadline Date changed from " + operationRequest.deadlineDate + " to " + operationRequestDto.day + "/" + operationRequestDto.month + "/" + operationRequestDto.year, email);
                 }
-                if(!operationRequestDto.priority.IsNullOrEmpty() ){
+                if (!operationRequestDto.priority.IsNullOrEmpty())
+                {
                     operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.priority);
-                    await logService.CreateLogAsync("Update Operation Request"+ "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.priority, email);
+                    await logService.CreateLogAsync("Update Operation Request" + "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.priority, email);
                 }
                 await operationRequestRepository.updateAsync(operationRequest);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Debug.WriteLine(e.StackTrace);
                 return false;
             }
