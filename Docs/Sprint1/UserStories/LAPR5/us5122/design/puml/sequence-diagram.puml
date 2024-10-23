@@ -1,5 +1,5 @@
 @startuml
-title Sequence Diagram Title
+title Sequence Diagram
 skinparam classAttributeIconSize 0
 
 skinparam class {
@@ -21,83 +21,52 @@ skinparam card {
 }
 
 actor Admin
-participant "DeactivateOrDeleteOperationTypeUI" as UI
-participant "DeactivateOrDeleteOperationTypeController" as Controller
-participant "ManageOperationTypeService" as operationS
-participant "AuthService" as auth
-participant "Repositories" as Repositories
+participant "Route" as UI
+participant "OperationTypeController" as Controller
+participant "OperationTypeService" as operationS
 participant "OperationTypeRepository" as operationTypeR
+database "Data Base" as db 
 participant "OperationType" as operationType
-participant "IsActive" as isActive
 
 activate Admin
-Admin -> UI: I want to deactivate or delete an operation type
-activate UI
-UI -> Admin: asks for which operation type he wants to deactivate or delete
 
-deactivate UI
-Admin -> UI: operationTypeId
-activate UI
-alt deactivate 
-    UI -> Controller: deactivateOperationType(operationTypeId)
-    activate Controller
-    Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-    activate auth
-    auth --> Controller:  true
-    deactivate auth
-    Controller -> operationS : deactivateOperationType(operationTypeId)
-    activate operationS
-    operationS -> Repositories : getOperationTypeRepository()
-    activate Repositories
-    Repositories --> operationS : operationTypeRepository
-    deactivate Repositories
-    operationS -> operationTypeR : getOperationType(operationTypeId)
-    activate operationTypeR
-    operationTypeR --> operationS : operationType
-    deactivate operationTypeR
-    operationS -> operationType : deactivate()
-    activate operationType
-    operationType -> isActive** : new isActive(false)
-    operationType--> operationS
-    deactivate operationType
-    operationS -> operationTypeR : update(operationType)
-    activate operationTypeR
-    operationTypeR --> operationS : updated
-    deactivate operationTypeR
-    operationS --> Controller: updated
-    deactivate operationS
-    Controller --> UI: updated
-    deactivate Controller
-    UI --> Admin: updated
-    
+Admin-> UI: HttpPatch("/ChangeStatus/{id}")  
+UI -> Controller : DeactivateOperationType(string id)
+activate Controller 
+Controller-> operationS : deactivateOperationTypeAsync(id)
+activate operationS
+operationS -> operationTypeR : GetByIdAsync(new OperationTypeName(id))
+activate operationTypeR
+operationTypeR -> db : get(id)
+activate db
+db --> operationTypeR: operationType
+deactivate db
+operationTypeR --> operationS : operationType
+deactivate operationTypeR
+operationS-> operationType : changeStatus()
+activate operationType 
+operationType -> operationType: status changed
+operationType --> operationS
+deactivate  operationType
+operationS->operationTypeR: UpdateAsync(operationType)
+activate operationTypeR
+operationTypeR -> db : update(operationType)
+db --> operationTypeR
+deactivate db
+operationTypeR --> operationS
+deactivate operationTypeR
+operationS -> Controller : true
+deactivate operationS
+Controller --> UI: true
+deactivate Controller
+UI --> Admin : true
 
-else    delete
-    UI -> Controller: deleteOperationType(operationTypeId)
-    activate Controller
-    Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-    activate auth
-    auth --> Controller:  true
-    deactivate auth
-    Controller -> operationS : deleteOperationType(operationTypeId)
-    activate operationS
-    operationS -> Repositories : getOperationTypeRepository()
-    activate Repositories
-    Repositories --> operationS : operationTypeRepository
-    deactivate Repositories
-    operationS -> operationTypeR : deleteOperationType(operationTypeId)
-    activate operationTypeR
-    operationTypeR --> operationS : deleted
-    deactivate operationTypeR
-    operationS --> Controller: deleted
-    deactivate operationS
-    Controller --> UI: deleted
-    deactivate Controller
-    UI --> Admin: deleted
-    deactivate UI
+deactivate Admin
 
 
 
-end
+
+
 
 
 
