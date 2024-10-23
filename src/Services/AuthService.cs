@@ -1,5 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Extensions.CognitoAuthentication;
@@ -11,32 +13,86 @@ public class AuthService
 {
     private readonly AmazonCognitoIdentityProviderClient _provider;
     private readonly string _clientId;
+    private readonly string _clientSecret;
     private readonly string _userPoolId;
 
     public AuthService(IConfiguration configuration)
     {
         _clientId = configuration["AWS:Cognito:ClientId"];
+        _clientSecret = configuration["AWS:Cognito:ClientSecret"];
         _userPoolId = configuration["AWS:Cognito:UserPoolId"];
         var credentials = new BasicAWSCredentials(configuration["AWS:AccessKey"], configuration["AWS:SecretKey"]);
         _provider = new AmazonCognitoIdentityProviderClient(credentials, Amazon.RegionEndpoint.USEast1);
     }
 
-    public async Task<string> SignInAsync(string username, string password)
+    public async Task<(string AccessToken, string IdToken)> SignInAsync(string email, string password)
     {
+        //Console.WriteLine(_clientSecret);
+
+        var secretHash = CalculateSecretHash(email);
+
         var request = new InitiateAuthRequest
         {
             AuthFlow = AuthFlowType.USER_PASSWORD_AUTH,
             ClientId = _clientId,
+
             AuthParameters = new Dictionary<string, string>
             {
-                { "USERNAME", username },
-                { "PASSWORD", password }
+                { "USERNAME", email },
+                { "PASSWORD", password },
+                { "SECRET_HASH", secretHash }
+
             }
         };
 
-        var response = await _provider.InitiateAuthAsync(request);
-        return response.AuthenticationResult.IdToken;
+        try
+        {
+            var response = await _provider.InitiateAuthAsync(request);
+
+            // Ensure the authentication result is not null
+            if (response.AuthenticationResult == null)
+            {
+                // Log the response for debugging
+                Console.WriteLine($"Authentication failed. Response: {response}");
+
+                // Try to get the error message if it exists
+                if (response.ResponseMetadata.Metadata.TryGetValue("message", out var errorMessage))
+                {
+                    throw new InvalidOperationException(errorMessage);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Authentication failed, but no error message was provided.");
+                }
+            }
+
+            // Return tokens if authentication was successful
+            return (response.AuthenticationResult.AccessToken, response.AuthenticationResult.IdToken);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Authentication failed.", ex);
+        }
     }
+
+    private string CalculateSecretHash(string username)
+    {
+        // Create the message by concatenating the username and client ID
+        var message = username + _clientId;
+
+        // Convert the message and key to byte arrays
+        byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+        byte[] keyBytes = Encoding.UTF8.GetBytes(_clientSecret);
+
+        // Generate the HMAC SHA256 hash
+        using (var hmacsha256 = new HMACSHA256(keyBytes))
+        {
+            byte[] hashMessage = hmacsha256.ComputeHash(messageBytes);
+            // Return the base64-encoded hash
+            return Convert.ToBase64String(hashMessage);
+        }
+    }
+
 
     public async Task SignUpAsync(string username, string password, string email)
     {
@@ -99,7 +155,7 @@ public class AuthService
             {
             new AttributeType { Name = "custom:internalEmail", Value = patientEmail },
             new AttributeType { Name = "email", Value = email },
-            new AttributeType { Name = "email_verified", Value = "false" },
+            new AttributeType { Name = "email_verified", Value = "true" },
             new AttributeType { Name = "name", Value = name },
             new AttributeType { Name = "phone_number", Value = phoneNumber }
             },
@@ -108,6 +164,15 @@ public class AuthService
         };
 
         var response = await _provider.AdminCreateUserAsync(signUpRequest);
+
+        // Set the password as permanent
+        await _provider.AdminSetUserPasswordAsync(new AdminSetUserPasswordRequest
+        {
+            UserPoolId = _userPoolId,
+            Username = email,
+            Password = password, 
+            Permanent = true
+        });
 
         // Add user to "patient" group
         var addUserToGroupRequest = new AdminAddUserToGroupRequest
@@ -119,6 +184,16 @@ public class AuthService
 
         await _provider.AdminAddUserToGroupAsync(addUserToGroupRequest);
 
+        /*// Confirm the user
+        var confirmSignUpRequest = new AdminConfirmSignUpRequest
+        {
+            UserPoolId = _userPoolId,
+            Username = email
+        };
+
+        await _provider.AdminConfirmSignUpAsync(confirmSignUpRequest);*/
+
+
         // Disable the user immediately after creation
         var adminDisableUserRequest = new AdminDisableUserRequest
         {
@@ -126,9 +201,9 @@ public class AuthService
             Username = email
         };
 
-  
+
         await _provider.AdminDisableUserAsync(adminDisableUserRequest);
- 
+
 
         // Generate a verification token (JWT) with email
         //var token = GenerateVerificationToken(email); 
@@ -138,7 +213,7 @@ public class AuthService
 
         return response.User != null;
     }
-    
+
     public static string GetInternalEmailFromToken(HttpContext httpContext)
     {
         var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");

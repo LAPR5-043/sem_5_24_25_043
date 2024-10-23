@@ -154,4 +154,9 @@ public class StaffService : IStaffService
         Staff staff = await staffRepository.GetStaffByEmail(doctorEmail);
         return staff.staffID.ToString();
     }
+
+    public Task<bool> EditStaffAsync(string id, StaffDto staffDto)
+    {
+        throw new NotImplementedException();
+    }
 }
