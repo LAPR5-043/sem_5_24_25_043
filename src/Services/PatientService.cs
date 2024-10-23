@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Domain.PatientAggregate;
 using Microsoft.AspNetCore.Mvc;
 using sem_5_24_25_043;
@@ -434,9 +435,14 @@ namespace src.Services.Services
             return Convert.ChangeType(value, targetType);
         }
 
-        public async Task RegisterNewPatientIAMAsync(string email, string patientEmail, string password)
+        public async Task RegisterNewPatientIamAsync(string name, string phoneNumber, string email, string patientEmail, string password)
         {
             var result = patientRepository.PatientExists(patientEmail);
+
+            if (!Regex.IsMatch(phoneNumber, @"^\+\d{1,3}\d{9,15}$"))
+            {
+                throw new ArgumentException("Phone number is invalid");
+            }
 
             Console.WriteLine("Patient Exists: " + result);
 
@@ -445,7 +451,7 @@ namespace src.Services.Services
                 throw new InvalidOperationException("Patient Does Not Exist");
             }
 
-            await authService.RegisterNewPatientAsync(email, patientEmail, password);
+            await authService.RegisterNewPatientAsync(name, phoneNumber, email, patientEmail, password);
 
             Console.WriteLine("Patient Registered in IAM System");
 

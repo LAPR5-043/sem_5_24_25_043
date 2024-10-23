@@ -87,7 +87,7 @@ public class AuthService
         var emailAttribute = response.UserAttributes.FirstOrDefault(attr => attr.Name == "email");
         return emailAttribute?.Value;
     }
-    public async Task<bool> RegisterNewPatientAsync(string? email, string? patientEmail, string? password)
+    public async Task<bool> RegisterNewPatientAsync(string name, string phoneNumber, string email, string patientEmail, string password)
     {
         var signUpRequest = new AdminCreateUserRequest
         {
@@ -98,17 +98,15 @@ public class AuthService
             {
                 new AttributeType { Name = "custom:PersonalMail", Value = patientEmail },
                 new AttributeType { Name = "email", Value = email },
-                new AttributeType { Name = "email_verified", Value = "false" }
+                new AttributeType { Name = "email_verified", Value = "false" },
+                new AttributeType { Name = "name", Value = name },
+                new AttributeType { Name = "phone_number", Value = phoneNumber }
             },
             DesiredDeliveryMediums = new List<string> { "EMAIL" },
-            MessageAction = "SUPPRESS"
+            MessageAction = "SUPPRESS" // Suppress default Cognito email
         };
 
-        Console.WriteLine("Creating user: " + email);
-
         var response = await _provider.AdminCreateUserAsync(signUpRequest);
-
-        Console.WriteLine("Created user: " + response.User.Username); // Não está a cehgar aqui
 
         // Disable the user immediately after creation
         var adminDisableUserRequest = new AdminDisableUserRequest
@@ -119,7 +117,11 @@ public class AuthService
 
         await _provider.AdminDisableUserAsync(adminDisableUserRequest);
 
-        Console.WriteLine("Disabled user: " + response.User.Username);
+        // Generate a verification token (JWT) with email
+        //var token = GenerateVerificationToken(email); 
+
+        // Send a verification email with the token link
+        //SendVerificationEmail(email, token); 
 
         return response.User != null;
     }

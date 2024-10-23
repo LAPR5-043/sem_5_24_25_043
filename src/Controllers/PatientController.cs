@@ -67,7 +67,7 @@ namespace src.Controllers
         }
 
         [HttpPost("signin-patient")]
-        public async Task<ActionResult<string>> SignInPatientAsync(string email, string patientEmail, string password)
+        public async Task<ActionResult<string>> SignInPatientAsync(string name, string phoneNumber, string email, string patientEmail, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(patientEmail) || string.IsNullOrEmpty(password))
             {
@@ -76,14 +76,14 @@ namespace src.Controllers
 
             try
             {
-                await service.RegisterNewPatientIAMAsync(email, patientEmail, password);
+                await service.RegisterNewPatientIamAsync(name, phoneNumber, email, patientEmail, password);
                 return Ok(new { message = "Patient signed in successfully." });
             }
             catch (Exception ex)
             {
-                // Log the exception (ex) here if necessary
-                return StatusCode(500, "An error occurred while processing your request.");
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
+
         }
 
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
