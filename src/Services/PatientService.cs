@@ -49,6 +49,8 @@ namespace src.Services.Services
         /// </summary>
         private static string patientDeleteLog1 = "Patient deleted with success;PatientId:";
 
+        private static string url = "localhost:7258";
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -326,20 +328,20 @@ namespace src.Services.Services
 
         private string buildUrl(List<long> pendingRequestIds)
         {
-            string url = "https://localhost:7258/api/patient/acceptPendingRequests?requestIds=";
+            string urls = "https://"+url+"/api/patient/acceptPendingRequests?requestIds=";
             for (int i = 0; i < pendingRequestIds.Count; i++)
             {
                 if (i == pendingRequestIds.Count - 1)
                 {
-                    url += pendingRequestIds[i];
+                    urls += pendingRequestIds[i];
                     break;
                 }
                 else
                 {
-                    url += pendingRequestIds[i] + ",";
+                    urls += pendingRequestIds[i] + ",";
                 }
             }
-            return url;
+            return urls;
         }
 
         private Patient dtoToPatient(PatientDto patientDto)

@@ -1,5 +1,5 @@
 @startuml
-title Sequence Diagram PART 1
+title Sequence Diagram 
 skinparam classAttributeIconSize 0
 
 skinparam class {
@@ -20,46 +20,87 @@ skinparam card {
     BorderColor SaddleBrown
 }
 
+actor Patient
+participant "Route" as UI
+participant "PatientController" as Controller
+participant "PatientService" as userS
+participant "PatientRepository" as userR
+participant "PendingRequestService" as penS
+participant "PendingRequestRepository" as penR
 
-participant "AcceptPendingRequestController" as Controller
-participant "PendingRequestsService" as serviceRequest
-participant "Repositories" as Repositories
-participant "PendingRequestRepository" as PendingRequestRepo
-participant "PatientRepository" as patientR
-participant "PendingRequest" as PendingRequest
-participant "Patient" as patient
+participant "LogService" as LogS
+participant "LogRepository" as LogR
+participant "PendingRequest" as pen
+participant "Patient" as user
+database "DataBase" as db
 
-
+activate Patient
+Patient -> UI: HttpGet("acceptPendingRequests")
+activate UI
+UI -> Controller:AcceptPatientPendingRequests([FromQuery] string requestIds)
 activate Controller
-Controller -> serviceRequest : acceptPendingRequest(requestId)
-activate serviceRequest
-serviceRequest -> Repositories : getPendingRequestRepository()
-activate Repositories
-Repositories --> serviceRequest : pendingRequestRepository
-deactivate Repositories
-serviceRequest -> PendingRequestRepo : findById(requestId)
-activate PendingRequestRepo
-PendingRequestRepo --> serviceRequest : pendingRequest
-deactivate PendingRequestRepo
-serviceRequest -> PendingRequest: getPatient()
-activate PendingRequest
-PendingRequest --> serviceRequest : patient
-deactivate PendingRequest
-serviceRequest -> patientR : findByUser(patient)
-activate patientR
-patientR --> serviceRequest : patient
-deactivate patientR
-serviceRequest -> patient : changeAttribute(attributeName, pendingValue)
-activate patient
-patient --> serviceRequest : changed
-deactivate patient
-serviceRequest -> patientR : save(patient)
-activate patientR
-patientR --> serviceRequest : saved
-deactivate patientR
-serviceRequest -->Controller : changed
+Controller -> userS : AcceptRequests(requests)
+activate userS
 
+loop for each pending request
 
+userS -> penS: GetByIdAsync(requestID)
+activate penS
+penS -> penR : GetByIdAsync(requestID)
+activate penR
+penR -> db : getById(requestID)
+activate db
+db --> penR: pendingRequest
+deactivate db
+penR --> penS : pendingRequest
+deactivate penR
+penS --> userS : pendingRequest
+deactivate penS
+
+userS -> pen : getPatientID()
+activate pen 
+pen --> userS : Value
+deactivate pen
+
+userS -> userR : GetByIdAsync(id)
+activate userR 
+userR -> db : getById(id)
+activate db
+db --> userR: patient
+deactivate db
+userR --> userS: patient
+deactivate userR
+
+userS -> pen : getValue()
+activate pen 
+pen --> userS : Value
+deactivate pen
+
+userS -> user: changeXAttribute(value)
+activate user 
+user --> userS 
+deactivate user
+
+userS -> LogS : CreateLogAsync(log, email)
+activate LogS
+LogS -> LogR : CreateLogAsync(log, email)
+activate LogR
+LogR -> db : add(log)
+activate db 
+db --> LogR 
+deactivate db
+LogR --> LogS
+deactivate LogR
+LogS --> userS
+deactivate LogS
+end 
+userS --> Controller : true
+deactivate userS
+Controller --> UI
+deactivate Controller 
+UI --> Patient 
+deactivate Ui
+deactivate Patient
 
 
 
