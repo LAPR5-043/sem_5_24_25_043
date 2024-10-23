@@ -1,4 +1,5 @@
 public interface IEmailService
     {
-        Task SendEmailAsync(string email, string subject, string htmlMessage);
+    Task SendConfirmationEmail(string email);
+    Task SendEmailAsync(string email, string subject, string htmlMessage);
     }

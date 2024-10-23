@@ -73,6 +73,21 @@ namespace src.Controllers
                 return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
+
+        // api/user/confirm-email
+        [HttpPost("confirm-email")]
+        public async Task<ActionResult<string>> ConfirmEmailAsync(string email)
+        {
+            try
+            {
+                await authService.ConfirmPatientEmailAsync(email);
+                return Ok(new { message = "Email confirmed successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
     }
 
 

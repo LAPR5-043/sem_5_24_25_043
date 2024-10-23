@@ -6,6 +6,7 @@ using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Extensions.CognitoAuthentication;
 using Amazon.Runtime;
+using NuGet.Protocol;
 
 namespace sem_5_24_25_043;
 
@@ -16,13 +17,18 @@ public class AuthService
     private readonly string _clientSecret;
     private readonly string _userPoolId;
 
-    public AuthService(IConfiguration configuration)
+    private readonly IEmailService _emailService;
+    private readonly IEncryptionEmailService _encryptionEmailService;
+
+    public AuthService(IConfiguration configuration, IEmailService emailService, IEncryptionEmailService encryptionEmailService)
     {
         _clientId = configuration["AWS:Cognito:ClientId"];
         _clientSecret = configuration["AWS:Cognito:ClientSecret"];
         _userPoolId = configuration["AWS:Cognito:UserPoolId"];
         var credentials = new BasicAWSCredentials(configuration["AWS:AccessKey"], configuration["AWS:SecretKey"]);
         _provider = new AmazonCognitoIdentityProviderClient(credentials, Amazon.RegionEndpoint.USEast1);
+        _emailService = emailService;
+        _encryptionEmailService = encryptionEmailService;
     }
 
     public async Task<(string AccessToken, string IdToken)> SignInAsync(string email, string password)
@@ -155,7 +161,7 @@ public class AuthService
             {
             new AttributeType { Name = "custom:internalEmail", Value = patientEmail },
             new AttributeType { Name = "email", Value = email },
-            new AttributeType { Name = "email_verified", Value = "true" },
+            new AttributeType { Name = "email_verified", Value = "false" },
             new AttributeType { Name = "name", Value = name },
             new AttributeType { Name = "phone_number", Value = phoneNumber }
             },
@@ -204,14 +210,46 @@ public class AuthService
 
         await _provider.AdminDisableUserAsync(adminDisableUserRequest);
 
+        // var accessToken = ...
 
-        // Generate a verification token (JWT) with email
-        //var token = GenerateVerificationToken(email); 
-
-        // Send a verification email with the token link
-        //SendVerificationEmail(email, token); 
-
+        _emailService.SendConfirmationEmail(email);
+        
         return response.User != null;
+    }
+
+    public async Task<bool> ConfirmPatientEmailAsync(string encryptedEmail)
+    {
+        var email = _encryptionEmailService.DecryptEmail(encryptedEmail);
+
+        try
+        {
+            var request = new AdminUpdateUserAttributesRequest
+            {
+                UserPoolId = _userPoolId,
+                Username = email,
+                UserAttributes = new List<AttributeType>
+                {
+                    new AttributeType { Name = "email_verified", Value = "true" }
+                }
+            };
+
+            await _provider.AdminUpdateUserAttributesAsync(request);
+
+            // Enable the user account after email verification
+            var adminEnableUserRequest = new AdminEnableUserRequest
+            {
+                UserPoolId = _userPoolId,
+                Username = email
+            };
+
+            await _provider.AdminEnableUserAsync(adminEnableUserRequest);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Failed to confirm email.", ex);
+        }
     }
 
     public static string GetInternalEmailFromToken(HttpContext httpContext)
