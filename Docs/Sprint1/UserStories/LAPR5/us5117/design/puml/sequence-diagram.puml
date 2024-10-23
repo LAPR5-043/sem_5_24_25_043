@@ -1,5 +1,5 @@
 @startuml
-title Sequence Diagram Title
+title Sequence Diagram
 skinparam classAttributeIconSize 0
 
 skinparam class {
@@ -21,133 +21,88 @@ skinparam card {
 }
 
 actor Doctor
-participant "EditOperationRequestUI" as UI
-participant "EditOperationRequestController" as Controller
-participant "ManageOperationRequestService" as staffS
-participant "PlanningInterface" as planning
-participant "AuthService" as auth
-participant "LogsService" as logs
-participant "Repositories" as Repositories
-participant "OperationRequestRepository" as operationRR
-participant "LogsRepository" as logsR
-participant "Log" as log
-participant "StaffRepository" as staffR
-participant "OperationRequest" as operationR
-participant "Priority" as priority
-participant "Deadline" as deadline
-participant "User" as user
-participant "Staff" as staff
+participant "Route" as UI
+participant "OperationRequestController" as Controller
+participant "OperationRequestService" as OperationRequestServ
+participant "OperationRequestRepository" as OperationRequestRepo
+participant "LogService" as LogServ
+participant "LogRepository" as LogRepo
+participant "OperationRequest" as OperationRequest
+participant "OperationRequestDto" as OperationRequestDto
+database "Data Base" as db 
 
 
 
 activate Doctor
-Doctor -> UI: Request to edit an operation\n request choosen in the US 5.1.19
-activate UI
-UI -> Controller: canEditOperationRequest(operationRequestId)
-activate Controller
-Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-activate auth
-auth --> Controller:  true
-deactivate auth
-Controller -> auth: getLoggedUser()
-activate auth
-auth --> Controller: user
-deactivate auth
-Controller -> staffS: canEditOperationRequest(operationRequestId, user)
-activate staffS
-staffS -> user: getUserEmail()
-activate user
-user --> staffS: userEmail
-deactivate user
 
-staffS -> Repositories: getStaffRepository()
-activate Repositories
-Repositories --> staffS: staffRepository
-deactivate Repositories
-staffS -> staffR: getStaffByEmail(userEmail)
-activate staffR
-staffR --> staffS: staff
-deactivate staffR
-staffS -> staff: getStaffEId()
-activate staff
-staff --> staffS: staffEId
-deactivate staff
-staffS -> operationRR: getOperationRequest(operationRequestId)
-activate operationRR
-operationRR --> staffS: operationRequest
-deactivate operationRR
-staffS -> operationR: getDoctorId()
-activate operationR
-operationR --> staffS: doctorId
-deactivate operationR
-alt if the doctorId is equal to the staffEId
-staffS -> Controller: true
+Doctor-> UI: HttpPatch("{id}")  
+activate UI
+UI -> Controller :UpdateOperationRequest(id,operationRequestDto)
+activate Controller 
+Controller-> OperationRequestServ : UpdateOperationRequestAsync(id, operationRequestDto, doctorEmail)
+
+activate OperationRequestServ
+OperationRequestServ -> OperationRequestRepo : GetByIdAsync(new OperationRequest
+activate OperationRequestRepo
+OperationRequestRepo -> db : get(id)
+activate db
+db --> OperationRequestRepo: OperationRequest
+
+deactivate db
+OperationRequestRepo --> OperationRequestServ : OperationRequest
+
+deactivate OperationRequestRepo
+loop OperationRequest attribute
+OperationRequestServ-> OperationRequestDto : getXattribute
+activate OperationRequestDto
+
+OperationRequestDto--> OperationRequestServ: Xattribute
+deactivate OperationRequestDto
+
+OperationRequestServ--> OperationRequest: changeXattribute
+activate  OperationRequest
+OperationRequest --> OperationRequestServ 
+deactivate OperationRequest
+
+OperationRequestServ -> LogServ : CreateLogAsync(log, email)
+activate LogServ
+LogServ -> LogRepo : AddAsync(log)
+activate LogRepo 
+LogRepo -> db: Add(Log)
+activate db
+db --> LogRepo 
+deactivate db
+LogRepo --> LogServ
+deactivate LogRepo
+LogServ --> OperationRequestServ: true
+deactivate LogServ
 end
-deactivate staffS
-Controller --> UI: true
-deactivate Controller
-UI -> Doctor: asks which data he wants to change
+
+OperationRequestServ -> OperationRequestRepo: updateAsync(operationRequest)
+activate OperationRequestRepo
+OperationRequestRepo -> db : update(operationRequest) 
+activate db 
+db --> OperationRequestRepo
+deactivate db
+OperationRequestRepo --> OperationRequestServ
+deactivate OperationRequestRepo
+OperationRequestServ --> Controller : true 
+
+deactivate OperationRequestServ
+
+Controller --> UI : true
+deactivate Controller 
+UI --> Doctor : true 
 deactivate UI
-Doctor -> UI: sends the data to be changed
-activate UI
-UI -> Controller: editOperationRequest(operationRequestId,data)
-activate Controller
-Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-activate auth
-auth --> Controller:  true
-deactivate auth
-Controller -> staffS: editOperationRequest(operationRequestId,data)
-activate staffS
-staffS -> operationRR: getOperationRequest(operationRequestId)
-activate operationRR
-operationRR --> staffS: operationRequest
-deactivate operationRR
-alt if the data contains the priority
-staffS -> operationR: changePriority(priority)
-activate operationR
-operationR -> priority**: new Priority(priority)
-activate priority
-priority --> operationR 
-deactivate priority
-operationR --> staffS
-deactivate operationR
 
 
-else if the data contains the deadline
 
-staffS -> operationR: changeDeadline(deadline)
-activate operationR
-operationR -> deadline**: new Deadline(deadline)
-activate deadline
-deadline --> operationR 
-deactivate deadline
-operationR --> staffS
-deactivate operationR
+deactivate Doctor
 
-end 
 
-staffS -> operationRR: update(operationRequest)
-activate operationRR
-operationRR --> staffS: updated
-deactivate operationRR
-staffS -> logs : logAction()
-activate logs
-logs -> log** : new Log()
-logs -> logsR : save(log)
-activate logsR 
-logsR --> logs : saved
-deactivate logsR
-logs --> staffS : added
-deactivate logs
-staffS --> planning : requestUpdated(request)
-activate planning 
-planning --> staffS : true
-deactivate planning 
-staffS --> Controller: updated
-deactivate staffS
-Controller --> UI: updated
-deactivate Controller
-UI --> Doctor: updated
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 @startuml
-title Sequence Diagram Title
+title Sequence Diagram 
 skinparam classAttributeIconSize 0
 
 skinparam class {
@@ -21,64 +21,67 @@ skinparam card {
 }
 
 actor Admin
-participant "DeactivateStaffUI" as UI
-participant "DeactivateStaffController" as Controller
-participant "ManageStaffService" as userS
-participant "AuthService" as auth
-participant "LogsService" as Logs
-participant "Repositories" as Repositories
+participant "Route" as UI
+participant "StaffController" as Controller
+participant "StaffService" as userS
 participant "StaffRepository" as userR
-participant "LogsRepository" as user
-participant "Log" as log
+participant "LogService" as LogS
+participant "LogRepository" as LogR
 participant "Staff" as user
-participant "IsActive" as status
+database "DataBase" as db
 
 activate Admin
-Admin -> UI: I want to deactivate a user 
+Admin -> UI: HttpPatch("/isActive/{id}")
 activate UI
-UI -> Admin : Which user do you want to deactivate?
-deactivate UI
-Admin -> UI : staffId
-activate UI
-UI -> Controller: deactivateStaff(staffId)
+UI -> Controller:UpdateIsActive(string id)
 activate Controller
-Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-activate auth
-auth --> Controller:  true
-deactivate auth
-Controller -> userS : deactivateStaff(staffId)
+Controller -> userS : UpdateIsActiveAsync(id, adminEmail)
 activate userS
-userS -> Repositories : getStaffRepository()
-activate Repositories
-Repositories --> userS : staffRepository
-deactivate Repositories
-userS -> userR : getStaff(staffId)
-activate userR
-userR --> userS : staff
+userS -> userR : GetByIdAsync(id)
+activate userR 
+userR -> db : getById(id)
+activate db
+db --> userR: staff
+deactivate db
+userR --> userS: staff
 deactivate userR
-userS -> user : deactivate()
+userS -> user : changeStatus()
 activate user
-user -> status**: new isActive(false)
-user--> userS 
+user -> user: status changed
+user --> userS 
 deactivate user
-userS -> userR : update(user)
+userS--> userR: UpdateAsync(staff)
 activate userR
-userR --> userS : updated
+userR -> db : update(staff)
+activate db
+db --> userR 
+deactivate db
+userR --> userS
 deactivate userR
-userS -> Logs : logAction()
-activate Logs
-Logs -> log** : new Log()
-Logs -> LogsRepository : save(log)
-activate LogsRepository
-LogsRepository --> Logs : saved
-deactivate LogsRepository
-Logs --> userS : saved
-deactivate Logs 
-userS --> Controller : updated
-deactivate userS
-Controller --> UI : Staff deactivated
-deactivate Controller
-UI --> Admin : Staff deactivated
+userS --> LogS : CreateLogAsync(log, adminEmail)
+activate LogS 
+LogS --> LogR : AddAsync(log)
+activate LogR 
+LogR -> db : add(log)
+activate db 
+db --> LogR 
+deactivate db
+LogR --> LogS 
+deactivate LogR
+LogS --> userS 
+deactivate LogS
+userS --> Controller : true
+deactivate userS 
+Controller --> UI : true
+deactivate Controller 
+UI --> Admin : true
+deactivate UI
+deactivate Admin
+
+
+
+
+
 
 
 

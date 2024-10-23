@@ -10,7 +10,7 @@ namespace src.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class OperationRequestController : ControllerBase 
+    public class OperationRequestController : ControllerBase
     {
         private readonly IOperationRequestService service;
 
@@ -18,7 +18,38 @@ namespace src.Controllers
         {
             this.service = service;
         }
-        
+
+
+        //GET /api/OperationRequest/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
+        [HttpGet("filtered")]
+        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> getOperationRequestFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, [FromQuery] string? operationType,
+                                                                        [FromQuery] string? priority, [FromQuery] string? status, [FromQuery] string? sortBy)
+        {
+
+            var OperaionRequest = await service.GetOperationRequestFilteredAsync(firstName, lastName, operationType, priority, status, sortBy);
+            if (OperaionRequest == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(OperaionRequest);
+        }
+
+        // GET: api/OperationRequest/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOperationRequestById(string id)
+        {
+            var operationRequest = await service.GetOperationRequestByIdAsync(id);
+            if (operationRequest == null)
+            {
+                return NotFound(new { message = "Operation Request not found." });
+
+            }
+
+            return Ok(operationRequest);
+        }
+
+
         /// <summary>
         /// Delete operation request by id
         /// </summary>
@@ -34,7 +65,7 @@ namespace src.Controllers
             {
                 return Unauthorized();
             }
-            
+
             var doctorEmail = AuthService.GetInternalEmailFromToken(HttpContext);
 
             // Check confirmation before deletion
@@ -46,7 +77,7 @@ namespace src.Controllers
             try
             {
                 var result = await service.DeleteOperationRequestAsync(id, doctorEmail);
-                
+
                 if (result)
                 {
                     return Ok(new { message = "Operation request deleted successfully." });
@@ -66,7 +97,7 @@ namespace src.Controllers
         {
 
             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-            
+
             string doctorEmail = AuthService.GetInternalEmailFromToken(HttpContext);
 
             if (!roles.Contains("medic"))
@@ -85,7 +116,7 @@ namespace src.Controllers
                 return Ok(new { message = "Operation request updated successfully." });
             }
             return NotFound(new { message = "Operation request not found." });
-            
+
         }
     }
 }

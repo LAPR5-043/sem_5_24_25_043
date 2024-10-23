@@ -21,67 +21,50 @@ skinparam card {
 }
 
 actor Admin
-participant "DeactivateStaffUI" as UI
-participant "DeactivateStaffController" as Controller
-participant "ManageStaffService" as userS
-participant "AuthService" as auth
-participant "Repositories" as Repositories
+participant "Route" as UI
+participant "StaffController" as Controller
+participant "StaffService" as userS
 participant "StaffRepository" as userR
-participant "Staff" as user
+
 participant "StaffDTO" as userDTO
+database "DataBase" as db
 
 activate Admin
-Admin -> UI: I want to list staff based on some attributes
+Admin -> UI: HttpGet("filtered")
 activate UI
-UI --> Admin : Which attributes do you want to use?
-deactivate UI
-Admin -> UI : attributes
-activate UI
-UI -> Controller: listStaff(attributes)
+UI -> Controller: GetStaffsFiltered( firstName,  lastName,\n email, specialization, sortBy)
 activate Controller
-Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-activate auth
-auth --> Controller:  true
-deactivate auth
-Controller -> userS : listStaff(attributes)
+Controller -> userS : getStaffsFilteredAsync(firstName, lastName,\n email, specialization, sortBy)
 activate userS
-userS -> Repositories : getStaffRepository()
-activate Repositories
-Repositories --> userS : staffRepository
-deactivate Repositories
-userS -> userR : getStaffByAttributes(attributes)
-activate userR
-userR -> userR : getActiveStaff()
-activate userR
-userR --> userR : activeStaff
-deactivate userR   
-loop for each staff, check if they have the required attributes
-        userR -> user : getAtribbuteX()
-        activate user
-     
-        user -> userR : atributteX
-        deactivate user
-    alt staff has the required attributes
-
-        userR -> userR : add(staff)
-    end
-
-end
-userR --> userS : staffList
+userS -> userR : GetAllAsync()
+activate userR 
+userR -> db : getAll()
+activate db
+db --> userR: staffs
+deactivate db
+userR --> userS: staffs
 deactivate userR
-loop for each staff
-userS -> userDTO : new StaffDTO(staff)
+userS -> userS : applies all  filters
+loop for each staff, convert in dto 
+
+userS -> userDTO** : new StaffDto(staff)
 activate userDTO
-userDTO --> userS : staffDTO
+userDTO --> userS : dto
 deactivate userDTO
-userS -> userS : add(staffDTO)
+userS -> userS : list.Add(dto)
 end
-userS --> Controller : staffDTOList
-deactivate userS
-Controller --> UI : staffDTOList
-deactivate Controller
-UI --> Admin : staffDTOList
-deactivate UI
+
+userS --> Controller : staffDtoList
+deactivate userS 
+Controller --> UI : staffDtoList
+deactivate Controller 
+UI --> Admin : staffDtoList
+deactivate UI 
+deactivate Admin
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 @startuml
-title Sequence Diagram PART 1
+title Sequence Diagram 
 skinparam classAttributeIconSize 0
 
 skinparam class {
@@ -20,108 +20,114 @@ skinparam card {
     BorderColor SaddleBrown
 }
 
-actor Patient
-participant "ChangePatientDataUI" as UI
-participant "ChangePatientDataController" as Controller
-participant "ChangePatientDataService" as userS
-participant "SensitiveDataService" as service
-participant "PendingRequestsService" as serviceRequest
-participant "NotificationService" as serviceNote
-participant "AuthService" as auth
-participant "Repositories" as Repositories
-participant "PatientRepository" as patientR
-participant "User" as USER
-participant "Patient" as patient
+actor Admin
+participant "Route" as UI
+participant "PatientController" as Controller
+participant "PatientService" as userS
+participant "PatientRepository" as userR
+participant "PendingRequestService" as penS
+participant "PendingRequestRepository" as penR
+participant "LogService" as LogS
+participant "LogRepository" as LogR
+participant "SensitiveDataService" as sensS
+participant "EmailService" as emailS
+participant "Patient" as user
+participant "PatientDto" as userDto
+database "DataBase" as db
 
-participant "PatientDTO" as patientDTO
-
-
-activate Patient
-Patient -> UI: Request to change the user data
+activate Admin
+Admin -> UI: HttpPut("personalData/{id}")
 activate UI
-UI -> Controller: canChangeUserData()
+UI -> Controller: DeletePatientAsync(id, adminEmail)
 activate Controller
-Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-activate auth
-auth --> Controller:  true
-deactivate auth
-
-Controller -> auth: ensureAuthenticatedUserHasAnyOf(role)
-activate auth
-auth --> Controller:  true
-deactivate auth
-Controller -> userS : getPatientByUser()
+Controller -> userS : UpdatePatientAsync(id, patientDto)
 activate userS
-userS -> auth : getLoggedUser()
-activate auth
-auth --> userS : user
-deactivate auth
-userS -> USER : email()
-activate USER
-USER --> userS : email
-deactivate USER
-userS ->Repositories : getPatientRepository()
-activate Repositories
-Repositories -> userS : patientRepository
-deactivate Repositories
-userS -> patientR : findByEmail(email)
-activate patientR
-patientR --> userS : patient
-deactivate patientR
-userS -> patientDTO** : new PatientDTO(patient)
-activate patientDTO
-patientDTO --> userS : patientDTO
-deactivate patientDTO
-userS --> Controller : patientDTO
-deactivate userS
-Controller -> UI : patientDTO
-deactivate Controller
-UI --> Patient : Shows patientDTO and asks which \n  attributes he wants to change
+userS -> userR : GetByIdAsync(id)
+activate userR 
+userR -> db : getById(id)
+activate db
+db --> userR: patient
+deactivate db
+userR --> userS: patient
+deactivate userR
+
+loop for each patient attribute's
+userS -> sensS: isSensitive(attributeValue)
+sensS --> userS : bool
+deactivate sensS
+
+
+
+alt if is sensitive
+
+userS -> userDto: getAttribute(X)
+activate userDto
+userDto --> userS: attribute
+deactivate userDto
+userS -> penS: AddPendingRequestAsync(patientId,oldValue, pendingValue, propertyName)
+activate penS
+penS -> penR : AddAsync(pendingRequest)
+activate penR
+penR -> db : add(pendingRequest)
+activate db
+db --> penR
+deactivate db
+penR --> penS 
+deactivate penR
+penS --> userS : pendingRequest
+deactivate penS
+else if it is not
+
+userS -> userDto: getAttribute(X)
+activate userDto
+userDto --> userS: attribute
+deactivate userDto
+userS -> user : setAttribute(attribute)
+activate user 
+user --> userS 
+deactivate user
+userS --> LogR : CreateLogAsync(log, email)
+activate LogR
+LogR --> db : add(log)
+activate db 
+db --> LogR 
+deactivate db
+LogR --> LogS
+deactivate LogR
+LogS --> userS
+deactivate LogS
+end
+
+
+
+end
+
+userS -> emailS : SendEmailAsync(email, subject , message)
+activate  emailS
+emailS --> userS 
+deactivate emailS 
+
+userS -> userR: save(patient)
+activate userR 
+userR --> db : save(patient)
+activate db 
+db --> userR 
+deactivate db
+userR--> userS 
+deactivate userR
+
+
+
+
+
+
+userS --> Controller : true
+deactivate userS 
+Controller --> UI : true
+deactivate Controller 
+UI --> Admin : true
 deactivate UI
-Patient -> UI : Request to change some data
-activate UI
-UI -> Controller : changePatientData(patientAttributes)
-activate Controller
-Controller -> userS : changePatientData(patientAttributes)
-activate userS
-loop For each attribute 
-userS -> service : isSensitiveData(attributeName)
-activate service
-service --> userS : boolean
-deactivate service
-alt If is sensitive data
-userS -> serviceRequest : createPendingRequest(user, attributeName, \n pendingValue, oldValue)
-activate serviceRequest
-serviceRequest --> userS : pendingRequest
-deactivate serviceRequest
-userS -> serviceNote : notifyPendingRequest(pendingRequest, patientEmail)
-activate serviceNote
-serviceNote --> userS : notified
-deactivate serviceNote
-
-else If it is not sensitive data
-userS -> patientR : findByEmail(email)
-activate patientR
-patientR --> userS : patient
-deactivate patientR
-userS -> patient : changeAttribute(attributeName, newValue)~
-activate patient
-patient --> userS : patient
-deactivate patient
-userS -> patientR : save(patient)
-activate patientR
-patientR --> userS : saved
-deactivate patientR
-end
-end
-userS --> Controller : changed
-deactivate userS
-Controller --> UI : changed
-deactivate Controller
-UI --> Patient : changed
-
-
-
+deactivate Admin
 
 
 

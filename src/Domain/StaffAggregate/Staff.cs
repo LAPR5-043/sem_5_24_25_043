@@ -127,7 +127,8 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     {
         this.fullName = fullName;
     }
-    public void changeSpecializationID(string specializationID){
+    public void changeSpecializationID(string specializationID)
+    {
         this.specializationID = specializationID;
     }
 

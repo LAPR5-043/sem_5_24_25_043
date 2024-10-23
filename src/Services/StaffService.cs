@@ -124,7 +124,7 @@ public class StaffService : IStaffService
         newStaff.email = new StaffEmail(staffDto.Email);
         newStaff.phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber);
         newStaff.licenseNumber = new LicenseNumber(staffDto.LicenseNumber);
-        newStaff.isActive = (bool)staffDto.IsActive;
+        newStaff.isActive = staffDto.IsActive;
         newStaff.availabilitySlots = new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots));
         newStaff.specializationID = staffDto.SpecializationID;
 
@@ -155,8 +155,14 @@ public class StaffService : IStaffService
         return staff.staffID.ToString();
     }
 
+<<<<<<< HEAD
     public Task<bool> EditStaffAsync(string id, StaffDto staffDto)
     {
         throw new NotImplementedException();
+=======
+    public async Task<bool> EditStaffAsync(string id, StaffDto staffDto)
+    {
+        return false;
+>>>>>>> 3baca09765a8f1d9391a8db5459e0274e93bf874
     }
 }

@@ -45,7 +45,7 @@ public class StaffDto
     /// <summary>
     /// Gets or sets a value indicating whether the staff is active.
     /// </summary>
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     /// <summary>
     /// Gets or sets the list of availability slots of the staff.
@@ -68,15 +68,15 @@ public class StaffDto
             throw new ArgumentNullException(nameof(staff), "Staff cannot be null.");
         }
 
-        StaffID = staff.staffID.AsString();
-        FirstName = staff.firstName.ToString();
-        LastName = staff.lastName.ToString();
-        Email = staff.email.ToString();
-        PhoneNumber = staff.phoneNumber.ToString();
-        LicenseNumber = staff.licenseNumber.ToString();
-        IsActive = staff.isActive;
+        StaffID = staff.staffID?.ToString() ?? string.Empty;
+        FirstName = staff.firstName?.ToString() ?? string.Empty;
+        LastName = staff.lastName?.ToString() ?? string.Empty;
+        Email = staff.email?.ToString() ?? string.Empty;
+        PhoneNumber = staff.phoneNumber?.ToString() ?? string.Empty;
+        LicenseNumber = staff.licenseNumber?.ToString() ?? string.Empty;
+        IsActive = staff.isActive ? staff.isActive : false;
         AvailabilitySlots = generateAvailabilitySlots(staff.availabilitySlots);
-        SpecializationID = staff.specializationID;
+        SpecializationID = staff.specializationID ?? string.Empty;
 
     }
 
