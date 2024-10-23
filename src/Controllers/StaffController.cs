@@ -97,9 +97,28 @@ namespace src.Controllers
             }
             return Ok(new { message = "Patient deativated with success." });
         }
+        
+        //PATCH: api/edit
+        [HttpPatch("edit/{id}")]
+        public async Task<IActionResult> EditStaff(string id, [FromBody] StaffDto staffDto)
+        {
+            if (staffDto == null)
+            {
+                return BadRequest("Staff data is null.");
+            }
+
+            var result = await service.EditStaffAsync(id, staffDto);
+            if (!result)
+            {
+                return NotFound();
+                
+            }
+            return Ok(new { message = "Staff updated with success." });
+        }
 
 
 
     }
-    // [HttpPatch]
+   
+    
 }
