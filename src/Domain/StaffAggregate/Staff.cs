@@ -127,6 +127,9 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     {
         this.fullName = fullName;
     }
+    public void changeSpecializationID(string specializationID){
+        this.specializationID = specializationID;
+    }
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.

@@ -19,12 +19,12 @@ public class StaffEmail : IValueObject
     {
         if (string.IsNullOrWhiteSpace(email))
         {
-            throw new System.ArgumentException("Email cannot be null or empty");
+            throw new ArgumentException("Email cannot be empty");
         }
 
         if (!email.Contains("@"))
         {
-            throw new System.ArgumentException("Email must contain @");
+            throw new ArgumentException("Email must contain @");
         }
 
         var atIndex = email.IndexOf("@");
@@ -49,7 +49,7 @@ public class StaffEmail : IValueObject
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj == null || GetType() != obj.GetType())
         {

@@ -21,11 +21,11 @@ public class StaffFirstName : IValueObject
 
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            throw new System.ArgumentException("First Name cannot be null or empty");
+            throw new ArgumentException("First Name cannot be null or empty");
         }
         if (!firstName.All(char.IsLetter))
         {
-            throw new System.ArgumentException("First Name must contain only letters");
+            throw new ArgumentException("First Name must contain only letters");
         }
         this.firstName = firstName;
     }
