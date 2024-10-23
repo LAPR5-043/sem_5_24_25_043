@@ -128,6 +128,12 @@ namespace src.Controllers
         [HttpPut("personalData/{id}")]
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)
         {
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+
+            if (!roles.Contains("patient"))
+            {
+                return Unauthorized();
+            }
             if (patientDto == null)
             {
                 return BadRequest(new { message = "Invalid patient data." });
@@ -150,7 +156,7 @@ namespace src.Controllers
             return NotFound(new { message = "Patient not found." });
         }
 
-        [HttpPut("acceptPendingRequests")]
+        [HttpGet("acceptPendingRequests")]
         public async Task<IActionResult> AcceptPatientPendingRequests([FromQuery] string requestIds)
         {
             if (requestIds == null)
@@ -169,7 +175,7 @@ namespace src.Controllers
                 }
             }
 
-            var accepted = service.AcceptRequests(requests);
+            var accepted = service.AcceptRequests(requests).Result;
             if (accepted)
             {
                 return Ok(new { message = "Patient requests accepted successfully." });

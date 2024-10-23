@@ -16,7 +16,7 @@ namespace src.Services.Services
 
         public bool isSensitive(string propertyValue)
         {
-            if (sensitiveData.Contains(propertyValue.Split(".")[1]))
+            if (sensitiveData.Contains(propertyValue.ToLower()))
             {
                 return true;
             }
@@ -33,7 +33,7 @@ namespace src.Services.Services
                 var lines = File.ReadAllLines(filePath);
                 foreach (var line in lines)
                 {
-                    var values = line.Split(';'); 
+                    var values = line.ToLower().Split(';'); 
                     sensitiveData.AddRange(values);
                 }
             }

@@ -33,7 +33,7 @@ namespace src.Services.Services
             pendingRequest.pendingValue = newValue;
             pendingRequest.attributeName = type;
             PendingRequest result = await pendingRequestRepository.AddAsync(pendingRequest);
-            unitOfWork.CommitAsync().Wait();
+            await unitOfWork.CommitAsync();
 
             return result;
         }

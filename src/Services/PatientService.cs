@@ -227,7 +227,7 @@ namespace src.Services.Services
                     foreach (PropertyInfo property in patient1.GetType().GetProperties())
                     {
                         var propertyName = property.Name;
-                        var propertyValue = patient.GetType().Name + "." + propertyName;
+                        var propertyValue =  propertyName;
 
                         if (sensitiveDataService.isSensitive(propertyValue))
                         {
@@ -243,7 +243,11 @@ namespace src.Services.Services
                                     propertyValue
                                 );
 
+                              //  await unitOfWork.CommitAsync();
+
                                 pendingRequestIds.Add(p.requestID.Value);
+
+                                
                             }
                         }
                         else
@@ -263,7 +267,7 @@ namespace src.Services.Services
                                          "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
                                          patient1.Email.ToString()
                                      );
-                                    await unitOfWork.CommitAsync();
+                                    
                                 }
                                 else
                                 {
@@ -273,8 +277,10 @@ namespace src.Services.Services
                         }
                     }
 
-                    string url = buildUrl(pendingRequestIds);
-                    await emailService.SendEmailAsync(patient1.Email.ToString(), "Patient data update", url);
+                    if (pendingRequestIds.Count > 0){}
+                        string url = buildUrl(pendingRequestIds);
+                        await emailService.SendEmailAsync(patient1.Email.ToString(), "Patient data update", url);
+                        
                 }
                 await unitOfWork.CommitAsync();
 
@@ -358,7 +364,7 @@ namespace src.Services.Services
             return Task.FromResult(patient.Result);
         }
 
-        public bool AcceptRequests(List<long> requestIds)
+        public async Task<bool> AcceptRequests(List<long> requestIds)
         {
 
 
@@ -372,7 +378,7 @@ namespace src.Services.Services
 
                 Patient p = GetPatientEntityByIdAsync(request.userId).Result;
 
-                PropertyInfo property = p.GetType().GetProperty(request.attributeName.Split(".")[1]);
+                PropertyInfo property = p.GetType().GetProperty(request.attributeName);
                 if (property != null && property.CanWrite)
                 {
                     object value = ConvertToCustomType(request.pendingValue, property.PropertyType);
@@ -385,7 +391,7 @@ namespace src.Services.Services
                 }
             }
 
-            unitOfWork.CommitAsync().Wait();
+            await unitOfWork.CommitAsync();
             return true;
         }
 

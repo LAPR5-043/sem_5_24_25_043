@@ -54,11 +54,13 @@ namespace src.Controllers
         }
 
         //PUT 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
         {
 
             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+            
+            string doctorEmail = AuthService.GetInternalEmailFromToken(HttpContext);
 
             if (!roles.Contains("medic"))
             {
@@ -69,7 +71,7 @@ namespace src.Controllers
                 return BadRequest(new { message = "Invalid operation request data." });
             }
 
-            var result = await service.UpdateOperationRequestAsync(id, operationRequestDto);
+            bool result = await service.UpdateOperationRequestAsync(id, operationRequestDto, doctorEmail);
 
             if (result)
             {

@@ -81,7 +81,7 @@ namespace src.Controllers
         }
 
         // PUT: api/Staff/isActive/5
-        [HttpPut("/isActive/{id}")]
+        [HttpPatch("/isActive/{id}")]
         public async Task<IActionResult> UpdateIsActive(string id)
         {
              IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);

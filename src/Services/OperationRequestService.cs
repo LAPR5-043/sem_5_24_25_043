@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using Domain.AppointmentAggregate;
 using Domain.OperationRequestAggregate;
+using Microsoft.IdentityModel.Tokens;
 using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using src.Domain.OperationRequestAggregate;
 using src.Domain.Shared;
@@ -33,6 +34,8 @@ namespace src.Services
 
         private readonly IStaffService staffService;
 
+        private readonly ILogService logService;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -40,13 +43,14 @@ namespace src.Services
         /// <param name="operationRequestRepository"></param>
         /// <param name="appointmentRepository"></param>
         /// <param name="planningModuleService"></param>
-        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository operationRequestRepository, IAppointmentRepository appointmentRepository, IPlanningModuleService planningModuleService, IStaffService staffService)
+        public OperationRequestService(IUnitOfWork unitOfWork, IOperationRequestRepository operationRequestRepository, IAppointmentRepository appointmentRepository, IPlanningModuleService planningModuleService, IStaffService staffService, ILogService logService)
         {
             this.unitOfWork = unitOfWork;
             this.operationRequestRepository = operationRequestRepository;
             this.appointmentRepository = appointmentRepository;
             this.planningModuleService = planningModuleService;
             this.staffService = staffService;
+            this.logService = logService;
         }
         /// <summary>
         /// Delete operation request by id
@@ -98,30 +102,42 @@ namespace src.Services
             }
         }
 
-        public async Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto){
+        public async Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto, string email){
             
             OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+
+           // string doctor = await staffService.GetIdFromEmailAsync(email);
+
+           /* if (!doctor.Equals(operationRequest.doctorID) == false)
+            {
+                return false;
+            }
 
             if (operationRequest == null)
             {
                 return false;
-            }
+            }*/
             
             try{
                 if(operationRequestDto.patientID != null ){
-                    operationRequest.patientID = (int)operationRequestDto.patientID;     
+                    operationRequest.patientID = (int)operationRequestDto.patientID; 
+                    await logService.CreateLogAsync("Update Operation Request"+ "Patient ID changed from " + operationRequest.patientID + " to " + operationRequestDto.patientID, email);    
                 }
-                if(operationRequestDto.doctorID != null || operationRequestDto.doctorID != ""){
+                if(!operationRequestDto.doctorID.IsNullOrEmpty()){
                     operationRequest.doctorID = operationRequestDto.doctorID;
+                    await logService.CreateLogAsync("Update Operation Request"+ "Doctor ID changed from " + operationRequest.doctorID + " to " + operationRequestDto.doctorID, email);
                 }
-                if(operationRequestDto.operationType != null || operationRequestDto.operationType != ""){
+                if(!operationRequestDto.operationType.IsNullOrEmpty()){
                     operationRequest.operationTypeID = operationRequestDto.operationType;
+                    await logService.CreateLogAsync("Update Operation Request"+ "Operation Type changed from " + operationRequest.operationTypeID + " to " + operationRequestDto.operationType, email);
                 }
-                if( operationRequestDto.day != null || operationRequestDto.month != null || operationRequestDto.year != null){
+                if( operationRequestDto.day != null  && operationRequestDto.month != null  && operationRequestDto.year != null ){
                     operationRequest.deadlineDate = new DeadlineDate((int)operationRequestDto.day, (int)operationRequestDto.month, (int)operationRequestDto.year);
+                    await logService.CreateLogAsync("Update Operation Request"+ "Deadline Date changed from " + operationRequest.deadlineDate + " to " + operationRequestDto.day + "/" + operationRequestDto.month + "/" + operationRequestDto.year, email);
                 }
-                if(operationRequestDto.priority != null || operationRequestDto.priority != ""){
+                if(!operationRequestDto.priority.IsNullOrEmpty() ){
                     operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.priority);
+                    await logService.CreateLogAsync("Update Operation Request"+ "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.priority, email);
                 }
                 await operationRequestRepository.updateAsync(operationRequest);
             } catch (Exception e) {

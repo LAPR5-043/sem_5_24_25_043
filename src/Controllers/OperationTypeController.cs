@@ -44,7 +44,7 @@ namespace src.Controllers
             return Ok(operationTypes);
         }
         // PUT: api/OperationType/ChangeStatus/Knee Surgery
-        [HttpPut("/ChangeStatus/{id}")]
+        [HttpPatch("/ChangeStatus/{id}")]
         public async Task<IActionResult> DeactivateOperationType(string id)
         {
             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
