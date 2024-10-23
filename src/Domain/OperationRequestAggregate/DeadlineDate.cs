@@ -33,12 +33,29 @@ namespace Domain.OperationRequestAggregate
 
             if (date == DateTime.MinValue)
             {
-            throw new ArgumentException("Deadline date cannot be empty");
+                throw new ArgumentException("Deadline date cannot be empty");
             }
 
             this.deadlineDate = date;
         }
-        
+
+
+        public string Day()
+        {
+            return deadlineDate.Day.ToString();
+        }
+
+        public string Month()
+        {
+            return deadlineDate.Month.ToString();
+        }
+
+        public string Year()
+        {
+            return deadlineDate.Year.ToString();
+        }
+
+
         /// <summary>
         /// Override of the equality operator.
         /// </summary>
