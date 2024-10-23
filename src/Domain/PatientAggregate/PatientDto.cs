@@ -116,7 +116,7 @@ namespace Domain.PatientAggregate
         /// <param name="AllergiesAndConditions"></param>
         /// <param name="AppointmentHistory"></param>
         [JsonConstructor]
-        public PatientDto(string MedicalRecordNumber, string FirstName, string LastName, string Email, string PhoneNumber, string EmergencyContactName, 
+        public PatientDto(string MedicalRecordNumber, string FirstName, string LastName, string Email, string PhoneNumber, string EmergencyContactName,
         string EmergencyContactPhoneNumber, string DayOfBirth, string MonthOfBirth, string YearOfBirth, string Gender, List<string> AllergiesAndConditions, List<string> AppointmentHistory)
         {
             this.MedicalRecordNumber = MedicalRecordNumber;

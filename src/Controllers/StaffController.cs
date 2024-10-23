@@ -62,9 +62,8 @@ namespace src.Controllers
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
         [HttpGet("filtered")]
-        
-        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
-                                                                                [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
+                                                                                [FromQuery] string? email, [FromQuery] string? specialization, [FromQuery] string? sortBy)
         {
             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
 
@@ -72,15 +71,14 @@ namespace src.Controllers
             {
                 return Unauthorized();
             }
-            
+
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {
                 return NotFound();
             }
-            
-           
-            
+
+
             return Ok(staff);
         }
 
@@ -100,20 +98,20 @@ namespace src.Controllers
         [HttpPatch("/isActive/{id}")]
         public async Task<IActionResult> UpdateIsActive(string id)
         {
-             IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
+            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
             string adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
             if (!roles.Contains("admins"))
             {
                 return Unauthorized();
             }
-            var result = await service.UpdateIsActiveAsync(id,adminEmail);
+            var result = await service.UpdateIsActiveAsync(id, adminEmail);
             if (!result)
             {
                 return NotFound();
             }
             return Ok(new { message = "Patient deativated with success." });
         }
-        
+
         //PATCH: api/edit
         [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditStaff(string id, [FromBody] StaffDto staffDto)
@@ -127,7 +125,7 @@ namespace src.Controllers
             if (!result)
             {
                 return NotFound();
-                
+
             }
             return Ok(new { message = "Staff updated with success." });
         }
@@ -135,6 +133,6 @@ namespace src.Controllers
 
 
     }
-   
-    
+
+
 }
