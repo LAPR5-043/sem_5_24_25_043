@@ -1,4 +1,5 @@
 
+using System.Text.RegularExpressions;
 using src.Domain.Shared;
 
 /// <summary>
@@ -17,8 +18,12 @@ public class LicenseNumber : IValueObject
     /// <param name="licenseNumber"></param>
     public LicenseNumber(string licenseNumber)
     {
-        this.licenseNumber = licenseNumber;
+        if (!Regex.IsMatch(licenseNumber, @"^$|^\d+$"))
+        {
+            throw new ArgumentException("Staff License number must be a number");
+        }
 
+        this.licenseNumber = licenseNumber;
     }
 
     public LicenseNumber()
