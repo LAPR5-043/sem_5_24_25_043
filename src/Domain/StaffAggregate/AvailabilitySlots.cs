@@ -1,18 +1,41 @@
 using src.Domain.Shared;
 
-public class AvailabilitySlots : IValueObject   {
+/// <summary>
+/// Value object that represents the availability slots of a staff member.
+/// </summary>
+public class AvailabilitySlots : IValueObject
+{
+    /// <summary>
+    /// List of time slots.
+    /// </summary>
     public List<TimeSlot> slots { get; }
 
-    public AvailabilitySlots(List<TimeSlot> slots) {
+    /// <summary>
+    /// Constructor that initializes the list of time slots
+    /// </summary>
+    /// <param name="slots"></param>
+    public AvailabilitySlots(List<TimeSlot> slots)
+    {
         this.slots = slots;
     }
 
-    public AvailabilitySlots() {
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public AvailabilitySlots()
+    {
         this.slots = new List<TimeSlot>();
     }
 
-    public override bool Equals(object obj) {
-        if (obj == null || GetType() != obj.GetType()) {
+    /// <summary>
+    /// Compares two instances of Availability Slots.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
             return false;
         }
 
@@ -20,7 +43,12 @@ public class AvailabilitySlots : IValueObject   {
         return slots.SequenceEqual(availabilitySlots.slots);
     }
 
-    public override int GetHashCode() {
+    /// <summary>
+    /// Returns the hash code of the Availability Slots.
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode()
+    {
         return slots.GetHashCode();
     }
 

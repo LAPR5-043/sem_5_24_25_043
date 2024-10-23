@@ -92,7 +92,7 @@ public class AppContext : DbContext
                 firstName = new StaffFirstName("John"),
                 lastName = new StaffLastName("Doe"),
                 fullName = new StaffFullName(new StaffFirstName("John"), new StaffLastName("Doe")),
-                email = new StaffEmail("D202400001@medopt.com"),
+                email = new StaffEmail("d123@doctor.com"),
                 phoneNumber = new StaffPhoneNumber("+351919919919"),
                 licenseNumber = new LicenseNumber("123456"),
                 isActive = true,
@@ -124,7 +124,7 @@ public class AppContext : DbContext
                     Id = new OperationRequestID("1"),
                     operationRequestID = new OperationRequestID("1"),
                     patientID = 1,
-                    doctorID = "s202400001",
+                    doctorID = "D202400001",
                     operationTypeID = "Knee Surgery",
                     deadlineDate = new DeadlineDate(1, 1, 2025),
                     priority = Priority.Emergency
@@ -133,6 +133,16 @@ public class AppContext : DbContext
                 {
                     Id = new OperationRequestID("2"),
                     operationRequestID = new OperationRequestID("2"),
+                    patientID = 2,
+                    doctorID = "D202400001",
+                    operationTypeID = "Heart Surgery",
+                    deadlineDate = new DeadlineDate(1, 1, 2025),
+                    priority = Priority.Effective
+                },
+                new OperationRequest
+                {
+                    Id = new OperationRequestID("3"),
+                    operationRequestID = new OperationRequestID("3"),
                     patientID = 2,
                     doctorID = "s202400002",
                     operationTypeID = "Heart Surgery",

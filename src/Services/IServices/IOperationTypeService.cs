@@ -6,7 +6,7 @@ namespace src.Services.IServices
 {
     public interface IOperationTypeService
     {
-        Task<bool> createOperationTypeAsync(OperationTypeDto operationType);
+        Task<bool> createOperationTypeAsync(OperationTypeDto operationType, string adminEmail);
         Task<bool> deactivateOperationTypeAsync(string id);
         Task<ActionResult<IEnumerable<OperationTypeDto>>> getAllOperationTypesAsync();
         Task<ActionResult<IEnumerable<OperationTypeDto>>> getFilteredOperationTypesAsync(string name, string specialization, string status);

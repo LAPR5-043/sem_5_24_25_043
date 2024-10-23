@@ -2,28 +2,29 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using src.Domain.Shared;
 
-public class Staff : Entity<StaffID>, IAggregateRoot {
+public class Staff : Entity<StaffID>, IAggregateRoot
+{
 
     public StaffID staffID { get; set; }
     //[Required]
-    public StaffFirstName firstName { get;  set; }
+    public StaffFirstName firstName { get; set; }
     //[Required]
-    public StaffLastName lastName { get;  set;}
-   // [Required]
-    public StaffFullName fullName { get;  set;}
+    public StaffLastName lastName { get; set; }
+    // [Required]
+    public StaffFullName fullName { get; set; }
     //[Required]
-    public StaffEmail email { get;  set;}
+    public StaffEmail email { get; set; }
     //[Required]
-    public StaffPhoneNumber phoneNumber { get;  set;}
+    public StaffPhoneNumber phoneNumber { get; set; }
     //[Required]
-    public LicenseNumber licenseNumber { get;  set;}
+    public LicenseNumber licenseNumber { get; set; }
     //[Required]
-    public bool isActive { get;  set; }
+    public bool isActive { get; set; }
     //[Required]    
     public AvailabilitySlots availabilitySlots { get; set; }
     //[Required]
     //[ForeignKey("Specialization")]
-    public string specializationID { get;  set; }
+    public string specializationID { get; set; }
 
     /*public Staff(string staffID, string firstName, string lastName, string email, 
                 string phoneNumber, string licenseNumber, bool isActive,
@@ -55,40 +56,87 @@ public class Staff : Entity<StaffID>, IAggregateRoot {
         this.specializationID = specializationID;
     }*/
 
-    public void changeFirstName(string firstName){
+    /// <summary>
+    /// Changes the first name of the staff member.
+    /// </summary>
+    /// <param name="firstName">The first name to change.</param>
+    public void changeFirstName(string firstName)
+    {
         this.firstName = new StaffFirstName(firstName);
     }
 
-    public void changeLastName(string lastName){
+    /// <summary>
+    /// Changes the last name of the staff member.
+    /// </summary>
+    /// <param name="lastName">The last name to change.</param>
+    public void changeLastName(string lastName)
+    {
         this.lastName = new StaffLastName(lastName);
     }
 
-    public void changeEmail(string email){
+    /// <summary>
+    /// Changes the email of the staff member.
+    /// </summary>
+    /// <param name="email">The email to change.</param>
+    public void changeEmail(string email)
+    {
         this.email = new StaffEmail(email);
     }
 
-    public void changePhoneNumber(string phoneNumber){
+    /// <summary>
+    /// Changes the phone number of the staff member.
+    /// </summary>
+    /// <param name="phoneNumber">The phone number to change.</param>
+    public void changePhoneNumber(string phoneNumber)
+    {
         this.phoneNumber = new StaffPhoneNumber(phoneNumber);
     }
 
-    public void changeLicenseNumber(string licenseNumber){
+    /// <summary>
+    /// Changes the license number of the staff member.
+    /// </summary>
+    /// <param name="licenseNumber">The license number to change.</param>
+    public void changeLicenseNumber(string licenseNumber)
+    {
         this.licenseNumber = new LicenseNumber(licenseNumber);
     }
 
-    public void changeActiveStatus(bool isActive){
+    /// <summary>
+    /// Changes the status of the staff member.
+    /// </summary>
+    /// <param name="isActive">The status to change.</param>
+    public void changeActiveStatus(bool isActive)
+    {
         this.isActive = isActive;
     }
 
-    public void changeAvailabilitySlots(AvailabilitySlots availabilitySlots){
+    /// <summary>
+    /// Changes the availability slots of the staff member.
+    /// </summary>
+    /// <param name="availabilitySlots">The availability slots to change.</param>
+    public void changeAvailabilitySlots(AvailabilitySlots availabilitySlots)
+    {
         this.availabilitySlots = availabilitySlots;
     }
 
-    public void changeFullName(StaffFullName fullName){
+    /// <summary>
+    /// Changes the full name of the staff member.
+    /// </summary>
+    /// <param name="fullName">The full name to change.</param>
+    public void changeFullName(StaffFullName fullName)
+    {
         this.fullName = fullName;
     }
 
-    public override bool Equals(object obj){
-        if(obj == null || GetType() != obj.GetType()){
+    /// <summary>
+    /// Determines whether the specified object is equal to the current object.
+    /// </summary>
+    /// <param name="obj">The object to compare with the current object.</param>
+    /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
             return false;
         }
 
@@ -96,11 +144,21 @@ public class Staff : Entity<StaffID>, IAggregateRoot {
         return staffID == staff.staffID;
     }
 
-    public override int GetHashCode() {
+    /// <summary>
+    /// Serves as the default hash function.
+    /// </summary>
+    /// <returns>A hash code for the current object.</returns>
+    public override int GetHashCode()
+    {
         return staffID.GetHashCode();
     }
 
-    public override string ToString(){
+    /// <summary>
+    /// Returns a string that represents the current staff member's id.
+    /// </summary>
+    /// <returns>A string that represents the current staff member's id.</returns>
+    public override string ToString()
+    {
         return staffID.ToString();
     }
 }

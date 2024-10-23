@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Domain.PatientAggregate;
 using Microsoft.AspNetCore.Mvc;
 using sem_5_24_25_043;
@@ -10,18 +11,53 @@ using src.Services.IServices;
 
 namespace src.Services.Services
 {
+    /// <summary>
+    /// Patient service
+    /// </summary>
     public class PatientService : IPatientService
     {
-
+        /// <summary>
+        /// Unit of work
+        /// </summary>
         private readonly IUnitOfWork unitOfWork;
+        /// <summary>
+        /// Patient repository
+        /// </summary>
         private readonly IPatientRepository patientRepository;
+        /// <summary>
+        /// Log service
+        /// </summary>
         private readonly ILogService logService;
+        /// <summary>
+        /// Auth service
+        /// </summary>
         private readonly AuthService authService;
+        /// <summary>
+        /// Sensitive data service
+        /// </summary>
         private readonly ISensitiveDataService sensitiveDataService;
+        /// <summary>
+        /// Pending request service
+        /// </summary>
         private readonly IPendingRequestService pendingRequestService;
+        /// <summary>
+        /// Email service
+        /// </summary>
         private readonly IEmailService emailService;
+        /// <summary>
+        /// Patient delete log
+        /// </summary>
         private static string patientDeleteLog1 = "Patient deleted with success;PatientId:";
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="unitOfWork"></param>
+        /// <param name="patientRepository"></param>
+        /// <param name="logService"></param>
+        /// <param name="pendingRequestService"></param>
+        /// <param name="emailService"></param>
+        /// <param name="authService"></param>
         public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, AuthService authService)
         {
             this.unitOfWork = unitOfWork;
@@ -153,6 +189,7 @@ namespace src.Services.Services
                 throw new ArgumentNullException(nameof(patient), "Patient data is null.");
             }
 
+            // Check if the patient already exists
             Boolean validation = ValidatePatientInformation(patient.Email, patient.PhoneNumber);
 
             if (validation)
@@ -170,7 +207,7 @@ namespace src.Services.Services
             newPatient.DateOfBirth = new DateOfBirth(patient.DayOfBirth, patient.MonthOfBirth, patient.YearOfBirth);
             newPatient.Gender = GenderExtensions.FromString(patient.Gender);
 
-
+            // Add the patient to the repository
             await patientRepository.AddAsync(newPatient);
             await unitOfWork.CommitAsync();
 
@@ -186,17 +223,6 @@ namespace src.Services.Services
         {
             return patientRepository.PatientExists(email, phoneNumber);
         }
-
-        /*public Task<Patient> GetPatientByIdAsync(string id)
-        {
-            var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id.ToString()));
-            if (patient == null)
-            {
-                throw new Exception("Patient not found.");
-            }
-
-            return Task.FromResult(patient.Result);
-        }*/
 
         public async Task<bool> UpdatePatientAsync(string id, PatientDto patientDto)
         {
@@ -415,9 +441,14 @@ namespace src.Services.Services
             return Convert.ChangeType(value, targetType);
         }
 
-        public async Task RegisterNewPatientIAMAsync(string email, string patientEmail, string password)
+        public async Task SignUpNewPatientIamAsync(string name, string phoneNumber, string email, string patientEmail, string password)
         {
             var result = patientRepository.PatientExists(patientEmail);
+
+            if (!Regex.IsMatch(phoneNumber, @"^\+\d{1,3}\d{9,15}$"))
+            {
+                throw new ArgumentException("Phone number is invalid");
+            }
 
             Console.WriteLine("Patient Exists: " + result);
 
@@ -426,7 +457,7 @@ namespace src.Services.Services
                 throw new InvalidOperationException("Patient Does Not Exist");
             }
 
-            await authService.RegisterNewPatientAsync(email, patientEmail, password);
+            await authService.RegisterNewPatientAsync(name, phoneNumber, email, patientEmail, password);
 
             Console.WriteLine("Patient Registered in IAM System");
 

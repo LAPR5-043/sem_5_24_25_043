@@ -1,16 +1,52 @@
 using src.Domain.Shared;
-public class StaffFullName  : IValueObject {
+
+/// <summary>
+/// Value object representing the full name of a staff member.
+/// </summary>
+public class StaffFullName : IValueObject
+{
+    /// <summary>
+    /// Full name of the staff member.
+    /// </summary>
     public string fullName { get; }
-    
-    public StaffFullName(StaffFirstName firstName, StaffLastName lastName) {
-        this.fullName = firstName.ToString() + "," + lastName.ToString();
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public StaffFullName(StaffFirstName firstName, StaffLastName lastName)
+    {
+        if (string.IsNullOrWhiteSpace(firstName.ToString()))
+        {
+            throw new ArgumentException("First name cannot be empty");
+        }
+
+        if (string.IsNullOrWhiteSpace(lastName.ToString()))
+        {
+            throw new ArgumentException("Last name cannot be empty");
+        }
+
+        fullName = firstName.ToString() + "," + lastName.ToString();
     }
 
-    public StaffFullName() {
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public StaffFullName()
+    {
     }
 
-    public override bool Equals(object obj) {
-        if (obj == null || GetType() != obj.GetType()) {
+    /// <summary>
+    /// Equality check.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
             return false;
         }
 
@@ -18,12 +54,21 @@ public class StaffFullName  : IValueObject {
         return fullName == staffFullName.fullName;
     }
 
-    public override int GetHashCode() { 
+    /// <summary>
+    /// Hash code.
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode()
+    {
         return fullName.GetHashCode();
     }
 
-    public override string ToString(){
+    /// <summary>
+    /// String representation.
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
         return fullName;
     }
 }
-    

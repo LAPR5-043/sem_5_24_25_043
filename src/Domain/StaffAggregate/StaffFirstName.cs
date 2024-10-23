@@ -1,24 +1,52 @@
 using src.Domain.Shared;
-public class StaffFirstName  : IValueObject{
 
+/// <summary>
+/// Value object representing the first name of a staff member.
+/// </summary>
+public class StaffFirstName : IValueObject
+{
+
+    /// <summary>
+    /// The first name of the staff member
+    /// </summary>
     public string firstName { get; }
 
-    public StaffFirstName(string firstName){
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public StaffFirstName(string firstName)
+    {
 
-        if (string.IsNullOrWhiteSpace(firstName)){
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
             throw new System.ArgumentException("First Name cannot be null or empty");
         }
-        if(!firstName.All(char.IsLetter)){
+        if (!firstName.All(char.IsLetter))
+        {
             throw new System.ArgumentException("First Name must contain only letters");
         }
         this.firstName = firstName;
     }
-    public StaffFirstName(){
-   
+
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    public StaffFirstName()
+    {
+        firstName = string.Empty;
     }
 
-    public override bool Equals(object obj){
-        if(obj == null || GetType() != obj.GetType()){
+    /// <summary>
+    /// Compares two first names for equality
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
             return false;
         }
 
@@ -26,9 +54,20 @@ public class StaffFirstName  : IValueObject{
         return firstName == staffFirstName.firstName;
 
     }
-    public override int GetHashCode() { 
+
+    /// <summary>
+    /// Returns the hash code for the first name
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode()
+    {
         return firstName.GetHashCode();
     }
+
+    /// <summary>
+    /// Returns the string representation of the first name
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
         return firstName;

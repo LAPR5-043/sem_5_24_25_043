@@ -1,20 +1,39 @@
 
 using src.Domain.Shared;
 
-public class LicenseNumber : IValueObject {
-
+/// <summary>
+/// Represents the license number of a staff member
+/// </summary>
+public class LicenseNumber : IValueObject
+{
+    /// <summary>
+    /// The license number
+    /// </summary>
     public string licenseNumber { get; }
 
-    public LicenseNumber(string licenseNumber) {
+    /// <summary>
+    /// Constructor with parameters
+    /// </summary>
+    /// <param name="licenseNumber"></param>
+    public LicenseNumber(string licenseNumber)
+    {
         this.licenseNumber = licenseNumber;
 
     }
 
-    public LicenseNumber() {
+    public LicenseNumber()
+    {
     }
 
-    public override bool Equals(object obj) {
-        if (obj == null || GetType() != obj.GetType()) {
+    /// <summary>
+    /// Compares two license numbers
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
             return false;
         }
 
@@ -22,11 +41,21 @@ public class LicenseNumber : IValueObject {
         return this.licenseNumber == licenseNumber.licenseNumber;
     }
 
-    public override int GetHashCode() { 
+    /// <summary>
+    /// Generates a hash code for the license number
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode()
+    {
         return licenseNumber.GetHashCode();
     }
 
-    public override string ToString() {
+    /// <summary>
+    /// Returns a string representation of the license number
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
         return licenseNumber;
     }
 

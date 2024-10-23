@@ -49,38 +49,27 @@ namespace src.Controllers
                 return BadRequest(new { message = "Invalid patient data." });
             }
 
-            var createdPatient = await service.CreatePatientAsync(patientDto);
-            if (createdPatient != null)
-            {
-                return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
-            }
-
-            return StatusCode(500, new { message = "An error occurred while creating the patient." });
-        }
-
-        [HttpPost("signin-patient")]
-        public async Task<ActionResult<string>> SignInPatientAsync(string email, string patientEmail, string password)
-        {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(patientEmail) || string.IsNullOrEmpty(password))
-            {
-                return BadRequest("Email, patient email, and password must be provided.");
-            }
-
             try
             {
-                await service.RegisterNewPatientIAMAsync(email, patientEmail, password);
-                return Ok(new { message = "Patient signed in successfully." });
+                var createdPatient = await service.CreatePatientAsync(patientDto);
+                if (createdPatient != null)
+                {
+                    return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.MedicalRecordNumber }, createdPatient);
+                }
+
+                return StatusCode(500, new { message = "An error occurred while creating the patient." });
             }
             catch (Exception ex)
             {
                 // Log the exception (ex) here if necessary
-                return StatusCode(500, "An error occurred while processing your request.");
+                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
             }
         }
 
+
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
         [HttpGet("filtered")]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
                                                                         [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
         {
             var patient = await service.GetPatientsFilteredAsync(firstName, lastName, email, phoneNumber, medicalRecordNumber, dateOfBirth, gender, sortBy);

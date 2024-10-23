@@ -9,22 +9,45 @@ using AppContext= src.Models.AppContext;
 
 namespace src.Controllers.Services;
 
+/// <summary>
+/// Service for operation types
+/// </summary>
 public class OperationTypeService : IOperationTypeService
 {
-
+    /// <summary>
+    /// Unit of work
+    /// </summary>
     private readonly IUnitOfWork unitOfWork;
+    /// <summary>
+    /// Operation type repository
+    /// </summary>
     private readonly IOperationTypeRepository operationTypeRepository;
+    /// <summary>
+    /// Log service
+    /// </summary>
     private readonly ILogService logService;
 
-
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="unitOfWork"></param>
+    /// <param name="operationTypeRepository"></param>
+    /// <param name="logService"></param>
     public OperationTypeService(IUnitOfWork unitOfWork, IOperationTypeRepository operationTypeRepository, ILogService logService)
     {
         this.unitOfWork = unitOfWork;
         this.operationTypeRepository = operationTypeRepository;
         this.logService = logService;
     }
-
-    public async Task<bool> createOperationTypeAsync(OperationTypeDto operationType)
+    /// <summary>
+    /// Create a new operation type
+    /// </summary>
+    /// <param name="operationType"></param>
+    /// <param name="adminEmail"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
+    public async Task<bool> createOperationTypeAsync(OperationTypeDto operationType, string adminEmail)
     {
         if (operationType == null)
         {
@@ -46,11 +69,15 @@ public class OperationTypeService : IOperationTypeService
         await operationTypeRepository.AddAsync(newOperationType);
         await unitOfWork.CommitAsync();
         // TODO: Falta
-        await logService.CreateLogAsync("Operation type created. ID: " + newOperationType.Id.Value, "colocar@emailtoken.aqui");
+        await logService.CreateLogAsync("New operation type created by " + adminEmail + " with name " + operationType.OperationTypeName, adminEmail);
 
         return newOperationType != null;
     }
-
+    /// <summary>
+    /// Deactivate an operation type
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<bool> deactivateOperationTypeAsync(string id){
         var operationType = await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
         if (operationType == null)
@@ -89,6 +116,11 @@ public class OperationTypeService : IOperationTypeService
         var operationTypeDtos = operationTypesList.Select(o => new OperationTypeDto(o)).ToList();
         return operationTypeDtos;
     }
+
+    /// <summary>
+    /// Get all operation types
+    /// </summary>
+    /// <returns></returns>
     public async Task<ActionResult<IEnumerable<OperationTypeDto>>> getAllOperationTypesAsync()
     {
         var result = await operationTypeRepository.GetAllAsync();
@@ -101,13 +133,23 @@ public class OperationTypeService : IOperationTypeService
         return operationTypeDtos.ToList();
     }
 
-
+    /// <summary>
+    /// Get an operation type by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<ActionResult<OperationType>> getOperationTypeAsync(string id)
     {
        
          return  await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));
     }
 
+    /// <summary>
+    /// Edit an operation type
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="operationTypeDTO"></param>
+    /// <returns></returns>
     public async Task<bool> editOperationTypeAsync(string id, OperationTypeDto operationTypeDTO)
     {
         var operationTypeToEdit = await operationTypeRepository.GetByIdAsync(new OperationTypeName(id));

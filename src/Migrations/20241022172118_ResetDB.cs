@@ -7,7 +7,7 @@
 namespace sem_5_24_25_043.Migrations
 {
     /// <inheritdoc />
-    public partial class Reset : Migration
+    public partial class ResetDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -137,15 +137,16 @@ namespace sem_5_24_25_043.Migrations
             migrationBuilder.InsertData(
                 table: "Appointments",
                 columns: new[] { "appointmentID", "Id", "dateAndTime", "requestID", "roomID", "status" },
-                values: new object[] { "1", "1", "2024-10-22 16:32:39", 1, 1, "Scheduled" });
+                values: new object[] { "1", "1", "2024-10-22 18:21:17", 1, 1, "Scheduled" });
 
             migrationBuilder.InsertData(
                 table: "OperationRequests",
                 columns: new[] { "operationRequestID", "Id", "deadlineDate", "doctorID", "operationTypeID", "patientID", "priority" },
                 values: new object[,]
                 {
-                    { "1", "1", "01/01/2025 00:00:00", "s202400001", "Knee Surgery", 1, "Emergency" },
-                    { "2", "2", "01/01/2025 00:00:00", "s202400002", "Heart Surgery", 2, "Effective" }
+                    { "1", "1", "01/01/2025 00:00:00", "D202400001", "Knee Surgery", 1, "Emergency" },
+                    { "2", "2", "01/01/2025 00:00:00", "D202400001", "Heart Surgery", 2, "Effective" },
+                    { "3", "3", "01/01/2025 00:00:00", "s202400002", "Heart Surgery", 2, "Effective" }
                 });
 
             migrationBuilder.InsertData(
@@ -162,7 +163,7 @@ namespace sem_5_24_25_043.Migrations
                 columns: new[] { "Id", "availabilitySlots", "email", "firstName", "fullName", "isActive", "lastName", "licenseNumber", "phoneNumber", "specializationID", "staffID" },
                 values: new object[,]
                 {
-                    { "D202400001", "", "D202400001@medopt.com", "John", "John,Doe", true, "Doe", "123456", "+351919919919", "Cardiology", "D202400001" },
+                    { "D202400001", "", "d123@doctor.com", "John", "John,Doe", true, "Doe", "123456", "+351919919919", "Cardiology", "D202400001" },
                     { "D202400011", "", "D202400011@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "121236", "+351919911319", "Orthopedics", "D202400011" }
                 });
 

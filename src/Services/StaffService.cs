@@ -26,21 +26,6 @@ public class StaffService : IStaffService
     }
     private Boolean validateStaffInformation(string email, string phoneNumber)
     {
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber))
-        {
-            throw new Exception("Invalid patient data.");
-        }
-
-        if (!email.Contains("@"))
-        {
-            throw new Exception("Invalid email.");
-        }
-
-        if (phoneNumber.Length != 9)
-        {
-            throw new Exception("Invalid phone number.");
-        }
-
         return staffRepository.StaffExists(email, phoneNumber);
     }
 
@@ -122,7 +107,7 @@ public class StaffService : IStaffService
     {
         if (staffDto == null)
         {
-            throw new ArgumentNullException(nameof(staffDto), "Patient data is null.");
+            throw new ArgumentNullException(nameof(staffDto), "Staff data is null.");
         }
 
         if (!validateStaffInformation(staffDto.Email, staffDto.PhoneNumber))
@@ -132,21 +117,21 @@ public class StaffService : IStaffService
 
         staffDto.AvailabilitySlots = staffDto.AvailabilitySlots ?? new List<string>();
 
-        var staff = new Staff();
-        staff.firstName = new StaffFirstName(staffDto.FirstName);
-        staff.lastName = new StaffLastName(staffDto.LastName);
-        staff.fullName = new StaffFullName(staff.firstName, staff.lastName);
-        staff.email = new StaffEmail(staffDto.Email);
-        staff.phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber);
-        staff.licenseNumber = new LicenseNumber(staffDto.LicenseNumber);
-        staff.isActive = (bool)staffDto.IsActive;
-        staff.availabilitySlots = new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots));
-        staff.specializationID = staffDto.SpecializationID;
+        var newStaff = new Staff();
+        newStaff.firstName = new StaffFirstName(staffDto.FirstName);
+        newStaff.lastName = new StaffLastName(staffDto.LastName);
+        newStaff.fullName = new StaffFullName(newStaff.firstName, newStaff.lastName);
+        newStaff.email = new StaffEmail(staffDto.Email);
+        newStaff.phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber);
+        newStaff.licenseNumber = new LicenseNumber(staffDto.LicenseNumber);
+        newStaff.isActive = (bool)staffDto.IsActive;
+        newStaff.availabilitySlots = new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots));
+        newStaff.specializationID = staffDto.SpecializationID;
 
-        await staffRepository.AddAsync(staff);
+        await staffRepository.AddAsync(newStaff);
         await unitOfWork.CommitAsync();
 
-        return new StaffDto(staff);
+        return new StaffDto(newStaff);
     }
 
     public async Task<bool> UpdateIsActiveAsync(string id, String adminEmail)
