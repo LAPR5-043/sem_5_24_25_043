@@ -435,7 +435,7 @@ namespace src.Services.Services
             return Convert.ChangeType(value, targetType);
         }
 
-        public async Task RegisterNewPatientIamAsync(string name, string phoneNumber, string email, string patientEmail, string password)
+        public async Task SignUpNewPatientIamAsync(string name, string phoneNumber, string email, string patientEmail, string password)
         {
             var result = patientRepository.PatientExists(patientEmail);
 

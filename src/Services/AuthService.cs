@@ -89,6 +89,7 @@ public class AuthService
     }
     public async Task<bool> RegisterNewPatientAsync(string name, string phoneNumber, string email, string patientEmail, string password)
     {
+
         var signUpRequest = new AdminCreateUserRequest
         {
             UserPoolId = _userPoolId,
@@ -96,17 +97,27 @@ public class AuthService
             TemporaryPassword = password,
             UserAttributes = new List<AttributeType>
             {
-                new AttributeType { Name = "custom:PersonalMail", Value = patientEmail },
-                new AttributeType { Name = "email", Value = email },
-                new AttributeType { Name = "email_verified", Value = "false" },
-                new AttributeType { Name = "name", Value = name },
-                new AttributeType { Name = "phone_number", Value = phoneNumber }
+            new AttributeType { Name = "custom:internalEmail", Value = patientEmail },
+            new AttributeType { Name = "email", Value = email },
+            new AttributeType { Name = "email_verified", Value = "false" },
+            new AttributeType { Name = "name", Value = name },
+            new AttributeType { Name = "phone_number", Value = phoneNumber }
             },
             DesiredDeliveryMediums = new List<string> { "EMAIL" },
             MessageAction = "SUPPRESS" // Suppress default Cognito email
         };
 
         var response = await _provider.AdminCreateUserAsync(signUpRequest);
+
+        // Add user to "patient" group
+        var addUserToGroupRequest = new AdminAddUserToGroupRequest
+        {
+            UserPoolId = _userPoolId,
+            Username = email,
+            GroupName = "patient"
+        };
+
+        await _provider.AdminAddUserToGroupAsync(addUserToGroupRequest);
 
         // Disable the user immediately after creation
         var adminDisableUserRequest = new AdminDisableUserRequest
@@ -115,7 +126,9 @@ public class AuthService
             Username = email
         };
 
+  
         await _provider.AdminDisableUserAsync(adminDisableUserRequest);
+ 
 
         // Generate a verification token (JWT) with email
         //var token = GenerateVerificationToken(email); 
@@ -125,6 +138,7 @@ public class AuthService
 
         return response.User != null;
     }
+    
     public static string GetInternalEmailFromToken(HttpContext httpContext)
     {
         var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");

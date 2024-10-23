@@ -16,6 +16,6 @@ namespace src.Services.IServices
         Task<Patient> GetPatientEntityByIdAsync(string id);
         Task<bool> UpdatePatientAsync(string id, PatientDto patientDto);
         bool AcceptRequests(List<long> requestIds);
-        Task RegisterNewPatientIamAsync(string name, string phoneNumber, string email, string patientEmail, string password);
+        Task SignUpNewPatientIamAsync(string name, string phoneNumber, string email, string patientEmail, string password);
     }
 }

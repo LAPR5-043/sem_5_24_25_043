@@ -66,29 +66,10 @@ namespace src.Controllers
             }
         }
 
-        [HttpPost("signin-patient")]
-        public async Task<ActionResult<string>> SignInPatientAsync(string name, string phoneNumber, string email, string patientEmail, string password)
-        {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(patientEmail) || string.IsNullOrEmpty(password))
-            {
-                return BadRequest("Email, patient email, and password must be provided.");
-            }
-
-            try
-            {
-                await service.RegisterNewPatientIamAsync(name, phoneNumber, email, patientEmail, password);
-                return Ok(new { message = "Patient signed in successfully." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-            }
-
-        }
 
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
         [HttpGet("filtered")]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> getPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
                                                                         [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
         {
             var patient = await service.GetPatientsFilteredAsync(firstName, lastName, email, phoneNumber, medicalRecordNumber, dateOfBirth, gender, sortBy);
