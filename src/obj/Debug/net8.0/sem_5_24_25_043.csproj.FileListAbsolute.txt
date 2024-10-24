@@ -1066,3 +1066,4 @@ C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\refint\sem_5_24_25_04
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.pdb
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.genruntimeconfig.cache
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\ref\sem_5_24_25_043.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll

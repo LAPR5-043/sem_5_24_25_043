@@ -6,7 +6,6 @@ namespace src.Services
 {
     public class EmailService : IEmailService
     {
-
         private readonly IEncryptionEmailService encryptionEmailService;
         private readonly string bannerImageUrl = "https://imgur.com/a/ODn2ztG";
         private readonly string smtpServer;
@@ -27,7 +26,6 @@ namespace src.Services
             apiEndpointUrl = configuration["ApiEndpointConfirmationEmail"];
         }
 
-
         public async Task SendConfirmationEmail(string email)
         {
             // Encrypt the email
@@ -44,13 +42,15 @@ namespace src.Services
         {
             try
             {
-                // Configure the SMTP client for SSL over port X
-                SmtpClient client = new SmtpClient(smtpServer, smtpPort)
+                // Configure the SMTP client for SSL over port 465
+                SmtpClient client = new SmtpClient(smtpServer)
                 {
+                    Port = smtpPort,
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(senderEmail, senderPassword),
                     EnableSsl = true, // SSL is used on port 465
                     DeliveryMethod = SmtpDeliveryMethod.Network
+                    Timeout = 30000 // Set timeout to 30 seconds
                 };
 
                 var mailMessage = new MailMessage
@@ -69,7 +69,7 @@ namespace src.Services
                 mailMessage.Body = htmlBody;
 
                 // Send the email
-                await client.SendMailAsync(mailMessage);
+                client.Send(mailMessage);
             }
             catch (SmtpException smtpEx)
             {
@@ -84,7 +84,5 @@ namespace src.Services
                 throw new InvalidOperationException("Failed to send email due to an unexpected error.", ex);
             }
         }
-
-
     }
 }
