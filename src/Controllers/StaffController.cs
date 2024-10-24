@@ -49,7 +49,7 @@ namespace src.Controllers
         
         [HttpGet("filtered")]
         
-        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
+        public async Task<ActionResult<List<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
                                                                                 [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
             

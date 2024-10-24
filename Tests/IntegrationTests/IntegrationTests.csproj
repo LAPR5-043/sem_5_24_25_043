@@ -20,6 +20,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\sem_5_24_25_043.csproj" />
+    <ProjectReference Include="..\..\src\sem_5_24_25_043.csproj" />
   </ItemGroup>
 </Project>
