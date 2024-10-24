@@ -1,13 +1,14 @@
 using System.Net;
-using System.Net.Mail;
 using System.Web;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace src.Services
 {
     public class EmailService : IEmailService
     {
         private readonly IEncryptionEmailService encryptionEmailService;
-        private readonly string bannerImageUrl = "https://imgur.com/a/ODn2ztG";
+        private readonly string signatureImageUrl = "https://imgur.com/BB7Qk6j.png";
         private readonly string smtpServer;
         private readonly int smtpPort;
         private readonly string senderEmail;
@@ -26,61 +27,119 @@ namespace src.Services
             apiEndpointUrl = configuration["ApiEndpointConfirmationEmail"];
         }
 
-        public async Task SendConfirmationEmail(string email)
+        public async Task SendConfirmationEmail(string patientEmail)
         {
             // Encrypt the email
-            var encryptedEmail = encryptionEmailService.EncryptEmail(email);
+            var encryptedEmail = encryptionEmailService.EncryptEmail(patientEmail);
 
             // Build the confirmation link with the encrypted email
             var confirmationUrl = $"{apiEndpointUrl}?email={HttpUtility.UrlEncode(encryptedEmail)}";
+            
+            var message = $@"
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }}
+                        .header {{
+                            background-color: #007bff;
+                            color: #ffffff;
+                            padding: 10px 0;
+                            text-align: center;
+                        }}
+                        .content {{
+                            padding: 20px;
+                            color: #000000;
+                        }}
+                        .button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            color: #ffffff;
+                            background-color: #007bff;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                            text-align: center;
+                        }}
+                        .button-container {{
+                            text-align: center;
+                        }}
+                        .footer {{
+                            margin-top: 20px;
+                            text-align: center;
+                            color: #888888;
+                            font-size: 12px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>Email Confirmation</h2>
+                        </div>
+                        <div class='content'>
+                            <p>Dear User,</p>
+                            <p>Thank you for registering. Please click the button below to confirm your email address:</p>
+                            <div class='button-container'>
+                                <a href='{confirmationUrl}' class='button'>Confirm Email</a>
+                            </div>
+                            <p>If you did not request this email, please ignore it.</p>
+                            <br>
+                            <p>Best regards,</p>
+                            <p>Medopt Team</p>
+                            <img src='{signatureImageUrl}' alt='Signature' style='display:block; margin-top:20px;' />
+                        </div>
+                        <div class='footer'>
+                            <p>&copy; 2024 Medopt. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
 
-            // Send the email (implement your email sending logic here)
-            await SendEmailAsync(email, "Confirm your email", $"Click <a href='{confirmationUrl}'>here</a> to confirm your email.");
+            // Send the email
+            await SendEmailAsync(patientEmail, "Confirm your email", message);
         }
 
         public async Task SendEmailAsync(string recipientEmail, string subject, string body)
         {
             try
             {
-                // Configure the SMTP client for SSL over port 465
-                SmtpClient client = new SmtpClient(smtpServer)
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("Medopt Team", senderEmail));
+                message.To.Add(new MailboxAddress("", recipientEmail));
+                message.Subject = subject;
+
+                var bodyBuilder = new BodyBuilder
                 {
-                    Port = smtpPort,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(senderEmail, senderPassword),
-                    EnableSsl = true, // SSL is used on port 465
-                    DeliveryMethod = SmtpDeliveryMethod.Network
-                    Timeout = 30000 // Set timeout to 30 seconds
+                    HtmlBody = body
                 };
 
-                var mailMessage = new MailMessage
+                message.Body = bodyBuilder.ToMessageBody();
+
+                using (var client = new SmtpClient())
                 {
-                    From = new MailAddress(senderEmail),
-                    Subject = subject,
-                    IsBodyHtml = true // HTML email content
-                };
-
-                mailMessage.To.Add(recipientEmail);
-
-                // Construct HTML body with the banner image link
-                string htmlBody = $"<html><body><img src='{bannerImageUrl}' alt='Banner' /><br>{body}</body></html>";
-
-                // Set the email body
-                mailMessage.Body = htmlBody;
-
-                // Send the email
-                client.Send(mailMessage);
-            }
-            catch (SmtpException smtpEx)
-            {
-                // Handle SMTP-specific exceptions
-                Console.WriteLine($"SMTP error while sending email to {recipientEmail}: {smtpEx.Message}");
-                throw new InvalidOperationException("Failed to send email due to SMTP error.", smtpEx);
+                    await client.ConnectAsync(smtpServer, smtpPort, true);
+                    await client.AuthenticateAsync(senderEmail, senderPassword);
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
             }
             catch (Exception ex)
             {
-                // Handle general exceptions
-                Console.WriteLine($"General error while sending email to {recipientEmail}: {ex.Message}");
+                Console.WriteLine($"Error while sending email to {recipientEmail}: {ex.Message}");
                 throw new InvalidOperationException("Failed to send email due to an unexpected error.", ex);
             }
         }

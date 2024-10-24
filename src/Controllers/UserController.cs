@@ -26,7 +26,7 @@ namespace src.Controllers
         /// Constructor
         /// </summary>
         /// <param name="authService"></param>
-        public  UserController(AuthService authService, IPatientService patientService)
+        public UserController(AuthService authService, IPatientService patientService)
         {
             this.authService = authService;
             this.patientService = patientService;
@@ -74,9 +74,9 @@ namespace src.Controllers
             }
         }
 
-        // api/user/confirm-email
-        [HttpPost("confirm-email")]
-        public async Task<ActionResult<string>> ConfirmEmailAsync(string email)
+        // /api/user/confirm-email?email=encryptedEmail
+        [HttpGet("confirm-email")]
+        public async Task<ActionResult<string>> ConfirmEmailAsync([FromQuery] string email)
         {
             try
             {

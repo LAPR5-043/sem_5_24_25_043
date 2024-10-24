@@ -876,6 +876,7 @@ C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\NuGet.Packaging.dll
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\NuGet.ProjectModel.dll
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\NuGet.Protocol.dll
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\NuGet.Versioning.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -1066,4 +1067,6 @@ C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\refint\sem_5_24_25_04
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.pdb
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.genruntimeconfig.cache
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\ref\sem_5_24_25_043.dll
-C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\MailKit.dll
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\MimeKit.dll
