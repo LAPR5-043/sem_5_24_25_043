@@ -62,7 +62,7 @@ namespace src.Controllers
         public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
         {
 
-            var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+           var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
             if (operationRequestDto == null)
             {
                 return BadRequest(new { message = "Invalid operation request data." });

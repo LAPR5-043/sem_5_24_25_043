@@ -46,6 +46,10 @@ public class OperationRequestDto
         */
     }
 
+    
+    public OperationRequestDto()
+    {
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PatientDto"/> class.
@@ -63,7 +67,7 @@ public class OperationRequestDto
     /// <param name="Gender"></param>
     /// <param name="AllergiesAndConditions"></param>
     /// <param name="AppointmentHistory"></param>
-    [JsonConstructor]
+    //[JsonConstructor]
     public OperationRequestDto(string MedicalRecordNumber, string FirstName, string LastName, string Email, string PhoneNumber, string EmergencyContactName,
     string EmergencyContactPhoneNumber, string DayOfBirth, string MonthOfBirth, string YearOfBirth, string Gender, List<string> AllergiesAndConditions, List<string> AppointmentHistory)
     {

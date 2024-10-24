@@ -85,7 +85,7 @@ namespace src.Controllers
             {
                 return NotFound();
             }
-            return Ok(new { message = "Patient deativated with success." });
+            return Ok(new { message = "Staff deativated with success." });
         }
         
         //PATCH: api/edit

@@ -106,7 +106,6 @@ namespace src.Controllers
         }
 
         [Authorize(Roles = "patient")]
-        
         [HttpPut("personalData/{id}")]
         
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)
@@ -156,10 +155,10 @@ namespace src.Controllers
             var accepted = service.AcceptRequests(requests).Result;
             if (accepted)
             {
-                return Ok(new { message = "Patient requests accepted successfully." });
+                return Ok(new { message = "pending requests accepted successfully." });
             }
 
-            return NotFound(new { message = "Patient requests not found." });
+            return NotFound(new { message = "pending requests not found." });
         }
 
     }

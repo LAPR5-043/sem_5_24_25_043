@@ -9,6 +9,8 @@ namespace Domain.PatientAggregate
     /// </summary>
     public class PatientDto
     {
+        private Staff staff;
+
         /// <summary>
         /// Gets or sets the medical record number of the patient.
         /// </summary>
@@ -132,6 +134,11 @@ namespace Domain.PatientAggregate
             this.Gender = Gender;
             this.AllergiesAndConditions = AllergiesAndConditions;
             this.AppointmentHistory = AppointmentHistory;
+        }
+
+        public PatientDto(Staff staff)
+        {
+            this.staff = staff;
         }
     }
 }
