@@ -1,0 +1,16 @@
+{
+    "version": "1.0",
+    "triggerSource": "UserPool_Authentication",
+    "userPoolId": "us-east-1_6BTN8Ysls",      // Replace with your actual User Pool ID
+    "userName": "1220606@isep.ipp.pt",      // Replace with the email of the user being tested
+    "request": {
+      "userNotFound": false,
+      "userAttributes": {
+        "email": "user@example.com"
+      }
+    },
+    "response": {
+      "signInResult": "Blocked"             // Simulate a blocked sign-in
+    }
+  }
+  
