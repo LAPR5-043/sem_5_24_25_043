@@ -44,8 +44,9 @@ namespace sem_5_24_25_043.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("patientID")
-                        .HasColumnType("int");
+                    b.Property<string>("patientID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("priority")
                         .IsRequired()
@@ -63,7 +64,7 @@ namespace sem_5_24_25_043.Migrations
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "D202400001",
                             operationTypeID = "Knee Surgery",
-                            patientID = 1,
+                            patientID = "1",
                             priority = "Emergency"
                         },
                         new
@@ -73,7 +74,7 @@ namespace sem_5_24_25_043.Migrations
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "D202400001",
                             operationTypeID = "Heart Surgery",
-                            patientID = 2,
+                            patientID = "2",
                             priority = "Effective"
                         },
                         new
@@ -83,7 +84,7 @@ namespace sem_5_24_25_043.Migrations
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "s202400002",
                             operationTypeID = "Heart Surgery",
-                            patientID = 2,
+                            patientID = "2",
                             priority = "Effective"
                         });
                 });
@@ -395,7 +396,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             appointmentID = "1",
                             Id = "1",
-                            dateAndTime = "2024-10-22 18:21:17",
+                            dateAndTime = "2024-10-24 18:16:38",
                             requestID = 1,
                             roomID = 1,
                             status = "Scheduled"

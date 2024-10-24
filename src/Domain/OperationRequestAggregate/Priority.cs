@@ -19,6 +19,11 @@ namespace src.Domain.OperationRequestAggregate
     {
         public static Priority FromString(string priority)
         {
+            if (string.IsNullOrWhiteSpace(priority))
+            {
+                throw new ArgumentException("Priority cannot be null or empty");
+            }
+
             return priority.ToLower() switch
             {
                 "effective" => Priority.Effective,

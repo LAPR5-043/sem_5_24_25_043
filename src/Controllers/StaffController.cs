@@ -33,33 +33,41 @@ namespace src.Controllers
         {
             if (staffDto == null)
             {
-                return BadRequest("Staff data is null.");
+                return BadRequest(new { message = "Invalid Staff data." });
             }
 
-            var createdStaff = await service.CreateStaffAsync(staffDto);
-            if (createdStaff == null)
+            try
             {
-                return StatusCode(500, "A problem happened while handling your request.");
+                var createdStaff = await service.CreateStaffAsync(staffDto);
+                if (createdStaff)
+                {
+                    return Ok(new { message = "Operation type created successfully." });
+
+                }
             }
-            return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+            return StatusCode(500, new { message = "An error occurred while creating the Staff member." });
         }
 
 
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
-        
+
         [HttpGet("filtered")]
-        
-        public async Task<ActionResult<List<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
-                                                                                [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
+
+        public async Task<ActionResult<List<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
+                                                                                [FromQuery] string? email, [FromQuery] string? specialization, [FromQuery] string? sortBy)
         {
-            
+
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {
-                
+
                 return NotFound();
             }
-            
+
             return Ok(staff);
         }
 
@@ -80,14 +88,14 @@ namespace src.Controllers
         public async Task<IActionResult> UpdateIsActive(string id)
         {
             var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-            var result = await service.UpdateIsActiveAsync(id,adminEmail);
+            var result = await service.UpdateIsActiveAsync(id, adminEmail);
             if (!result)
             {
                 return NotFound();
             }
             return Ok(new { message = "Staff deativated with success." });
         }
-        
+
         //PATCH: api/edit
         [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditStaff(string id, [FromBody] StaffDto staffDto)
@@ -101,7 +109,7 @@ namespace src.Controllers
             if (!result)
             {
                 return NotFound();
-                
+
             }
             return Ok(new { message = "Staff updated with success." });
         }
@@ -109,6 +117,6 @@ namespace src.Controllers
 
 
     }
-   
-    
+
+
 }

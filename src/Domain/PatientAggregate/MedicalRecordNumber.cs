@@ -7,7 +7,7 @@ namespace Domain.PatientAggregate
     /// Represents a medical record number of a patient
     /// </summary>
     public class MedicalRecordNumber : EntityId
-    {   
+    {
         /// <summary>
         /// The medical record number
         /// </summary>
@@ -24,7 +24,6 @@ namespace Domain.PatientAggregate
         /// <exception cref="ArgumentException"></exception>
         public MedicalRecordNumber(string medicalRecordNumber) : base(medicalRecordNumber)
         {
-
             this.medicalRecordNumber = medicalRecordNumber;
         }
 

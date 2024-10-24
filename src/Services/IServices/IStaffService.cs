@@ -10,9 +10,9 @@ namespace src.Services.IServices
     {
         Task<OkObjectResult> getAllStaffAsync();
         Task<List<StaffDto>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy);
-        Task<StaffDto> CreateStaffAsync(StaffDto staffDto);
+        Task<bool> CreateStaffAsync(StaffDto staffDto);
         Task<StaffDto> GetStaffAsync(string id);
-        Task<bool> UpdateIsActiveAsync(string id, string adminEmail);   
+        Task<bool> UpdateIsActiveAsync(string id, string adminEmail);
         Task<string> GetIdFromEmailAsync(string doctorEmail);
         Task<bool> EditStaffAsync(string id, StaffDto staffDto);
     }

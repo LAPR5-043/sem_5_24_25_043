@@ -39,11 +39,11 @@ public class StaffRepository : BaseRepository<Staff, StaffID>, IStaffRepository
     /// <param name="email"></param>
     /// <param name="phoneNumber"></param>
     /// <returns></returns>
-    public bool StaffExists(string email, string phoneNumber)
+    public bool StaffExists(string email, string phoneNumber, string licenseNumber)
     {
         return context.Staffs
             .AsEnumerable()
-            .Any(p => p.email.email == email || p.phoneNumber.phoneNumber == phoneNumber);
+            .Any(p => p.email.email == email || p.phoneNumber.phoneNumber == phoneNumber || p.licenseNumber.licenseNumber == licenseNumber);
     }
 
     /// <summary>

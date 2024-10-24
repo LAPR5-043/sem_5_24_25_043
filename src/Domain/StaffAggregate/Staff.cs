@@ -31,7 +31,7 @@ public class Staff : Entity<StaffID>, IAggregateRoot
                  string specializationID){
         this.staffID = new StaffID(staffID);
         this.firstName = new StaffFirstName(firstName);
-        this.lastName =  new StaffLastName(lastName);
+        this.lastName = new StaffLastName(lastName);
         this.fullName = new StaffFullName(this.firstName, this.lastName);
         this.email = new StaffEmail(email);
         this.phoneNumber = new StaffPhoneNumber(phoneNumber);
@@ -41,9 +41,8 @@ public class Staff : Entity<StaffID>, IAggregateRoot
         this.specializationID = specializationID;
     }
 
-    public Staff(StaffID staffID, StaffFirstName firstName, StaffLastName lastName,
-                StaffEmail email, StaffPhoneNumber phoneNumber, LicenseNumber licenseNumber,
-                bool isActive, AvailabilitySlots availabilitySlots, string specializationID){
+    public Staff(StaffID staffID, StaffFirstName firstName, StaffLastName lastName, StaffEmail email, StaffPhoneNumber phoneNumber, LicenseNumber licenseNumber, bool isActive, AvailabilitySlots availabilitySlots, string specializationID)
+    {
         this.staffID = staffID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -91,7 +90,8 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     {
         this.phoneNumber = new StaffPhoneNumber(phoneNumber);
     }
-    public void changeSpecializationID(string specializationID){
+    public void changeSpecializationID(string specializationID)
+    {
         this.specializationID = specializationID;
     }
 
@@ -130,7 +130,7 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     {
         this.fullName = fullName;
     }
-    
+
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.
@@ -166,8 +166,3 @@ public class Staff : Entity<StaffID>, IAggregateRoot
         return staffID.ToString();
     }
 }
-
-
-
-
-

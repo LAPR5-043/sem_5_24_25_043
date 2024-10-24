@@ -45,7 +45,7 @@ public class StaffDto
     /// <summary>
     /// Gets or sets a value indicating whether the staff is active.
     /// </summary>
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
     /// <summary>
     /// Gets or sets the list of availability slots of the staff.
@@ -93,17 +93,17 @@ public class StaffDto
     /// <param name="AvailabilitySlots"></param>
     /// <param name="SpecializationID"></param>
     [JsonConstructor]
-    public StaffDto(    string? StaffID, string? FirstName, string? LastName, string? FullName, string? Email, string? PhoneNumber, string? LicenseNumber, bool? IsActive, List<String> AvailabilitySlots, string? SpecializationID)
+    public StaffDto(string? staffID, string? firstName, string? lastName, string? email, string? phoneNumber, string? licenseNumber, bool? isActive, List<String> availabilitySlots, string? specializationID)
     {
-        this.StaffID = StaffID;
-        this.FirstName = FirstName;
-        this.LastName = LastName;
-        this.Email = Email;
-        this.PhoneNumber = PhoneNumber;
-        this.LicenseNumber = LicenseNumber;
-        this.IsActive = IsActive ?? false;
-        this.AvailabilitySlots = AvailabilitySlots ?? new List<string>();
-        this.SpecializationID = SpecializationID;
+        StaffID = staffID;
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        LicenseNumber = licenseNumber;
+        IsActive = isActive;
+        AvailabilitySlots = availabilitySlots ?? new List<string>();
+        SpecializationID = specializationID;
     }
 
     private List<String>? generateAvailabilitySlots(AvailabilitySlots availabilitySlots)
