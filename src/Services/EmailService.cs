@@ -112,6 +112,88 @@ namespace src.Services
             // Send the email
             await SendEmailAsync(patientEmail, "Confirm your email", message);
         }
+        public async Task SendPendingRequestEmail(string patientEmail, string subject, string url)
+        {
+        
+            
+            var message = $@"
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }}
+                        .header {{
+                            background-color: #007bff;
+                            color: #ffffff;
+                            padding: 10px 0;
+                            text-align: center;
+                        }}
+                        .content {{
+                            padding: 20px;
+                            color: #000000;
+                        }}
+                        .button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            color: #ffffff;
+                            background-color: #007bff;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                            text-align: center;
+                        }}
+                        .button-container {{
+                            text-align: center;
+                        }}
+                        .footer {{
+                            margin-top: 20px;
+                            text-align: center;
+                            color: #888888;
+                            font-size: 12px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>Change Profile Confirmation</h2>
+                        </div>
+                        <div class='content'>
+                            <p>Dear User,</p>
+                            <p>It seems you have been making some changes on your profile</p>
+                            <p>Please click the button below to confirm your profile changes:</p>
+                            <div class='button-container'>
+                                <a href='{url}' class='button'>Confirm Profile Changes</a>
+                            </div>
+                            <p>If you did not request this email, please ignore it.</p>
+                            <br>
+                            <p>Best regards,</p>
+                            <p>Medopt Team</p>
+                            <img src='{signatureImageUrl}' alt='Signature' style='display:block; margin-top:20px;' />
+                        </div>
+                        <div class='footer'>
+                            <p>&copy; 2024 Medopt. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
+
+            // Send the email
+            await SendEmailAsync(patientEmail, subject, message);
+        }
 
         public async Task SendEmailAsync(string recipientEmail, string subject, string body)
         {

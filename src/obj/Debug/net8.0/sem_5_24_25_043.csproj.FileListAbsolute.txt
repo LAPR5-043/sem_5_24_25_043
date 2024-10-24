@@ -538,7 +538,6 @@ C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\BouncyCastle.Cryptogr
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\MailKit.dll
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\MimeKit.dll
 =======
-C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.csproj.AssemblyReference.cache
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.AssemblyInfoInputs.cache
@@ -808,3 +807,7 @@ C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.genruntimeconfig.cache
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\ref\sem_5_24_25_043.dll
 >>>>>>> b08ca22353a51e3f7fc8f95b3810594b5bac4d8f
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\MailKit.dll
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\MimeKit.dll
+C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll

@@ -106,7 +106,6 @@ namespace src.Controllers
         }
 
         [Authorize(Roles = "patient")]
-        
         [HttpPut("personalData/{id}")]
         
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)

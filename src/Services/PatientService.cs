@@ -307,8 +307,8 @@ namespace src.Services.Services
 
                     if (pendingRequestIds.Count > 0){}
                         string url = buildUrl(pendingRequestIds);
-                       // await emailService.SendEmailAsync(patient1.Email.ToString(), "Patient data update", url);
-                        
+                        await emailService.SendPendingRequestEmail(patient1.Email.ToString(), "Patient data update", url);
+                    
                 }
                 await unitOfWork.CommitAsync();
 
