@@ -16,5 +16,4 @@ namespace src.Services.IServices
         Task<string> GetIdFromEmailAsync(string doctorEmail);
         Task<bool> EditStaffAsync(string id, StaffDto staffDto);
     }
-    
 }

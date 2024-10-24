@@ -1,4 +1,5 @@
 using Domain.PatientAggregate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using sem_5_24_25_043;
 using src.Services.IServices;
@@ -10,6 +11,7 @@ namespace src.Controllers
     /// Patient controller
     /// </summary>
     [Route("api/[controller]")]
+    [Authorize(Roles = "admins")]
     [ApiController]
 
     public class PatientController : ControllerBase
@@ -36,13 +38,7 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
         {
-
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
+            
             
             if (patientDto == null)
             {
@@ -99,13 +95,8 @@ namespace src.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(string id)
         {
-            string adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
+            var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+            
             var result = await service.DeletePatientAsync(id, adminEmail);
             if (result)
             {
@@ -114,15 +105,13 @@ namespace src.Controllers
             return NotFound(new { message = "Patient not found." });
         }
 
+        [Authorize(Roles = "patient")]
+        
         [HttpPut("personalData/{id}")]
+        
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("patient"))
-            {
-                return Unauthorized();
-            }
+           
             if (patientDto == null)
             {
                 return BadRequest(new { message = "Invalid patient data." });

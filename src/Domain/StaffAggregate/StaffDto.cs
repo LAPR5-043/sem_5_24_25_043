@@ -93,7 +93,7 @@ public class StaffDto
     /// <param name="AvailabilitySlots"></param>
     /// <param name="SpecializationID"></param>
     [JsonConstructor]
-    public StaffDto(string StaffID, string FirstName, string LastName, string Email, string PhoneNumber, string LicenseNumber, bool IsActive, List<String> AvailabilitySlots, string SpecializationID)
+    public StaffDto(    string? StaffID, string? FirstName, string? LastName, string? FullName, string? Email, string? PhoneNumber, string? LicenseNumber, bool? IsActive, List<String> AvailabilitySlots, string? SpecializationID)
     {
         this.StaffID = StaffID;
         this.FirstName = FirstName;
@@ -101,7 +101,7 @@ public class StaffDto
         this.Email = Email;
         this.PhoneNumber = PhoneNumber;
         this.LicenseNumber = LicenseNumber;
-        this.IsActive = IsActive;
+        this.IsActive = IsActive ?? false;
         this.AvailabilitySlots = AvailabilitySlots ?? new List<string>();
         this.SpecializationID = SpecializationID;
     }

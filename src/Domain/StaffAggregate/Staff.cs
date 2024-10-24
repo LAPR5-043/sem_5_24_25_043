@@ -91,6 +91,9 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     {
         this.phoneNumber = new StaffPhoneNumber(phoneNumber);
     }
+    public void changeSpecializationID(string specializationID){
+        this.specializationID = specializationID;
+    }
 
     /// <summary>
     /// Changes the license number of the staff member.
@@ -127,10 +130,7 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     {
         this.fullName = fullName;
     }
-    public void changeSpecializationID(string specializationID)
-    {
-        this.specializationID = specializationID;
-    }
+    
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.

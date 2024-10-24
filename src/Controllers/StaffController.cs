@@ -14,6 +14,7 @@ using src.Services.IServices;
 namespace src.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "admins")] 
     [ApiController]
 
     public class StaffController : ControllerBase
@@ -30,55 +31,35 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<StaffDto>> CreateStaff([FromBody] StaffDto staffDto)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
-
             if (staffDto == null)
             {
-                return BadRequest(new { message = "Invalid staff data." });
+                return BadRequest("Staff data is null.");
             }
 
-            try
+            var createdStaff = await service.CreateStaffAsync(staffDto);
+            if (createdStaff == null)
             {
-                var createdStaff = await service.CreateStaffAsync(staffDto);
-                if (createdStaff == null)
-                {
-                    return StatusCode(500, "A problem happened while handling your request.");
-                }
-                return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
+                return StatusCode(500, "A problem happened while handling your request.");
             }
-            catch (Exception ex)
-            {
-                // Log the exception (ex) here if necessary
-                return StatusCode(500, new { message = "An error occurred while processing your request.", error = ex.Message });
-            }
+            return CreatedAtAction(nameof(GetStaff), new { id = createdStaff.StaffID }, createdStaff);
         }
 
 
-
         //GET /api/Staff/filtered?firstName=&lastName=&license=&email=&specialization=&sortBy=
+        
         [HttpGet("filtered")]
-        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
-                                                                                [FromQuery] string? email, [FromQuery] string? specialization, [FromQuery] string? sortBy)
+        
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaffsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, 
+                                                                                [FromQuery] string? email, [FromQuery] string? specialization , [FromQuery] string? sortBy)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
-
+            
             var staff = await service.getStaffsFilteredAsync(firstName, lastName, email, specialization, sortBy);
             if (staff == null)
             {
+                
                 return NotFound();
             }
-
-
+            
             return Ok(staff);
         }
 
@@ -98,20 +79,15 @@ namespace src.Controllers
         [HttpPatch("/isActive/{id}")]
         public async Task<IActionResult> UpdateIsActive(string id)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-            string adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
-            var result = await service.UpdateIsActiveAsync(id, adminEmail);
+            var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+            var result = await service.UpdateIsActiveAsync(id,adminEmail);
             if (!result)
             {
                 return NotFound();
             }
             return Ok(new { message = "Patient deativated with success." });
         }
-
+        
         //PATCH: api/edit
         [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditStaff(string id, [FromBody] StaffDto staffDto)
@@ -125,7 +101,7 @@ namespace src.Controllers
             if (!result)
             {
                 return NotFound();
-
+                
             }
             return Ok(new { message = "Staff updated with success." });
         }
@@ -133,6 +109,6 @@ namespace src.Controllers
 
 
     }
-
-
+   
+    
 }

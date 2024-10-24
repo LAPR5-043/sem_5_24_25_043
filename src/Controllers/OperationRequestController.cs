@@ -1,5 +1,6 @@
 using System;
 using Domain.OperationRequestAggregate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sem_5_24_25_043;
@@ -7,10 +8,10 @@ using src.Services.IServices;
 
 namespace src.Controllers
 {
-
+    [Authorize(Roles = "admins")]
     [Route("api/[controller]")]
     [ApiController]
-    public class OperationRequestController : ControllerBase
+    public class OperationRequestController : ControllerBase 
     {
         private readonly IOperationRequestService service;
 
@@ -18,55 +19,19 @@ namespace src.Controllers
         {
             this.service = service;
         }
-
-
-        //GET /api/OperationRequest/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
-        [HttpGet("filtered")]
-        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> getOperationRequestFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, [FromQuery] string? operationType,
-                                                                        [FromQuery] string? priority, [FromQuery] string? status, [FromQuery] string? sortBy)
-        {
-
-            var OperaionRequest = await service.GetOperationRequestFilteredAsync(firstName, lastName, operationType, priority, status, sortBy);
-            if (OperaionRequest == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(OperaionRequest);
-        }
-
-        // GET: api/OperationRequest/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOperationRequestById(string id)
-        {
-            var operationRequest = await service.GetOperationRequestByIdAsync(id);
-            if (operationRequest == null)
-            {
-                return NotFound(new { message = "Operation Request not found." });
-
-            }
-
-            return Ok(operationRequest);
-        }
-
-
+        
         /// <summary>
         /// Delete operation request by id
         /// </summary>
         /// <param name="id"></param>
         /// <param name="confirmDelete"></param>
         /// <returns></returns>
+        [Authorize(Roles = "medic")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOperationRequest(int id, [FromHeader(Name = "X-Confirm-Delete")] bool confirmDelete)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("medic"))
-            {
-                return Unauthorized();
-            }
-
-            var doctorEmail = AuthService.GetInternalEmailFromToken(HttpContext);
+            
+            var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
 
             // Check confirmation before deletion
             if (!confirmDelete)
@@ -77,7 +42,7 @@ namespace src.Controllers
             try
             {
                 var result = await service.DeleteOperationRequestAsync(id, doctorEmail);
-
+                
                 if (result)
                 {
                     return Ok(new { message = "Operation request deleted successfully." });
@@ -92,18 +57,12 @@ namespace src.Controllers
         }
 
         //PUT 
+        [Authorize(Roles = "medic")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
         {
 
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            string doctorEmail = AuthService.GetInternalEmailFromToken(HttpContext);
-
-            if (!roles.Contains("medic"))
-            {
-                return Unauthorized();
-            }
+            var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
             if (operationRequestDto == null)
             {
                 return BadRequest(new { message = "Invalid operation request data." });
@@ -116,7 +75,7 @@ namespace src.Controllers
                 return Ok(new { message = "Operation request updated successfully." });
             }
             return NotFound(new { message = "Operation request not found." });
-
+            
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ using Domain.LogAggregate;
 using Microsoft.OpenApi.Models;
 using src.Services.Services;
 using src.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 
 namespace sem_5_24_25_043
@@ -39,30 +41,20 @@ namespace sem_5_24_25_043
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
            
              // Configure JWT authentication with AWS Cognito
-            var cognitoAuthority = $"https://cognito-idp.{builder.Configuration["AWS:Region"]}.amazonaws.com/{builder.Configuration["AWS:Cognito:UserPoolId"]}";
-            builder.Services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = cognitoAuthority;
-                    options.MetadataAddress = $"https://cognito-idp.{builder.Configuration["AWS:Region"]}.amazonaws.com/{builder.Configuration["AWS:Cognito:UserPoolId"]}/.well-known/openid-configuration";
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = cognitoAuthority,
-                        ValidateAudience = true,
-                        ValidAudience = builder.Configuration["AWS:Cognito:ClientId"],
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        NameClaimType = "email",
-                        RoleClaimType = "cognito:groups"
-                        
-                    };
-                });
-            
+
+             builder.Services.AddAuthorization();
+             
+             
+             
+             
+             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                 .AddJwtBearer();
+                builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();
+             
+             
+             
+             
+
              // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
             // Register Repos and Services
@@ -122,6 +114,13 @@ namespace sem_5_24_25_043
             //}
 
             app.UseHttpsRedirection();
+
+            app.MapGet("/claims",
+                    (ClaimsPrincipal claims) => claims.Claims.Select(c => new { c.Type, c.Value }).ToArray())
+                .RequireAuthorization()
+                .WithName("GetClaims");
+                
+            
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -162,7 +161,6 @@ namespace sem_5_24_25_043
             services.AddScoped<IPendingRequestService, PendingRequestService>();
             services.AddScoped<IOperationRequestService, OperationRequestService>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
-            
         }
     }
 }

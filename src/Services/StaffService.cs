@@ -28,8 +28,26 @@ public class StaffService : IStaffService
     {
         return staffRepository.StaffExists(email, phoneNumber);
     }
-
-
+    public async Task<bool> EditStaffAsync(string id, StaffDto staffDto)
+    {
+        var staffToEdit = await staffRepository.GetByIdAsync(new StaffID(id));
+        if (staffToEdit == null)
+        {
+            return false;
+        }
+        if (staffDto.FirstName != null) { staffToEdit.changeFirstName(staffDto.FirstName); }
+        if (staffDto.LastName != null) { staffToEdit.changeLastName(staffDto.LastName); }
+        if (staffDto.Email != null) { staffToEdit.changeEmail(staffDto.Email); }
+        if (staffDto.PhoneNumber != null) { staffToEdit.changeFirstName(staffDto.PhoneNumber); }
+        if (staffDto.PhoneNumber != null)  {staffToEdit.changeFirstName(staffDto.PhoneNumber);}
+        if (staffDto.AvailabilitySlots != null)  {staffToEdit.changeAvailabilitySlots(new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots)));}
+        if (staffDto.SpecializationID != null)  {staffToEdit.changeSpecializationID(staffDto.SpecializationID);}
+        staffRepository.UpdateAsync(staffToEdit);
+        await unitOfWork.CommitAsync();
+        
+        return  true;
+        
+    }
     public async Task<OkObjectResult> getAllStaffAsync()
     {
         var result = await staffRepository.GetAllAsync();
@@ -147,16 +165,14 @@ public class StaffService : IStaffService
         await logService.CreateLogAsync(staffDeactivateLog1 + staffDeactivateLog2 + staff.staffID + staffDeactivateLog3 + staff.isActive, adminEmail);
         return true;
     }
-
-
+    
     public async Task<string> GetIdFromEmailAsync(string doctorEmail)
     {
         Staff staff = await staffRepository.GetStaffByEmail(doctorEmail);
         return staff.staffID.ToString();
     }
 
-    public Task<bool> EditStaffAsync(string id, StaffDto staffDto)
-    {
-        throw new NotImplementedException();
-    }
+  
+
+   
 }

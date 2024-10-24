@@ -15,6 +15,7 @@ using sem_5_24_25_043;
 namespace src.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "admins")] 
     [ApiController]
 
     public class OperationTypeController : ControllerBase
@@ -30,14 +31,6 @@ namespace src.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetOperationTypes()
         {
-
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
-
             var operationTypes = await service.getAllOperationTypesAsync();
             return Ok(operationTypes);
         }
@@ -46,13 +39,6 @@ namespace src.Controllers
         [HttpGet("Filtered")]
         public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
-
             var operationTypes = await service.getFilteredOperationTypesAsync(name, specialization, status);
             return Ok(operationTypes);
         }
@@ -61,12 +47,6 @@ namespace src.Controllers
         [HttpPatch("/ChangeStatus/{id}")]
         public async Task<IActionResult> DeactivateOperationType(string id)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
             var result = await service.deactivateOperationTypeAsync(id);
             if (result)
             {
@@ -79,19 +59,13 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateOperationType([FromBody] OperationTypeDto operationType)
         {
-            IEnumerable<string> roles = AuthService.GetGroupsFromToken(HttpContext);
-
-            if (!roles.Contains("admins"))
-            {
-                return Unauthorized();
-            }
-
+            
             if (operationType == null)
             {
                 return BadRequest(new { message = "Invalid operation type data." });
             }
 
-            var adminEmail = AuthService.GetInternalEmailFromToken(HttpContext);
+            var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
 
             try
             {
