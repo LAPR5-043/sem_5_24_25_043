@@ -9,7 +9,7 @@ using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using src.Domain;
 using src.Domain.AppointmentAggregate;
 using src.Domain.OperationRequestAggregate;
-using src.Domain.PatientAggregate;
+using src.Domain;
 using src.Domain.SurgeryRoomAggregate;
 using sem_5_24_25_043.Domain.AppointmentAggregate;
 using Domain.AppointmentAggregate;

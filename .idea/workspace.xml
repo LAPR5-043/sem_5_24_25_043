@@ -5,7 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d12b7313-7b28-48ec-975d-dceb77c8fe3b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Docs/Sprint1/UserStories/LAPR5/us5122/design/puml/sequence-diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/Docs/Sprint1/UserStories/LAPR5/us5122/design/puml/sequence-diagram.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/samples/Projeto Base Para Estrutura/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/samples/TodoApi/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/EmailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/PatientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/PatientService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/Debug/net8.0/sem_5_24_25_043.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/sem_5_24_25_043.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/sem_5_24_25_043.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/obj/sem_5_24_25_043.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/src/obj/sem_5_24_25_043.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sem_5_24_25_043.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/sem_5_24_25_043.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/fill.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,40 +57,11 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/samples/Projeto Base Para Estrutura/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Controllers/StaffController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Services/AuthService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/Services/AuthService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/Services/AuthService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/Services/AuthService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Services/ManageOperationTypeService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Services/ManageStaffService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/bin/Debug/net8.0/sem_5_24_25_043.deps.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/bin/Debug/net8.0/sem_5_24_25_043.deps.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/bin/Debug/net8.0/sem_5_24_25_043.deps.json" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.sourcelink.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.sourcelink.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.sourcelink.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/tiagoabreu/Documents/GitHub/sem_5_24_25_043/src/obj/Debug/net8.0/sem_5_24_25_043.sourcelink.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/PatientTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/StaffTests.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -122,6 +113,7 @@
       <workItem from="1729240927528" duration="51000" />
       <workItem from="1729240985451" duration="8257000" />
       <workItem from="1729604647503" duration="16000" />
+      <workItem from="1729771369362" duration="196000" />
     </task>
     <servers />
   </component>

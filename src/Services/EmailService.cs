@@ -49,7 +49,7 @@ namespace src.Services
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(senderEmail, senderPassword),
                     EnableSsl = true, // SSL is used on port 465
-                    DeliveryMethod = SmtpDeliveryMethod.Network
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
                     Timeout = 30000 // Set timeout to 30 seconds
                 };
 

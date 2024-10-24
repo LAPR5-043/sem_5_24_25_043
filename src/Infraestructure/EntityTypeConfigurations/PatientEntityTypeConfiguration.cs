@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Text.Json;
 using Domain.PatientAggregate;
-using src.Domain.PatientAggregate;
+using src.Domain;
 using Infrastructure.Converters;
 
 namespace Infrastructure.PatientRepository

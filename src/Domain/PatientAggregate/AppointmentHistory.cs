@@ -1,7 +1,7 @@
 using System;
 using src.Domain.Shared;
 
-namespace src.Domain.PatientAggregate
+namespace Domain.PatientAggregate
 {
     /// <summary>
     /// Value object that represents the history of appointments of a patient.
