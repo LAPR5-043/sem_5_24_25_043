@@ -1,4 +1,4 @@
-# Surgical Appointment and Resource Management System - MedOptima
+# Surgical Appointment and Resource Management System - MedOpt
 
 ## Project Overview
 This project is aimed at developing a **web-based prototype** system for managing **surgical appointments and hospital resources**. The system helps hospitals and clinics schedule surgeries efficiently, manage patient and staff data, and optimize resource usage while ensuring compliance with GDPR (General Data Protection Regulation). It also incorporates real-time 3D visualization of resource availability and supports business continuity.

@@ -43,7 +43,7 @@ namespace src.Controllers
             try
             {
                 await patientService.SignUpNewPatientIamAsync(name, phoneNumber, email, patientEmail, password);
-                return Ok(new { message = "Patient signed in successfully." });
+                return Ok(new { message = "Patient signed up successfully." });
             }
             catch (Exception ex)
             {
