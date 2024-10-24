@@ -59,7 +59,7 @@ public class StaffService : IStaffService
         return new OkObjectResult(resultDtos);
     }
 
-    public async Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy)
+    public async Task<List<StaffDto>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy)
     {
         bool ascending = true;
         var staffList = await staffRepository.GetAllAsync();

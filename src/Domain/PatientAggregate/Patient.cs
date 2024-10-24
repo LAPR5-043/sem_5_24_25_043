@@ -1,5 +1,5 @@
 using System;
-using src.Domain.PatientAggregate;
+using src.Domain;
 using src.Domain.Shared;
 
 

@@ -9,7 +9,7 @@ namespace src.Services.IServices
     public interface IStaffService
     {
         Task<OkObjectResult> getAllStaffAsync();
-        Task<ActionResult<IEnumerable<StaffDto>>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy);
+        Task<List<StaffDto>> getStaffsFilteredAsync(string? firstName, string? lastName, string? email, string? specialization, string? sortBy);
         Task<StaffDto> CreateStaffAsync(StaffDto staffDto);
         Task<StaffDto> GetStaffAsync(string id);
         Task<bool> UpdateIsActiveAsync(string id, string adminEmail);   

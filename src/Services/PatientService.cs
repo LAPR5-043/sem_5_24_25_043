@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Domain.PatientAggregate;
 using Microsoft.AspNetCore.Mvc;
 using sem_5_24_25_043;
-using src.Domain.PatientAggregate;
+using src.Domain;
 using src.Domain.Shared;
 using src.Services.IServices;
 
@@ -307,7 +307,7 @@ namespace src.Services.Services
 
                     if (pendingRequestIds.Count > 0){}
                         string url = buildUrl(pendingRequestIds);
-                        await emailService.SendEmailAsync(patient1.Email.ToString(), "Patient data update", url);
+                       // await emailService.SendEmailAsync(patient1.Email.ToString(), "Patient data update", url);
                         
                 }
                 await unitOfWork.CommitAsync();
@@ -395,9 +395,30 @@ namespace src.Services.Services
         public async Task<bool> AcceptRequests(List<long> requestIds)
         {
 
-
-            foreach (long pendingRequest in requestIds)
+            try
             {
+                foreach (var requestId in requestIds)
+                {
+                    // Ensure each request is processed sequentially to avoid concurrency issues
+                    bool result = await ProcessRequestAsync(requestId);
+                    if (!result)
+                    {
+                        return false;
+                    }
+                }
+
+                await unitOfWork.CommitAsync();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+        }
+        private  async Task<bool> ProcessRequestAsync(long pendingRequest)
+        {
                 PendingRequest request = pendingRequestService.GetByIdAsync(new LongId(pendingRequest));
                 if (request == null)
                 {
@@ -411,16 +432,14 @@ namespace src.Services.Services
                 {
                     object value = ConvertToCustomType(request.pendingValue, property.PropertyType);
                     property.SetValue(p, value, null);
-                    logService.CreateLogAsync("PatientId:" + request.userId + ";Attribute:" + request.attributeName + ";updated with success;", p.Email.Value);
+                    await logService.CreateLogAsync("PatientId:" + request.userId + ";Attribute:" + request.attributeName + ";updated with success;", p.Email.Value);
+                    return true ;
                 }
                 else
                 {
                     return false;
                 }
-            }
 
-            await unitOfWork.CommitAsync();
-            return true;
         }
 
         private object ConvertToCustomType(string value, Type targetType)
