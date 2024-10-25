@@ -1,0 +1,338 @@
+{
+	"info": {
+		"_postman_id": "ebeacaf4-b477-4e5d-a5e0-1291522b0636",
+		"name": "E2E Staff",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39285920",
+		"_collection_link": "https://medopt.postman.co/workspace/a66b371f-c241-4822-8fcf-a9bd369d8dcb/collection/39285920-ebeacaf4-b477-4e5d-a5e0-1291522b0636?action=share&source=collection_link&creator=39285920"
+	},
+	"item": [
+		{
+			"name": "Login Token Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if accessToken has a value\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"accessToken\");\r",
+							"    pm.expect(jsonData.accessToken).to.be.a(\"string\").and.not.empty;\r",
+							"});\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/User/login-user?email=tiago.abreu.mail2%40gmail.com&password=tiagoabreu22",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"User",
+						"login-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "tiago.abreu.mail2%40gmail.com"
+						},
+						{
+							"key": "password",
+							"value": "tiagoabreu22"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has correct message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Staff created successfully.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const requestData = JSON.parse(pm.request.body.raw); // Parses the raw request body\r",
+							"\r",
+							"// Save \"email\" to an environment variable\r",
+							"if (requestData.email) {\r",
+							"    pm.environment.set(\"staffEmail\", requestData.email);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"staffID\": \"\",\r\n  \"firstName\": \"Sima\",\r\n  \"lastName\": \"CAmpos\",\r\n  \"email\": \"Ds@gmail.com\",\r\n  \"phoneNumber\": \"+351914116110\",\r\n  \"licenseNumber\": \"1211021\",\r\n  \"isActive\": true,\r\n  \"availabilitySlots\": [\r\n  ],\r\n  \"specializationID\": \"Orthopedist\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7258/api/Staff/Create"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Staff Filtered",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Email in the first element matches the environment variable\", function () {\r",
+							"    const jsonData = pm.response.json(); \r",
+							"    const staffEmail = pm.environment.get(\"staffEmail\"); \r",
+							"\r",
+							"    pm.expect(jsonData).to.be.an('array').that.is.not.empty; \r",
+							"    pm.expect(jsonData[0]).to.have.property(\"email\"); \r",
+							"    pm.expect(jsonData[0].email).to.equal(staffEmail); \r",
+							"});\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"staffID\", jsonData[0].staffID);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/Staff/filtered?email={{staffEmail}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Staff",
+						"filtered"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{staffEmail}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has correct message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Staff updated with success.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"NewName\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7258/api/Staff/edit/{{staffID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate Staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log()\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has correct message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Staff deativated with success.\"); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": "https://localhost:7258/isActive/{{staffID}}"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "staffID",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "staffID",
+			"value": "staffID",
+			"type": "default"
+		}
+	]
+}
