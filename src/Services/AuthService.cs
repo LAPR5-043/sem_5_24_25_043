@@ -19,7 +19,8 @@ public class AuthService
 
     private readonly IEmailService _emailService;
     private readonly IEncryptionEmailService _encryptionEmailService;
-
+    
+    public AuthService(){}
     public AuthService(IConfiguration configuration, IEmailService emailService, IEncryptionEmailService encryptionEmailService)
     {
         _clientId = configuration["AWS:Cognito:ClientId"];

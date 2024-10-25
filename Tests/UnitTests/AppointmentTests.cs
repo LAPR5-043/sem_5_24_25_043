@@ -12,7 +12,7 @@ public class AppointmentTests
     public void Constructor_ShouldInitializeProperties()
     {
         // Arrange
-        var appointmentID = new AppointmentID("A123");
+        var appointmentID = new AppointmentID("123");
         var requestID = 1;
         var roomID = 101;
         var dateAndTime = new DateAndTime(new DateTime(2023, 10, 1, 14, 30, 0));
@@ -86,7 +86,7 @@ public class AppointmentTests
     public void Equals_ShouldReturnTrueForSameAppointmentID()
     {
         // Arrange
-        var appointmentID = new AppointmentID("A123");
+        var appointmentID = new AppointmentID("123");
         var appointment1 = new Appointment { appointmentID = appointmentID };
         var appointment2 = new Appointment { appointmentID = appointmentID };
 
@@ -101,8 +101,8 @@ public class AppointmentTests
     public void Equals_ShouldReturnFalseForDifferentAppointmentID()
     {
         // Arrange
-        var appointment1 = new Appointment { appointmentID = new AppointmentID("A123") };
-        var appointment2 = new Appointment { appointmentID = new AppointmentID("A124") };
+        var appointment1 = new Appointment { appointmentID = new AppointmentID("123") };
+        var appointment2 = new Appointment { appointmentID = new AppointmentID("124") };
 
         // Act
         var result = appointment1.Equals(appointment2);
@@ -115,7 +115,7 @@ public class AppointmentTests
     public void GetHashCode_ShouldReturnSameHashCodeForSameAppointmentID()
     {
         // Arrange
-        var appointmentID = new AppointmentID("A123");
+        var appointmentID = new AppointmentID("123");
         var appointment1 = new Appointment { appointmentID = appointmentID };
         var appointment2 = new Appointment { appointmentID = appointmentID };
 
@@ -131,8 +131,8 @@ public class AppointmentTests
     public void GetHashCode_ShouldReturnDifferentHashCodeForDifferentAppointmentID()
     {
         // Arrange
-        var appointment1 = new Appointment { appointmentID = new AppointmentID("A123") };
-        var appointment2 = new Appointment { appointmentID = new AppointmentID("A124") };
+        var appointment1 = new Appointment { appointmentID = new AppointmentID("123") };
+        var appointment2 = new Appointment { appointmentID = new AppointmentID("124") };
 
         // Act
         var hashCode1 = appointment1.GetHashCode();

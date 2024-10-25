@@ -536,7 +536,6 @@ C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.genruntimeconfig.cache
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\obj\Debug\net8.0\ref\sem_5_24_25_043.dll
 >>>>>>> b08ca22353a51e3f7fc8f95b3810594b5bac4d8f
-<<<<<<< HEAD
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\appsettings.Development.json
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\appsettings.json
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Properties\lauchSettings.json
@@ -808,7 +807,6 @@ C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\refint\sem_5_24_25_04
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.pdb
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\sem_5_24_25_043.genruntimeconfig.cache
 C:\Main\Java IntelliJ\sem_5_24_25_043\src\obj\Debug\net8.0\ref\sem_5_24_25_043.dll
-=======
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\MailKit.dll
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\MimeKit.dll

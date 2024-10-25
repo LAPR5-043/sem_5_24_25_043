@@ -24,6 +24,10 @@ public class OperationRequestDto
 
 
 
+
+    public OperationRequestDto()
+    {
+    }
     /// <summary>
     /// Initializes a new instance of the <see cref="operationRequestDto"/> class.
     /// </summary>

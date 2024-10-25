@@ -23,7 +23,7 @@ namespace src.Services.Services
             return false;
         }
 
-        private  void loadSensitiveData()
+        public  void loadSensitiveData()
         {
             string filePath =   "sensitiveAttributes.csv";
 
