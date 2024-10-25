@@ -31,6 +31,71 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task CreateOperationTypeAsync_ValidData_ReturnsTrue()
+        {
+            // Arrange
+            var operationTypeDto = new OperationTypeDto
+            {
+                OperationTypeName = "OT123",
+                EstimatedDurationHours = "1",
+                EstimatedDurationMinutes = "30",
+                IsActive = true,
+                Specializations = new Dictionary<string, string> { { "Cardiology", "1" } }
+            };
+            var adminEmail = "admin@example.com";
+
+            _operationTypeRepositoryMock.Setup(repo => repo.OperationTypeExists(It.IsAny<string>()))
+                                        .Returns(false);
+
+            // Act
+            var result = await _operationTypeService.createOperationTypeAsync(operationTypeDto, adminEmail);
+
+            // Assert
+            Assert.True(result);
+            _operationTypeRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationType>()), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
+            _logServiceMock.Verify(log => log.CreateLogAsync(It.IsAny<string>(), adminEmail), Times.Once);
+        }
+
+        [Fact]
+        public async Task CreateOperationTypeAsync_OperationTypeAlreadyExists_ThrowsException()
+        {
+            // Arrange
+            var operationTypeDto = new OperationTypeDto
+            {
+                OperationTypeName = "OT123",
+                EstimatedDurationHours = "1",
+                EstimatedDurationMinutes = "30",
+                IsActive = true,
+                Specializations = new Dictionary<string, string> { { "Cardiology", "1" } }
+            };
+            var adminEmail = "admin@example.com";
+
+            _operationTypeRepositoryMock.Setup(repo => repo.OperationTypeExists(It.IsAny<string>()))
+                                        .Returns(true);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _operationTypeService.createOperationTypeAsync(operationTypeDto, adminEmail));
+            _operationTypeRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationType>()), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
+            _logServiceMock.Verify(log => log.CreateLogAsync(It.IsAny<string>(), adminEmail), Times.Never);
+        }
+
+        [Fact]
+        public async Task CreateOperationTypeAsync_NullOperationType_ThrowsArgumentNullException()
+        {
+            // Arrange
+            OperationTypeDto operationTypeDto = null;
+            var adminEmail = "admin@example.com";
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _operationTypeService.createOperationTypeAsync(operationTypeDto, adminEmail));
+            _operationTypeRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationType>()), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
+            _logServiceMock.Verify(log => log.CreateLogAsync(It.IsAny<string>(), adminEmail), Times.Never);
+        }
+
+        [Fact]
         public async Task DeactivateOperationTypeAsync_ValidData_ReturnsTrue()
         {
             // Arrange
