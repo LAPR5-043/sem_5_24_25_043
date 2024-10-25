@@ -32,6 +32,69 @@ namespace src.Controllers.Tests
             };
         }
 
+
+        [Fact]
+        public async Task CreateOperationType_ValidData_ReturnsOk()
+        {
+            // Arrange
+            var operationTypeDto = new OperationTypeDto
+            {
+                OperationTypeName = "Knee Surgery",
+                Specializations = new Dictionary<string, string>
+                {
+                    { "Orthopedics", "2" }
+                },
+                IsActive = true
+            };
+
+            _serviceMock.Setup(s => s.createOperationTypeAsync(It.IsAny<OperationTypeDto>(), "admin@example.com"))
+                        .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.CreateOperationType(operationTypeDto);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal("{ message = Operation type created successfully. }", okResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task CreateOperationType_NullData_ReturnsBadRequest()
+        {
+            // Act
+            var result = await _controller.CreateOperationType(null);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("{ message = Invalid operation type data. }", badRequestResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task CreateOperationType_InternalServerError_ReturnsInternalServerError()
+        {
+            // Arrange
+            var operationTypeDto = new OperationTypeDto
+            {
+                OperationTypeName = "Knee Surgery",
+                Specializations = new Dictionary<string, string>
+                {
+                    { "Orthopedics", "1" }
+                },
+                IsActive = true
+            };
+
+            _serviceMock.Setup(s => s.createOperationTypeAsync(It.IsAny<OperationTypeDto>(), "admin@example.com"))
+                        .ThrowsAsync(new Exception("An error occurred"));
+
+            // Act
+            var result = await _controller.CreateOperationType(operationTypeDto);
+
+            // Assert
+            var internalServerErrorResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, internalServerErrorResult.StatusCode);
+            Assert.Equal("{ message = An error occurred: An error occurred }", internalServerErrorResult.Value.ToString());
+        }
+
         [Fact]
         public async Task DeactivateOperationType_ValidData_ReturnsOk()
         {

@@ -34,6 +34,13 @@ namespace Domain.OperationTypeAggregate
         public Dictionary<string, string>? Specializations { get; set; }
 
         /// <summary>
+        /// Empty constructor
+        /// </summary>
+        public OperationTypeDto(){
+
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OperationTypeDto"/> class with specified details.
         /// </summary>
         [JsonConstructor]
