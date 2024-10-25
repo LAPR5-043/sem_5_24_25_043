@@ -51,8 +51,6 @@ namespace Domain.OperationTypeAggregate
         /// </summary>
         public OperationTypeDto(OperationType operationType)
         {
-           
-
             OperationTypeName = operationType.operationTypeName?.ToString() ?? string.Empty; 
             EstimatedDurationHours = operationType.estimatedDuration?.hours.ToString() ?? string.Empty;
             EstimatedDurationMinutes = operationType.estimatedDuration?.minutes.ToString() ?? string.Empty;

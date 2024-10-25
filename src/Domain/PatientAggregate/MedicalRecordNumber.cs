@@ -2,7 +2,7 @@ using System;
 using src.Domain.Shared;
 
 namespace Domain.PatientAggregate
-{   
+{
     /// <summary>
     /// Represents a medical record number of a patient
     /// </summary>
@@ -42,7 +42,7 @@ namespace Domain.PatientAggregate
             var other = (MedicalRecordNumber)obj;
             return medicalRecordNumber == other.medicalRecordNumber;
         }
-        
+
         /// <summary>
         /// Returns the hash code for the medical record number
         /// </summary>

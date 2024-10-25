@@ -7,20 +7,20 @@ namespace Domain.OperationRequestAggregate;
 public class OperationRequestDto
 {
 
-    public long? RequestId { get; set; }
+    public string? RequestId { get; set; }
 
-    public int? patientID { get; set; }
+    public string? PatientID { get; set; }
 
-    public string? operationType { get; set; }
+    public string? OperationTypeID { get; set; }
 
-    public string? doctorID { get; set; }
-    public string? priority { get; set; }
+    public string? DoctorID { get; set; }
+    public string? Priority { get; set; }
 
-    public int? day { get; set; }
+    public string? Day { get; set; }
 
-    public int? month { get; set; }
+    public string? Month { get; set; }
 
-    public int? year { get; set; }
+    public string? Year { get; set; }
 
 
 
@@ -33,59 +33,40 @@ public class OperationRequestDto
         {
             throw new ArgumentNullException(nameof(operationRequest), "Operation Request cannot be null.");
         }
-        /*
-                RequestId = operationRequest.operationRequestID?.ID ?? string.Empty;
 
-                operationType = operationRequest.operationTypeID.ToString() ?? string.Empty;
-                doctorID = operationRequest.doctorID.ToString() ?? string.Empty;
-                priority = operationRequest.priority.ToString() ?? string.Empty;
+        RequestId = operationRequest.operationRequestID.ToString() ?? string.Empty;
+        PatientID = operationRequest.patientID ?? string.Empty;
+        OperationTypeID = operationRequest.operationTypeID ?? string.Empty;
+        DoctorID = operationRequest.doctorID ?? string.Empty;
 
-                day = operationRequest.deadlineDate?.Day() ?? string.Empty;
-                month = operationRequest.deadlineDate?.Month() ?? string.Empty;
-                year = operationRequest.deadlineDate?.Year() ?? string.Empty;
-        */
-    }
+        Day = operationRequest.deadlineDate.Day().ToString() ?? string.Empty;
+        Month = operationRequest.deadlineDate.Month().ToString() ?? string.Empty;
+        Year = operationRequest.deadlineDate.Year().ToString() ?? string.Empty;
 
-    
-    public OperationRequestDto()
-    {
+        Priority = operationRequest.priority.ToString() ?? string.Empty;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PatientDto"/> class.
+    /// Initializes a new instance of the <see cref="OperationRequestDto"/> class.
     /// </summary>
-    /// <param name="MedicalRecordNumber"></param>
-    /// <param name="FirstName"></param>
-    /// <param name="LastName"></param>
-    /// <param name="Email"></param>
-    /// <param name="PhoneNumber"></param>
-    /// <param name="EmergencyContactName"></param>
-    /// <param name="EmergencyContactPhoneNumber"></param>
-    /// <param name="DayOfBirth"></param>
-    /// <param name="MonthOfBirth"></param>
-    /// <param name="YearOfBirth"></param>
-    /// <param name="Gender"></param>
-    /// <param name="AllergiesAndConditions"></param>
-    /// <param name="AppointmentHistory"></param>
-    //[JsonConstructor]
-    public OperationRequestDto(string MedicalRecordNumber, string FirstName, string LastName, string Email, string PhoneNumber, string EmergencyContactName,
-    string EmergencyContactPhoneNumber, string DayOfBirth, string MonthOfBirth, string YearOfBirth, string Gender, List<string> AllergiesAndConditions, List<string> AppointmentHistory)
+    /// <param name="RequestID"></param>
+    /// <param name="PatientID"></param>
+    /// <param name="OperationTypeID"></param>
+    /// <param name="DoctorID"></param>
+    /// <param name="Priority"></param>
+    /// <param name="Day"></param>
+    /// <param name="Month"></param>
+    /// <param name="Year"></param>
+    [JsonConstructor]
+    public OperationRequestDto(string? requestId, string? patientID, string? operationTypeID, string? doctorID, string? priority, string? day, string? month, string? year)
     {
-        /*
-        this.MedicalRecordNumber = MedicalRecordNumber;
-        this.FirstName = FirstName;
-        this.LastName = LastName;
-        this.Email = Email;
-        this.PhoneNumber = PhoneNumber;
-        this.EmergencyContactName = EmergencyContactName;
-        this.EmergencyContactPhoneNumber = EmergencyContactPhoneNumber;
-        this.DayOfBirth = DayOfBirth;
-        this.MonthOfBirth = MonthOfBirth;
-        this.YearOfBirth = YearOfBirth;
-        this.Gender = Gender;
-        this.AllergiesAndConditions = AllergiesAndConditions;
-        this.AppointmentHistory = AppointmentHistory;
-        */
+        RequestId = requestId;
+        PatientID = patientID;
+        OperationTypeID = operationTypeID;
+        DoctorID = doctorID;
+        Priority = priority;
+        Day = day;
+        Month = month;
+        Year = year;
     }
-
 }

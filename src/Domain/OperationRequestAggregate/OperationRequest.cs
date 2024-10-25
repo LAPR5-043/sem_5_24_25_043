@@ -3,33 +3,38 @@ using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using src.Domain.OperationRequestAggregate;
 using src.Domain.Shared;
 
+
 namespace Domain.OperationRequestAggregate
-{   
+{
     /// <summary>
     /// Represents an operation request entity in the domain.
     /// </summary>
     public class OperationRequest : Entity<OperationRequestID>, IAggregateRoot
-    {   
+    {
         /// <summary>
         /// Represents the ID of the operation request.
         /// </summary>
         public OperationRequestID operationRequestID { get; set; }
+
         /// <summary>
         /// Represents the ID of the patient.
         /// </summary>
-        public int patientID { get; set; }
+        public string patientID { get; set; }
         /// <summary>
         /// Represents the ID of the doctor.
         /// </summary>
         public string doctorID { get; set; }
+
         /// <summary>
         /// Represents the ID of the operation type.
         /// </summary>
         public string operationTypeID { get; set; }
+
         /// <summary>
         /// Represents the deadline date of the operation request.
         /// </summary>
         public DeadlineDate deadlineDate { get; set; }
+
         /// <summary>
         /// Represents the priority of the operation request.
         /// </summary>

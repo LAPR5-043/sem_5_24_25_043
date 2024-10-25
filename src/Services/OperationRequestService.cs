@@ -8,6 +8,8 @@ using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using src.Domain.OperationRequestAggregate;
 using src.Domain.Shared;
 using src.Services.IServices;
+using System.Text.RegularExpressions;
+
 
 namespace src.Services
 {
@@ -55,6 +57,68 @@ namespace src.Services
         }
 
 
+        /// <summary>
+        /// Create a new operation request
+        /// </summary>
+        /// <param name="operationRequestDto"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
+        public async Task<bool> CreateOperationRequestAsync(OperationRequestDto operationRequestDto)
+        {
+
+            if (operationRequestDto == null)
+            {
+                throw new ArgumentNullException(nameof(operationRequestDto), "Operation Request data is null.");
+            }
+
+            var newOperationRequest = new OperationRequest();
+
+            VerifyPatientID(operationRequestDto.PatientID);
+            newOperationRequest.patientID = operationRequestDto.PatientID;
+            newOperationRequest.operationTypeID = operationRequestDto.OperationTypeID;
+            newOperationRequest.doctorID = operationRequestDto.DoctorID;
+
+            newOperationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
+
+            int day;
+            if (!int.TryParse(operationRequestDto.Day, out day))
+            {
+                throw new ArgumentException("Day must be a number");
+            }
+
+            int month;
+            if (!int.TryParse(operationRequestDto.Month, out month))
+            {
+                throw new ArgumentException("Month must be a number");
+            }
+
+            int year;
+            if (!int.TryParse(operationRequestDto.Year, out year))
+            {
+                throw new ArgumentException("Year must be a number");
+
+            }
+
+            newOperationRequest.deadlineDate = new DeadlineDate(day, month, year);
+
+
+            // Add the patient to the repository
+            await operationRequestRepository.AddAsync(newOperationRequest);
+            await unitOfWork.CommitAsync();
+
+            return newOperationRequest != null;
+        }
+        /// <summary>
+        /// Get operation requests filtered by different criteria
+        /// </summary>
+        /// <param name="firstName">First name of the patient</param>
+        /// <param name="lastName">Last name of the patient</param>
+        /// <param name="operationType">Type of operation</param>
+        /// <param name="priority">Priority of the operation</param>
+        /// <param name="status">Status of the operation</param>
+        /// <param name="sortBy">Column to sort by</param>
+        /// <returns>List of operation requests</returns>
         public Task<ActionResult<IEnumerable<OperationRequestDto>>> GetOperationRequestFilteredAsync(string? firstName, string? lastName, string? operationType, string? priority, string? status, string? sortBy)
         {
             throw new NotImplementedException();
@@ -139,33 +203,32 @@ namespace src.Services
              {
                  return false;
              }*/
-
             try
             {
-                if (operationRequestDto.patientID != null)
+                if (!operationRequestDto.PatientID.IsNullOrEmpty())
                 {
-                    operationRequest.patientID = (int)operationRequestDto.patientID;
-                    await logService.CreateLogAsync("Update Operation Request" + "Patient ID changed from " + operationRequest.patientID + " to " + operationRequestDto.patientID, email);
+                    operationRequest.patientID = operationRequestDto.PatientID;
+                    await logService.CreateLogAsync("Update Operation Request" + "Patient ID changed from " + operationRequest.patientID + " to " + operationRequestDto.PatientID, email);
                 }
-                if (!operationRequestDto.doctorID.IsNullOrEmpty())
+                if (!operationRequestDto.DoctorID.IsNullOrEmpty())
                 {
-                    operationRequest.doctorID = operationRequestDto.doctorID;
-                    await logService.CreateLogAsync("Update Operation Request" + "Doctor ID changed from " + operationRequest.doctorID + " to " + operationRequestDto.doctorID, email);
+                    operationRequest.doctorID = operationRequestDto.DoctorID;
+                    await logService.CreateLogAsync("Update Operation Request" + "Doctor ID changed from " + operationRequest.doctorID + " to " + operationRequestDto.DoctorID, email);
                 }
-                if (!operationRequestDto.operationType.IsNullOrEmpty())
+                if (!operationRequestDto.OperationTypeID.IsNullOrEmpty())
                 {
-                    operationRequest.operationTypeID = operationRequestDto.operationType;
-                    await logService.CreateLogAsync("Update Operation Request" + "Operation Type changed from " + operationRequest.operationTypeID + " to " + operationRequestDto.operationType, email);
+                    operationRequest.operationTypeID = operationRequestDto.OperationTypeID;
+                    await logService.CreateLogAsync("Update Operation Request" + "Operation Type changed from " + operationRequest.operationTypeID + " to " + operationRequestDto.OperationTypeID, email);
                 }
-                if (operationRequestDto.day != null && operationRequestDto.month != null && operationRequestDto.year != null)
+                if (operationRequestDto.Day != null && operationRequestDto.Month != null && operationRequestDto.Year != null)
                 {
-                    operationRequest.deadlineDate = new DeadlineDate((int)operationRequestDto.day, (int)operationRequestDto.month, (int)operationRequestDto.year);
-                    await logService.CreateLogAsync("Update Operation Request" + "Deadline Date changed from " + operationRequest.deadlineDate + " to " + operationRequestDto.day + "/" + operationRequestDto.month + "/" + operationRequestDto.year, email);
+                    operationRequest.deadlineDate = new DeadlineDate(int.Parse(operationRequestDto.Day), int.Parse(operationRequestDto.Month), int.Parse(operationRequestDto.Year));
+                    await logService.CreateLogAsync("Update Operation Request" + "Deadline Date changed from " + operationRequest.deadlineDate + " to " + operationRequestDto.Day + "/" + operationRequestDto.Month + "/" + operationRequestDto.Year, email);
                 }
-                if (!operationRequestDto.priority.IsNullOrEmpty())
+                if (!operationRequestDto.Priority.IsNullOrEmpty())
                 {
-                    operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.priority);
-                    await logService.CreateLogAsync("Update Operation Request" + "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.priority, email);
+                    operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
+                    await logService.CreateLogAsync("Update Operation Request" + "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.Priority, email);
                 }
                 await operationRequestRepository.updateAsync(operationRequest);
             }
@@ -177,6 +240,13 @@ namespace src.Services
 
             return true;
 
+        }
+        private void VerifyPatientID(string patientID)
+        {
+            if (!Regex.IsMatch(patientID, @"^$|^\d+$"))
+            {
+                throw new ArgumentException("The Patient's ID must be a number");
+            }
         }
     }
 }
