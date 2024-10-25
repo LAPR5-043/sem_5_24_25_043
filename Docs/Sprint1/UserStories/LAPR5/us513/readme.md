@@ -54,29 +54,6 @@ The system needs to send a verification email to `abc@abc.com`. When the patient
 
 ![Design](design/svg/sequence-diagram.svg)
 
-### 4.1. Realization
-
-### 4.2. Class Diagram
-
-![a class diagram](class-diagram-01.svg "A Class Diagram")
-
-### 4.3. Applied Patterns
-
-### 4.4. Tests
-
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria.
-
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** G002.1
-
-
-```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-	...
-}
-````
 
 ## 5. Implementation
 

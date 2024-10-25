@@ -72,20 +72,27 @@ package "Patient Aggregate" {
     card PatientLastName <<Value Object>>
     card PatientFullName <<Value Object>>
     card DateOfBirth <<Value Object>>
-    card Gender <<Value Object>>
+    enum Gender <<enumeration>> {
+        Male
+        Female
+    }
+
     card MedicalRecordNumber <<Value Object>>
-    card ContactInformation <<Value Object>>
     card AllergiesAndConditions <<Value Object>>
     card EmergencyContact <<Value Object>>
+    card AppointmentHistory <<Value Object>>
     'card AppointmentHistory <<Value Object>>
 
     ' Atributos Contact Information
     card PatientEmail <<Value Object>>
     card PhoneNumber <<Value Object>>
 
-    ' Relationships Contact Information
-    ContactInformation "1"-->"1" PatientEmail
-    ContactInformation "1"-->"1" PhoneNumber
+    ' Atributos Appointment History
+    card AppointmentId <<Value Object>>
+
+    ' Relationships Appointment History
+    AppointmentHistory "1" --> "*" AppointmentId 
+
 
     ' Relationships inside the Patient aggregate
     Patient "1" -u-> "1" PatientFirstName
@@ -94,9 +101,11 @@ package "Patient Aggregate" {
     Patient "1" -u-> "1" DateOfBirth
     Patient "1" -u-> "1" Gender
     Patient "1" --> "1" MedicalRecordNumber
-    Patient "1" --> "1" ContactInformation
     Patient "1" --> "*" AllergiesAndConditions
     Patient "1" --> "1" EmergencyContact
+    Patient "1" --> "1" AppointmentHistory
+    Patient "1" --> "1" PatientEmail
+    Patient "1" --> "1" PhoneNumber
 
 }
 

@@ -25,24 +25,25 @@ skinparam card {
 
 actor "Patient" as P
 
-participant "API" as API
-participant ":PatientController" as PC
+participant "Route" as Route
+participant ":UserController" as UC
 participant ":PatientService" as PS
 participant ":PatientRepository" as PR
+participant ":AuthService" as AS
 participant "External IAM Provider" as IAM
 participant ":EmailService" as ES
 
 activate P
 
-P -> API: Tries to self-register (sends email, \npatient email, password, ...)
+P -> Route: /api/User/signup-patient
 
-activate API
+activate Route
 
-API -> PC: registerPatient(email, password, ...)
+Route -> UC: SignUpPatientAsync(email, password, ...)
 
-activate PC
+activate UC
 
-PC -> PS: registerPatient(email, password, ...)
+UC -> PS: SignUpNewPatientIamAsync(email, password, ...)
 
 activate PS
 
@@ -56,39 +57,47 @@ deactivate PR
 
 alt "Patient not found"
 
-    PS --> PC: false
+    PS --> UC: false
 
-    PC --> API: false
+    UC --> Route: false
 
-    API --> P: returns "Patient not found"
+    Route --> P: returns "Patient not found"
 
 else "Patient found"
 
-    PS -> IAM: registers patient in IAM in pending state
+    PS --> AS: RegisterNewPatientAsync(email, password, ...)
+
+    activate AS
+
+    AS -> IAM: AdminCreateUserAsync(signUpRequest)
 
     activate IAM
 
-    IAM --> PS:
+    IAM --> AS:
 
     deactivate IAM
 
-    PS -> ES: sendPatientConfirmationEmail(email)
+    AS -> ES: sendConfirmationEmail(patientEmail)
 
     activate ES
 
-    ES --> PS: 
+    ES --> AS: 
 
     deactivate ES
 
-    PS --> PC: true
+    AS --> PS: true
+
+    deactivate AS
+
+    PS --> UC: true
 
     deactivate PS
 
-    PC --> API: true
+    UC --> Route: true
 
-    deactivate PC
+    deactivate UC
 
-    API --> P: returns "User Registrered, check your email"
+    Route --> P: returns "User Registered, check your email"
 
 end
 
