@@ -21,13 +21,13 @@ namespace src.Tests
             var operationRequest = new OperationRequest
             {
                 operationRequestID = operationRequestID,
-                patientID = patientID,
+                patientID = patientID.ToString(),
                 doctorID = doctorID
             };
 
             // Assert
             Assert.Equal(operationRequestID, operationRequest.operationRequestID);
-            Assert.Equal(patientID, operationRequest.patientID);
+            Assert.Equal(patientID.ToString(), operationRequest.patientID.ToString());
             Assert.Equal(doctorID, operationRequest.doctorID);
         }
 
