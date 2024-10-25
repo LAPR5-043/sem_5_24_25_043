@@ -75,6 +75,10 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientDto"/> class.
         /// </summary>
+        /// 
+        public PatientDto()
+        {
+        }
         public PatientDto(Patient patient)
         {
             if (patient == null)
