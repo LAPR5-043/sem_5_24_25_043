@@ -8,7 +8,7 @@ using src.Services.IServices;
 
 namespace src.Controllers
 {
-    [Authorize(Roles = "admins")]
+    [Authorize(Roles = "admins, medic")]
     [Route("api/[controller]")]
     [ApiController]
     public class OperationRequestController : ControllerBase
@@ -31,7 +31,7 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateOperationRequest([FromBody] OperationRequestDto operationRequestDto)
         {
-            //var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+            var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
 
             if (operationRequestDto == null)
             {
@@ -40,7 +40,7 @@ namespace src.Controllers
 
             try
             {
-                var createdOperationRequest = await service.CreateOperationRequestAsync(operationRequestDto);
+                var createdOperationRequest = await service.CreateOperationRequestAsync(operationRequestDto, doctorEmail);
                 if (createdOperationRequest)
                 {
                     return Ok(new { message = "Operation Request created successfully." });
@@ -56,7 +56,7 @@ namespace src.Controllers
 
 
         //GET /api/OperationRequest/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
-        [Authorize(Roles = "medic")]
+        [Authorize(Roles = "admins, medic")]
         [HttpGet("filtered")]
         public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetOperationRequestFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, [FromQuery] string? operationType,
             [FromQuery] string? priority, [FromQuery] string? status, [FromQuery] string? sortBy)
@@ -74,7 +74,7 @@ namespace src.Controllers
         }
 
         // GET: api/OperationRequest/5
-        [Authorize(Roles = "medic")]
+        [Authorize(Roles = "admins, medic")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOperationRequestById(string id)
         {
@@ -133,7 +133,7 @@ namespace src.Controllers
         public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
         {
 
-           var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+            var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
             if (operationRequestDto == null)
             {
                 return BadRequest(new { message = "Invalid operation request data." });

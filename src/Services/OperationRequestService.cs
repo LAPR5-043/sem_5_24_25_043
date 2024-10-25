@@ -64,7 +64,7 @@ namespace src.Services
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> CreateOperationRequestAsync(OperationRequestDto operationRequestDto)
+        public async Task<bool> CreateOperationRequestAsync(OperationRequestDto operationRequestDto, string email)
         {
 
             if (operationRequestDto == null)
@@ -74,10 +74,21 @@ namespace src.Services
 
             var newOperationRequest = new OperationRequest();
 
+            string doctorID = await staffService.GetIdFromEmailAsync(email);
+
+            StaffDto staffDto = await staffService.GetStaffAsync(doctorID);
+
+
             VerifyPatientID(operationRequestDto.PatientID);
             newOperationRequest.patientID = operationRequestDto.PatientID;
+
+            if (operationRequestDto.OperationTypeID != staffDto.SpecializationID)
+            {
+                throw new ArgumentException("Operation Type must match the specialization of the doctor");
+            }
             newOperationRequest.operationTypeID = operationRequestDto.OperationTypeID;
-            newOperationRequest.doctorID = operationRequestDto.DoctorID;
+
+            newOperationRequest.doctorID = staffDto.StaffID;
 
             newOperationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
 
@@ -102,13 +113,12 @@ namespace src.Services
 
             newOperationRequest.deadlineDate = new DeadlineDate(day, month, year);
 
-
-            // Add the patient to the repository
             await operationRequestRepository.AddAsync(newOperationRequest);
             await unitOfWork.CommitAsync();
 
             return newOperationRequest != null;
         }
+
         /// <summary>
         /// Get operation requests filtered by different criteria
         /// </summary>
@@ -241,6 +251,7 @@ namespace src.Services
             return true;
 
         }
+
         private void VerifyPatientID(string patientID)
         {
             if (!Regex.IsMatch(patientID, @"^$|^\d+$"))

@@ -33,4 +33,13 @@ public class AppointmentRepository : BaseRepository<Appointment, AppointmentID>,
     {
         return await context.Appointments.AnyAsync(a => a.requestID == requestID);
     }
+
+    /*
+    public async Task<Appointment> GetAppointmentByRequestID(string requestID)
+    {
+        return context.Appointments
+            .AsEnumerable()
+            .FirstOrDefault(a => a.requestID == int.Parse(requestID))!;
+    }
+    */
 }

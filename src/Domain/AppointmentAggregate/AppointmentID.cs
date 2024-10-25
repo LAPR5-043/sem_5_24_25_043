@@ -1,4 +1,6 @@
 using System;
+using src.Domain.AppointmentAggregate;
+using Domain.AppointmentAggregate;
 using src.Domain.Shared;
 
 

@@ -5,7 +5,6 @@ using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using Sempi5.Infrastructure.StaffRepository;
-using sem_5_24_25_043.Domain.OperationRequestAggregate;
 using src.Domain;
 using src.Domain.AppointmentAggregate;
 using src.Domain.OperationRequestAggregate;
@@ -13,7 +12,6 @@ using src.Domain;
 using src.Domain.SurgeryRoomAggregate;
 using sem_5_24_25_043.Domain.AppointmentAggregate;
 using Domain.AppointmentAggregate;
-
 
 namespace src.Models;
 
@@ -121,28 +119,28 @@ public class AppContext : DbContext
                 new OperationRequest
                 {
 
-                    Id = new OperationRequestID("1"),
-                    operationRequestID = new OperationRequestID("1"),
+                    Id = new OperationRequestID("000001"),
+                    operationRequestID = new OperationRequestID("000001"),
                     patientID = "1",
                     doctorID = "D202400001",
-                    operationTypeID = "Knee Surgery",
+                    operationTypeID = "Cardiology",
                     deadlineDate = new DeadlineDate(1, 1, 2025),
                     priority = Priority.Emergency
                 },
                 new OperationRequest
                 {
-                    Id = new OperationRequestID("2"),
-                    operationRequestID = new OperationRequestID("2"),
+                    Id = new OperationRequestID("000002"),
+                    operationRequestID = new OperationRequestID("000002"),
                     patientID = "2",
                     doctorID = "D202400001",
-                    operationTypeID = "Heart Surgery",
+                    operationTypeID = "Cardiology",
                     deadlineDate = new DeadlineDate(1, 1, 2025),
                     priority = Priority.Effective
                 },
                 new OperationRequest
                 {
-                    Id = new OperationRequestID("3"),
-                    operationRequestID = new OperationRequestID("3"),
+                    Id = new OperationRequestID("000003"),
+                    operationRequestID = new OperationRequestID("000003"),
                     patientID = "2",
                     doctorID = "s202400002",
                     operationTypeID = "Heart Surgery",

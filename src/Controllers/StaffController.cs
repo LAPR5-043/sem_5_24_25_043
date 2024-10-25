@@ -41,7 +41,7 @@ namespace src.Controllers
                 var createdStaff = await service.CreateStaffAsync(staffDto);
                 if (createdStaff)
                 {
-                    return Ok(new { message = "Staff created successfully." });
+                    return Ok(new { message = "Staff member created successfully." });
 
                 }
             }
