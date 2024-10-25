@@ -45,6 +45,130 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task CreatePatientAsync_ValidData_ReturnsPatientDto()
+        {
+            // Arrange
+            var patientDto = new PatientDto
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                PhoneNumber = "+1234567890",
+                EmergencyContactName = "Jane Doe",
+                EmergencyContactPhoneNumber = "+0987654321",
+                DayOfBirth = "01",
+                MonthOfBirth = "01",
+                YearOfBirth = "1990",
+                Gender = "Male"
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.PatientExists(It.IsAny<string>(), It.IsAny<string>()))
+                      .Returns(false);
+
+            _patientRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<Patient>()))
+                      .Returns(Task.FromResult(new Patient()));
+
+            // Act
+            var result = await _patientService.CreatePatientAsync(patientDto);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(patientDto.FirstName, result.FirstName);
+            Assert.Equal(patientDto.LastName, result.LastName);
+            _patientRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Patient>()), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_PatientAlreadyExists_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var patientDto = new PatientDto
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                PhoneNumber = "+1234567890",
+                EmergencyContactName = "Jane Doe",
+                EmergencyContactPhoneNumber = "+0987654321",
+                DayOfBirth = "01",
+                MonthOfBirth = "01",
+                YearOfBirth = "1990",
+                Gender = "Male"
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.PatientExists(It.IsAny<string>(), It.IsAny<string>()))
+                                  .Returns(true);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _patientService.CreatePatientAsync(patientDto));
+            Assert.Equal("Patient already exists.", exception.Message);
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_NullPatient_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => _patientService.CreatePatientAsync(null));
+            Assert.Equal("Patient data is null. (Parameter 'patient')", exception.Message);
+        }
+
+        [Fact]
+        public async Task SignUpNewPatientIamAsync_ValidData_RegistersPatient()
+        {
+            // Arrange
+            var name = "John Doe";
+            var phoneNumber = "+1234567890";
+            var email = "john.doe@example.com";
+            var patientEmail = "patient@example.com";
+            var password = "Password123";
+
+            _patientRepositoryMock.Setup(repo => repo.PatientExists(It.IsAny<string>()))
+                                  .Returns(true);
+
+            // Act
+            await _patientService.SignUpNewPatientIamAsync(name, phoneNumber, email, patientEmail, password);
+
+            // Assert
+            _authServiceMock.Verify(auth => auth.RegisterNewPatientAsync(name, phoneNumber, email, patientEmail, password), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
+            _logServiceMock.Verify(log => log.CreateLogAsync(It.Is<string>(s => s.Contains("New patient registered in the IAM system; PatientEmail:" + email)), email), Times.Once);
+        }
+
+        [Fact]
+        public async Task SignUpNewPatientIamAsync_InvalidPhoneNumber_ThrowsArgumentException()
+        {
+            // Arrange
+            var name = "John Doe";
+            var phoneNumber = "1234567890"; // Invalid phone number
+            var email = "john.doe@example.com";
+            var patientEmail = "patient@example.com";
+            var password = "Password123";
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _patientService.SignUpNewPatientIamAsync(name, phoneNumber, email, patientEmail, password));
+            Assert.Equal("Phone number is invalid", exception.Message);
+        }
+
+        [Fact]
+        public async Task SignUpNewPatientIamAsync_PatientDoesNotExist_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var name = "John Doe";
+            var phoneNumber = "+1234567890";
+            var email = "john.doe@example.com";
+            var patientEmail = "patient@example.com";
+            var password = "Password123";
+
+            _patientRepositoryMock.Setup(repo => repo.PatientExists(It.IsAny<string>()))
+                                  .Returns(false);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _patientService.SignUpNewPatientIamAsync(name, phoneNumber, email, patientEmail, password));
+            Assert.Equal("Patient Does Not Exist", exception.Message);
+        }
+
+        [Fact]
         public async Task UpdatePatientAsync_ValidData_ReturnsTrue()
         {
             // Arrange

@@ -95,22 +95,29 @@ namespace src.Controllers
             }
             return Ok(new { message = "Staff deativated with success." });
         }
-
-        //PATCH: api/edit
-        [HttpPatch("edit/{id}")]
+        
+        //PATCH: api/Staff/edit
+        [HttpPatch("/edit/{id}")]
         public async Task<IActionResult> EditStaff(string id, [FromBody] StaffDto staffDto)
         {
+            var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
             if (staffDto == null)
             {
                 return BadRequest("Staff data is null.");
             }
-
-            var result = await service.EditStaffAsync(id, staffDto);
-            if (!result)
+            try
             {
-                return NotFound();
-
+                var result = await service.EditStaffAsync(id, staffDto,adminEmail);
             }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e);
+            }
+            catch (Exception e)
+            {
+                return NotFound("Staff not found.");
+            }
+            
             return Ok(new { message = "Staff updated with success." });
         }
 

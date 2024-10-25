@@ -44,6 +44,81 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task DeleteOperationRequestAsync_ValidData_ReturnsTrue()
+        {
+            // Arrange
+            var id = 1;
+            var doctorEmail = "doctor@example.com";
+            var doctorID = "D123";
+            var operationRequest = new OperationRequest
+            {
+                operationRequestID = new OperationRequestID(id.ToString()),
+                doctorID = doctorID
+            };
+
+            _staffServiceMock.Setup(service => service.GetIdFromEmailAsync(doctorEmail))
+                             .ReturnsAsync(doctorID);
+            _operationRequestRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<OperationRequestID>()))
+                                           .ReturnsAsync(operationRequest);
+            _appointmentRepositoryMock.Setup(repo => repo.CheckIfOperationIsScheduled(id))
+                                      .ReturnsAsync(false);
+
+            // Act
+            var result = await _operationRequestService.DeleteOperationRequestAsync(id, doctorEmail);
+
+            // Assert
+            Assert.True(result);
+            _operationRequestRepositoryMock.Verify(repo => repo.Remove(It.IsAny<OperationRequest>()), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
+            _planningModuleServiceMock.Verify(service => service.NotifyOperationRequestDeleted(id), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteOperationRequestAsync_OperationRequestNotFound_ThrowsException()
+        {
+            // Arrange
+            var id = 1;
+            var doctorEmail = "doctor@example.com";
+            var doctorID = "D123";
+
+            _staffServiceMock.Setup(service => service.GetIdFromEmailAsync(doctorEmail))
+                             .ReturnsAsync(doctorID);
+            _operationRequestRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<OperationRequestID>()))
+                                           .ReturnsAsync((OperationRequest)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(() => _operationRequestService.DeleteOperationRequestAsync(id, doctorEmail));
+            _operationRequestRepositoryMock.Verify(repo => repo.Remove(It.IsAny<OperationRequest>()), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
+        }
+
+        [Fact]
+        public async Task DeleteOperationRequestAsync_OperationAlreadyScheduled_ThrowsException()
+        {
+            // Arrange
+            var id = 1;
+            var doctorEmail = "doctor@example.com";
+            var doctorID = "D123";
+            var operationRequest = new OperationRequest
+            {
+                operationRequestID = new OperationRequestID(id.ToString()),
+                doctorID = doctorID
+            };
+
+            _staffServiceMock.Setup(service => service.GetIdFromEmailAsync(doctorEmail))
+                             .ReturnsAsync(doctorID);
+            _operationRequestRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<OperationRequestID>()))
+                                           .ReturnsAsync(operationRequest);
+            _appointmentRepositoryMock.Setup(repo => repo.CheckIfOperationIsScheduled(id))
+                                      .ReturnsAsync(true);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(() => _operationRequestService.DeleteOperationRequestAsync(id, doctorEmail));
+            _operationRequestRepositoryMock.Verify(repo => repo.Remove(It.IsAny<OperationRequest>()), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
+        }
+
+        [Fact]
         public async Task UpdateOperationRequestAsync_ValidData_ReturnsTrue()
         {
             // Arrange

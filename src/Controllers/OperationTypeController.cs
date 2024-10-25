@@ -29,7 +29,7 @@ namespace src.Controllers
 
         // GET: api/OperationType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetOperationTypes()
+        public async Task<ActionResult<List<OperationTypeDto>>> GetOperationTypes()
         {
             var operationTypes = await service.getAllOperationTypesAsync();
             return Ok(operationTypes);
@@ -37,7 +37,7 @@ namespace src.Controllers
 
         // GET: api/OperationType/Filters?name=&specialization=&status=
         [HttpGet("Filtered")]
-        public async Task<ActionResult<IEnumerable<OperationTypeDto>>> GetFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
+        public async Task<ActionResult<List<OperationTypeDto>>> GetFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
         {
             var operationTypes = await service.getFilteredOperationTypesAsync(name, specialization, status);
             return Ok(operationTypes);
@@ -66,7 +66,6 @@ namespace src.Controllers
             }
 
             var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-
             try
             {
                 var result = await service.createOperationTypeAsync(operationType, adminEmail);
@@ -83,7 +82,7 @@ namespace src.Controllers
 
             return StatusCode(500, new { message = "An error occurred while creating the operation type." });
         }
-   
+        // PATCH: api/OperationType/edit/Knee Surgery
         [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditOperationType(string id, [FromBody] OperationTypeDto operationType)
         {

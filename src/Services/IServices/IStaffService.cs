@@ -14,6 +14,6 @@ namespace src.Services.IServices
         Task<StaffDto> GetStaffAsync(string id);
         Task<bool> UpdateIsActiveAsync(string id, string adminEmail);
         Task<string> GetIdFromEmailAsync(string doctorEmail);
-        Task<bool> EditStaffAsync(string id, StaffDto staffDto);
+        Task<bool> EditStaffAsync(string id, StaffDto staffDto, string adminEmail);
     }
 }

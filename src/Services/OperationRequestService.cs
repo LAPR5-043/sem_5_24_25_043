@@ -150,13 +150,14 @@ namespace src.Services
             var doctorID = await staffService.GetIdFromEmailAsync(doctorEmail);
 
             OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
-
-            await checkIfDoctorIsTheCreatorOfOperationRequestAsync(id, doctorID, operationRequest);
-
+            
             if (operationRequest == null)
             {
                 throw new Exception("Operation Request not found");
             }
+
+
+            await checkIfDoctorIsTheCreatorOfOperationRequestAsync(id, doctorID, operationRequest);
 
             var result = await appointmentRepository.CheckIfOperationIsScheduled(id);
 
