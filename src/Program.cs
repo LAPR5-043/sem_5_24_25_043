@@ -160,6 +160,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IOperationTypeService, OperationTypeService>();
             services.AddScoped<IPendingRequestService, PendingRequestService>();
             services.AddScoped<IOperationRequestService, OperationRequestService>();
+            services.AddScoped<ISensitiveDataService, SensitiveDataService>();
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
         }
     }
