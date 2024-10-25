@@ -84,7 +84,7 @@ namespace src.Controllers
         }
 
         // PUT: api/Staff/isActive/5
-        [HttpPatch("/isActive/{id}")]
+        [HttpPatch("isActive/{id}")]
         public async Task<IActionResult> UpdateIsActive(string id)
         {
             var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
@@ -97,7 +97,7 @@ namespace src.Controllers
         }
         
         //PATCH: api/Staff/edit
-        [HttpPatch("/edit/{id}")]
+        [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditStaff(string id, [FromBody] StaffDto staffDto)
         {
             var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
