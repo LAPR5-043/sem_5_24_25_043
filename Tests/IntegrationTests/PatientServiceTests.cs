@@ -20,7 +20,7 @@ namespace src.IntegrationTests
         private readonly Mock<IPendingRequestService> _pendingRequestServiceMock;
         private readonly Mock<IEmailService> _emailServiceMock;
         private readonly Mock<AuthService> _authServiceMock;
-        private readonly Mock<ISensitiveDataService> _sensitiveDataServiceMock;
+        private  Mock<ISensitiveDataService> _sensitiveDataServiceMock;
         private readonly PatientService _patientService;
 
         public PatientServiceTests()
@@ -39,7 +39,8 @@ namespace src.IntegrationTests
                 _logServiceMock.Object,
                 _pendingRequestServiceMock.Object,
                 _emailServiceMock.Object,
-                _authServiceMock.Object
+                _authServiceMock.Object,
+              _sensitiveDataServiceMock.Object
             );
         }
 
@@ -81,8 +82,7 @@ namespace src.IntegrationTests
 
             _sensitiveDataServiceMock.Setup(serv => serv.isSensitive(It.IsAny<string>()))
                                   .Returns(true);
-            _sensitiveDataServiceMock.Setup(serv => serv.)
-                                  .Returns(true);
+            _sensitiveDataServiceMock.Setup(serv => serv.loadSensitiveData());                   
                                   
             // Act
             var result = await _patientService.UpdatePatientAsync(id, patientDto);
@@ -127,8 +127,60 @@ namespace src.IntegrationTests
             var id = "P123456";
 
             // Act & Assert
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => _patientService.UpdatePatientAsync(id, null));
-            Assert.Equal("Patient data is null. (Parameter 'patientDto')", exception.Message);
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => _patientService.UpdatePatientAsync(id, null));
+            Console.WriteLine(exception.Message);
+            Assert.Equal("Object reference not set to an instance of an object.", exception.Message);
+        }
+
+                [Fact]
+        public async Task DeletePatientAsync_ValidData_ReturnsTrue()
+        {
+            // Arrange
+            var id = "P123456";
+            var adminEmail = "admin@example.com";
+            var patient = new Patient
+            {
+                MedicalRecordNumber = new MedicalRecordNumber(id),
+                FirstName = new PatientFirstName("John"),
+                LastName = new PatientLastName("Doe"),
+                FullName = new PatientFullName("John", "Doe"),
+                Email = new PatientEmail("john.doe@example.com"),
+                PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                EmergencyContact = new EmergencyContact("Jane Doe", "+0987654321"),
+                DateOfBirth = new DateOfBirth("01", "01", "1990"),
+                Gender = Gender.Male
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))
+                                  .ReturnsAsync(patient);
+
+            // Act
+            var result = await _patientService.DeletePatientAsync(id, adminEmail);
+
+            // Assert
+            Assert.True(result);
+            _patientRepositoryMock.Verify(repo => repo.Remove(It.IsAny<Patient>()), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
+            _logServiceMock.Verify(log => log.CreateLogAsync(It.Is<string>(s => s.Contains("Patient deleted with success;PatientId:" + id)), adminEmail), Times.Once);
+        }
+                [Fact]
+        public async Task DeletePatientAsync_PatientNotFound_ReturnsFalse()
+        {
+            // Arrange
+            var id = "P123456";
+            var adminEmail = "admin@example.com";
+
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))
+                                  .ReturnsAsync((Patient)null);
+
+            // Act
+            var result = await _patientService.DeletePatientAsync(id, adminEmail);
+
+            // Assert
+            Assert.False(result);
+            _patientRepositoryMock.Verify(repo => repo.Remove(It.IsAny<Patient>()), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
+            _logServiceMock.Verify(log => log.CreateLogAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
     }
 }

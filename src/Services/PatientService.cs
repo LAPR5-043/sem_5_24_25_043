@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Amazon.SecurityToken.Model;
 using Domain.PatientAggregate;
 using Microsoft.AspNetCore.Mvc;
 using sem_5_24_25_043;
@@ -35,7 +36,7 @@ namespace src.Services.Services
         /// <summary>
         /// Sensitive data service
         /// </summary>
-        private readonly ISensitiveDataService sensitiveDataService;
+        public  ISensitiveDataService sensitiveDataService;
         /// <summary>
         /// Pending request service
         /// </summary>
@@ -60,15 +61,16 @@ namespace src.Services.Services
         /// <param name="pendingRequestService"></param>
         /// <param name="emailService"></param>
         /// <param name="authService"></param>
-        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, AuthService authService)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, AuthService authService, ISensitiveDataService sensitiveDataService)
         {
             this.unitOfWork = unitOfWork;
             this.patientRepository = patientRepository;
             this.logService = logService;
-            this.sensitiveDataService = new SensitiveDataService();
+            this.sensitiveDataService = sensitiveDataService;
             this.pendingRequestService = pendingRequestService;
             this.emailService = emailService;
             this.authService = authService;
+            this.sensitiveDataService = sensitiveDataService;
         }
 
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy)
