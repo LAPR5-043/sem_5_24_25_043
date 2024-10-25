@@ -234,7 +234,6 @@ namespace src.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.StackTrace);
                 return false;
             }
 
