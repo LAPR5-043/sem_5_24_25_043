@@ -812,3 +812,4 @@ C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\MimeKit.dll
 C:\Users\diogo\Desktop\isep\cadeiras\3ANO\1semestre\LAPR5\lapr5\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 >>>>>>> f639cd57be7361d6f73a62dbce1921f439a35038
+C:\Main\Java IntelliJ\sem_5_24_25_043\src\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll

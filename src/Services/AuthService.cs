@@ -10,7 +10,7 @@ using NuGet.Protocol;
 
 namespace sem_5_24_25_043;
 
-public class AuthService
+public class AuthService : IAuthService
 {
     private readonly AmazonCognitoIdentityProviderClient _provider;
     private readonly string _clientId;
