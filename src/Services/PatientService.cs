@@ -61,7 +61,7 @@ namespace src.Services.Services
         /// <param name="pendingRequestService"></param>
         /// <param name="emailService"></param>
         /// <param name="authService"></param>
-        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, IAuthService authService)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, IAuthService authService, ISensitiveDataService sensitiveDataService)
         {
             this.unitOfWork = unitOfWork;
             this.patientRepository = patientRepository;

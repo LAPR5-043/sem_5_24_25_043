@@ -44,7 +44,7 @@ namespace src.IntegrationTests
             );
         }
 
-       /* [Fact]
+        [Fact]
         public async Task UpdatePatientAsync_ValidData_ReturnsTrue()
         {
             // Arrange
@@ -90,7 +90,7 @@ namespace src.IntegrationTests
             // Assert
             Assert.True(result);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
-        }*/
+        }
 
         [Fact]
         public async Task UpdatePatientAsync_PatientNotFound_ThrowsException()
@@ -163,7 +163,7 @@ namespace src.IntegrationTests
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
             _logServiceMock.Verify(log => log.CreateLogAsync(It.Is<string>(s => s.Contains("Patient deleted with success;PatientId:" + id)), adminEmail), Times.Once);
         }
-                [Fact]
+        [Fact]
         public async Task DeletePatientAsync_PatientNotFound_ReturnsFalse()
         {
             // Arrange
