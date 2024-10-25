@@ -25,7 +25,7 @@ skinparam card {
 
 actor "Admin" as A
 
-participant "API" as API
+participant "Route" as Route
 participant "PatientController" as PC
 participant "PatientService" as PS
 participant "Patient" as P
@@ -35,11 +35,11 @@ participant "PatientRepository" as PR
 
 activate A
 
-A -> API: /api/Patient/Create
+A -> Route: POST /api/Patient/Create
 
-activate API
+activate Route
 
-API -> PC: CreatePatient(...)
+Route -> PC: CreatePatient(...)
 
 activate PC
 
@@ -63,7 +63,7 @@ deactivate PS
 
 
 
-PS -> P: new Patient(...)
+PS -> P**: new Patient(...)
 
 activate P
 
@@ -79,17 +79,17 @@ PR --> PS:
 
 deactivate PR
 
-PS --> PC: true
+PS --> PC: patientDTO
 
 deactivate PS
 
-PC --> API: true
+PC --> Route: patientDTO
 
 deactivate PC
 
-API --> A: Patient profile created successfully
+Route --> A: Patient Data
 
-deactivate API
+deactivate Route
 
 deactivate A
 
