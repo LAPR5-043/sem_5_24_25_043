@@ -33,6 +33,69 @@ namespace src.Controllers.Tests
         }
 
         [Fact]
+        public async Task DeleteOperationRequest_ConfirmedDeletion_ReturnsOk()
+        {
+            // Arrange
+            var id = 1;
+            _serviceMock.Setup(s => s.DeleteOperationRequestAsync(id, "doctor@example.com"))
+                        .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.DeleteOperationRequest(id, true);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal("{ message = Operation request deleted successfully. }", okResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task DeleteOperationRequest_NotConfirmed_ReturnsBadRequest()
+        {
+            // Arrange
+            var id = 1;
+
+            // Act
+            var result = await _controller.DeleteOperationRequest(id, false);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("{ message = Deletion not confirmed. }", badRequestResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task DeleteOperationRequest_NotFound_ReturnsNotFound()
+        {
+            // Arrange
+            var id = 1;
+            _serviceMock.Setup(s => s.DeleteOperationRequestAsync(id, "doctor@example.com"))
+                        .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.DeleteOperationRequest(id, true);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("{ message = Operation request not found. }", notFoundResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task DeleteOperationRequest_InternalServerError_ReturnsInternalServerError()
+        {
+            // Arrange
+            var id = 1;
+            _serviceMock.Setup(s => s.DeleteOperationRequestAsync(id, "doctor@example.com"))
+                        .ThrowsAsync(new Exception("An error occurred"));
+
+            // Act
+            var result = await _controller.DeleteOperationRequest(id, true);
+
+            // Assert
+            var internalServerErrorResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, internalServerErrorResult.StatusCode);
+            Assert.Equal("{ message = An error occurred while deleting the operation request., error = An error occurred }", internalServerErrorResult.Value.ToString());
+        }
+
+        [Fact]
         public async Task UpdateOperationRequest_ValidData_ReturnsOk()
         {
             // Arrange
