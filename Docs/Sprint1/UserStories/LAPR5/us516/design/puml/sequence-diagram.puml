@@ -1,7 +1,7 @@
 @startuml
 
 
-title US 5.1.3 - As a Patient, I want to self-register so that I can use the application
+title US 5.1.6 - As a (non-authenticated) Backoffice User, I want to log in to the system using my credentials
 
 skinparam classAttributeIconSize 0
 
@@ -23,87 +23,48 @@ skinparam card {
     BorderColor SaddleBrown
 }
 
-actor "Patient" as P
+actor "Backoffice User" as BU
 
+participant "Route" as Route
+participant ":UserController" as PRC
+participant ":AuthService" as AS
 participant "External IAM Provider" as IAM
-participant "API" as API
-participant ":PatientRegistrationController" as PRC
-participant ":PatientRegistrationService" as PRS
-participant ":PatientRepository" as PR
-participant ":EmailService" as ES
 
-activate P
+activate BU
 
-P -> IAM: Tries to self-register
+BU -> Route: POST /api/User/login-user
 
-activate IAM
+activate Route
 
-IAM -> P: Asks for login details
-
-deactivate IAM
-
-P -> IAM: Provides login details
-
-activate IAM
-
-IAM -> API: validate patient email
-
-activate API
-
-API -> PRC: validateEmail(email)
+Route -> PRC: LogInUserAsync(email, password)
 
 activate PRC
 
-PRC -> PRS: validateEmail(email)
+PRC -> AS: SignInAsync(email, password)
 
-activate PRS
+activate AS
 
-PRS -> PR: findPatientByEmail(email)
+AS -> IAM: InitiateAuthAsync(request)
 
-activate PR
+activate IAM
 
-PR --> PRS: result
+IAM --> AS: InitiateAuthAsyncResponse
 
-alt "Patient not found"
+deactivate IAM
 
-    PRS --> PRC: false
+AS --> PRC: AccessToken
 
-    PRC --> API: false
+deactivate AS
 
-    API --> IAM: false
+PRC --> Route: AccessToken
 
-    IAM --> P: shows "Patient not found"
+deactivate PRC
 
-else "Patient found"
+Route --> BU: AccessToken
 
-    PRS -> ES: sendPatientRegistrationEmail(email)
+deactivate Route
 
-    activate ES
-
-    ES --> PRS: 
-
-    deactivate ES
-
-    PRS --> PRC: true
-
-    PRC --> API: true
-
-    API --> IAM: true
-
-    IAM --> P: shows "User Registrered, check your email"
-end
-
-
-
-
-
-
-
-
-
-
-
-
+deactivate BU
 
 
 
