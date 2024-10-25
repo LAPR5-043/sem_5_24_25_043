@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "97091cde-a232-4b21-9baa-478f2ce243f6",
+		"name": "E2E OperationType",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39288960",
+		"_collection_link": "https://medopt.postman.co/workspace/Medopt-Workspace~a66b371f-c241-4822-8fcf-a9bd369d8dcb/collection/39288960-97091cde-a232-4b21-9baa-478f2ce243f6?action=share&source=collection_link&creator=39288960"
+	},
+	"item": [
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to check if the response status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to check if the accessToken has a value\r",
+							"pm.test(\"Check if accessToken has a value\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"accessToken\");\r",
+							"    pm.expect(jsonData.accessToken).to.be.a(\"string\").and.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Save the accessToken to the environment variable\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/User/login-user?email=tiago.abreu.mail2%40gmail.com&password=tiagoabreu22",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"User",
+						"login-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "tiago.abreu.mail2%40gmail.com"
+						},
+						{
+							"key": "password",
+							"value": "tiagoabreu22"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Operation Type",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set dynamic or fixed values for the request variables\r",
+							"pm.environment.set(\"operationTypeName\", \"Postman_Test_Operation_Type\");\r",
+							"pm.environment.set(\"estimatedDurationHours\", \"3\");\r",
+							"pm.environment.set(\"estimatedDurationMinutes\", \"30\");\r",
+							"pm.environment.set(\"isActive\", true);\r",
+							"pm.environment.set(\"specializations_PostmanExpert\", \"2\");\r",
+							"pm.environment.set(\"specializations_PostmanExpert1\", \"1\");\r",
+							"\r",
+							"// Alternatively, if the specializations dictionary is required as a single variable, use JSON.stringify\r",
+							"const specializations = {\r",
+							"    \"PostmanExpert\": \"2\",\r",
+							"    \"PostmanExpert1\": \"1\"\r",
+							"};\r",
+							"pm.environment.set(\"specializations\", JSON.stringify(specializations));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Operation type created successfully\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Operation type created successfully.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"operationTypeName\": \"{{operationTypeName}}\",\r\n  \"estimatedDurationHours\": \"{{estimatedDurationHours}}\",\r\n  \"estimatedDurationMinutes\": \"{{estimatedDurationMinutes}}\",\r\n  \"isActive\": {{isActive}},\r\n  \"specializations\": {\r\n    \"PostmanExpert\": \"{{specializations_PostmanExpert}}\",\r\n    \"PostmanExpert1\": \"{{specializations_PostmanExpert1}}\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/OperationType/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"OperationType",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Existent Operation Type Fails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the status code is 500\r",
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Verify the error message\r",
+							"pm.test(\"Error message is correct\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"An error occurred: Operation type already exists.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"operationTypeName\": \"{{operationTypeName}}\",\r\n  \"estimatedDurationHours\": \"{{estimatedDurationHours}}\",\r\n  \"estimatedDurationMinutes\": \"{{estimatedDurationMinutes}}\",\r\n  \"isActive\": {{isActive}},\r\n  \"specializations\": {\r\n    \"PostmanExpert\": \"{{specializations_PostmanExpert}}\",\r\n    \"PostmanExpert1\": \"{{specializations_PostmanExpert1}}\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/OperationType/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"OperationType",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Filtered Operation Type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Verify the \"value\" array is not empty and contains expected data\r",
+							"pm.test(\"Value array contains operation type data\", function () {\r",
+							"    pm.expect(jsonData.value).to.be.an(\"array\").with.lengthOf(1);\r",
+							"    \r",
+							"    const operationType = jsonData.value[0];\r",
+							"\r",
+							"    // Retrieve variables and check against the response\r",
+							"    pm.expect(operationType).to.have.property(\"operationTypeName\", pm.variables.get(\"operationTypeName\"));\r",
+							"    pm.expect(operationType).to.have.property(\"estimatedDurationHours\", pm.variables.get(\"estimatedDurationHours\"));\r",
+							"    pm.expect(operationType).to.have.property(\"estimatedDurationMinutes\", pm.variables.get(\"estimatedDurationMinutes\"));\r",
+							"    pm.expect(operationType).to.have.property(\"isActive\", true);\r",
+							"\r",
+							"\r",
+							"    // Check specializations dictionary\r",
+							"    const specializations = JSON.parse(pm.variables.get(\"specializations\"));\r",
+							"    Object.keys(specializations).forEach(key => {\r",
+							"        pm.expect(operationType.specializations).to.have.property(key, specializations[key]);\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/OperationType/Filtered?name={{operationTypeName}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"OperationType",
+						"Filtered"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{operationTypeName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Operation Type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set variables for estimated duration hours and minutes\r",
+							"pm.environment.set(\"estimatedDurationHours\", \"10\");\r",
+							"pm.environment.set(\"estimatedDurationMinutes\", \"20\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"estimatedDurationHours\": \"{{estimatedDurationHours}}\",\r\n  \"estimatedDurationMinutes\": \"{{estimatedDurationMinutes}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/OperationType/edit/{{operationTypeName}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"OperationType",
+						"edit",
+						"{{operationTypeName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Status Operation Type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/ChangeStatus/{{operationTypeName}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"ChangeStatus",
+						"{{operationTypeName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Filtered Check Alterations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Verify the \"value\" array is not empty and contains expected data\r",
+							"pm.test(\"Value array contains operation type data\", function () {\r",
+							"    pm.expect(jsonData.value).to.be.an(\"array\").with.lengthOf(1);\r",
+							"    \r",
+							"    const operationType = jsonData.value[0];\r",
+							"\r",
+							"    // Retrieve variables and check against the response\r",
+							"    pm.expect(operationType).to.have.property(\"operationTypeName\", pm.variables.get(\"operationTypeName\"));\r",
+							"    pm.expect(operationType).to.have.property(\"estimatedDurationHours\", pm.variables.get(\"estimatedDurationHours\"));\r",
+							"    pm.expect(operationType).to.have.property(\"estimatedDurationMinutes\", pm.variables.get(\"estimatedDurationMinutes\"));\r",
+							"    \r",
+							"    // Change isActive verification to check for false\r",
+							"    pm.expect(operationType).to.have.property(\"isActive\", false);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/OperationType/Filtered?name={{operationTypeName}}&specialization=&status=",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"OperationType",
+						"Filtered"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{operationTypeName}}"
+						},
+						{
+							"key": "specialization",
+							"value": ""
+						},
+						{
+							"key": "status",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "operationTypeName",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

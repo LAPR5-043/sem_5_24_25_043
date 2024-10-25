@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "569bf1f5-7acc-4f91-89a6-9d49e8e9bcf7",
+		"name": "E2E User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39288960",
+		"_collection_link": "https://medopt.postman.co/workspace/Medopt-Workspace~a66b371f-c241-4822-8fcf-a9bd369d8dcb/collection/39288960-569bf1f5-7acc-4f91-89a6-9d49e8e9bcf7?action=share&source=collection_link&creator=39288960"
+	},
+	"item": [
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to check if the response status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to check if the accessToken has a value\r",
+							"pm.test(\"Check if accessToken has a value\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"accessToken\");\r",
+							"    pm.expect(jsonData.accessToken).to.be.a(\"string\").and.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Save the accessToken to the environment variable\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/User/login-user?email=tiago.abreu.mail2%40gmail.com&password=tiagoabreu22",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"User",
+						"login-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "tiago.abreu.mail2%40gmail.com"
+						},
+						{
+							"key": "password",
+							"value": "tiagoabreu22"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Patient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Check that the status code is 201 (or whatever your success code is)\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Verify that the response matches the expected values\r",
+							"pm.test(\"Response contains correct patient information\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"firstName\", pm.variables.get(\"firstName\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"lastName\", pm.variables.get(\"lastName\"));\r",
+							"    \r",
+							"    // Verify that fullName is correctly formatted as \"firstName lastName\"\r",
+							"    const expectedFullName = `${pm.variables.get(\"firstName\")} ${pm.variables.get(\"lastName\")}`;\r",
+							"    pm.expect(jsonData).to.have.property(\"fullName\", expectedFullName);\r",
+							"    \r",
+							"    pm.expect(jsonData).to.have.property(\"email\", pm.variables.get(\"email\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"phoneNumber\", pm.variables.get(\"phoneNumber\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"emergencyContactName\", pm.variables.get(\"emergencyContactName\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"emergencyContactPhoneNumber\", pm.variables.get(\"emergencyContactPhoneNumber\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"dayOfBirth\", pm.variables.get(\"dayOfBirth\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"monthOfBirth\", pm.variables.get(\"monthOfBirth\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"yearOfBirth\", pm.variables.get(\"yearOfBirth\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"gender\", pm.variables.get(\"gender\"));\r",
+							"    pm.expect(jsonData).to.have.property(\"allergiesAndConditions\").that.is.an(\"array\").that.is.empty; // Check for empty array\r",
+							"    pm.expect(jsonData).to.have.property(\"appointmentHistory\").that.is.an(\"array\").that.is.empty; // Check for empty array\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set environment variables for the request\r",
+							"pm.environment.set(\"medicalRecordNumber\", \"\"); // Leave empty as specified\r",
+							"pm.environment.set(\"firstName\", \"Ricky\");\r",
+							"pm.environment.set(\"lastName\", \"Simons\");\r",
+							"pm.environment.set(\"email\", \"1220606@isep.ipp.pt\");\r",
+							"pm.environment.set(\"phoneNumber\", \"+351913613541\");\r",
+							"pm.environment.set(\"emergencyContactName\", \"Mãe\");\r",
+							"pm.environment.set(\"emergencyContactPhoneNumber\", \"+351919919184\");\r",
+							"pm.environment.set(\"dayOfBirth\", \"28\");\r",
+							"pm.environment.set(\"monthOfBirth\", \"3\");\r",
+							"pm.environment.set(\"yearOfBirth\", \"2003\");\r",
+							"pm.environment.set(\"gender\", \"Male\");\r",
+							"\r",
+							"// Set allergies and conditions as an empty array\r",
+							"pm.environment.set(\"allergiesAndConditions\", JSON.stringify([])); // Using JSON.stringify for an empty array\r",
+							"\r",
+							"// Set appointment history as an empty array\r",
+							"pm.environment.set(\"appointmentHistory\", JSON.stringify([])); // Using JSON.stringify for an empty array\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"medicalRecordNumber\": \"{{medicalRecordNumber}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"phoneNumber\": \"{{phoneNumber}}\",\r\n  \"emergencyContactName\": \"{{emergencyContactName}}\",\r\n  \"emergencyContactPhoneNumber\": \"{{emergencyContactPhoneNumber}}\",\r\n  \"dayOfBirth\": \"{{dayOfBirth}}\",\r\n  \"monthOfBirth\": \"{{monthOfBirth}}\",\r\n  \"yearOfBirth\": \"{{yearOfBirth}}\",\r\n  \"gender\": \"{{gender}}\",\r\n  \"allergiesAndConditions\": {{allergiesAndConditions}},\r\n  \"appointmentHistory\": {{appointmentHistory}}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/Patient/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Patient",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Existent Patient Fails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Check that the status code is 500 (or whatever your error code is)\r",
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"// Verify the response contains the expected message and error details\r",
+							"pm.test(\"Response contains correct error message\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"An error occurred while processing your request.\");\r",
+							"    pm.expect(jsonData).to.have.property(\"error\", \"Patient already exists.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"medicalRecordNumber\": \"{{medicalRecordNumber}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"phoneNumber\": \"{{phoneNumber}}\",\r\n  \"emergencyContactName\": \"{{emergencyContactName}}\",\r\n  \"emergencyContactPhoneNumber\": \"{{emergencyContactPhoneNumber}}\",\r\n  \"dayOfBirth\": \"{{dayOfBirth}}\",\r\n  \"monthOfBirth\": \"{{monthOfBirth}}\",\r\n  \"yearOfBirth\": \"{{yearOfBirth}}\",\r\n  \"gender\": \"{{gender}}\",\r\n  \"allergiesAndConditions\": {{allergiesAndConditions}},\r\n  \"appointmentHistory\": {{appointmentHistory}}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/Patient/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Patient",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Up Patient",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set environment variable for the patient password\r",
+							"pm.environment.set(\"patientPassword\", \"teste123\");\r",
+							"\r",
+							"// Retrieve the current phone number from the environment variable\r",
+							"const phoneNumber = pm.environment.get(\"phoneNumber\");\r",
+							"\r",
+							"// Encode the phone number\r",
+							"const encodedPhoneNumber = encodeURIComponent(phoneNumber);\r",
+							"\r",
+							"// Set the encoded phone number back as an environment variable\r",
+							"pm.environment.set(\"phoneNumber\", encodedPhoneNumber);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/User/signup-patient?name={{firstName}} {{lastName}}&phoneNumber={{phoneNumber}}&email={{email}}&patientEmail={{email}}&password={{patientPassword}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"User",
+						"signup-patient"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{firstName}} {{lastName}}"
+						},
+						{
+							"key": "phoneNumber",
+							"value": "{{phoneNumber}}"
+						},
+						{
+							"key": "email",
+							"value": "{{email}}"
+						},
+						{
+							"key": "patientEmail",
+							"value": "{{email}}"
+						},
+						{
+							"key": "password",
+							"value": "{{patientPassword}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Patient (After Email)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to check if the response status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to check if the accessToken has a value\r",
+							"pm.test(\"Check if accessToken has a value\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"accessToken\");\r",
+							"    pm.expect(jsonData.accessToken).to.be.a(\"string\").and.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Save the accessToken to the environment variable\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/User/login-user?email=&password=",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"User",
+						"login-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": ""
+						},
+						{
+							"key": "password",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "lastName",
+			"value": "lastName",
+			"type": "default"
+		},
+		{
+			"key": "firstName",
+			"value": "firstName",
+			"type": "default"
+		},
+		{
+			"key": "phoneNumber",
+			"value": "phoneNumber",
+			"type": "default"
+		},
+		{
+			"key": "email",
+			"value": "email",
+			"type": "default"
+		},
+		{
+			"key": "patientPassword",
+			"value": "patientPassword",
+			"type": "default"
+		}
+	]
+}

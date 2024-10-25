@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "11a23f01-814e-4691-8cae-d2a6d8b73752",
+		"name": "E2E Patient",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39288960",
+		"_collection_link": "https://medopt.postman.co/workspace/Medopt-Workspace~a66b371f-c241-4822-8fcf-a9bd369d8dcb/collection/39285920-11a23f01-814e-4691-8cae-d2a6d8b73752?action=share&source=collection_link&creator=39288960"
+	},
+	"item": [
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test to check if the response status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to check if the accessToken has a value\r",
+							"pm.test(\"Check if accessToken has a value\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"accessToken\");\r",
+							"    pm.expect(jsonData.accessToken).to.be.a(\"string\").and.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Save the accessToken to the environment variable\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/User/login-user?email=tiago.abreu.mail2%40gmail.com&password=tiagoabreu22",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"User",
+						"login-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "tiago.abreu.mail2%40gmail.com"
+						},
+						{
+							"key": "password",
+							"value": "tiagoabreu22"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Patient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has correct message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Staff created successfully.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const requestData = JSON.parse(pm.request.body.raw); // Parses the raw request body\r",
+							"\r",
+							"// Save \"email\" to an environment variable\r",
+							"if (requestData.email) {\r",
+							"    pm.environment.set(\"patientEmail\", requestData.email);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"medicalRecordNumber\": \"\",\r\n  \"firstName\": \"Diogo\",\r\n  \"lastName\": \"Campos\",\r\n  \"email\": \"1220601@isep.ipp.pt\",\r\n  \"phoneNumber\": \"+351919919100\",\r\n  \"emergencyContactName\": \"Mãe\",\r\n  \"emergencyContactPhoneNumber\": \"+351919919184\",\r\n  \"dayOfBirth\": \"1\",\r\n  \"monthOfBirth\": \"1\",\r\n  \"yearOfBirth\": \"1990\",\r\n  \"gender\": \"Male\",\r\n  \"allergiesAndConditions\": [\r\n    \"\"\r\n  ],\r\n  \"appointmentHistory\": [\r\n    \"\"\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/Patient/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Patient",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -2,9 +2,9 @@
 	"info": {
 		"_postman_id": "ebeacaf4-b477-4e5d-a5e0-1291522b0636",
 		"name": "E2E Staff",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "39285920",
-		"_collection_link": "https://medopt.postman.co/workspace/a66b371f-c241-4822-8fcf-a9bd369d8dcb/collection/39285920-ebeacaf4-b477-4e5d-a5e0-1291522b0636?action=share&source=collection_link&creator=39285920"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39288960",
+		"_collection_link": "https://medopt.postman.co/workspace/Medopt-Workspace~a66b371f-c241-4822-8fcf-a9bd369d8dcb/collection/39285920-ebeacaf4-b477-4e5d-a5e0-1291522b0636?action=share&source=collection_link&creator=39288960"
 	},
 	"item": [
 		{
@@ -33,11 +33,22 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
 				"url": {
 					"raw": "https://localhost:7258/api/User/login-user?email=tiago.abreu.mail2%40gmail.com&password=tiagoabreu22",
 					"protocol": "https",
@@ -77,7 +88,7 @@
 							"\r",
 							"pm.test(\"Response has correct message\", function () {\r",
 							"    const jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.property(\"message\", \"Staff created successfully.\");\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Staff member created successfully.\");\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -88,12 +99,16 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"const requestData = JSON.parse(pm.request.body.raw); // Parses the raw request body\r",
-							"\r",
-							"// Save \"email\" to an environment variable\r",
-							"if (requestData.email) {\r",
-							"    pm.environment.set(\"staffEmail\", requestData.email);\r",
-							"}"
+							"// Set the variables based on the provided JSON object\r",
+							"pm.variables.set(\"firstName\", \"Sima\");\r",
+							"pm.variables.set(\"lastName\", \"CAmpos\");\r",
+							"pm.variables.set(\"staffEmail\", \"D19basmen4@gmail.com\");\r",
+							"pm.variables.set(\"phoneNumber\", \"+351199962192\");\r",
+							"pm.variables.set(\"licenseNumber\", \"9959621\");\r",
+							"pm.variables.set(\"isActive\", true);\r",
+							"pm.variables.set(\"availabilitySlots\", JSON.stringify([])); // Store as JSON string if needed\r",
+							"pm.variables.set(\"specializationID\", \"Orthopedist\");\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -103,22 +118,112 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "{{accessToken}}"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"staffID\": \"\",\r\n  \"firstName\": \"Sima\",\r\n  \"lastName\": \"CAmpos\",\r\n  \"email\": \"Ds@gmail.com\",\r\n  \"phoneNumber\": \"+351914116110\",\r\n  \"licenseNumber\": \"1211021\",\r\n  \"isActive\": true,\r\n  \"availabilitySlots\": [\r\n  ],\r\n  \"specializationID\": \"Orthopedist\"\r\n}",
+					"raw": "{\r\n  \"staffID\": \"\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{staffEmail}}\",\r\n  \"phoneNumber\": \"{{phoneNumber}}\",\r\n  \"licenseNumber\": \"{{licenseNumber}}\",\r\n  \"isActive\": {{isActive}},\r\n  \"availabilitySlots\": {{availabilitySlots}},\r\n  \"specializationID\": \"{{specializationID}}\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "https://localhost:7258/api/Staff/Create"
+				"url": {
+					"raw": "https://localhost:7258/api/Staff/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Staff",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Existing Staff Fails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Check that the status code is 500 (or whatever your error code is)\r",
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"// Verify that the response contains the correct error message\r",
+							"pm.test(\"Response contains correct error message\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"An error occurred: Staff already exists.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"staffID\": \"{{staffID}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{staffEmail}}\",\r\n  \"phoneNumber\": \"{{phoneNumber}}\",\r\n  \"licenseNumber\": \"{{licenseNumber}}\",\r\n  \"isActive\": {{isActive}},\r\n  \"availabilitySlots\": {{availabilitySlots}},\r\n  \"specializationID\": \"{{specializationID}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/Staff/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Staff",
+						"Create"
+					]
+				}
 			},
 			"response": []
 		},
@@ -133,14 +238,14 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Email in the first element matches the environment variable\", function () {\r",
+							"pm.test(\"Email in the first element matches the collection variable\", function () {\r",
 							"    const jsonData = pm.response.json(); \r",
-							"    const staffEmail = pm.environment.get(\"staffEmail\"); \r",
-							"\r",
+							"    \r",
 							"    pm.expect(jsonData).to.be.an('array').that.is.not.empty; \r",
 							"    pm.expect(jsonData[0]).to.have.property(\"email\"); \r",
-							"    pm.expect(jsonData[0].email).to.equal(staffEmail); \r",
+							"    pm.expect(jsonData[0].email).to.equal(pm.variables.get(\"staffEmail\")); \r",
 							"});\r",
+							"\r",
 							"const jsonData = pm.response.json();\r",
 							"pm.environment.set(\"staffID\", jsonData[0].staffID);\r",
 							""
@@ -152,17 +257,24 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"packages": {},
-						"type": "text/javascript"
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "{{accessToken}}"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [],
@@ -223,9 +335,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "{{accessToken}}"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "PATCH",
 				"header": [
@@ -238,14 +354,27 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"firstName\": \"NewName\"\r\n}",
+					"raw": "{\r\n    \"phoneNumber\": \"+351915198168\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "https://localhost:7258/api/Staff/edit/{{staffID}}"
+				"url": {
+					"raw": "https://localhost:7258/api/Staff/edit/{{staffID}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Staff",
+						"edit",
+						"{{staffID}}"
+					]
+				}
 			},
 			"response": []
 		},
@@ -285,13 +414,30 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "{{accessToken}}"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "PATCH",
 				"header": [],
-				"url": "https://localhost:7258/isActive/{{staffID}}"
+				"url": {
+					"raw": "https://localhost:7258/api/Staff/isActive/{{staffID}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"Staff",
+						"isActive",
+						"{{staffID}}"
+					]
+				}
 			},
 			"response": []
 		}
@@ -332,6 +478,11 @@
 		{
 			"key": "staffID",
 			"value": "staffID",
+			"type": "default"
+		},
+		{
+			"key": "staffEmail",
+			"value": "staffEmail",
 			"type": "default"
 		}
 	]

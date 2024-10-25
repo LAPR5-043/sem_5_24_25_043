@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "aa24c266-5900-4c07-b2df-83b43dad5fca",
+		"name": "E2E OperationRequest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39288960",
+		"_collection_link": "https://medopt.postman.co/workspace/Medopt-Workspace~a66b371f-c241-4822-8fcf-a9bd369d8dcb/collection/39285920-aa24c266-5900-4c07-b2df-83b43dad5fca?action=share&source=collection_link&creator=39288960"
+	},
+	"item": [
+		{
+			"name": "Login Doctor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if accessToken has a value\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"accessToken\");\r",
+							"    pm.expect(jsonData.accessToken).to.be.a(\"string\").and.not.empty;\r",
+							"});\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/User/login-user?email=rfns0303@gmail.com&password=teste123",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"User",
+						"login-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "rfns0303@gmail.com"
+						},
+						{
+							"key": "password",
+							"value": "teste123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create OperationRequest",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const requestData = JSON.parse(pm.request.body.raw); \r",
+							"\r",
+							"if (requestData.patientID) {\r",
+							"    pm.environment.set(\"patientID\", requestData.patientID);\r",
+							"}\r",
+							"\r",
+							"if (requestData.operationTypeID) {\r",
+							"    pm.environment.set(\"operationTypeID\", requestData.operationTypeID);\r",
+							"}\r",
+							"\r",
+							"if (requestData.doctorID) {\r",
+							"    pm.environment.set(\"doctorID\", requestData.doctorID);\r",
+							"}\r",
+							"\r",
+							"if (requestData.priority) {\r",
+							"    pm.environment.set(\"priority\", requestData.priority);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has correct message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Operation Request created successfully.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"requestId\": \"\",\r\n  \"patientID\": \"202410000001\",\r\n  \"operationTypeID\": \"Knee Surgery\",\r\n  \"doctorID\": \"D202400031\",\r\n  \"priority\": \"Emergency\",\r\n  \"day\": \"22\",\r\n  \"month\": \"3\",\r\n  \"year\": \"2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/OperationRequest/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"OperationRequest",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
