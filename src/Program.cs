@@ -148,7 +148,7 @@ namespace sem_5_24_25_043
             
 
             // Services
-            services.AddScoped<AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IPlanningModuleService, PlanningModuleService>();
             services.AddScoped<IEmailService, EmailService>();

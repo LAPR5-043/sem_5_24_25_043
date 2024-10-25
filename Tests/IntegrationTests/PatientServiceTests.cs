@@ -19,7 +19,7 @@ namespace src.IntegrationTests
         private readonly Mock<ILogService> _logServiceMock;
         private readonly Mock<IPendingRequestService> _pendingRequestServiceMock;
         private readonly Mock<IEmailService> _emailServiceMock;
-        private readonly Mock<AuthService> _authServiceMock;
+        private readonly Mock<IAuthService> _authServiceMock;
         private readonly Mock<ISensitiveDataService> _sensitiveDataServiceMock;
         private readonly PatientService _patientService;
 
@@ -30,7 +30,7 @@ namespace src.IntegrationTests
             _logServiceMock = new Mock<ILogService>();
             _pendingRequestServiceMock = new Mock<IPendingRequestService>();
             _emailServiceMock = new Mock<IEmailService>();
-            _authServiceMock = new Mock<AuthService>();
+            _authServiceMock = new Mock<IAuthService>();
             _sensitiveDataServiceMock = new Mock<ISensitiveDataService>();
 
             _patientService = new PatientService(

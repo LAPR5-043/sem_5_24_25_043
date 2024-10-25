@@ -31,7 +31,7 @@ namespace src.Services.Services
         /// <summary>
         /// Auth service
         /// </summary>
-        private readonly AuthService authService;
+        private readonly IAuthService authService;
         /// <summary>
         /// Sensitive data service
         /// </summary>
@@ -60,7 +60,7 @@ namespace src.Services.Services
         /// <param name="pendingRequestService"></param>
         /// <param name="emailService"></param>
         /// <param name="authService"></param>
-        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, AuthService authService)
+        public PatientService(IUnitOfWork unitOfWork, IPatientRepository patientRepository, ILogService logService, IPendingRequestService pendingRequestService, IEmailService emailService, IAuthService authService)
         {
             this.unitOfWork = unitOfWork;
             this.patientRepository = patientRepository;

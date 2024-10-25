@@ -17,7 +17,7 @@ namespace src.Controllers
         /// <summary>
         /// Auth service
         /// </summary>
-        private readonly AuthService authService;
+        private readonly IAuthService authService;
         /// <summary>
         /// Patient service
         /// </summary>
@@ -26,7 +26,7 @@ namespace src.Controllers
         /// Constructor
         /// </summary>
         /// <param name="authService"></param>
-        public UserController(AuthService authService, IPatientService patientService)
+        public UserController(IAuthService authService, IPatientService patientService)
         {
             this.authService = authService;
             this.patientService = patientService;
