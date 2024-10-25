@@ -11,7 +11,7 @@ public class StaffIDGenerator : ValueGenerator<StaffID>
 
         var currentYear = DateTime.Now.ToString("yyyy");
 
-        var staffType = entry.Property("email").CurrentValue.ToString().ToArray()[0];
+        var staffType = entry.Property("email").CurrentValue.ToString().ToArray()[0].ToString().ToUpper();
 
         var latestNumber = context.Staffs
             .AsEnumerable()
