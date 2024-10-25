@@ -1,5 +1,6 @@
 using Domain.StaffAggregate;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Domain.Shared;
@@ -13,6 +14,7 @@ public class StaffService : IStaffService
     private readonly IUnitOfWork unitOfWork;
     private readonly IStaffRepository staffRepository;
     private readonly ILogService logService;
+    
 
     private static string staffDeactivateLog1 = "Staff status changed with success";
     private static string staffDeactivateLog2 = ";StaffId:";
