@@ -37,7 +37,8 @@ namespace src.IntegrationTests
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            Assert.Equal("Invalid patient data.", ((dynamic)badRequestResult.Value).message);
+            var response = badRequestResult.Value;
+            Assert.Equal("Invalid patient data.", response.GetType().GetProperty("message").GetValue(response, null));
         }
 
         [Fact]
@@ -57,7 +58,8 @@ namespace src.IntegrationTests
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal("Patient signed up successfully.", ((dynamic)okResult.Value).message);
+            var response = okResult.Value;
+            Assert.Equal("Patient signed up successfully.", response.GetType().GetProperty("message").GetValue(response, null));
         }
 
         [Fact]
@@ -77,8 +79,9 @@ namespace src.IntegrationTests
 
             // Assert
             var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            var response = statusCodeResult.Value;
             Assert.Equal(500, statusCodeResult.StatusCode);
-            Assert.Equal("An error occurred: Test exception", ((dynamic)statusCodeResult.Value).message);
+            Assert.Equal("An error occurred: Test exception", response.GetType().GetProperty("message").GetValue(response, null));
         }
     }
 }

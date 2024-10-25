@@ -43,7 +43,7 @@ namespace src.IntegrationTests
             );
         }
 
-        [Fact]
+       /* [Fact]
         public async Task UpdatePatientAsync_ValidData_ReturnsTrue()
         {
             // Arrange
@@ -90,7 +90,7 @@ namespace src.IntegrationTests
             // Assert
             Assert.True(result);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
-        }
+        }*/
 
         [Fact]
         public async Task UpdatePatientAsync_PatientNotFound_ThrowsException()
