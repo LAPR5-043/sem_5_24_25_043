@@ -137,5 +137,138 @@ namespace src.IntegrationTests
             _operationTypeRepositoryMock.Verify(repo => repo.UpdateAsync(It.IsAny<OperationType>()), Times.Never);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
         }
+
+        [Fact]
+        public async Task GetAllOperationTypesAsync_ReturnsAllOperationTypes()
+        {
+            // Arrange
+            var operationTypes = new List<OperationType>
+            {
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT123"),
+                    estimatedDuration = new EstimatedDuration(1, 30),
+                    isActive = true,
+                    specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
+                },
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT124"),
+                    estimatedDuration = new EstimatedDuration(2, 0),
+                    isActive = false,
+                    specializations = new Dictionary<string, int> { { "Neurology", 2 } }
+                }
+            };
+
+            _operationTypeRepositoryMock.Setup(repo => repo.GetAllAsync())
+                                        .ReturnsAsync(operationTypes);
+
+            // Act
+            var result = await _operationTypeService.getAllOperationTypesAsync();
+
+            // Assert
+            Assert.Equal(2, result.Value.Count());
+            Assert.Contains(result.Value, ot => ot.OperationTypeName == "OT123");
+            Assert.Contains(result.Value, ot => ot.OperationTypeName == "OT124");
+        }
+
+        [Fact]
+        public async Task GetFilteredOperationTypesAsync_WithNameFilter_ReturnsFilteredOperationTypes()
+        {
+            // Arrange
+            var operationTypes = new List<OperationType>
+            {
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT123"),
+                    estimatedDuration = new EstimatedDuration(1, 30),
+                    isActive = true,
+                    specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
+                },
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT124"),
+                    estimatedDuration = new EstimatedDuration(2, 0),
+                    isActive = false,
+                    specializations = new Dictionary<string, int> { { "Neurology", 2 } }
+                }
+            };
+
+            _operationTypeRepositoryMock.Setup(repo => repo.GetAllAsync())
+                                        .ReturnsAsync(operationTypes);
+
+            // Act
+            var result = await _operationTypeService.getFilteredOperationTypesAsync("OT123", null, null);
+
+            // Assert
+            Assert.Single(result.Value);
+            Assert.Contains(result.Value, ot => ot.OperationTypeName == "OT123");
+        }
+
+        [Fact]
+        public async Task GetFilteredOperationTypesAsync_WithSpecializationFilter_ReturnsFilteredOperationTypes()
+        {
+            // Arrange
+            var operationTypes = new List<OperationType>
+            {
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT123"),
+                    estimatedDuration = new EstimatedDuration(1, 30),
+                    isActive = true,
+                    specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
+                },
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT124"),
+                    estimatedDuration = new EstimatedDuration(2, 0),
+                    isActive = false,
+                    specializations = new Dictionary<string, int> { { "Neurology", 2 } }
+                }
+            };
+
+            _operationTypeRepositoryMock.Setup(repo => repo.GetAllAsync())
+                                        .ReturnsAsync(operationTypes);
+
+            // Act
+            var result = await _operationTypeService.getFilteredOperationTypesAsync(null, "Cardiology", null);
+
+            // Assert
+            Assert.Single(result.Value);
+            Assert.Contains(result.Value, ot => ot.Specializations.ContainsKey("Cardiology"));
+        }
+
+        [Fact]
+        public async Task GetFilteredOperationTypesAsync_WithStatusFilter_ReturnsFilteredOperationTypes()
+        {
+            // Arrange
+            var operationTypes = new List<OperationType>
+            {
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT123"),
+                    estimatedDuration = new EstimatedDuration(1, 30),
+                    isActive = true,
+                    specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
+                },
+                new OperationType
+                {
+                    operationTypeName = new OperationTypeName("OT124"),
+                    estimatedDuration = new EstimatedDuration(2, 0),
+                    isActive = false,
+                    specializations = new Dictionary<string, int> { { "Neurology", 2 } }
+                }
+            };
+
+            _operationTypeRepositoryMock.Setup(repo => repo.GetAllAsync())
+                                        .ReturnsAsync(operationTypes);
+
+            // Act
+            var result = await _operationTypeService.getFilteredOperationTypesAsync(null, null, "true");
+
+            // Assert
+            Assert.Single(result.Value);
+            Assert.Contains(result.Value, ot => ot.IsActive == true);
+        }
     }
 }
