@@ -28,26 +28,34 @@ public class StaffService : IStaffService
     {
         return staffRepository.StaffExists(email, phoneNumber, licenseNumber);
     }
-
-    public async Task<bool> EditStaffAsync(string id, StaffDto staffDto)
+    public async Task<bool> EditStaffAsync(string id, StaffDto staffDto, string adminEmail)
     {
         var staffToEdit = await staffRepository.GetByIdAsync(new StaffID(id));
         if (staffToEdit == null)
         {
-            return false;
+            throw new Exception("Staff not found.");
         }
-        if (staffDto.FirstName != null) { staffToEdit.changeFirstName(staffDto.FirstName); }
-        if (staffDto.LastName != null) { staffToEdit.changeLastName(staffDto.LastName); }
-        if (staffDto.Email != null) { staffToEdit.changeEmail(staffDto.Email); }
-        if (staffDto.PhoneNumber != null) { staffToEdit.changeFirstName(staffDto.PhoneNumber); }
-        if (staffDto.PhoneNumber != null) { staffToEdit.changeFirstName(staffDto.PhoneNumber); }
-        if (staffDto.AvailabilitySlots != null) { staffToEdit.changeAvailabilitySlots(new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots))); }
-        if (staffDto.SpecializationID != null) { staffToEdit.changeSpecializationID(staffDto.SpecializationID); }
+        
+        if (staffDto.FirstName != null || staffDto.LastName != null || staffDto.LicenseNumber != null || staffDto.IsActive != null)
+        {
+            throw new InvalidOperationException("Attempt to change non-editable fields.");
+        }
+        string logMessage = "The staff properties: ";
+        
+        if (staffDto.Email != null) { staffToEdit.changeEmail(staffDto.Email);
+            logMessage += "Email: " + staffDto.Email + "; "; }
+        if (staffDto.PhoneNumber != null) { staffToEdit.changePhoneNumber(staffDto.PhoneNumber);
+            logMessage += "Phone Number: " + staffDto.PhoneNumber + "; "; }
+        if (staffDto.AvailabilitySlots != null) { staffToEdit.changeAvailabilitySlots(new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots))); 
+            logMessage += "Availability Slots: " + staffDto.AvailabilitySlots + "; "; }
+        if (staffDto.SpecializationID != null) { staffToEdit.changeSpecializationID(staffDto.SpecializationID);
+            logMessage += "Specialization: " + staffDto.SpecializationID + "; "; }
+        
+        await logService.CreateLogAsync(logMessage, adminEmail);
         staffRepository.UpdateAsync(staffToEdit);
         await unitOfWork.CommitAsync();
 
         return true;
-
     }
     public async Task<OkObjectResult> getAllStaffAsync()
     {
@@ -168,14 +176,14 @@ public class StaffService : IStaffService
         await logService.CreateLogAsync(staffDeactivateLog1 + staffDeactivateLog2 + staff.staffID + staffDeactivateLog3 + staff.isActive, adminEmail);
         return true;
     }
-
+    
     public async Task<string> GetIdFromEmailAsync(string doctorEmail)
     {
         Staff staff = await staffRepository.GetStaffByEmail(doctorEmail);
         return staff.staffID.ToString();
     }
 
+  
 
-
-
+   
 }

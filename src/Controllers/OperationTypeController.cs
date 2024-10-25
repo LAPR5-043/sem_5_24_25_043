@@ -66,7 +66,6 @@ namespace src.Controllers
             }
 
             var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-
             try
             {
                 var result = await service.createOperationTypeAsync(operationType, adminEmail);
@@ -83,7 +82,7 @@ namespace src.Controllers
 
             return StatusCode(500, new { message = "An error occurred while creating the operation type." });
         }
-   
+        // PATCH: api/OperationType/edit/Knee Surgery
         [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditOperationType(string id, [FromBody] OperationTypeDto operationType)
         {
