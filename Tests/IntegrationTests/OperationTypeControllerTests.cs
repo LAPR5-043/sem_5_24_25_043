@@ -1,13 +1,11 @@
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 using src.Controllers;
 using src.Services.IServices;
 using Domain.OperationTypeAggregate;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace src.Controllers.Tests
 {
@@ -23,7 +21,7 @@ namespace src.Controllers.Tests
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
-                new Claim("custom:internalEmail", "admin@example.com"),
+                new("custom:internalEmail", "admin@example.com"),
             }, "mock"));
 
             _controller.ControllerContext = new ControllerContext
@@ -94,6 +92,71 @@ namespace src.Controllers.Tests
             Assert.Equal(500, internalServerErrorResult.StatusCode);
             Assert.Equal("{ message = An error occurred: An error occurred }", internalServerErrorResult.Value.ToString());
         }
+
+        /*[Fact]
+        public async Task GetOperationTypes_ReturnsOk()
+        {
+            // Arrange
+            var operationTypes = new List<OperationTypeDto>
+            {
+                new OperationTypeDto
+                {
+                    OperationTypeName = "Knee Surgery",
+                    EstimatedDurationHours = "2",
+                    EstimatedDurationMinutes = "30",
+                    IsActive = true,
+                    Specializations = new Dictionary<string, string>
+                    {
+                        { "Orthopedics", "2" }
+                    }
+                }
+            };
+
+            _serviceMock.Setup(s => s.getAllOperationTypesAsync())
+                        .ReturnsAsync(operationTypes);
+
+            // Act
+            var result = await _controller.GetOperationTypes();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsAssignableFrom<List<OperationTypeDto>>(okResult.Value);
+            Assert.Equal(operationTypes.Count, returnValue.Count());
+            Assert.Equal(operationTypes[0].OperationTypeName, returnValue.First().OperationTypeName);
+        }
+
+        [Fact]
+        public async Task GetFilteredOperationTypes_ReturnsOk()
+        {
+            // Arrange
+            var operationTypes = new List<OperationTypeDto>
+            {
+                new OperationTypeDto
+                {
+                    OperationTypeName = "Knee Surgery",
+                    EstimatedDurationHours = "2",
+                    EstimatedDurationMinutes = "30",
+                    IsActive = true,
+                    Specializations = new Dictionary<string, string>
+                    {
+                        { "Orthopedics", "2" }
+                    }
+                }
+            };
+
+            _serviceMock.Setup(s => s.getFilteredOperationTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                        .ReturnsAsync(operationTypes);
+
+            // Act
+            var result = await _controller.GetFilteredOperationTypes("Knee Surgery", "Orthopedics", "true");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsAssignableFrom<List<OperationTypeDto>>(okResult.Value);
+            Assert.Equal(operationTypes.Count, returnValue.Count());
+            Assert.Equal(operationTypes[0].OperationTypeName, returnValue.First().OperationTypeName);
+        }*/
+
 
         [Fact]
         public async Task DeactivateOperationType_ValidData_ReturnsOk()
