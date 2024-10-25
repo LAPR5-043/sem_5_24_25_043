@@ -1,13 +1,13 @@
 @startuml
 
 
-title US 5.1.18 - As a Doctor, I want to remove an operation reqAPIsition
+title US 5.1.18 - As a Doctor, I want to remove an operation reqRoutesition
 
 skinparam classAttributeIconSize 0
 
 skinparam class {
     LifeLineBorderColor DodgerBlue
-    LifeLineBackgroundColor API
+    LifeLineBackgroundColor Route
     BackgroundColor LemonChiffon
     ArrowColor Brown
     BorderColor SaddleBrown
@@ -17,7 +17,7 @@ skinparam packageStyle rectangle
 
 skinparam card {
     LifeLineBorderColor DodgerBlue
-    LifeLineBackgroundColor API
+    LifeLineBackgroundColor Route
     BackgroundColor LemonChiffon
     ArrowColor Brown
     BorderColor SaddleBrown
@@ -25,36 +25,27 @@ skinparam card {
 
 actor "Doctor" as Doctor
 
-participant "API" as API
+participant "Route" as Route
 participant "OperationRequestController" as ORC
 participant "AuthService" as AS
-participant "StaffRepository" as SR
 participant "OperationRequestService" as ORS
+participant "StaffService" as SV
 participant "OperationRequestRepository" as ORR
-participant "OperationRequest" as OR
 participant "AppointmentRepository" as AR
-participant "PlanningModuleInterface" as PMI
+participant "PlanningModuleService" as PMI
 
 
 activate Doctor
 
-Doctor -> API: HttpDelete(/api/operationRequests/{OperationRequestID})
+Doctor -> Route: DELETE \n/api/operationRequests/{id}
 
-activate API
+activate Route
 
-API -> ORC: DeleteOperationRequest(OperationRequestID)
+Route -> ORC: DeleteOperationRequest\n(OperationRequestID)
 
 activate ORC
 
-ORC -> AS: ensureAuthenticatedUserHasRole(doctor)
-
-activate AS
-
-AS --> ORC: true
-
-deactivate AS
-
-ORC -> AS: getAuthenticatedUserEmail()
+ORC -> AS: getAuthenticatedUserEmail(accessToken)
 
 activate AS
 
@@ -62,19 +53,21 @@ AS --> ORC: email
 
 deactivate AS
 
-ORC -> SR: findDoctorIDByEmail(email)
+deactivate SV
 
-activate SR
-
-SR --> ORC: doctorID
-
-deactivate SR
-
-ORC -> ORS: removeOperationRequest(doctorID, OperationRequestID)
+ORC -> ORS: DeleteOperationRequestAsync(id, doctorEmail)
 
 activate ORS
 
-ORS -> ORR: findOperationRequestByID(OperationRequestID)
+ORS -> SV: GetIdFromEmailAsync(doctorEmail)
+
+activate SV
+
+SV --> ORS: doctorID
+
+deactivate SV
+
+ORS -> ORR: GetByIdAsync(OperationRequestID)
 
 activate ORR
 
@@ -82,27 +75,13 @@ ORR --> ORS: operationRequest
 
 deactivate ORR
 
-ORS -> ORS: validateOperationRequestBelongsToDoctor(doctorID, operationRequest)
+ORS -> ORS: checkIfDoctorIsTheCreatorOfOperationRequestAsync(doctorID, operationRequest)
 
 activate ORS
-
-ORS -> OR: doctorResponsibleIs(doctorID)
-
-activate OR
-
-OR --> ORS: true
-
-deactivate OR
-
-ORS --> ORS: true
 
 deactivate ORS
 
-ORS -> ORS: ensureOperationIsNotScheduled(OperationRequestID)
-
-activate ORS
-
-ORS -> AR: checkIfOperationIsScheduled(OperationRequestID)
+ORS -> AR: CheckIfOperationIsScheduled(id)
 
 activate AR
 
@@ -110,11 +89,7 @@ AR --> ORS: false
 
 deactivate AR
 
-ORS --> ORS: false
-
-deactivate ORS
-
-ORS -> ORR: removeOperationRequest(operationRequest)
+ORS -> ORR: Remove(operationRequest)
 
 activate ORR
 
@@ -122,7 +97,7 @@ ORR --> ORS: true
 
 deactivate ORR
 
-ORS -> PMI: notifyOperationRequestRemoved(operationRequest)
+ORS -> PMI: NotifyOperationRequestDeleted(id)
 
 activate PMI
 
@@ -134,11 +109,11 @@ ORS --> ORC: true
 
 deactivate ORS
 
-ORC --> API: true
+ORC --> Route: true
 
 deactivate ORC
 
-API --> Doctor: Operation request removed successfully
+Route --> Doctor: Operation request removed successfully
 
 
 

@@ -167,7 +167,7 @@ namespace src.Services
             }
 
 
-            await checkIfDoctorIsTheCreatorOfOperationRequestAsync(id, doctorID, operationRequest);
+            await checkIfDoctorIsTheCreatorOfOperationRequestAsync(doctorID, operationRequest);
 
             var result = await appointmentRepository.CheckIfOperationIsScheduled(id);
 
@@ -189,7 +189,7 @@ namespace src.Services
 
         }
 
-        private async Task checkIfDoctorIsTheCreatorOfOperationRequestAsync(int id, string doctorID, OperationRequest operationRequest)
+        private async Task checkIfDoctorIsTheCreatorOfOperationRequestAsync(string doctorID, OperationRequest operationRequest)
         {
 
             if (operationRequest.doctorID != doctorID)
