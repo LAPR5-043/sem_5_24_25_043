@@ -6,7 +6,7 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
     public EstimatedDuration estimatedDuration { get; set; }
     public bool isActive { get; set; }
     public Dictionary<string, int> specializations { get; set; }
-
+ 
     public OperationType(string operationTypeName, int hours, int minutes, bool isActive, Dictionary<string, int> specialization)
     {
         this.operationTypeName = new OperationTypeName(operationTypeName);

@@ -19,7 +19,7 @@ namespace src.Services
         public EmailService(IConfiguration configuration, IEncryptionEmailService encryptionEmailService)
         {
             this.encryptionEmailService = encryptionEmailService;
-            
+
 
             // Read configuration for the sender email from appsettings.json
             smtpServer = configuration["EmailSettings:SmtpServer"];
@@ -37,7 +37,7 @@ namespace src.Services
 
             // Build the confirmation link with the encrypted email
             var confirmationUrl = $"{apiEndpointUrl}?email={HttpUtility.UrlEncode(encryptedEmail)}";
-            
+
             var message = $@"
                 <html>
                 <head>
@@ -115,10 +115,11 @@ namespace src.Services
             // Send the email
             await SendEmailAsync(patientEmail, "Confirm your email", message);
         }
+
         public async Task SendPendingRequestEmail(string patientEmail, string subject, string url)
         {
-        
-            
+
+
             var message = $@"
                 <html>
                 <head>
@@ -295,13 +296,92 @@ namespace src.Services
             
             return SendEmailAsync(patientEmail, subject, message);
 
+        public async Task SendDeletionConfirmationEmail(string email, string url)
+        {
+            var message = $@"
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }}
+                        .header {{
+                            background-color: #007bff;
+                            color: #ffffff;
+                            padding: 10px 0;
+                            text-align: center;
+                        }}
+                        .content {{
+                            padding: 20px;
+                            color: #000000;
+                        }}
+                        .button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            color: #ffffff;
+                            background-color: #007bff;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                            text-align: center;
+                        }}
+                        .button-container {{
+                            text-align: center;
+                        }}
+                        .footer {{
+                            margin-top: 20px;
+                            text-align: center;
+                            color: #888888;
+                            font-size: 12px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>Account Deletion Confirmation</h2>
+                        </div>
+                        <div class='content'>
+                            <p>Dear User,</p>
+                            <p>We are sorry to see you go. Please note once your account is deleted, we will no longer have any record of your medical history, seeing as all your personal data will be removed from our system.</p>
+                            <p>Please click the button below to confirm your email address:</p>
+                            <div class='button-container'>
+                                <a href='{url}' class='button'>Confirm Deletion</a>
+                            </div>
+                            <p>If you did not request this email, please ignore it.</p>
+                            <br>
+                            <p>Best regards,</p>
+                            <p>Medopt Team</p>
+                            <img src='{signatureImageUrl}' alt='Signature' style='display:block; margin-top:20px;' />
+                        </div>
+                        <div class='footer'>
+                            <p>&copy; 2024 Medopt. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
+
+            // Send the email
+            await SendEmailAsync(email, "Confirm your account deletion", message);
         }
 
         public Task SendEmailToStaffSignIn(string email, string password)
         {
-           
+
             var subject = "Change your credentials";
-             var message = $@"
+            var message = $@"
                 <html>
                 <head>
                     <style>
@@ -376,7 +456,7 @@ namespace src.Services
                     </div>
                 </body>
                 </html>";
-             return SendEmailAsync(email, subject, message);
+            return SendEmailAsync(email, subject, message);
         }
     }
 }

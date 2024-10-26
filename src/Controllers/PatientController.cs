@@ -11,7 +11,7 @@ namespace src.Controllers
     /// Patient controller
     /// </summary>
     [Route("api/[controller]")]
-    [Authorize(Roles = "admins")]
+    [Authorize(Roles = "admins, patient")]
     [ApiController]
 
     public class PatientController : ControllerBase
@@ -35,11 +35,12 @@ namespace src.Controllers
         /// <param name="patientDto"></param>
         /// <returns></returns>
         // POST: api/Patient/Create
+        [Authorize(Roles = "admins")]
         [HttpPost("Create")]
         public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
         {
-            
-            
+
+
             if (patientDto == null)
             {
                 return BadRequest(new { message = "Invalid patient data." });
@@ -64,9 +65,10 @@ namespace src.Controllers
 
 
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
+        [Authorize(Roles = "admins")]
         [HttpGet("filtered")]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
-                                                                        [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
+                                                                    [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
         {
             var patient = await service.GetPatientsFilteredAsync(firstName, lastName, email, phoneNumber, medicalRecordNumber, dateOfBirth, gender, sortBy);
             if (patient == null)
@@ -78,6 +80,7 @@ namespace src.Controllers
         }
 
         // GET: api/Patient/5
+        [Authorize(Roles = "admins")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatientById(string id)
         {
@@ -91,12 +94,12 @@ namespace src.Controllers
             return Ok(patient);
         }
 
-
+        [Authorize(Roles = "admins")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(string id)
         {
             var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-            
+
             var result = await service.DeletePatientAsync(id, adminEmail);
             if (result)
             {
@@ -109,7 +112,7 @@ namespace src.Controllers
         [HttpPut("personalData/{id}")]
         public async Task<IActionResult> UpdatePatient(string id, [FromBody] PatientDto patientDto)
         {
-           
+
             if (patientDto == null)
             {
                 return BadRequest(new { message = "Invalid patient data." });
@@ -184,5 +187,50 @@ namespace src.Controllers
             return NotFound(new { message = "Patient not found." });
         }
 
+        // DELETE: api/patient/delete/personalAccount?confirmDeletion=
+        [Authorize(Roles = "patient")]
+        [HttpDelete("delete/personalAccount")]
+        public async Task<IActionResult> DeletePersonalAccount([FromQuery] bool? confirmDeletion)
+        {
+            var patientEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+
+            try
+            {
+                var result = await service.DeletePersonalAccountAsync(patientEmail, confirmDeletion);
+                if (result)
+                {
+                    return Ok(new { message = "Account deletion request successful" });
+                }
+                return NotFound(new { message = "Patient personal account not found." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        // DELETE: /api/patient/delete/sensitiveData?patientID=202410000009
+        [HttpDelete("delete/sensitiveData")]
+        public async Task<ActionResult<string>> DeleteSensitiveData([FromQuery] string patientID)
+        {
+            if (patientID == null)
+            {
+                return BadRequest(new { message = "Invalid patient data." });
+            }
+
+            try
+            {
+                var deleted = await service.DeleteSensitiveDataAsync(patientID);
+                if (deleted)
+                {
+                    return Ok(new { message = "Patient account deletion confirmed." });
+                }
+                return NotFound(new { message = "Failed account deletion." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
     }
 }

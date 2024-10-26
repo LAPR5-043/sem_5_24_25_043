@@ -52,4 +52,16 @@ public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, I
     {
         context.Entry(patient).State = EntityState.Modified;
     }
+    
+    /// <summary>
+    /// Retrieves patient by email
+    /// </summary>
+    /// <param name="patientEmail"></param>
+    /// <returns>Staff Member</returns>
+    public async Task<Patient> GetPatientByEmail(string patientEmail)
+    {
+        return context.Patients
+            .AsEnumerable()
+            .FirstOrDefault(p => p.Email.Value == patientEmail)!;
+    }
 }

@@ -19,5 +19,7 @@ namespace src.Services.IServices
         Task SignUpNewPatientIamAsync(string name, string phoneNumber, string email, string patientEmail, string password);
         Task<bool> EditPatientAsync(string id, PatientDto patientDto, string adminEmail);
         Task<List<PatientDto>> GetPatientsByName(string? firstName, string? lastName);
+        Task<bool> DeletePersonalAccountAsync(string email, bool? confirmation);
+        Task<bool> DeleteSensitiveDataAsync(string patientID);
     }
 }
