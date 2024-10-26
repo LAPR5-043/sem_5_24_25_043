@@ -25,27 +25,77 @@ skinparam card {
 
 actor "Admin" as Admin
 
-participant "AddOperationTypeUI" as UI
-participant "OperationTypeController" as Controller
-participant "OperationTypeService" as Service
-participant "OperationTypeRepository" as Repository
+participant "Route" as Route
+participant ":OperationTypeController" as Controller
+participant ":AuthService" as AS
+participant ":OperationTypeService" as Service
+participant "OperationType" as OperationType
+participant ":OperationTypeRepository" as Repository
+participant ":LogServce" as LogService
 
 
 activate Admin
 
-Admin -> UI: Asks to add a new operation type
+Admin -> Route: POST /api/OperationType/Create
 
-activate UI
+activate Route
 
-UI -> Admin: requests the necessary information
+Route -> Controller: CreateOperationType(...)
 
-deactivate UI
+activate Controller
 
-Admin -> UI: Provides (name, required staff 
+Controller -> AS: getAuthenticatedUserEmail(accessToken)
 
-activate UI
+activate AS
 
+AS --> Controller: adminEmail
 
+deactivate AS
 
+Controller -> Service: createOperationTypeAsync(operationType, adminEmail)
+
+activate Service
+
+Service -> Repository: OperationTypeExists(OperationTypeName)
+
+activate Repository
+
+Repository --> Service: false
+
+deactivate Repository
+
+Service -> OperationType**: new OperationType(...)
+
+activate OperationType
+
+OperationType --> Service: operationType
+
+deactivate OperationType
+
+Service -> Repository: AddAsync(operationType)
+
+activate Repository
+
+Repository --> Service: 
+
+deactivate Repository
+
+Service -> LogService: CreateLogAsync(message, adminEmail)
+
+activate LogService
+
+LogService --> Service:
+
+deactivate LogService
+
+Service --> Controller: Ok
+
+deactivate Service
+
+Controller --> Route: Ok
+
+deactivate Controller
+
+Route --> Admin: Operatio Type created successfully
 
 @enduml
