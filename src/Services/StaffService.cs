@@ -2,7 +2,9 @@ using Domain.StaffAggregate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using sem_5_24_25_043;
 using src.Domain.Shared;
 using src.Services.IServices;
 using AppContext = src.Models.AppContext;
@@ -14,17 +16,24 @@ public class StaffService : IStaffService
     private readonly IUnitOfWork unitOfWork;
     private readonly IStaffRepository staffRepository;
     private readonly ILogService logService;
-    
+    private readonly IAuthService authService;
+    private readonly IEmailService emailService;
 
     private static string staffDeactivateLog1 = "Staff status changed with success";
     private static string staffDeactivateLog2 = ";StaffId:";
     private static string staffDeactivateLog3 = ";NewStatus:";
+    private static string medic = "medic";
+    private static string nurse = "nurse";
+    private static string tecnician = "tecnician";
+    private static string admin = "admins";
 
-    public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, ILogService logService)
+    public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, ILogService logService, IAuthService authService, IEmailService emailService)
     {
         this.unitOfWork = unitOfWork;
         this.staffRepository = staffRepository;
         this.logService = logService;
+        this.authService = authService;
+        this.emailService = emailService;
     }
     private Boolean ValidateStaffInformation(string email, string phoneNumber, string licenseNumber)
     {
@@ -59,6 +68,9 @@ public class StaffService : IStaffService
 
         return true;
     }
+
+    
+
     public async Task<OkObjectResult> getAllStaffAsync()
     {
         var result = await staffRepository.GetAllAsync();
@@ -184,8 +196,73 @@ public class StaffService : IStaffService
         Staff staff = await staffRepository.GetStaffByEmail(doctorEmail);
         return staff.staffID.ToString();
     }
+    public async Task<bool> signUpStaffAsync(string staffID,string iamEmail)
+    {
+        var staff =  await staffRepository.GetStaffByID(staffID);
+        string role;
+        switch (staffID.ToString().First())
+        {
+            case 'D':
+            case 'd':
+                role = medic;
+                break;
+            case 'N':
+            case 'n':
+                role = nurse;
+                break;
+            case 'T':
+            case 't':
+                role = tecnician;
+                break;
+            default:
+                throw new InvalidOperationException("Invalid staff ID prefix.");
+        }
+        if (staff == null)
+        {
+            throw new InvalidOperationException("staff not found");
+        }
+        string password = GenerateRandomPassword(); 
+        try
+        {
+            await authService.RegisterNewStaffAsync(iamEmail,staff.email.email,password,staff.fullName.fullName,role,staff.phoneNumber.phoneNumber);
+            await emailService.SendEmailToStaffSignIn(iamEmail,password);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
 
-  
+        return true;
+    }
+    private string GenerateRandomPassword(int length = 12)
+    {
+        const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
+        const string numericChars = "1234567890";
+        using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
+        {
+            var byteBuffer = new byte[length];
+            rng.GetBytes(byteBuffer);
+            var charBuffer = new char[length];
+            bool hasNumeric = false;
 
-   
+            for (int i = 0; i < length; i++)
+            {
+                charBuffer[i] = validChars[byteBuffer[i] % validChars.Length];
+                if (numericChars.Contains(charBuffer[i]))
+                {
+                    hasNumeric = true;
+                }
+            }
+
+            if (!hasNumeric)
+            {
+                charBuffer[length - 1] = numericChars[byteBuffer[length - 1] % numericChars.Length];
+            }
+
+            return new string(charBuffer);
+        }
+    }
+    
 }
