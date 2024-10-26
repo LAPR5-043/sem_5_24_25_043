@@ -36,7 +36,7 @@ namespace src.Services.Services
         /// <summary>
         /// Sensitive data service
         /// </summary>
-        public  ISensitiveDataService sensitiveDataService;
+        public ISensitiveDataService sensitiveDataService;
         /// <summary>
         /// Pending request service
         /// </summary>
@@ -257,7 +257,7 @@ namespace src.Services.Services
                     foreach (PropertyInfo property in patient1.GetType().GetProperties())
                     {
                         var propertyName = property.Name;
-                        var propertyValue =  propertyName;
+                        var propertyValue = propertyName;
 
                         if (sensitiveDataService.isSensitive(propertyValue))
                         {
@@ -273,11 +273,11 @@ namespace src.Services.Services
                                     propertyValue
                                 );
 
-                              //  await unitOfWork.CommitAsync();
+                                //  await unitOfWork.CommitAsync();
 
                                 pendingRequestIds.Add(p.requestID.Value);
 
-                                
+
                             }
                         }
                         else
@@ -487,6 +487,26 @@ namespace src.Services.Services
             await unitOfWork.CommitAsync();
 
             await logService.CreateLogAsync("New patient registered in the IAM system; PatientEmail:" + email, email);
+        }
+
+        public async Task<List<PatientDto>> GetPatientsByName(string? firstName, string? lastName)
+        {
+            var patientList = await patientRepository.GetAllAsync();
+            var query = patientList.AsQueryable();
+            
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                query = query.Where(p => p.FirstName.Value.Contains(firstName));
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                query = query.Where(p => p.LastName.Value.Contains(lastName));
+            }
+
+            var result = query.ToList();
+            var resultDtos = result.Select(p => new PatientDto(p)).ToList();
+            return resultDtos;
         }
     }
 }
