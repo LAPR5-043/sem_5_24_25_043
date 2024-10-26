@@ -389,7 +389,10 @@ namespace src.Services
                     operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
                     await logService.CreateLogAsync("Update Operation Request" + "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.Priority, email);
                 }
+
                 await operationRequestRepository.updateAsync(operationRequest);
+
+                await unitOfWork.CommitAsync();
             }
             catch (Exception e)
             {
