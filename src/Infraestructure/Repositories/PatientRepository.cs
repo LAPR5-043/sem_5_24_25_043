@@ -47,4 +47,9 @@ public class PatientRepository : BaseRepository<Patient, MedicalRecordNumber>, I
             .AsEnumerable()
             .Any(p => p.Email.Value == email);
     }
+
+    public void UpdateAsync(Patient patient)
+    {
+        context.Entry(patient).State = EntityState.Modified;
+    }
 }

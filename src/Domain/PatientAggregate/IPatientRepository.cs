@@ -6,7 +6,7 @@ namespace Domain.PatientAggregate
     {
         Boolean PatientExists(string email, string phoneNumber);
         Boolean PatientExists(string email);
-
+        void UpdateAsync(Patient patient);
         
 
     }

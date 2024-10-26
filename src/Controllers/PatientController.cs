@@ -160,5 +160,29 @@ namespace src.Controllers
             return NotFound(new { message = "pending requests not found." });
         }
 
+        [HttpPatch("edit/{id}")]
+        public async Task<IActionResult> EditPatient(string id, [FromBody] PatientDto patientDto)
+        {
+            if (patientDto == null)
+            {
+                return BadRequest(new { message = "Invalid patient data." });
+            }
+            var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+            var patientExists = await service.GetPatientByIdAsync(id);
+            if (patientExists == null)
+            {
+                return NotFound(new { message = "Patient not found." });
+            }
+
+            var result = await service.EditPatientAsync(id, patientDto, adminEmail);
+
+            if (result)
+            {
+                return Ok(new { message = "Patient updated successfully." });
+            }
+
+            return NotFound(new { message = "Patient not found." });
+        }
+
     }
 }

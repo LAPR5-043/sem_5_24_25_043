@@ -273,7 +273,7 @@ namespace src.Services.Services
                                     propertyValue
                                 );
 
-                                //  await unitOfWork.CommitAsync();
+                                await unitOfWork.CommitAsync();
 
                                 pendingRequestIds.Add(p.requestID.Value);
 
@@ -508,5 +508,63 @@ namespace src.Services.Services
             var resultDtos = result.Select(p => new PatientDto(p)).ToList();
             return resultDtos;
         }
+
+        public async Task<bool> EditPatientAsync(string id, PatientDto patientDto, string adminEmail)
+        {
+            var patientToEdit = await patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
+            if (patientToEdit == null)
+            {
+                throw new KeyNotFoundException("Patient not found.");
+            }
+
+            List<string> sensitiveChanges = new List<string>();
+            List<string> logs = new List<string>();
+
+            foreach (PropertyInfo property in typeof(PatientDto).GetProperties())
+            {
+                var newValue = property.GetValue(patientDto);
+                var oldValue = patientToEdit.GetType().GetProperty(property.Name)?.GetValue(patientToEdit);
+
+                if (newValue != null && oldValue != null && !newValue.Equals(oldValue))
+                {
+                    if (sensitiveDataService.isSensitive(property.Name))
+                    {
+                        sensitiveChanges.Add($"{property.Name}: {oldValue} -> {newValue}");
+                    }
+                    
+                    var targetProperty = patientToEdit.GetType().GetProperty(property.Name);
+                    if (targetProperty != null && targetProperty.CanWrite)
+                    {
+                        try
+                        {
+                            targetProperty.SetValue(patientToEdit, ConvertToCustomType(newValue.ToString(), targetProperty.PropertyType), null); 
+                            logs.Add($"{property.Name}: {oldValue} -> {newValue}");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"Failed to set property {property.Name} to value {newValue}: {e.Message}");
+                        }
+                        
+                    }
+                }
+            }
+            
+            if (!string.IsNullOrEmpty(patientDto.FirstName) && !string.IsNullOrEmpty(patientDto.LastName))
+            {
+                patientToEdit.FullName = new PatientFullName(patientDto.FirstName, patientDto.LastName);
+            }
+
+            if (sensitiveChanges.Count > 0)
+            {
+                string changes = string.Join(", ", sensitiveChanges);
+                await emailService.SendEmailChangedData(patientToEdit.Email.Value, "Sensitive Data Change Notification", sensitiveChanges);
+            }
+            await logService.CreateLogAsync($"PatientId:{id};{string.Join("; ", logs)}", adminEmail);
+            patientRepository.UpdateAsync(patientToEdit);
+            await unitOfWork.CommitAsync();
+
+            return true;
+        }
+        
     }
 }
