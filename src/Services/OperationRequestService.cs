@@ -80,9 +80,6 @@ namespace src.Services
 
             string doctorID = await staffService.GetIdFromEmailAsync(email);
 
-            StaffDto staffDto = await staffService.GetStaffAsync(doctorID);
-
-
             VerifyPatientID(operationRequestDto.PatientID);
             newOperationRequest.patientID = operationRequestDto.PatientID;
 
@@ -92,7 +89,7 @@ namespace src.Services
             }*/
             newOperationRequest.operationTypeID = operationRequestDto.OperationTypeID;
 
-            newOperationRequest.doctorID = staffDto.StaffID;
+            newOperationRequest.doctorID = doctorID;
 
             newOperationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
 
@@ -311,7 +308,7 @@ namespace src.Services
             var doctorID = await staffService.GetIdFromEmailAsync(doctorEmail);
 
             OperationRequest operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
-            
+
             if (operationRequest == null)
             {
                 throw new Exception("Operation Request not found");
