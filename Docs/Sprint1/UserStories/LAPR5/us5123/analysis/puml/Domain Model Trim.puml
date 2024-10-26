@@ -1,0 +1,107 @@
+"@startuml Domain Model"
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+' Title
+title Domain Model
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+' Aggregates
+
+package "User Aggregate" {
+
+    entity User <<entity>><<root>> {
+    }
+
+    card Username <<Value Object>>
+    card Email <<Value Object>>
+
+    enum Role <<enumeration>> {
+        Admin
+        Doctor
+        Nurse
+        Technician
+        Patient
+    }
+
+    ' Relationships inside the User aggregate
+
+    User "1" -u-> "1" Username
+    User "1" -u-> "1" Email
+    User "1" -u-> "1" Role
+
+
+}
+
+note top of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
+
+
+package "Specialization Aggregate" {
+
+    entity Specialization <<entity>><<root>> {
+    }
+
+    card SpecializationName <<Value Object>>
+    card SpecializationDescription <<Value Object>>
+
+    'Relationships
+    Specialization "1"-->"1" SpecializationName
+    Specialization "1"-->"1" SpecializationDescription
+
+}
+
+package "Operation Type Aggregate" {
+
+    entity OperationType <<entity>><<root>> {
+    }
+
+    card OperationTypeID <<Value Object>>
+    card OperationTypeName <<Value Object>>
+    card EstimatedDuration <<Value Object>>
+    card isActive <<Boolean>>
+    'Ligar a Specialization
+    
+    'Relationships
+    OperationType "1" -u-> "1" OperationTypeID
+    OperationType "1" -u-> "1" OperationTypeName
+    OperationType "1" -l-> "1" EstimatedDuration
+    OperationType "1" -u-> "1" isActive
+    
+
+}
+
+' Relationships
+
+OperationType "*" --> "*" Specialization
+
+User "1" --> "1..*" OperationType: lists
+
+
+@enduml
