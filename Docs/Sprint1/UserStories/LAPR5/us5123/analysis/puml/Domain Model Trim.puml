@@ -1,5 +1,4 @@
-@startuml
-
+"@startuml Domain Model"
 hide circle
 hide methods
 allow_mixing
@@ -63,6 +62,21 @@ package "User Aggregate" {
 
 note top of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
 
+
+package "Specialization Aggregate" {
+
+    entity Specialization <<entity>><<root>> {
+    }
+
+    card SpecializationName <<Value Object>>
+    card SpecializationDescription <<Value Object>>
+
+    'Relationships
+    Specialization "1"-->"1" SpecializationName
+    Specialization "1"-->"1" SpecializationDescription
+
+}
+
 package "Operation Type Aggregate" {
 
     entity OperationType <<entity>><<root>> {
@@ -83,30 +97,11 @@ package "Operation Type Aggregate" {
 
 }
 
-package "Specialization Aggregate" {
-
-    entity Specialization <<entity>><<root>> {
-    }
-
-    card SpecializationName <<Value Object>>
-    card SpecializationDescription <<Value Object>>
-
-    'Relationships
-    Specialization "1"-->"1" SpecializationName
-    Specialization "1"-->"1" SpecializationDescription
-
-}
-
 ' Relationships
-
 
 OperationType "*" --> "*" Specialization
 
-
-
-User "1" --> "1..*" OperationType: adds
-
-
+User "1" --> "1..*" OperationType: lists
 
 
 @enduml

@@ -1,0 +1,68 @@
+@startuml
+
+
+title US 5.1.23 - As an Admin, I want to list/search operation types
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+actor "Admin" as Admin
+
+participant "Route" as Route
+participant ":OperationTypeController" as Controller
+participant ":OperationTypeService" as Service
+participant ":OperationTypeRepository" as Repository
+
+
+activate Admin
+
+Admin -> Route: GET /api/OperationType/Filtered
+
+activate Route
+
+Route -> Controller: GetFilteredOperationTypes\n(name, specialization, status)
+
+activate Controller
+
+Controller -> Service: getFilteredOperationTypesAsync\n(name, specialization, status)
+
+activate Service
+
+Service -> Repository: getAllAsync()
+
+activate Repository
+
+Repository --> Service: List<OperationType>
+
+deactivate Repository
+
+Service --> Controller: List<OperationTypeDto>
+
+deactivate Service
+
+Controller --> Route: List<OperationTypeDto>
+
+deactivate Controller
+
+Route --> Admin: List<OperationTypeDto>
+
+deactivate Route
+
+@enduml
