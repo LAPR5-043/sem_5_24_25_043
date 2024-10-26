@@ -225,5 +225,73 @@ namespace src.Services
                 throw new InvalidOperationException("Failed to send email due to an unexpected error.", ex);
             }
         }
+
+        public Task SendEmailChangedData(string patientEmail, string subject,List<string> dataChanged)
+        {
+            var message = $@"
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }}
+                        .header {{
+                            background-color: #007bff;
+                            color: #ffffff;
+                            padding: 10px 0;
+                            text-align: center;
+                        }}
+                        .content {{
+                            padding: 20px;
+                            color: #000000;
+                        }}
+                    
+                        .footer {{
+                            margin-top: 20px;
+                            text-align: center;
+                            color: #888888;
+                            font-size: 12px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>Change Profile Confirmation</h2>
+                        </div>
+                        <div class='content'>
+                            <p>Dear User,</p>
+                            <p>This mail is purposed to alert you that an admin made changes to your data</p>
+                            <p>Please contact us if you dont agree with the changes made.</p>
+                            <p>Changes made:</p>
+                            <ul>
+                                {string.Join("", dataChanged.Select(data => $"<li>{data}</li>"))}
+                            </ul>
+                            <br>
+                            <p>Best regards,</p>
+                            <p>Medopt Team</p>
+                            <img src='{signatureImageUrl}' alt='Signature' style='display:block; margin-top:20px;' />
+                        </div>
+                        <div class='footer'>
+                            <p>&copy; 2024 Medopt. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
+            
+            return SendEmailAsync(patientEmail, subject, message);
+
+        }
     }
 }

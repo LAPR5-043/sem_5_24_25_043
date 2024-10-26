@@ -55,39 +55,69 @@ namespace src.Controllers
         }
 
 
-        //GET /api/OperationRequest/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
-        [Authorize(Roles = "admins, medic")]
-        [HttpGet("filtered")]
-        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetOperationRequestFiltered([FromQuery] string? firstName, [FromQuery] string? lastName, [FromQuery] string? operationType,
-            [FromQuery] string? priority, [FromQuery] string? status, [FromQuery] string? sortBy)
+        //GET /api/OperationRequest/admin/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
+        [Authorize(Roles = "admins")]
+        [HttpGet("admin/filtered")]
+        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetOperationRequestFiltered([FromQuery(Name = "Doctor ID")] string? doctorID, [FromQuery(Name = "Patient ID")] string? patientID, [FromQuery(Name = "Patient First Name")] string? patientFirstName, [FromQuery(Name = "Patient Last Name")] string? patientLastName, [FromQuery(Name = "Operation Type")] string? operationType, [FromQuery(Name = "Priority")] string? priority, [FromQuery(Name = "Sort by")] string? sortBy)
         {
-
-            //var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-
-            var OperaionRequest = await service.GetOperationRequestFilteredAsync(firstName, lastName, operationType, priority, status, sortBy);
-            if (OperaionRequest == null)
+            try
             {
-                return NotFound();
-            }
+                var operationRequest = await service.GetOperationRequestFilteredAsync(doctorID, patientID, patientFirstName, patientLastName, operationType, priority, sortBy);
+                if (operationRequest != null)
+                {
+                    return Ok(operationRequest);
+                }
 
-            return Ok(OperaionRequest);
+                return NotFound(new { message = "Operation request not found." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while searching the operation request.", error = ex.Message });
+            }
         }
 
-        // GET: api/OperationRequest/5
-        [Authorize(Roles = "admins, medic")]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOperationRequestById(string id)
+        // GET: api/OperationRequest/doctor/submitted/?selfRequested=&patientID=&patientFirstName=&patientLastName=&operationType=&priority=&sortBy=
+        [Authorize(Roles = "medic")]
+        [HttpGet("doctor/submitted")]
+        public async Task<ActionResult<List<OperationRequestDto>>> GetDoctorOperationRequests([FromQuery(Name = "Patient ID")] string? patientID, [FromQuery(Name = "Patient First Name")] string? patientFirstName, [FromQuery(Name = "Patient Last Name")] string? patientLastName, [FromQuery(Name = "Operation Type")] string? operationType, [FromQuery(Name = "Priority")] string? priority, [FromQuery(Name = "Sort by")] string? sortBy)
         {
-            //var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+            var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
 
-            var operationRequest = await service.GetOperationRequestByIdAsync(id);
-            if (operationRequest == null)
+            try
             {
-                return NotFound(new { message = "Operation Request not found." });
+                var operationRequest = await service.GetDoctorOperationRequestsAsync(doctorEmail, patientID, patientFirstName, patientLastName, operationType, priority, sortBy);
+                if (operationRequest != null)
+                {
+                    return Ok(operationRequest);
+                }
 
+                return NotFound(new { message = "Operation request not found." });
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while searching the operation request.", error = ex.Message });
+            }
+        }
 
-            return Ok(operationRequest);
+        // GET: api/OperationRequest/doctor/{PatientID}
+        [Authorize(Roles = "medic")]
+        [HttpGet("doctor/{PatientID}")]
+        public async Task<ActionResult<List<OperationRequestDto>>> GetOperationRequestByPatientId(string PatientID)
+        {
+            try
+            {
+                var operationRequest = await service.GetOperationRequestByPatientIdAsync(PatientID);
+                if (operationRequest != null)
+                {
+                    return Ok(operationRequest);
+                }
+
+                return NotFound(new { message = "Operation requests by patient not found." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while searching the operation request.", error = ex.Message });
+            }
         }
 
 

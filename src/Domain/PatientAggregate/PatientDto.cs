@@ -79,6 +79,7 @@ namespace Domain.PatientAggregate
         public PatientDto()
         {
         }
+
         public PatientDto(Patient patient)
         {
             if (patient == null)
@@ -101,8 +102,10 @@ namespace Domain.PatientAggregate
 
             Gender = patient.Gender.ToString();
 
-            AllergiesAndConditions = patient.AllergiesAndConditions?.Select(a => a.ToString()).ToList() ?? new List<string>();
-            AppointmentHistory = patient.AppointmentHistory?.Appointments().Select(a => a.ToString()).ToList() ?? new List<string>();
+            AllergiesAndConditions =
+                patient.AllergiesAndConditions?.Select(a => a.ToString()).ToList() ?? new List<string>();
+            AppointmentHistory = patient.AppointmentHistory?.Appointments().Select(a => a.ToString()).ToList() ??
+                                 new List<string>();
         }
 
         /// <summary>
@@ -122,8 +125,10 @@ namespace Domain.PatientAggregate
         /// <param name="AllergiesAndConditions"></param>
         /// <param name="AppointmentHistory"></param>
         [JsonConstructor]
-        public PatientDto(string MedicalRecordNumber, string FirstName, string LastName, string Email, string PhoneNumber, string EmergencyContactName,
-        string EmergencyContactPhoneNumber, string DayOfBirth, string MonthOfBirth, string YearOfBirth, string Gender, List<string> AllergiesAndConditions, List<string> AppointmentHistory)
+        public PatientDto(string? MedicalRecordNumber, string? FirstName, string? LastName, string? Email,
+            string? PhoneNumber, string? EmergencyContactName,
+            string? EmergencyContactPhoneNumber, string? DayOfBirth, string? MonthOfBirth, string? YearOfBirth,
+            string? Gender, List<string>? AllergiesAndConditions, List<string>? AppointmentHistory)
         {
             this.MedicalRecordNumber = MedicalRecordNumber;
             this.FirstName = FirstName;
@@ -143,6 +148,32 @@ namespace Domain.PatientAggregate
         public PatientDto(Staff staff)
         {
             this.staff = staff;
+        }
+
+        private Patient MapDtoToPatient(PatientDto patientDto)
+        {
+            var firstName = string.IsNullOrEmpty(patientDto.FirstName) ? null : new PatientFirstName(patientDto.FirstName);
+            var lastName = string.IsNullOrEmpty(patientDto.LastName) ? null : new PatientLastName(patientDto.LastName);
+
+            return new Patient
+            {
+                MedicalRecordNumber = string.IsNullOrEmpty(patientDto.MedicalRecordNumber) ? null : new MedicalRecordNumber(patientDto.MedicalRecordNumber),
+                FirstName = firstName,
+                LastName = lastName,
+                FullName = firstName != null && lastName != null ? new PatientFullName(firstName.Value, lastName.Value) : null,
+                Email = string.IsNullOrEmpty(patientDto.Email) ? null : new PatientEmail(patientDto.Email),
+                PhoneNumber = string.IsNullOrEmpty(patientDto.PhoneNumber) ? null : new PatientPhoneNumber(patientDto.PhoneNumber),
+                EmergencyContact = string.IsNullOrEmpty(patientDto.EmergencyContactName) || string.IsNullOrEmpty(patientDto.EmergencyContactPhoneNumber) ? null : new EmergencyContact(patientDto.EmergencyContactName, patientDto.EmergencyContactPhoneNumber),
+                DateOfBirth = string.IsNullOrEmpty(patientDto.DayOfBirth) || string.IsNullOrEmpty(patientDto.MonthOfBirth) || string.IsNullOrEmpty(patientDto.YearOfBirth) ? null : new DateOfBirth(patientDto.DayOfBirth, patientDto.MonthOfBirth, patientDto.YearOfBirth),
+                Gender = GenderExtensions.FromString(patientDto.Gender),
+                AllergiesAndConditions = patientDto.AllergiesAndConditions == null ? null : MapDtoToAllergiesAndConditions(patientDto.AllergiesAndConditions),
+                AppointmentHistory = patientDto.AppointmentHistory == null ? null : new AppointmentHistory()
+            };
+            
+        }
+        private List<AllergiesAndConditions> MapDtoToAllergiesAndConditions(List<string> allergiesAndConditions)
+        {
+            return allergiesAndConditions.Select(a => new AllergiesAndConditions(a)).ToList();
         }
     }
 }
