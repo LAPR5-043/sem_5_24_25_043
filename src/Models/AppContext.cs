@@ -123,7 +123,7 @@ public class AppContext : DbContext
                     operationRequestID = new OperationRequestID("000001"),
                     patientID = "1",
                     doctorID = "D202400001",
-                    operationTypeID = "Cardiology",
+                    operationTypeID = "Knee Surgery",
                     deadlineDate = new DeadlineDate(1, 1, 2025),
                     priority = Priority.Emergency
                 },
@@ -133,7 +133,7 @@ public class AppContext : DbContext
                     operationRequestID = new OperationRequestID("000002"),
                     patientID = "2",
                     doctorID = "D202400001",
-                    operationTypeID = "Cardiology",
+                    operationTypeID = "Heart Surgery",
                     deadlineDate = new DeadlineDate(1, 1, 2025),
                     priority = Priority.Effective
                 },
