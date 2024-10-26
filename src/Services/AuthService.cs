@@ -252,20 +252,55 @@ public class AuthService : IAuthService
         }
     }
 
-    /*public static string GetInternalEmailFromToken(HttpContext httpContext)
+    public async Task<bool> RegisterNewStaffAsync(string iamEmail, string internalEmail, string password, string name, string role, string phoneNumber)
     {
-        var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-        return jwtToken.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+       var signUpRequest = new AdminCreateUserRequest
+        {
+            UserPoolId = _userPoolId,
+            Username = iamEmail,
+            TemporaryPassword = password,
+            UserAttributes = new List<AttributeType>
+            {
+            new AttributeType { Name = "custom:internalEmail", Value = internalEmail },
+            new AttributeType { Name = "email", Value = iamEmail },
+            new AttributeType { Name = "email_verified", Value = "false" },
+            new AttributeType { Name = "name", Value = name },
+            new AttributeType { Name = "phone_number", Value = phoneNumber }
+            },
+            DesiredDeliveryMediums = new List<string> { "EMAIL" },
+            MessageAction = "SUPPRESS" // Suppress default Cognito email
+        };
+
+        var response = await _provider.AdminCreateUserAsync(signUpRequest);
+
+        
+        
+
+        // Add user to role group
+        var addUserToGroupRequest = new AdminAddUserToGroupRequest
+        {
+            UserPoolId = _userPoolId,
+            Username = iamEmail,
+            GroupName = role
+        };
+
+        await _provider.AdminAddUserToGroupAsync(addUserToGroupRequest);
+
+        /*// Confirm the user
+        var confirmSignUpRequest = new AdminConfirmSignUpRequest
+        {
+            UserPoolId = _userPoolId,
+            Username = email
+        };
+
+        await _provider.AdminConfirmSignUpAsync(confirmSignUpRequest);*/
+
+        // Send the confirmation email
+      //  await _emailService.SendConfirmationEmail(patientEmail, email);
+
+        return response.User != null;
     }
 
-    public static IEnumerable<string> GetGroupsFromToken(HttpContext httpContext)
-    {
-        var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-        return jwtToken.Claims.Where(claim => claim.Type == "cognito:groups").Select(claim => claim.Value);
-    }*/
+   
 
 }

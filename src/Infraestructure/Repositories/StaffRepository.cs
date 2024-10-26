@@ -57,5 +57,13 @@ public class StaffRepository : BaseRepository<Staff, StaffID>, IStaffRepository
             .AsEnumerable()
             .FirstOrDefault(s => s.email.email == doctorEmail)!;
     }
+    public async Task<Staff> GetStaffByID(string staffId)
+    {
+       return context.Staffs
+            .AsEnumerable()
+            .FirstOrDefault(s => s.staffID.id == staffId);
+        
+    }
+    
 }
 

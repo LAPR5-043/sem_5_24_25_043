@@ -4,4 +4,5 @@ public interface IEmailService
     Task SendPendingRequestEmail(string patientEmail, string subject, string url);
     Task SendEmailAsync(string email, string subject, string htmlMessage);
     Task SendEmailChangedData(string patientEmail, string subject,List<string> dataChanged);
+    Task SendEmailToStaffSignIn(string email, string password);
     }

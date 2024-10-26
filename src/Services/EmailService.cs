@@ -14,10 +14,12 @@ namespace src.Services
         private readonly string senderEmail;
         private readonly string senderPassword;
         private readonly string apiEndpointUrl;
+        private readonly string uiUrl;
 
         public EmailService(IConfiguration configuration, IEncryptionEmailService encryptionEmailService)
         {
             this.encryptionEmailService = encryptionEmailService;
+            
 
             // Read configuration for the sender email from appsettings.json
             smtpServer = configuration["EmailSettings:SmtpServer"];
@@ -25,6 +27,7 @@ namespace src.Services
             senderEmail = configuration["EmailSettings:SenderEmail"];
             senderPassword = configuration["EmailSettings:SenderPassword"];
             apiEndpointUrl = configuration["ApiEndpointConfirmationEmail"];
+            uiUrl = configuration["HostedUI"];
         }
 
         public async Task SendConfirmationEmail(string patientEmail, string iamEmail)
@@ -272,7 +275,7 @@ namespace src.Services
                         </div>
                         <div class='content'>
                             <p>Dear User,</p>
-                            <p>This mail is purposed to alert you that an admin made changes to your data</p>
+                            <p>This email is purposed to alert you that an admin made changes to your data</p>
                             <p>Please contact us if you dont agree with the changes made.</p>
                             <p>Changes made:</p>
                             <ul>
@@ -292,6 +295,88 @@ namespace src.Services
             
             return SendEmailAsync(patientEmail, subject, message);
 
+        }
+
+        public Task SendEmailToStaffSignIn(string email, string password)
+        {
+           
+            var subject = "Change your credentials";
+             var message = $@"
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }}
+                        .header {{
+                            background-color: #007bff;
+                            color: #ffffff;
+                            padding: 10px 0;
+                            text-align: center;
+                        }}
+                        .content {{
+                            padding: 20px;
+                            color: #000000;
+                        }}
+                        .button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            color: #ffffff;
+                            background-color: #007bff;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                            text-align: center;
+                        }}
+                        .button-container {{
+                            text-align: center;
+                        }}
+                        .footer {{
+                            margin-top: 20px;
+                            text-align: center;
+                            color: #888888;
+                            font-size: 12px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>Change Profile Confirmation</h2>
+                        </div>
+                        <div class='content'>
+                            <p>Dear User,</p>
+                            <p>It seems that your user account was created with the following temporary credentials:</p>
+                            <p>Email: {email}</p>
+                            <p>Password: {password}</p>
+                            <p>In order to gain access, please click in the button bellow to change them:</p>
+                            <div class='button-container'>
+                                <a href='{uiUrl}' class='button'>Finish Setup</a>
+                            </div>
+                            <br>
+                            <p>Best regards,</p>
+                            <p>Medopt Team</p>
+                            <img src='{signatureImageUrl}' alt='Signature' style='display:block; margin-top:20px;' />
+                        </div>
+                        <div class='footer'>
+                            <p>&copy; 2024 Medopt. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
+             return SendEmailAsync(email, subject, message);
         }
     }
 }

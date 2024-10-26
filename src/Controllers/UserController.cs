@@ -1,6 +1,7 @@
 using Amazon.CognitoIdentityProvider.Model;
 using Microsoft.AspNetCore.Mvc;
 using sem_5_24_25_043;
+using src.Controllers.Services;
 using src.Services.IServices;
 using src.Services.Services;
 
@@ -22,14 +23,16 @@ namespace src.Controllers
         /// Patient service
         /// </summary>
         private readonly IPatientService patientService;
+        private readonly IStaffService staffService;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="authService"></param>
-        public UserController(IAuthService authService, IPatientService patientService)
+        public UserController(IAuthService authService, IPatientService patientService, IStaffService staffService)
         {
             this.authService = authService;
             this.patientService = patientService;
+            this.staffService = staffService;
         }
 
         [HttpPost("signup-patient")]
@@ -88,6 +91,27 @@ namespace src.Controllers
                 return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
+        [HttpPost("signup-staff")]
+        public async Task<ActionResult<string>> SignUpStaffAsync(string staffID,string iamEmail)
+        {
+            if (string.IsNullOrEmpty(iamEmail))
+            {
+                return BadRequest(new { message = "Invalid staff data." });
+            }
+
+            try
+            {
+                await staffService.signUpStaffAsync(staffID,iamEmail);
+                return Ok(new { message = "Staff signed up successfully." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+        
+        
     }
 
 
