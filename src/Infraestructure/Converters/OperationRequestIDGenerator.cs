@@ -18,7 +18,7 @@ public class OperationRequestIDGenerator : ValueGenerator<OperationRequestID>
 
         var sequentialNumber = latestNumber != null ? int.Parse(latestNumber.Value) + 1 : 1;
 
-        var newNumber = $"{sequentialNumber:D6}";
+        var newNumber = sequentialNumber.ToString();//$"{sequentialNumber:D6}";
 
         OperationRequestID operationRequestID = new OperationRequestID(newNumber);
 

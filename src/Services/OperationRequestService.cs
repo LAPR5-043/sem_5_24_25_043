@@ -86,10 +86,10 @@ namespace src.Services
             VerifyPatientID(operationRequestDto.PatientID);
             newOperationRequest.patientID = operationRequestDto.PatientID;
 
-            if (operationRequestDto.OperationTypeID != staffDto.SpecializationID)
+            /*if (operationRequestDto.OperationTypeID != staffDto.SpecializationID)
             {
                 throw new ArgumentException("Operation Type must match the specialization of the doctor");
-            }
+            }*/
             newOperationRequest.operationTypeID = operationRequestDto.OperationTypeID;
 
             newOperationRequest.doctorID = staffDto.StaffID;
