@@ -27,10 +27,10 @@ namespace src.Services
             apiEndpointUrl = configuration["ApiEndpointConfirmationEmail"];
         }
 
-        public async Task SendConfirmationEmail(string patientEmail)
+        public async Task SendConfirmationEmail(string patientEmail, string iamEmail)
         {
             // Encrypt the email
-            var encryptedEmail = encryptionEmailService.EncryptEmail(patientEmail);
+            var encryptedEmail = encryptionEmailService.EncryptEmail(iamEmail);
 
             // Build the confirmation link with the encrypted email
             var confirmationUrl = $"{apiEndpointUrl}?email={HttpUtility.UrlEncode(encryptedEmail)}";

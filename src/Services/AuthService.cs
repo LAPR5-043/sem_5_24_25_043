@@ -212,7 +212,7 @@ public class AuthService : IAuthService
         await _provider.AdminDisableUserAsync(adminDisableUserRequest);
 
         // Send the confirmation email
-        await _emailService.SendConfirmationEmail(patientEmail);
+        await _emailService.SendConfirmationEmail(patientEmail, email);
         
         return response.User != null;
     }
