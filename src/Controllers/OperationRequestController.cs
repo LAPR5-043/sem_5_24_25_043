@@ -78,7 +78,7 @@ namespace src.Controllers
         // GET: api/OperationRequest/doctor/submitted/?selfRequested=&patientID=&patientFirstName=&patientLastName=&operationType=&priority=&sortBy=
         [Authorize(Roles = "medic")]
         [HttpGet("doctor/submitted")]
-        public async Task<ActionResult<List<OperationRequestDto>>> GetDoctorOperationRequests([FromQuery(Name = "Patient ID")] string? patientID, [FromQuery(Name = "Patient First Name")] string? patientFirstName, [FromQuery(Name = "Patient Last Name")] string? patientLastName, [FromQuery(Name = "Operation Type")] string? operationType, [FromQuery(Name = "Priority")] string? priority, [FromQuery(Name = "Sort by")] string? sortBy)
+        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetDoctorOperationRequests([FromQuery(Name = "Patient ID")] string? patientID, [FromQuery(Name = "Patient First Name")] string? patientFirstName, [FromQuery(Name = "Patient Last Name")] string? patientLastName, [FromQuery(Name = "Operation Type")] string? operationType, [FromQuery(Name = "Priority")] string? priority, [FromQuery(Name = "Sort by")] string? sortBy)
         {
             var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
 

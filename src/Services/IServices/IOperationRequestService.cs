@@ -8,8 +8,8 @@ namespace src.Services.IServices
     {
         Task<bool> CreateOperationRequestAsync(OperationRequestDto operationRequestDto, string email);
         Task<List<OperationRequestDto>> GetOperationRequestFilteredAsync(string? doctorID, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy);
-        Task<ActionResult<IEnumerable<OperationRequestDto>>> GetDoctorOperationRequestsAsync(string doctorEmail, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy);
-        Task<ActionResult<IEnumerable<OperationRequestDto>>> GetOperationRequestByPatientIdAsync(string id);
+        Task<List<OperationRequestDto>> GetDoctorOperationRequestsAsync(string doctorEmail, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy);
+        Task<List<OperationRequestDto>> GetOperationRequestByPatientIdAsync(string id);
         Task<bool> DeleteOperationRequestAsync(int id, string doctorEmail);
         Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto, string email);
     }

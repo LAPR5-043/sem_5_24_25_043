@@ -208,7 +208,7 @@ namespace src.Services
             return resultDtos;
         }
 
-        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetDoctorOperationRequestsAsync(string doctorEmail, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
+        public async Task<List<OperationRequestDto>> GetDoctorOperationRequestsAsync(string doctorEmail, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
         {
             var operationRequestList = await operationRequestRepository.GetAllAsync();
             var query = operationRequestList.AsQueryable();
@@ -281,7 +281,7 @@ namespace src.Services
             return resultDtos;
         }
 
-        public async Task<ActionResult<IEnumerable<OperationRequestDto>>> GetOperationRequestByPatientIdAsync(string id)
+        public async Task<List<OperationRequestDto>> GetOperationRequestByPatientIdAsync(string id)
         {
             var operationRequest = await operationRequestRepository.GetAllAsync();
             var query = operationRequest.AsQueryable();

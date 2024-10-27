@@ -153,6 +153,178 @@ namespace src.Controllers.Tests
             Assert.Equal("An error occurred while searching the operation request.", statusCodeResult.Value.GetType().GetProperty("message").GetValue(statusCodeResult.Value, null));
         }
 
+        [Fact]
+        public async Task GetDoctorOperationRequests_ReturnsOkResult_WhenRequestsExist()
+        {
+
+            // Arrange
+            var operationRequests = new List<OperationRequestDto>
+            {
+                new OperationRequestDto { RequestId = "1", PatientID = "1" , OperationTypeID = "Heart Surgery", DoctorID = "doc1", Priority = "emergency", Day = "8", Month = "10", Year = "2024" },
+                new OperationRequestDto { RequestId = "2", PatientID = "2" , OperationTypeID = "Knee Surgery", DoctorID = "doc1", Priority = "urgent", Day = "14", Month = "10", Year = "2024" },
+            };
+
+            _serviceMock.Setup(service => service.GetDoctorOperationRequestsAsync(
+                "doctor@example.com", null, null, null, null, null, null))
+                .ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _controller.GetDoctorOperationRequests(null, null, null, null, null, null);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<List<OperationRequestDto>>(okResult.Value);
+            Assert.Equal(2, returnValue.Count);
+        }
+
+
+        [Fact]
+        public async Task GetDoctorOperationRequests_ReturnsNotFound_WhenNoRequestsExist()
+        {
+            // Arrange
+            _serviceMock.Setup(service => service.GetDoctorOperationRequestsAsync(
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((List<OperationRequestDto>)null);
+
+            // Act
+            var result = await _controller.GetDoctorOperationRequests(null, null, null, null, null, null);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            Assert.Equal("Operation request not found.", notFoundResult.Value.GetType().GetProperty("message").GetValue(notFoundResult.Value, null));
+        }
+
+
+        [Fact]
+        public async Task GetDoctorOperationRequests_ReturnsInternalServerError_WhenExceptionThrown()
+        {
+            // Arrange
+            _serviceMock.Setup(service => service.GetDoctorOperationRequestsAsync(
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ThrowsAsync(new Exception("Test exception"));
+
+            // Act
+            var result = await _controller.GetDoctorOperationRequests(null, null, null, null, null, null);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, statusCodeResult.StatusCode);
+            Assert.Equal("An error occurred while searching the operation request.", statusCodeResult.Value.GetType().GetProperty("message").GetValue(statusCodeResult.Value, null));
+        }
+
+        [Fact]
+        public async Task GetDoctorOperationRequests_ReturnsOkResult_WithOperationRequests()
+        {
+            // Arrange
+            var operationRequests = new List<OperationRequestDto>
+            {
+                new OperationRequestDto { RequestId = "1", PatientID = "1" , OperationTypeID = "Heart Surgery", DoctorID = "doc1", Priority = "emergency", Day = "8", Month = "10", Year = "2024" },
+                new OperationRequestDto { RequestId = "2", PatientID = "2" , OperationTypeID = "Knee Surgery", DoctorID = "doc1", Priority = "urgent", Day = "14", Month = "10", Year = "2024" },
+            };
+
+            _serviceMock.Setup(service => service.GetDoctorOperationRequestsAsync(
+                "doctor@example.com", null, null, null, null, null, null))
+                .ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _controller.GetDoctorOperationRequests(null, null, null, null, null, null);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<List<OperationRequestDto>>(okResult.Value);
+            Assert.Equal(2, returnValue.Count);
+        }
+
+        [Fact]
+        public async Task GetDoctorOperationRequests_ReturnsNotFound_WhenNoRequestsFound()
+        {
+            // Arrange
+            _serviceMock.Setup(service => service.GetDoctorOperationRequestsAsync(
+                "doctor@example.com", null, null, null, null, null, null))
+                .ReturnsAsync((List<OperationRequestDto>)null);
+
+            // Act
+            var result = await _controller.GetDoctorOperationRequests(null, null, null, null, null, null);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            Assert.Equal("Operation request not found.", notFoundResult.Value.GetType().GetProperty("message").GetValue(notFoundResult.Value, null));
+        }
+
+        [Fact]
+        public async Task GetDoctorOperationRequests_ReturnsInternalServerError_OnException()
+        {
+            // Arrange
+            _serviceMock.Setup(service => service.GetDoctorOperationRequestsAsync(
+                "doctor@example.com", null, null, null, null, null, null))
+                .ThrowsAsync(new System.Exception("Test exception"));
+
+            // Act
+            var result = await _controller.GetDoctorOperationRequests(null, null, null, null, null, null);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("An error occurred while searching the operation request.", statusCodeResult.Value.GetType().GetProperty("message").GetValue(statusCodeResult.Value, null));
+        }
+
+        [Fact]
+        public async Task GetOperationRequestByPatientId_ReturnsOkResult_WithOperationRequests()
+        {
+            // Arrange
+            var operationRequests = new List<OperationRequestDto>
+            {
+                new OperationRequestDto { RequestId = "1", PatientID = "1" , OperationTypeID = "Heart Surgery", DoctorID = "doc1", Priority = "emergency", Day = "8", Month = "10", Year = "2024" },
+                new OperationRequestDto { RequestId = "2", PatientID = "1" , OperationTypeID = "Knee Surgery", DoctorID = "doc2", Priority = "urgent", Day = "14", Month = "10", Year = "2024" },
+            };
+
+            _serviceMock.Setup(service => service.GetOperationRequestByPatientIdAsync("1"))
+                .ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _controller.GetOperationRequestByPatientId("1");
+
+            // Assert
+            // Assert
+            var okResult = Assert.IsType<ActionResult<List<OperationRequestDto>>>(result);
+            var returnValue = Assert.IsType<OkObjectResult>(okResult.Result);
+            var operationRequestList = Assert.IsType<List<OperationRequestDto>>(returnValue.Value);
+            Assert.Equal(2, operationRequestList.Count);
+            Assert.Equal("1", operationRequestList[0].RequestId);
+            Assert.Equal("2", operationRequestList[1].RequestId);
+        }
+        [Fact]
+        public async Task GetOperationRequestByPatientId_ReturnsNotFound_WhenNoRequestsFound()
+        {
+            // Arrange
+            _serviceMock.Setup(service => service.GetOperationRequestByPatientIdAsync("123"))
+                .ReturnsAsync((List<OperationRequestDto>)null);
+
+            // Act
+            var result = await _controller.GetOperationRequestByPatientId("123");
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            Assert.Equal("Operation requests by patient not found.", notFoundResult.Value.GetType().GetProperty("message").GetValue(notFoundResult.Value, null));
+        }
+
+
+        [Fact]
+        public async Task GetOperationRequestByPatientId_ReturnsInternalServerError_OnException()
+        {
+            // Arrange
+            _serviceMock.Setup(service => service.GetOperationRequestByPatientIdAsync("123"))
+                .ThrowsAsync(new System.Exception("Test exception"));
+
+            // Act
+            var result = await _controller.GetOperationRequestByPatientId("123");
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("An error occurred while searching the operation request.", statusCodeResult.Value.GetType().GetProperty("message").GetValue(statusCodeResult.Value, null));
+        }
+
 
         [Fact]
         public async Task DeleteOperationRequest_ConfirmedDeletion_ReturnsOk()
