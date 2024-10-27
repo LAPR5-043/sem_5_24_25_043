@@ -169,6 +169,160 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task GetPatientsFilteredAsync_ShouldReturnAllFiltered()
+        {
+            // Arrange
+            var patients = new List<Patient>
+            {
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("123"),
+                    FirstName = new PatientFirstName("John"),
+                    LastName = new PatientLastName("Doe"),
+                    Email = new PatientEmail("john.doe@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                    DateOfBirth = new DateOfBirth("29", "03", "2003"),
+                    Gender = Gender.Male
+                },
+
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("456"),
+                    FirstName = new PatientFirstName("Jane"),
+                    LastName = new PatientLastName("Smith"),
+                    Email = new PatientEmail("jane.smith@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+01987654321"),
+                    DateOfBirth = new DateOfBirth("14", "10", "2003"),
+                    Gender = Gender.Female
+                }
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
+
+            // Act
+            var result = await _patientService.GetPatientsFilteredAsync(null, null, null, null, null, null, null, null);
+
+            // Assert
+            Assert.Equal(2, result.Count);
+            Assert.Equal("John", result.First().FirstName);
+            Assert.Equal("Jane", result.Last().FirstName);
+        }
+
+        [Fact]
+        public async Task GetPatientsFilteredAsync_ShouldReturnFilteredPatients()
+        {
+            // Arrange
+            var patients = new List<Patient>
+            {
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("123"),
+                    FirstName = new PatientFirstName("John"),
+                    LastName = new PatientLastName("Doe"),
+                    Email = new PatientEmail("john.doe@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                    DateOfBirth = new DateOfBirth("29", "03", "2003"),
+                    Gender = Gender.Male
+                },
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("456"),
+                    FirstName = new PatientFirstName("Jane"),
+                    LastName = new PatientLastName("Smith"),
+                    Email = new PatientEmail("jane.smith@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+01987654321"),
+                    DateOfBirth = new DateOfBirth("14", "10", "2003"),
+                    Gender = Gender.Female
+                }
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
+
+            // Act
+            var result = await _patientService.GetPatientsFilteredAsync("John", null, null, null, null, null, null, null);
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal("John", result.First().FirstName);
+        }
+        [Fact]
+        public async Task GetPatientsFilteredAsync_ShouldReturnSortedPatients()
+        {
+            // Arrange
+            var patients = new List<Patient>
+            {
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("123"),
+                    FirstName = new PatientFirstName("John"),
+                    LastName = new PatientLastName("Smith"),
+                    Email = new PatientEmail("john.doe@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                    DateOfBirth = new DateOfBirth("29", "03", "2003"),
+                    Gender = Gender.Male
+                },
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("456"),
+                    FirstName = new PatientFirstName("Jane"),
+                    LastName = new PatientLastName("Doe"),
+                    Email = new PatientEmail("jane.smith@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+01987654321"),
+                    DateOfBirth = new DateOfBirth("14", "10", "2003"),
+                    Gender = Gender.Female
+                }
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
+
+            // Act
+            var result = await _patientService.GetPatientsFilteredAsync(null, null, null, null, null, null, null, "lastname");
+
+            // Assert
+            Assert.Equal(2, result.Count);
+            Assert.Equal("Doe", result.First().LastName);
+            Assert.Equal("Smith", result.Last().LastName);
+        }
+
+
+        [Fact]
+        public async Task GetPatientsFilteredAsync_ShouldReturnEmptyList_WhenNoPatientsMatch()
+        {
+            // Arrange
+            var patients = new List<Patient>
+            {
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("123"),
+                    FirstName = new PatientFirstName("John"),
+                    LastName = new PatientLastName("Smith"),
+                    Email = new PatientEmail("john.doe@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                    DateOfBirth = new DateOfBirth("29", "03", "2003"),
+                    Gender = Gender.Male
+                },
+                new Patient
+                {
+                    MedicalRecordNumber = new MedicalRecordNumber("456"),
+                    FirstName = new PatientFirstName("Jane"),
+                    LastName = new PatientLastName("Doe"),
+                    Email = new PatientEmail("jane.smith@example.com"),
+                    PhoneNumber = new PatientPhoneNumber("+01987654321"),
+                    DateOfBirth = new DateOfBirth("14", "10", "2003"),
+                    Gender = Gender.Female
+                }
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(patients);
+
+            // Act
+            var result = await _patientService.GetPatientsFilteredAsync("Bob", null, null, null, null, null, null, null);
+
+            // Assert
+            Assert.Empty(result);
+        }
+
+        [Fact]
         public async Task UpdatePatientAsync_ValidData_ReturnsTrue()
         {
             // Arrange
@@ -206,8 +360,8 @@ namespace src.IntegrationTests
 
             _sensitiveDataServiceMock.Setup(serv => serv.isSensitive(It.IsAny<string>()))
                                   .Returns(true);
-            _sensitiveDataServiceMock.Setup(serv => serv.loadSensitiveData());                   
-                                  
+            _sensitiveDataServiceMock.Setup(serv => serv.loadSensitiveData());
+
             // Act
             var result = await _patientService.UpdatePatientAsync(id, patientDto);
 
@@ -256,7 +410,7 @@ namespace src.IntegrationTests
             Assert.Equal("Object reference not set to an instance of an object.", exception.Message);
         }
 
-                [Fact]
+        [Fact]
         public async Task DeletePatientAsync_ValidData_ReturnsTrue()
         {
             // Arrange
