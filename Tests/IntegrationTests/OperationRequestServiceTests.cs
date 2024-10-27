@@ -210,6 +210,49 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task GetDoctorOperationRequestsAsync_ShouldReturnFilteredRequests()
+        {
+            // Arrange
+            var doctorEmail = "doctor@example.com";
+            var doctorId = "doc1";
+            var operationRequests = new List<OperationRequest>
+            {
+                new OperationRequest { operationRequestID = new OperationRequestID("1"), patientID = "1" , operationTypeID = "Heart Surgery", doctorID = "doc1", priority = Priority.Emergency, deadlineDate = new DeadlineDate(8, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("2"), patientID = "2" , operationTypeID = "Knee Surgery", doctorID = "doc2", priority = Priority.Urgent, deadlineDate = new DeadlineDate(14, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("3"), patientID = "3" , operationTypeID = "Eye Surgery", doctorID = "doc1", priority = Priority.Urgent, deadlineDate = new DeadlineDate(19, 12, 2024) },
+            };
+
+            _staffServiceMock.Setup(s => s.GetIdFromEmailAsync(doctorEmail)).ReturnsAsync(doctorId);
+            _operationRequestRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _operationRequestService.GetDoctorOperationRequestsAsync(doctorEmail, null, null, null, null, null, null);
+
+            // Assert
+            Assert.Equal(2, result.Count);
+        }
+        [Fact]
+        public async Task GetOperationRequestByPatientIdAsync_ShouldReturnRequestsForPatient()
+        {
+            // Arrange
+            var patientId = "1";
+            var operationRequests = new List<OperationRequest>
+            {
+                new OperationRequest { operationRequestID = new OperationRequestID("1"), patientID = "1" , operationTypeID = "Heart Surgery", doctorID = "doc1", priority = Priority.Emergency, deadlineDate = new DeadlineDate(8, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("2"), patientID = "1" , operationTypeID = "Knee Surgery", doctorID = "doc2", priority = Priority.Urgent, deadlineDate = new DeadlineDate(14, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("3"), patientID = "2" , operationTypeID = "Eye Surgery", doctorID = "doc1", priority = Priority.Urgent, deadlineDate = new DeadlineDate(19, 12, 2024) },
+            };
+
+            _operationRequestRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _operationRequestService.GetOperationRequestByPatientIdAsync(patientId);
+
+            // Assert
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
         public async Task UpdateOperationRequestAsync_ValidData_ReturnsTrue()
         {
             // Arrange
