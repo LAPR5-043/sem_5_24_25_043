@@ -74,7 +74,7 @@ namespace Infrastructure.PatientRepository
                 v => JsonSerializer.Deserialize<EmergencyContact>(v, new JsonSerializerOptions
                 {
                     Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                })
+                }) ?? new EmergencyContact()
             )
             .IsRequired();
 
