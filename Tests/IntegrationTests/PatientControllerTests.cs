@@ -162,6 +162,51 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task GetPatientById_ReturnsNotFound_WhenPatientDoesNotExist()
+        {
+            // Arrange
+            var patients = new List<PatientDto>
+            {
+                new PatientDto { MedicalRecordNumber = "123", FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" , PhoneNumber = "+1234567890", EmergencyContactName = "Jane Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "29", MonthOfBirth = "3", YearOfBirth = "2003", Gender = "Male"},
+                new PatientDto { MedicalRecordNumber = "456", FirstName = "Jane", LastName = "Doe", Email = "jane.doe@example.com", PhoneNumber = "+1234567890", EmergencyContactName = "John Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "14", MonthOfBirth = "10", YearOfBirth = "2003", Gender = "Female"}
+            };
+
+            var patientId = "789";
+            mockPatientService.Setup(service => service.GetPatientByIdAsync(patientId))
+                        .ReturnsAsync((PatientDto)null);
+
+            // Act
+            var result = await controller.GetPatientById(patientId);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("Patient not found.", notFoundResult.Value.GetType().GetProperty("message").GetValue(notFoundResult.Value, null));
+        }
+
+
+        [Fact]
+        public async Task GetPatientById_ReturnsOk_WhenPatientExists()
+        {
+            // Arrange
+            var patients = new List<PatientDto>
+            {
+                new PatientDto { MedicalRecordNumber = "123", FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" , PhoneNumber = "+1234567890", EmergencyContactName = "Jane Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "29", MonthOfBirth = "3", YearOfBirth = "2003", Gender = "Male"},
+                new PatientDto { MedicalRecordNumber = "456", FirstName = "Jane", LastName = "Doe", Email = "jane.doe@example.com", PhoneNumber = "+1234567890", EmergencyContactName = "John Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "14", MonthOfBirth = "10", YearOfBirth = "2003", Gender = "Female"}
+            };
+
+            var patientId = "123";
+            mockPatientService.Setup(service => service.GetPatientByIdAsync(patientId))
+                        .ReturnsAsync(patients[0]);
+
+            // Act
+            var result = await controller.GetPatientById(patientId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(patientId, okResult.Value.GetType().GetProperty("MedicalRecordNumber").GetValue(okResult.Value, null));
+        }
+
+        [Fact]
         public async Task DeletePatient_ShouldReturnOkStatus()
         {
             // Arrange
