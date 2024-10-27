@@ -40,6 +40,60 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task CreateStaffAsync_ShouldThrowArgumentNullException_WhenStaffDtoIsNull()
+        {
+            // Arrange
+            StaffDto staffDto = null;
+
+            // Act & Assert
+            var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => _staffService.CreateStaffAsync(staffDto));
+            Assert.Contains("Staff data is null.", ex.Message);
+            _staffRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Staff>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task CreateStaffAsync_ShouldThrowInvalidOperationException_WhenStaffAlreadyExists()
+        {
+            // Arrange
+            var staffDto = new StaffDto { Email = "test@example.com", PhoneNumber = "123456789", LicenseNumber = "12345" };
+            _staffRepositoryMock.Setup(repo => repo.StaffExists(staffDto.Email, staffDto.PhoneNumber, staffDto.LicenseNumber)).Returns(true);
+
+            // Act & Assert
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _staffService.CreateStaffAsync(staffDto));
+            Assert.Contains("Staff already exists.", ex.Message);
+
+        }
+
+
+        [Fact]
+        public async Task CreateStaffAsync_ShouldCreateNewStaff_WhenStaffDtoIsValid()
+        {
+            // Arrange
+            var staffDto = new StaffDto
+            {
+                StaffID = "1",
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                PhoneNumber = "+351519919191",
+                LicenseNumber = "12345",
+                IsActive = true,
+                AvailabilitySlots = new List<string> { },
+                SpecializationID = "Cardiology"
+            };
+
+            _staffRepositoryMock.Setup(repo => repo.StaffExists(staffDto.Email, staffDto.PhoneNumber, staffDto.LicenseNumber)).Returns(false);
+            _staffRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<Staff>())).Returns(Task.FromResult(It.IsAny<Staff>()));
+
+            // Act
+            var result = await _staffService.CreateStaffAsync(staffDto);
+
+            // Assert
+            Assert.True(result);
+            _staffRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Staff>()), Times.Once);
+        }
+
+        [Fact]
         public async Task GetStaffsFilteredAsync_ValidFilters_ReturnsFilteredStaffs()
         {
             // Arrange
