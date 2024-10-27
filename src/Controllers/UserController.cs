@@ -24,17 +24,15 @@ namespace src.Controllers
         /// </summary>
         private readonly IPatientService patientService;
         private readonly IStaffService staffService;
-        private readonly IEmailService emailService;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="authService"></param>
-        public UserController(IAuthService authService, IPatientService patientService, IStaffService staffService, IEmailService emailService)
+        public UserController(IAuthService authService, IPatientService patientService, IStaffService staffService)
         {
             this.authService = authService;
             this.patientService = patientService;
             this.staffService = staffService;
-            this.emailService = emailService;
         }
 
         [HttpPost("signup-patient")]
