@@ -418,5 +418,143 @@ namespace src.IntegrationTests
             Assert.Equal("{ message = Invalid pending requests data. }", badRequestResult.Value.ToString());
         }
 
+        [Fact]
+        public async Task DeletePersonalAccount_ReturnsOk_WhenDeletionIsSuccessful()
+        {
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+            new Claim("custom:internalEmail", "test@example.com")
+            }, "mock"));
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            // Arrange
+            mockPatientService.Setup(service => service.DeletePersonalAccountAsync(It.IsAny<string>(), It.IsAny<bool?>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await controller.DeletePersonalAccount(true);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal("{ message = Account deletion request successful }", okResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task DeletePersonalAccount_ReturnsNotFound_WhenPatientNotFound()
+        {
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                        {
+            new Claim("custom:internalEmail", "test@example.com")
+                        }, "mock"));
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            // Arrange
+            mockPatientService.Setup(service => service.DeletePersonalAccountAsync(It.IsAny<string>(), It.IsAny<bool?>()))
+                        .ReturnsAsync(false);
+
+            // Act
+            var result = await controller.DeletePersonalAccount(true);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("{ message = Patient personal account not found. }", notFoundResult.Value.ToString());
+        }
+
+
+        [Fact]
+        public async Task DeletePersonalAccount_ReturnsStatusCode500_WhenExceptionIsThrown()
+        {
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+                                    {
+            new Claim("custom:internalEmail", "test@example.com")
+                                    }, "mock"));
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = user }
+            };
+
+            // Arrange
+            mockPatientService.Setup(service => service.DeletePersonalAccountAsync(It.IsAny<string>(), It.IsAny<bool?>()))
+                        .ThrowsAsync(new System.Exception("Test exception"));
+
+            // Act
+            var result = await controller.DeletePersonalAccount(true);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("{ message = Test exception }", statusCodeResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task DeleteSensitiveData_ReturnsBadRequest_WhenPatientIdIsNull()
+        {
+            // Arrange
+            string patientID = null;
+
+            // Act
+            var result = await controller.DeleteSensitiveData(patientID);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("{ message = Invalid patient data. }", badRequestResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task DeleteSensitiveData_ReturnsOk_WhenDeletionIsSuccessful()
+        {
+            // Arrange
+            string patientID = "123";
+            mockPatientService.Setup(service => service.DeleteSensitiveDataAsync(patientID)).ReturnsAsync(true);
+
+            // Act
+            var result = await controller.DeleteSensitiveData(patientID);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal("{ message = Patient account deletion confirmed. }", okResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task DeleteSensitiveData_ReturnsNotFound_WhenDeletionFails()
+        {
+            // Arrange
+            string patientID = "123";
+            mockPatientService.Setup(service => service.DeleteSensitiveDataAsync(patientID)).ReturnsAsync(false);
+
+            // Act
+            var result = await controller.DeleteSensitiveData(patientID);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            Assert.Equal("{ message = Failed account deletion. }", notFoundResult.Value.ToString());
+        }
+
+
+        [Fact]
+        public async Task DeleteSensitiveData_ReturnsStatusCode500_WhenExceptionIsThrown()
+        {
+            // Arrange
+            string patientID = "123";
+            mockPatientService.Setup(service => service.DeleteSensitiveDataAsync(patientID)).ThrowsAsync(new Exception("Test exception"));
+
+            // Act
+            var result = await controller.DeleteSensitiveData(patientID);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("{ message = An error occurred: Test exception }", statusCodeResult.Value.ToString());
+
+        }
     }
 }
