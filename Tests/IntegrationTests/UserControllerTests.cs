@@ -13,13 +13,18 @@ namespace src.IntegrationTests
     {
         private readonly Mock<IAuthService> mockAuthService;
         private readonly Mock<IPatientService> mockPatientService;
+        private readonly Mock<IStaffService> mockStaffService;
+        private readonly Mock<IEmailService> mockEmailService;
         private readonly UserController userController;
 
         public UserControllerTests()
         {
             mockAuthService = new Mock<IAuthService>();
             mockPatientService = new Mock<IPatientService>();
-            userController = new UserController(mockAuthService.Object, mockPatientService.Object);
+            mockStaffService = new Mock<IStaffService>();
+            mockEmailService = new Mock<IEmailService>();
+            userController = new UserController(mockAuthService.Object, mockPatientService.Object, mockStaffService.Object, mockEmailService.Object);
+
         }
 
         [Fact]

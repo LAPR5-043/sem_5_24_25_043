@@ -9,6 +9,7 @@ using src.Services.IServices;
 using Domain.StaffAggregate;
 using src.Domain.Shared;
 using src.Controllers.Services;
+using sem_5_24_25_043;
 
 namespace src.IntegrationTests
 {
@@ -17,6 +18,8 @@ namespace src.IntegrationTests
         private readonly Mock<IStaffRepository> _staffRepositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly Mock<ILogService> _logServiceMock;
+        private readonly Mock<IAuthService> _authServiceMock;
+        private readonly Mock<IEmailService> _emailServiceMock;
         private readonly StaffService _staffService;
 
         public StaffServiceTests()
@@ -24,11 +27,15 @@ namespace src.IntegrationTests
             _staffRepositoryMock = new Mock<IStaffRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _logServiceMock = new Mock<ILogService>();
+            _authServiceMock = new Mock<IAuthService>();
+            _emailServiceMock = new Mock<IEmailService>();
 
             _staffService = new StaffService(
                 _unitOfWorkMock.Object,
                 _staffRepositoryMock.Object,
-                _logServiceMock.Object
+                _logServiceMock.Object,
+                _authServiceMock.Object,
+                _emailServiceMock.Object
             );
         }
 
@@ -58,7 +65,7 @@ namespace src.IntegrationTests
                     availabilitySlots = new AvailabilitySlots(),
                     specializationID = "Neurology"
                 },
-    
+
                 new Staff
                 {
                     Id = new StaffID("D202400001"),
@@ -112,7 +119,7 @@ namespace src.IntegrationTests
                     availabilitySlots = new AvailabilitySlots(),
                     specializationID = "Neurology"
                 },
-    
+
                 new Staff
                 {
                     Id = new StaffID("D202400001"),
@@ -160,7 +167,7 @@ namespace src.IntegrationTests
                     availabilitySlots = new AvailabilitySlots(),
                     specializationID = "Neurology"
                 },
-    
+
                 new Staff
                 {
                     Id = new StaffID("D202400001"),
