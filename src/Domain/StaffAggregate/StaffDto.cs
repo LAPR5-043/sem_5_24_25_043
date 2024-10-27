@@ -79,6 +79,10 @@ public class StaffDto
         SpecializationID = staff.specializationID ?? string.Empty;
 
     }
+    
+    public StaffDto()
+    {
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StaffDto"/> class.

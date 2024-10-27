@@ -24,15 +24,101 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace src.IntegrationTests
 {
-   public class StaffControllerTests
+    public class StaffControllerTests
     {
+
+        [Fact]
+        public async Task CreateStaff_ReturnsBadRequest_WhenStaffDtoIsNull()
+        {
+            Mock<IStaffService> mockStaffService = new Mock<IStaffService>();
+            StaffController controller = new StaffController(mockStaffService.Object);
+
+            // Arrange
+            StaffDto staffDto = null;
+
+            // Act
+            var result = await controller.CreateStaff(staffDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("{ message = Invalid Staff data. }", badRequestResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task CreateStaff_ReturnsOk_WhenStaffIsCreatedSuccessfully()
+        {
+            Mock<IStaffService> mockStaffService = new Mock<IStaffService>();
+            StaffController controller = new StaffController(mockStaffService.Object);
+
+            // Arrange
+            var staffDto = new StaffDto
+            {
+                StaffID = "0001",
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "doctor@example.com",
+                PhoneNumber = "+351919911319",
+                LicenseNumber = "123456",
+                IsActive = true,
+                SpecializationID = "Cardiology"
+            };
+
+            mockStaffService.Setup(service => service.CreateStaffAsync(staffDto)).ReturnsAsync(true);
+
+            // Act
+            var result = await controller.CreateStaff(staffDto);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal("{ message = Staff member created successfully. }", okResult.Value.ToString());
+        }
+
+        [Fact]
+        public async Task CreateStaff_ReturnsStatusCode500_WhenExceptionIsThrown()
+        {
+            Mock<IStaffService> mockStaffService = new Mock<IStaffService>();
+            StaffController controller = new StaffController(mockStaffService.Object);
+
+            // Arrange
+            var staffDto = new StaffDto();
+            mockStaffService.Setup(service => service.CreateStaffAsync(staffDto)).ThrowsAsync(new Exception("Test exception"));
+
+            // Act
+            var result = await controller.CreateStaff(staffDto);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("An error occurred: Test exception", statusCodeResult.Value.GetType().GetProperty("message").GetValue(statusCodeResult.Value, null));
+        }
+
+
+        [Fact]
+        public async Task CreateStaff_ReturnsStatusCode500_WhenStaffIsNotCreated()
+        {
+            Mock<IStaffService> mockStaffService = new Mock<IStaffService>();
+            StaffController controller = new StaffController(mockStaffService.Object);
+
+            // Arrange
+            var staffDto = new StaffDto();
+            mockStaffService.Setup(service => service.CreateStaffAsync(staffDto)).ReturnsAsync(false);
+
+            // Act
+            var result = await controller.CreateStaff(staffDto);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("An error occurred while creating the Staff member.", statusCodeResult.Value.GetType().GetProperty("message").GetValue(statusCodeResult.Value, null));
+        }
+
         [Fact]
         public async Task GetStaffsFiltered_ShouldReturnOneStaff()
         {
             // Arrange
             var mockStaffService = new Mock<IStaffService>();
-            var filteredStaff = 
-            
+            var filteredStaff =
+
                 new Staff
                 {
                     Id = new StaffID("D202400001"),
@@ -69,17 +155,17 @@ namespace src.IntegrationTests
             };
 
 
-            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), 
+            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                                     It.IsAny<string>(), It.IsAny<string>()));
-            
-             mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
-                            
+
+            mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
+
 
 
             var controller = new StaffController(mockStaffService.Object);
 
             // Act
-            var result = await controller.GetStaffsFiltered( "John","", "", "", "");
+            var result = await controller.GetStaffsFiltered("John", "", "", "", "");
 
             // Assert
             var okResult = Assert.IsType<ActionResult<List<StaffDto>>>(result);
@@ -97,7 +183,7 @@ namespace src.IntegrationTests
         {
             // Arrange
             var mockStaffService = new Mock<IStaffService>();
-            var filteredStaff1 = 
+            var filteredStaff1 =
                 new Staff
                 {
                     Id = new StaffID("D202400011"),
@@ -112,8 +198,8 @@ namespace src.IntegrationTests
                     availabilitySlots = new AvailabilitySlots(),
                     specializationID = "Neurology"
                 };
-            
-            var filteredStaff2 =     
+
+            var filteredStaff2 =
                 new Staff
                 {
                     Id = new StaffID("D202400001"),
@@ -129,7 +215,7 @@ namespace src.IntegrationTests
                     specializationID = "Cardiology"
                 };
 
-        
+
 
             var filteredStaffs = new List<StaffDto>
             {
@@ -138,17 +224,17 @@ namespace src.IntegrationTests
             };
 
 
-            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), 
+            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                                     It.IsAny<string>(), It.IsAny<string>()));
-            
-             mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
-                            
+
+            mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
+
 
 
             var controller = new StaffController(mockStaffService.Object);
 
             // Act
-            var result = await controller.GetStaffsFiltered( "","", "", "", "firstName");
+            var result = await controller.GetStaffsFiltered("", "", "", "", "firstName");
 
             // Assert
             var okResult = Assert.IsType<ActionResult<List<StaffDto>>>(result);
@@ -157,7 +243,7 @@ namespace src.IntegrationTests
             Assert.Equal(2, staffList.Count);
             Assert.Equal("Carlos", staffList[0].FirstName);
             Assert.Equal("John", staffList[1].FirstName);
-        }    
+        }
 
 
         [Fact]
@@ -165,23 +251,23 @@ namespace src.IntegrationTests
         {
             // Arrange
             var mockStaffService = new Mock<IStaffService>();
-            
+
 
             var filteredStaffs = new List<StaffDto>();
 
 
 
-            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), 
+            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                                     It.IsAny<string>(), It.IsAny<string>()));
-            
-             mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
-                            
+
+            mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
+
 
 
             var controller = new StaffController(mockStaffService.Object);
 
             // Act
-            var result = await controller.GetStaffsFiltered( "Jane","", "", "", "");
+            var result = await controller.GetStaffsFiltered("Jane", "", "", "", "");
 
             // Assert
             var okResult = Assert.IsType<ActionResult<List<StaffDto>>>(result);
@@ -189,7 +275,7 @@ namespace src.IntegrationTests
             var staffList = Assert.IsType<List<StaffDto>>(returnValue.Value);
             Assert.Equal(0, staffList.Count);
 
-        }        
+        }
 
         [Fact]
         public async Task UpdateIsActive_ShouldReturnOkStatus()
@@ -248,8 +334,8 @@ namespace src.IntegrationTests
 
             // Assert
             var notFoundResult = Assert.IsType<NotFoundResult>(result);
-        }        
-    } 
+        }
+    }
 
-    
+
 }
