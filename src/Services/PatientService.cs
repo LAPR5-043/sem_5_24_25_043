@@ -328,6 +328,49 @@ namespace src.Services.Services
 
         }
 
+        public async Task<bool> DeletePersonalAccountAsync(string patientEmail, bool? confirmation)
+        {
+            Console.WriteLine(confirmation.ToString());
+            bool deleteConfirmation = false;
+            if (!bool.TryParse(confirmation.ToString(), out deleteConfirmation))
+            {
+                throw new ArgumentNullException("Deletion confirmation must be either true or false.");
+            }
+
+            if (!deleteConfirmation)
+            {
+                throw new ArgumentException("Deletion not confirmed.");
+            }
+
+            Patient tempPatient = await patientRepository.GetPatientByEmail(patientEmail);
+
+            if (tempPatient == null)
+            {
+                throw new Exception("Patient not found.");
+            }
+
+            Patient patient = tempPatient;
+
+            try
+            {
+
+                if (patient != null)
+                {
+                    string deletionUrl = "https://" + url + "/api/patient/delete/sensitiveData/" + patient.MedicalRecordNumber.ToString();
+
+                    await emailService.SendDeletionConfirmationEmail(patientEmail, deletionUrl);
+                    await logService.CreateLogAsync("Patient requested their account be deleted;PatientId:" + patient.MedicalRecordNumber, patientEmail);
+                }
+                await unitOfWork.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+            return true;
+        }
+
         private string buildUrl(List<long> pendingRequestIds)
         {
             string urls = "https://"+url+"/api/patient/acceptPendingRequests?requestIds=";
@@ -565,6 +608,84 @@ namespace src.Services.Services
 
             return true;
         }
-        
+
+        public async Task<bool> DeleteSensitiveDataAsync(string patientID)
+        {
+            var tempPatient = await patientRepository.GetByIdAsync(new MedicalRecordNumber(patientID));
+            if (tempPatient == null)
+            {
+                return false;
+            }
+            Patient patient = tempPatient;
+
+            try
+            {
+                // Use reflection to get all public properties of the Patient object
+                var properties = patient.GetType().GetProperties();
+
+                foreach (var property in properties)
+                {
+                    var propertyName = property.Name;
+
+                    if (sensitiveDataService.isSensitive(propertyName.ToString()) || propertyName.ToString().ToLower() == "fullname")
+                    {
+
+                        var targetProperty = patient.GetType().GetProperty(property.Name);
+                        if (targetProperty != null && targetProperty.CanWrite)
+                        {
+                            try
+                            {
+
+                                if (propertyName.ToString().ToLower() == "email")
+                                {
+                                    targetProperty.SetValue(patient, ConvertToCustomType(patientID + "@REDACTED.com", targetProperty.PropertyType), null);
+
+                                }
+
+                                else if (propertyName.ToString().ToLower() == "fullname")
+                                {
+                                    targetProperty.SetValue(patient, new PatientFullName("[REDACTED]", "[REDACTED]"), null);
+
+                                }
+                                else if (propertyName.ToString().ToLower() == "phonenumber")
+                                {
+                                    targetProperty.SetValue(patient, ConvertToCustomType("+000000" + patientID, targetProperty.PropertyType), null);
+
+                                }
+                                else if (propertyName.ToString().ToLower() == "dateofbirth")
+                                {
+                                    targetProperty.SetValue(patient, new DateOfBirth("1", "1", "0001"), null);
+
+                                }
+                                else
+                                {
+                                    targetProperty.SetValue(patient, ConvertToCustomType("[REDACTED]", targetProperty.PropertyType), null);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine($"Failed to redact property {property.Name}: {e.Message}");
+                            }
+
+                        }
+
+                    }
+                }
+
+                // Update the patient in the repository
+                patientRepository.UpdateAsync(patient);
+                await unitOfWork.CommitAsync();
+
+                // Log the deletion of sensitive data
+                await logService.CreateLogAsync("Patient's sensitive data deleted successfully;PatiendId:", patient.MedicalRecordNumber.ToString());
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                return false;
+            }
+        }
     }
 }
