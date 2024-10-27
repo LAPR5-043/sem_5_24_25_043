@@ -73,7 +73,7 @@ namespace src.Services.Services
             this.sensitiveDataService = sensitiveDataService;
         }
 
-        public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy)
+        public async Task<List<PatientDto>> GetPatientsFilteredAsync(string? firstName, string? lastName, string? email, string? phoneNumber, string? medicalRecordNumber, string? dateOfBirth, string? gender, string? sortBy)
         {
             bool ascending = true;
             var patientList = await patientRepository.GetAllAsync();

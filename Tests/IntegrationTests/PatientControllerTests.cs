@@ -97,6 +97,71 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task GetPatientsFiltered_ReturnsOkResult_WithListOfPatients()
+        {
+            // Arrange
+            var patients = new List<PatientDto>
+            {
+                new PatientDto { MedicalRecordNumber = "123", FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" , PhoneNumber = "+1234567890", EmergencyContactName = "Jane Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "29", MonthOfBirth = "3", YearOfBirth = "2003", Gender = "Male"},
+                new PatientDto { MedicalRecordNumber = "456", FirstName = "Jane", LastName = "Doe", Email = "jane.doe@example.com", PhoneNumber = "+1234567890", EmergencyContactName = "John Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "14", MonthOfBirth = "10", YearOfBirth = "2003", Gender = "Female"}
+            };
+            mockPatientService.Setup(service => service.GetPatientsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                        .ReturnsAsync(patients);
+
+            // Act
+            var result = await controller.GetPatientsFiltered(null, null, null, null, null, null, null, null);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Equal(2, returnValue.Count);
+        }
+
+        [Fact]
+        public async Task GetPatientsFiltered_ReturnsSpecificPatient_WithGivenName()
+        {
+            // Arrange
+            var patients = new List<PatientDto>
+            {
+                new PatientDto { MedicalRecordNumber = "123", FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" , PhoneNumber = "+1234567890", EmergencyContactName = "Jane Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "29", MonthOfBirth = "3", YearOfBirth = "2003", Gender = "Male"},
+                new PatientDto { MedicalRecordNumber = "456", FirstName = "Jane", LastName = "Doe", Email = "jane.doe@example.com", PhoneNumber = "+1234567890", EmergencyContactName = "John Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "14", MonthOfBirth = "10", YearOfBirth = "2003", Gender = "Female"}
+            };
+            mockPatientService.Setup(service => service.GetPatientsFilteredAsync("John", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                        .ReturnsAsync(new List<PatientDto> { patients[0] });
+
+            // Act
+            var result = await controller.GetPatientsFiltered("John", null, null, null, null, null, null, null);
+
+            // Assert
+            var okResult = Assert.IsType<ActionResult<IEnumerable<PatientDto>>>(result);
+            var returnValue = Assert.IsType<OkObjectResult>(okResult.Result);
+            var patientList = Assert.IsType<List<PatientDto>>(returnValue.Value);
+            Assert.Equal(1, patientList.Count);
+            Assert.Equal("123", patientList[0].MedicalRecordNumber);
+        }
+
+
+        [Fact]
+        public async Task GetPatientsFiltered_ReturnsNotFound_WhenNoPatientsFound()
+        {
+            // Arrange
+            var patients = new List<PatientDto>
+            {
+                new PatientDto { MedicalRecordNumber = "123", FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" , PhoneNumber = "+1234567890", EmergencyContactName = "Jane Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "29", MonthOfBirth = "3", YearOfBirth = "2003", Gender = "Male"},
+                new PatientDto { MedicalRecordNumber = "456", FirstName = "Jane", LastName = "Doe", Email = "jane.doe@example.com", PhoneNumber = "+1234567890", EmergencyContactName = "John Doe", EmergencyContactPhoneNumber = "+351987654321", DayOfBirth = "14", MonthOfBirth = "10", YearOfBirth = "2003", Gender = "Female"}
+            };
+
+            mockPatientService.Setup(service => service.GetPatientsFilteredAsync("Bob", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                        .ReturnsAsync((List<PatientDto>)null);
+
+            // Act
+            var result = await controller.GetPatientsFiltered("Bob", null, null, null, null, null, null, null);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
         public async Task DeletePatient_ShouldReturnOkStatus()
         {
             // Arrange
