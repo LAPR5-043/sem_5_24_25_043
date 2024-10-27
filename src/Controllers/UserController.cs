@@ -24,15 +24,17 @@ namespace src.Controllers
         /// </summary>
         private readonly IPatientService patientService;
         private readonly IStaffService staffService;
+        private readonly IEmailService emailService;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="authService"></param>
-        public UserController(IAuthService authService, IPatientService patientService, IStaffService staffService)
+        public UserController(IAuthService authService, IPatientService patientService, IStaffService staffService, IEmailService emailService)
         {
             this.authService = authService;
             this.patientService = patientService;
             this.staffService = staffService;
+            this.emailService = emailService;
         }
 
         [HttpPost("signup-patient")]
@@ -92,7 +94,7 @@ namespace src.Controllers
             }
         }
         [HttpPost("signup-staff")]
-        public async Task<ActionResult<string>> SignUpStaffAsync(string staffID,string iamEmail)
+        public async Task<ActionResult<string>> SignUpStaffAsync(string staffID, string iamEmail)
         {
             if (string.IsNullOrEmpty(iamEmail))
             {
@@ -101,7 +103,7 @@ namespace src.Controllers
 
             try
             {
-                await staffService.signUpStaffAsync(staffID,iamEmail);
+                await staffService.signUpStaffAsync(staffID, iamEmail);
                 return Ok(new { message = "Staff signed up successfully." });
             }
             catch (Exception ex)
@@ -110,10 +112,22 @@ namespace src.Controllers
                 return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
-        
-        
+
+
+        [HttpPatch("reset-password")]
+        public async Task<ActionResult<string>> ResetPassword(string email)
+        {
+
+            try
+            {
+                await authService.ResetPasswordAsync(email);
+                return Ok(new { message = "Password reset email sent." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ex.Message });
+            }
+        }
+
     }
-
-
-
 }

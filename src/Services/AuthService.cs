@@ -19,8 +19,8 @@ public class AuthService : IAuthService
 
     private readonly IEmailService _emailService;
     private readonly IEncryptionEmailService _encryptionEmailService;
-    
-    public AuthService(){}
+
+    public AuthService() { }
     public AuthService(IConfiguration configuration, IEmailService emailService, IEncryptionEmailService encryptionEmailService)
     {
         _clientId = configuration["AWS:Cognito:ClientId"];
@@ -177,7 +177,7 @@ public class AuthService : IAuthService
         {
             UserPoolId = _userPoolId,
             Username = email,
-            Password = password, 
+            Password = password,
             Permanent = true
         });
 
@@ -213,7 +213,7 @@ public class AuthService : IAuthService
 
         // Send the confirmation email
         await _emailService.SendConfirmationEmail(patientEmail, email);
-        
+
         return response.User != null;
     }
 
@@ -254,7 +254,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> RegisterNewStaffAsync(string iamEmail, string internalEmail, string password, string name, string role, string phoneNumber)
     {
-       var signUpRequest = new AdminCreateUserRequest
+        var signUpRequest = new AdminCreateUserRequest
         {
             UserPoolId = _userPoolId,
             Username = iamEmail,
@@ -273,8 +273,8 @@ public class AuthService : IAuthService
 
         var response = await _provider.AdminCreateUserAsync(signUpRequest);
 
-        
-        
+
+
 
         // Add user to role group
         var addUserToGroupRequest = new AdminAddUserToGroupRequest
@@ -296,7 +296,7 @@ public class AuthService : IAuthService
         await _provider.AdminConfirmSignUpAsync(confirmSignUpRequest);*/
 
         // Send the confirmation email
-      //  await _emailService.SendConfirmationEmail(patientEmail, email);
+        //  await _emailService.SendConfirmationEmail(patientEmail, email);
 
         return response.User != null;
     }
@@ -325,6 +325,42 @@ public class AuthService : IAuthService
         };
 
         await _provider.ConfirmForgotPasswordAsync(request);
+    }
+
+    public async Task ResetPasswordAsync(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            throw new ArgumentException("Email cannot be empty");
+        }
+
+        if (!email.Contains("@"))
+        {
+            throw new ArgumentException("Email must contain @");
+        }
+
+        var atIndex = email.IndexOf("@");
+        if (atIndex == email.Length - 1 || !email.Substring(atIndex).Contains("."))
+        {
+            throw new ArgumentException("Email must contain a dot after @");
+        }
+
+        // Check if the email exists in the IAM
+        var request = new ListUsersRequest
+        {
+            UserPoolId = _userPoolId,
+            Filter = $"email = \"{email}\""
+        };
+
+        var response = await _provider.ListUsersAsync(request);
+
+        if (response.Users.Count == 0)
+        {
+            throw new InvalidOperationException("Email not registered to a user.");
+        }
+
+        // If email exists, send the reset password email
+        await _emailService.SendEmailResetPassword(email);
     }
 
 }

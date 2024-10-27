@@ -11,5 +11,6 @@ namespace sem_5_24_25_043
         Task<bool> RegisterNewPatientAsync(string name, string phoneNumber, string email, string patientEmail, string password);
         Task<bool> ConfirmPatientEmailAsync(string encryptedEmail);
         Task<bool> RegisterNewStaffAsync(string iamEmail, string internalEmail, string password, string name, string role, string phoneNumber);
+        Task ResetPasswordAsync(string email);
     }
 }

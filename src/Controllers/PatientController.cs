@@ -209,7 +209,7 @@ namespace src.Controllers
             }
         }
 
-        // DELETE: /api/patient/delete/sensitiveData?patientID=202410000009
+        // DELETE: /api/patient/delete/sensitiveData?patientID=
         [HttpDelete("delete/sensitiveData")]
         public async Task<ActionResult<string>> DeleteSensitiveData([FromQuery] string patientID)
         {

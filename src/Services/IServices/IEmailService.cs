@@ -6,4 +6,5 @@ public interface IEmailService
     Task SendEmailChangedData(string patientEmail, string subject,List<string> dataChanged);
     Task SendEmailToStaffSignIn(string email, string password);
     Task SendDeletionConfirmationEmail(string email, string url);
+    Task SendEmailResetPassword(string email);
 }

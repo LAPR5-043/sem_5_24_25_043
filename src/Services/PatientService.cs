@@ -297,7 +297,7 @@ namespace src.Services.Services
                                          "Patient updated with success;PatientId:" + id + ";Value Changed:" + property.Name + ";NewValue:" + tempValue.ToString(),
                                          patient1.Email.ToString()
                                      );
-                                    
+
                                 }
                                 else
                                 {
@@ -307,10 +307,10 @@ namespace src.Services.Services
                         }
                     }
 
-                    if (pendingRequestIds.Count > 0){}
-                        string url = buildUrl(pendingRequestIds);
-                        await emailService.SendPendingRequestEmail(patient1.Email.ToString(), "Patient data update", url);
-                    
+                    if (pendingRequestIds.Count > 0) { }
+                    string url = buildUrl(pendingRequestIds);
+                    await emailService.SendPendingRequestEmail(patient1.Email.ToString(), "Patient data update", url);
+
                 }
                 await unitOfWork.CommitAsync();
 
@@ -373,7 +373,7 @@ namespace src.Services.Services
 
         private string buildUrl(List<long> pendingRequestIds)
         {
-            string urls = "https://"+url+"/api/patient/acceptPendingRequests?requestIds=";
+            string urls = "https://" + url + "/api/patient/acceptPendingRequests?requestIds=";
             for (int i = 0; i < pendingRequestIds.Count; i++)
             {
                 if (i == pendingRequestIds.Count - 1)
@@ -462,28 +462,28 @@ namespace src.Services.Services
                 return false;
             }
         }
-        private  async Task<bool> ProcessRequestAsync(long pendingRequest)
+        private async Task<bool> ProcessRequestAsync(long pendingRequest)
         {
-                PendingRequest request = pendingRequestService.GetByIdAsync(new LongId(pendingRequest));
-                if (request == null)
-                {
-                    return false;
-                }
+            PendingRequest request = pendingRequestService.GetByIdAsync(new LongId(pendingRequest));
+            if (request == null)
+            {
+                return false;
+            }
 
-                Patient p = GetPatientEntityByIdAsync(request.userId).Result;
+            Patient p = GetPatientEntityByIdAsync(request.userId).Result;
 
-                PropertyInfo property = p.GetType().GetProperty(request.attributeName);
-                if (property != null && property.CanWrite)
-                {
-                    object value = ConvertToCustomType(request.pendingValue, property.PropertyType);
-                    property.SetValue(p, value, null);
-                    await logService.CreateLogAsync("PatientId:" + request.userId + ";Attribute:" + request.attributeName + ";updated with success;", p.Email.Value);
-                    return true ;
-                }
-                else
-                {
-                    return false;
-                }
+            PropertyInfo property = p.GetType().GetProperty(request.attributeName);
+            if (property != null && property.CanWrite)
+            {
+                object value = ConvertToCustomType(request.pendingValue, property.PropertyType);
+                property.SetValue(p, value, null);
+                await logService.CreateLogAsync("PatientId:" + request.userId + ";Attribute:" + request.attributeName + ";updated with success;", p.Email.Value);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
 
@@ -536,7 +536,7 @@ namespace src.Services.Services
         {
             var patientList = await patientRepository.GetAllAsync();
             var query = patientList.AsQueryable();
-            
+
             if (!string.IsNullOrEmpty(firstName))
             {
                 query = query.Where(p => p.FirstName.Value.Contains(firstName));
@@ -574,24 +574,24 @@ namespace src.Services.Services
                     {
                         sensitiveChanges.Add($"{property.Name}: {oldValue} -> {newValue}");
                     }
-                    
+
                     var targetProperty = patientToEdit.GetType().GetProperty(property.Name);
                     if (targetProperty != null && targetProperty.CanWrite)
                     {
                         try
                         {
-                            targetProperty.SetValue(patientToEdit, ConvertToCustomType(newValue.ToString(), targetProperty.PropertyType), null); 
+                            targetProperty.SetValue(patientToEdit, ConvertToCustomType(newValue.ToString(), targetProperty.PropertyType), null);
                             logs.Add($"{property.Name}: {oldValue} -> {newValue}");
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine($"Failed to set property {property.Name} to value {newValue}: {e.Message}");
                         }
-                        
+
                     }
                 }
             }
-            
+
             if (!string.IsNullOrEmpty(patientDto.FirstName) && !string.IsNullOrEmpty(patientDto.LastName))
             {
                 patientToEdit.FullName = new PatientFullName(patientDto.FirstName, patientDto.LastName);

@@ -15,6 +15,7 @@ namespace src.Services
         private readonly string senderPassword;
         private readonly string apiEndpointUrl;
         private readonly string uiUrl;
+        private readonly string resetPasswordUrl;
 
         public EmailService(IConfiguration configuration, IEncryptionEmailService encryptionEmailService)
         {
@@ -27,6 +28,7 @@ namespace src.Services
             senderPassword = configuration["EmailSettings:SenderPassword"];
             apiEndpointUrl = configuration["ApiEndpointConfirmationEmail"];
             uiUrl = configuration["HostedUI"];
+            resetPasswordUrl = configuration["ResetPasswordUI"];
         }
 
         public async Task SendConfirmationEmail(string patientEmail, string iamEmail)
@@ -433,6 +435,85 @@ namespace src.Services
                             <p>In order to gain access, please click in the button bellow to change them:</p>
                             <div class='button-container'>
                                 <a href='{uiUrl}' class='button'>Finish Setup</a>
+                            </div>
+                            <br>
+                            <p>Best regards,</p>
+                            <p>Medopt Team</p>
+                            <img src='{signatureImageUrl}' alt='Signature' style='display:block; margin-top:20px;' />
+                        </div>
+                        <div class='footer'>
+                            <p>&copy; 2024 Medopt. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
+            await SendEmailAsync(email, subject, message);
+        }
+
+        public async Task SendEmailResetPassword(string email)
+        {
+            var subject = "Reset your password";
+            var message = $@"
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }}
+                        .header {{
+                            background-color: #007bff;
+                            color: #ffffff;
+                            padding: 10px 0;
+                            text-align: center;
+                        }}
+                        .content {{
+                            padding: 20px;
+                            color: #000000;
+                        }}
+                        .button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            color: #ffffff;
+                            background-color: #007bff;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                            text-align: center;
+                        }}
+                        .button-container {{
+                            text-align: center;
+                        }}
+                        .footer {{
+                            margin-top: 20px;
+                            text-align: center;
+                            color: #888888;
+                            font-size: 12px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>Reset Password Confirmation</h2>
+                        </div>
+                        <div class='content'>
+                            <p>Dear User,</p>
+                            <p>It seems you have forgotten your password</p>
+                            <p>In order reset your password, please click in the button below:</p>
+                            <div class='button-container'>
+                                <a href='{resetPasswordUrl}' class='button'>Reset Password</a>
                             </div>
                             <br>
                             <p>Best regards,</p>
