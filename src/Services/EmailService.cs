@@ -20,7 +20,6 @@ namespace src.Services
         {
             this.encryptionEmailService = encryptionEmailService;
 
-
             // Read configuration for the sender email from appsettings.json
             smtpServer = configuration["EmailSettings:SmtpServer"];
             smtpPort = int.Parse(configuration["EmailSettings:SmtpPort"]);
@@ -37,7 +36,6 @@ namespace src.Services
 
             // Build the confirmation link with the encrypted email
             var confirmationUrl = $"{apiEndpointUrl}?email={HttpUtility.UrlEncode(encryptedEmail)}";
-
             var message = $@"
                 <html>
                 <head>
@@ -118,8 +116,6 @@ namespace src.Services
 
         public async Task SendPendingRequestEmail(string patientEmail, string subject, string url)
         {
-
-
             var message = $@"
                 <html>
                 <head>
@@ -207,14 +203,8 @@ namespace src.Services
                 message.From.Add(new MailboxAddress("Medopt Team", senderEmail));
                 message.To.Add(new MailboxAddress("", recipientEmail));
                 message.Subject = subject;
-
-                var bodyBuilder = new BodyBuilder
-                {
-                    HtmlBody = body
-                };
-
+                var bodyBuilder = new BodyBuilder { HtmlBody = body };
                 message.Body = bodyBuilder.ToMessageBody();
-
                 using (var client = new SmtpClient())
                 {
                     await client.ConnectAsync(smtpServer, smtpPort, true);
@@ -230,7 +220,7 @@ namespace src.Services
             }
         }
 
-        public Task SendEmailChangedData(string patientEmail, string subject,List<string> dataChanged)
+        public Task SendEmailChangedData(string patientEmail, string subject, List<string> dataChanged)
         {
             var message = $@"
                 <html>
@@ -293,8 +283,8 @@ namespace src.Services
                     </div>
                 </body>
                 </html>";
-            
             return SendEmailAsync(patientEmail, subject, message);
+        }
 
         public async Task SendDeletionConfirmationEmail(string email, string url)
         {
@@ -377,9 +367,8 @@ namespace src.Services
             await SendEmailAsync(email, "Confirm your account deletion", message);
         }
 
-        public Task SendEmailToStaffSignIn(string email, string password)
+        public async Task SendEmailToStaffSignIn(string email, string password)
         {
-
             var subject = "Change your credentials";
             var message = $@"
                 <html>
@@ -456,7 +445,7 @@ namespace src.Services
                     </div>
                 </body>
                 </html>";
-            return SendEmailAsync(email, subject, message);
+            await SendEmailAsync(email, subject, message);
         }
     }
 }
