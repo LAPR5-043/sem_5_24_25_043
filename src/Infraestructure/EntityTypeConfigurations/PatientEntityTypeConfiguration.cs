@@ -4,6 +4,7 @@ using System.Text.Json;
 using Domain.PatientAggregate;
 using src.Domain;
 using Infrastructure.Converters;
+using System.Text.Encodings.Web;
 
 namespace Infrastructure.PatientRepository
 {
@@ -65,11 +66,17 @@ namespace Infrastructure.PatientRepository
                 .IsRequired();
                 
             builder.Property(p => p.EmergencyContact)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<EmergencyContact>(v, (JsonSerializerOptions)null)
-                )
-                .IsRequired();
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, new JsonSerializerOptions
+                {
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                }),
+                v => JsonSerializer.Deserialize<EmergencyContact>(v, new JsonSerializerOptions
+                {
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                })
+            )
+            .IsRequired();
 
             builder.Property(p => p.DateOfBirth)
                 .HasConversion(

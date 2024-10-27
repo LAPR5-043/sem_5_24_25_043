@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using src.Domain.Shared;
 
@@ -12,10 +13,12 @@ namespace Domain.PatientAggregate
         /// <summary>
         /// The name of the emergency contact
         /// </summary>
+        [JsonPropertyName("Name")]
         public string Name { get; }
         /// <summary>
         /// The phone number of the emergency contact
         /// </summary>
+        [JsonPropertyName("PhoneNumber")]
         public string PhoneNumber { get; }
         /// <summary>
         /// Default constructor
@@ -33,7 +36,7 @@ namespace Domain.PatientAggregate
         /// <exception cref="ArgumentException"></exception>
         public EmergencyContact(string name, string phoneNumber)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException("Name cannot be empty");
             }
@@ -42,7 +45,6 @@ namespace Domain.PatientAggregate
             {
                 throw new ArgumentException("Emergency contact phone number is invalid");
             }
-
 
             this.Name = name;
             this.PhoneNumber = phoneNumber;
