@@ -515,5 +515,106 @@ namespace src.IntegrationTests
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
             _logServiceMock.Verify(log => log.CreateLogAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
+
+        [Fact]
+        public async Task DeletePersonalAccountAsync_ThrowsArgumentNullException_WhenConfirmationIsNull()
+        {
+            // Arrange
+            string patientEmail = "test@example.com";
+            bool? confirmation = null;
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _patientService.DeletePersonalAccountAsync(patientEmail, confirmation));
+        }
+
+        [Fact]
+        public async Task DeletePersonalAccountAsync_ThrowsArgumentException_WhenConfirmationIsFalse()
+        {
+            // Arrange
+            string patientEmail = "test@example.com";
+            bool? confirmation = false;
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _patientService.DeletePersonalAccountAsync(patientEmail, confirmation));
+        }
+
+        [Fact]
+        public async Task DeletePersonalAccountAsync_ThrowsException_WhenPatientNotFound()
+        {
+            // Arrange
+            string patientEmail = "test@example.com";
+            bool? confirmation = true;
+
+            _patientRepositoryMock.Setup(repo => repo.GetPatientByEmail(patientEmail)).ReturnsAsync((Patient)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(() => _patientService.DeletePersonalAccountAsync(patientEmail, confirmation));
+        }
+
+        [Fact]
+        public async Task DeleteSensitiveDataAsync_PatientNotFound_ReturnsFalse()
+        {
+            // Arrange
+            string patientID = "123";
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))
+                .ReturnsAsync((Patient)null);
+
+            // Act
+            var result = await _patientService.DeleteSensitiveDataAsync(patientID);
+
+            // Assert
+            Assert.False(result);
+        }
+
+
+        [Fact]
+        public async Task DeleteSensitiveDataAsync_PatientFound_DeletesSensitiveData()
+        {
+            // Arrange
+            string patientID = "123";
+            var patient = new Patient
+            {
+                MedicalRecordNumber = new MedicalRecordNumber(patientID),
+                Email = new PatientEmail("test@example.com"),
+                FullName = new PatientFullName("John", "Doe"),
+                PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                DateOfBirth = new DateOfBirth("1", "1", "2000")
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))
+                .ReturnsAsync(patient);
+            _sensitiveDataServiceMock.Setup(service => service.isSensitive(It.IsAny<string>())).Returns(true);
+
+            // Act
+            var result = await _patientService.DeleteSensitiveDataAsync(patientID);
+
+            // Assert
+            Assert.True(result);
+            _patientRepositoryMock.Verify(repo => repo.UpdateAsync(It.IsAny<Patient>()), Times.Once);
+            _logServiceMock.Verify(log => log.CreateLogAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+
+        [Fact]
+        public async Task DeleteSensitiveDataAsync_ExceptionThrown_ReturnsFalse()
+        {
+            // Arrange
+            string patientID = "123";
+            var patient = new Patient
+            {
+                MedicalRecordNumber = new MedicalRecordNumber(patientID)
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))
+                .ReturnsAsync(patient);
+            _sensitiveDataServiceMock.Setup(service => service.isSensitive(It.IsAny<string>())).Returns(true);
+            _patientRepositoryMock.Setup(repo => repo.UpdateAsync(It.IsAny<Patient>())).Throws(new Exception());
+
+            // Act
+            var result = await _patientService.DeleteSensitiveDataAsync(patientID);
+
+            // Assert
+            Assert.False(result);
+        }
     }
 }
