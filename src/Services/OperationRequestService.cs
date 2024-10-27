@@ -80,6 +80,11 @@ namespace src.Services
 
             string doctorID = await staffService.GetIdFromEmailAsync(email);
 
+            if (doctorID == null)
+            {
+                throw new ArgumentException("Doctor not found");
+            }
+
             VerifyPatientID(operationRequestDto.PatientID);
             newOperationRequest.patientID = operationRequestDto.PatientID;
 
@@ -405,7 +410,12 @@ namespace src.Services
 
         private void VerifyPatientID(string patientID)
         {
-            if (!Regex.IsMatch(patientID, @"^$|^\d+$"))
+            if (string.IsNullOrEmpty(patientID))
+            {
+                throw new ArgumentException(nameof(patientID), "The Patient's ID cannot be null or empty");
+            }
+
+            if (!Regex.IsMatch(patientID, @"^\d+$"))
             {
                 throw new ArgumentException("The Patient's ID must be a number");
             }

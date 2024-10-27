@@ -47,6 +47,93 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task CreateOperationRequestAsync_ValidData_ReturnsTrue()
+        {
+            // Arrange
+            var operationRequestDto = new OperationRequestDto
+            {
+                PatientID = "123",
+                DoctorID = "D123",
+                OperationTypeID = "Heart Surgery",
+                Day = "15",
+                Month = "07",
+                Year = "2023",
+                Priority = "Emergency"
+            };
+            var email = "doctor@example.com";
+            _staffServiceMock.Setup(service => service.GetIdFromEmailAsync(email)).ReturnsAsync("D123");
+
+            // Act
+            var result = await _operationRequestService.CreateOperationRequestAsync(operationRequestDto, email);
+
+            // Assert
+            Assert.True(result);
+            _operationRequestRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationRequest>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task CreateOperationRequestAsync_NullDto_ThrowsArgumentNullException()
+        {
+            // Arrange
+            string email = "doctor@example.com";
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _operationRequestService.CreateOperationRequestAsync(null, email));
+            _operationRequestRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationRequest>()), Times.Never);
+        }
+
+        [Theory]
+        [InlineData(null, "15", "07", "2023", "The Patient's ID cannot be null or empty")]
+        [InlineData("P123", "15", "07", "2023", "The Patient's ID must be a number")]
+        [InlineData("123", "InvalidDay", "07", "2023", "Day must be a number")]
+        [InlineData("123", "15", "InvalidMonth", "2023", "Month must be a number")]
+        [InlineData("123", "15", "07", "InvalidYear", "Year must be a number")]
+        public async Task CreateOperationRequestAsync_InvalidDateValues_ThrowsArgumentException(string patientID,
+            string day, string month, string year, string expectedErrorMessage)
+        {
+            // Arrange
+            var operationRequestDto = new OperationRequestDto
+            {
+                PatientID = patientID,
+                OperationTypeID = "Heart Surgery",
+                Day = day,
+                Month = month,
+                Year = year,
+                Priority = "Emergency"
+            };
+            var email = "doctor@example.com";
+            _staffServiceMock.Setup(service => service.GetIdFromEmailAsync(email)).ReturnsAsync("D123");
+
+            // Act & Assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _operationRequestService.CreateOperationRequestAsync(operationRequestDto, email));
+            Assert.Contains(expectedErrorMessage, ex.Message);
+            _operationRequestRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationRequest>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task CreateOperationRequestAsync_DoctorNotFound_ThrowsException()
+        {
+            // Arrange
+            var operationRequestDto = new OperationRequestDto
+            {
+                PatientID = "123",
+                OperationTypeID = "Heart Surgery",
+                Day = "15",
+                Month = "07",
+                Year = "2023",
+                Priority = "Emergency"
+            };
+            var email = "doctor@example.com";
+            _staffServiceMock.Setup(service => service.GetIdFromEmailAsync(email)).ReturnsAsync((string)null);
+
+            // Act & Assert
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _operationRequestService.CreateOperationRequestAsync(operationRequestDto, email));
+            Assert.Contains("Doctor not found", ex.Message);
+            _operationRequestRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationRequest>()), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
+        }
+
+        [Fact]
         public async Task UpdateOperationRequestAsync_ValidData_ReturnsTrue()
         {
             // Arrange
@@ -131,22 +218,22 @@ namespace src.IntegrationTests
             };
 
             var operationRequest = new OperationRequest
-                {
+            {
 
-                    Id = new OperationRequestID("1"),
-                    operationRequestID = new OperationRequestID("1"),
-                    patientID = "1",
-                    doctorID = "D202400001",
-                    operationTypeID = "Knee Surgery",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency
-                };
+                Id = new OperationRequestID("1"),
+                operationRequestID = new OperationRequestID("1"),
+                patientID = "1",
+                doctorID = "D202400001",
+                operationTypeID = "Knee Surgery",
+                deadlineDate = new DeadlineDate(1, 1, 2025),
+                priority = Priority.Emergency
+            };
 
             _operationRequestRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<OperationRequestID>()))
                                            .ReturnsAsync(operationRequest);
 
-            var result =  _operationRequestService.UpdateOperationRequestAsync(id, operationRequestDto, email);
-            
+            var result = _operationRequestService.UpdateOperationRequestAsync(id, operationRequestDto, email);
+
             Assert.False(result.Result);
             _operationRequestRepositoryMock.Verify(repo => repo.updateAsync(It.IsAny<OperationRequest>()), Times.Never);
         }
