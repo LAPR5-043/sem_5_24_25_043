@@ -153,15 +153,15 @@ namespace src.Services.Services
             return resultDtos;
         }
 
-        public Task<PatientDto> GetPatientByIdAsync(string id)
+        public async Task<PatientDto> GetPatientByIdAsync(string id)
         {
-            var patient = patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
+            var patient = await patientRepository.GetByIdAsync(new MedicalRecordNumber(id));
             if (patient == null)
             {
                 throw new Exception("Patient not found.");
             }
 
-            return Task.FromResult(new PatientDto(patient.Result));
+            return new PatientDto(patient);
         }
 
         public async Task<bool> DeletePatientAsync(string id, string adminEmail)

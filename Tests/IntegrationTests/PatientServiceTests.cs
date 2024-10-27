@@ -323,6 +323,61 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task GetPatientByIdAsync_PatientExists_ReturnsPatientDto()
+        {
+            // Arrange
+            var patientId = "123";
+            var patient = new Patient
+            {
+                MedicalRecordNumber = new MedicalRecordNumber("123"),
+                FirstName = new PatientFirstName("John"),
+                LastName = new PatientLastName("Doe"),
+                Email = new PatientEmail("john.doe@example.com"),
+                PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                DateOfBirth = new DateOfBirth("29", "03", "2003"),
+                Gender = Gender.Male
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))
+                    .ReturnsAsync(patient);
+
+            // Act
+            var result = await _patientService.GetPatientByIdAsync(patientId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(patientId, result.MedicalRecordNumber);
+            Assert.Equal("John", result.FirstName);
+            Assert.Equal("Doe", result.LastName);
+            Assert.Equal("john.doe@example.com", result.Email);
+        }
+
+
+        [Fact]
+        public async Task GetPatientByIdAsync_PatientDoesNotExist_ThrowsException()
+        {
+            // Arrange
+            var patientId = "456";
+            var patient = new Patient
+            {
+                MedicalRecordNumber = new MedicalRecordNumber("123"),
+                FirstName = new PatientFirstName("John"),
+                LastName = new PatientLastName("Doe"),
+                Email = new PatientEmail("john.doe@example.com"),
+                PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                DateOfBirth = new DateOfBirth("29", "03", "2003"),
+                Gender = Gender.Male
+            };
+
+            _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))
+                .ReturnsAsync((Patient)null);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<Exception>(() => _patientService.GetPatientByIdAsync(patientId));
+            Assert.Equal("Patient not found.", exception.Message);
+        }
+
+        [Fact]
         public async Task UpdatePatientAsync_ValidData_ReturnsTrue()
         {
             // Arrange
