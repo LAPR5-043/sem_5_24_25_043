@@ -301,6 +301,30 @@ public class AuthService : IAuthService
         return response.User != null;
     }
 
-   
+    public async Task ForgotPasswordAsync(string email)
+    {
+        var request = new ForgotPasswordRequest
+        {
+            ClientId = _clientId,
+            Username = email,
+            SecretHash = CalculateSecretHash(email)
+        };
+
+        await _provider.ForgotPasswordAsync(request);
+    }
+
+    public async Task ConfirmForgotPasswordAsync(string email, string confirmationCode, string newPassword)
+    {
+        var request = new ConfirmForgotPasswordRequest
+        {
+            ClientId = _clientId,
+            Username = email,
+            ConfirmationCode = confirmationCode,
+            Password = newPassword,
+            SecretHash = CalculateSecretHash(email)
+        };
+
+        await _provider.ConfirmForgotPasswordAsync(request);
+    }
 
 }
