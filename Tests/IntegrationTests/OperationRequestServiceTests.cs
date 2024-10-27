@@ -134,6 +134,82 @@ namespace src.IntegrationTests
         }
 
         [Fact]
+        public async Task GetOperationRequestFilteredAsync_ShouldReturnFilteredResults()
+        {
+
+            // Arrange
+            var operationRequests = new List<OperationRequest>
+            {
+                new OperationRequest { operationRequestID = new OperationRequestID("1"), patientID = "1" , operationTypeID = "Heart Surgery", doctorID = "doc1", priority = Priority.Emergency, deadlineDate = new DeadlineDate(8, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("2"), patientID = "2" , operationTypeID = "Knee Surgery", doctorID = "doc2", priority = Priority.Urgent, deadlineDate = new DeadlineDate(14, 10, 2024) },
+            };
+
+            _operationRequestRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _operationRequestService.GetOperationRequestFilteredAsync("doc1", null, null, null, null, null, null);
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal("doc1", result.First().DoctorID);
+        }
+        [Fact]
+        public async Task GetOperationRequestFilteredAsync_ShouldReturnEmptyList_WhenNoMatches()
+        {
+            // Arrange
+            var operationRequests = new List<OperationRequest>
+            {
+                new OperationRequest { operationRequestID = new OperationRequestID("1"), patientID = "1" , operationTypeID = "Heart Surgery", doctorID = "doc1", priority = Priority.Emergency, deadlineDate = new DeadlineDate(8, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("2"), patientID = "2" , operationTypeID = "Knee Surgery", doctorID = "doc2", priority = Priority.Urgent, deadlineDate = new DeadlineDate(14, 10, 2024) },
+            };
+
+            _operationRequestRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _operationRequestService.GetOperationRequestFilteredAsync("doc3", null, null, null, null, null, null);
+
+            // Assert
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetOperationRequestFilteredAsync_ShouldThrowArgumentException_WhenInvalidPriority()
+        {
+            // Arrange
+            var operationRequests = new List<OperationRequest>
+            {
+                new OperationRequest { operationRequestID = new OperationRequestID("1"), patientID = "1" , operationTypeID = "Heart Surgery", doctorID = "doc1", priority = Priority.Emergency, deadlineDate = new DeadlineDate(8, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("2"), patientID = "2" , operationTypeID = "Knee Surgery", doctorID = "doc2", priority = Priority.Urgent, deadlineDate = new DeadlineDate(14, 10, 2024) },
+            };
+
+            _operationRequestRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(operationRequests);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => _operationRequestService.GetOperationRequestFilteredAsync(null, null, null, null, null, "invalidPriority", null));
+        }
+
+
+        [Fact]
+        public async Task GetOperationRequestFilteredAsync_ShouldSortResults()
+        {
+            // Arrange
+            var operationRequests = new List<OperationRequest>
+            {
+                new OperationRequest { operationRequestID = new OperationRequestID("1"), patientID = "1" , operationTypeID = "Heart Surgery", doctorID = "doc1", priority = Priority.Emergency, deadlineDate = new DeadlineDate(8, 10, 2024) },
+                new OperationRequest { operationRequestID = new OperationRequestID("2"), patientID = "2" , operationTypeID = "Knee Surgery", doctorID = "doc2", priority = Priority.Urgent, deadlineDate = new DeadlineDate(14, 10, 2024) },
+            };
+
+            _operationRequestRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(operationRequests);
+
+            // Act
+            var result = await _operationRequestService.GetOperationRequestFilteredAsync(null, null, null, null, null, null, "patientID");
+
+            // Assert
+            Assert.Equal(2, result.Count);
+            Assert.Equal("1", result.First().PatientID);
+        }
+
+        [Fact]
         public async Task UpdateOperationRequestAsync_ValidData_ReturnsTrue()
         {
             // Arrange
