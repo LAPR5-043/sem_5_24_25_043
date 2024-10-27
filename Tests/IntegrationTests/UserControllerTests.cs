@@ -141,5 +141,40 @@ namespace src.IntegrationTests
             Assert.Equal(500, statusCodeResult.StatusCode);
             Assert.Equal("An error occurred: Test exception", response.GetType().GetProperty("message").GetValue(response, null));
         }
+
+        [Fact]
+        public async Task ResetPassword_ValidEmail_ReturnsOkResult()
+        {
+            // Arrange
+            var email = "test@example.com";
+            mockAuthService.Setup(service => service.ResetPasswordAsync(email)).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await userController.ResetPassword(email);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal(200, okResult.StatusCode);
+            Assert.Equal("{ message = Password reset email sent. }", okResult.Value.ToString());
+        }
+
+
+        [Fact]
+        public async Task ResetPassword_ServiceThrowsException_ReturnsInternalServerError()
+        {
+            // Arrange
+            var email = "test@example.com";
+            var exceptionMessage = "An error occurred.";
+            mockAuthService.Setup(service => service.ResetPasswordAsync(email)).ThrowsAsync(new Exception(exceptionMessage));
+
+            // Act
+            var result = await userController.ResetPassword(email);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("{ Message = An error occurred. }", statusCodeResult.Value.ToString());
+
+        }
     }
 }
