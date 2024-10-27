@@ -33,6 +33,47 @@ namespace src.Controllers.Tests
         }
 
         [Fact]
+        public async Task CreateOperationRequestAsync_ValidInput_ReturnsCreatedAtActionResult()
+        {
+            // Arrange
+            var operationRequestDto = new OperationRequestDto
+            {
+                PatientID = "patientID",
+                OperationTypeID = "Heart Surgery",
+                Priority = "Emergency",
+                Day = "12",
+                Month = "10",
+                Year = "2024"
+            };
+
+            _serviceMock.Setup(r => r.CreateOperationRequestAsync(It.IsAny<OperationRequestDto>(), "doctor@example.com"))
+                        .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.CreateOperationRequest(operationRequestDto);
+
+            // Assert
+            var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+            Assert.Equal(nameof(_controller.CreateOperationRequest), createdResult.ActionName);
+            Assert.Equal(operationRequestDto, createdResult.Value);
+        }
+
+
+        [Fact]
+        public async Task CreateOperationRequestAsync_InvalidInput_ReturnsBadRequest()
+        {
+            // Arrange
+            OperationRequestDto operationRequestDto = null;
+
+            // Act
+            var result = await _controller.CreateOperationRequest(operationRequestDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("{ message = Operation request data is invalid. }", badRequestResult.Value.ToString());
+        }
+
+        [Fact]
         public async Task DeleteOperationRequest_ConfirmedDeletion_ReturnsOk()
         {
             // Arrange

@@ -31,27 +31,26 @@ namespace src.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateOperationRequest([FromBody] OperationRequestDto operationRequestDto)
         {
-            var doctorEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
-
             if (operationRequestDto == null)
             {
-                return BadRequest(new { message = "Invalid operation request data." });
+                return BadRequest(new { message = "Operation request data is invalid." });
             }
 
             try
             {
-                var createdOperationRequest = await service.CreateOperationRequestAsync(operationRequestDto, doctorEmail);
-                if (createdOperationRequest)
+                var email = User.Claims.FirstOrDefault(c => c.Type == "custom:internalEmail")?.Value;
+                bool isCreated = await service.CreateOperationRequestAsync(operationRequestDto, email);
+
+                if (isCreated)
                 {
-                    return Ok(new { message = "Operation Request created successfully." });
+                    return CreatedAtAction(nameof(CreateOperationRequest), new { id = operationRequestDto.RequestId }, operationRequestDto);
                 }
+                return BadRequest(new { message = "Failed to create operation request." });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+                return StatusCode(500, new { message = "An error occurred while creating the operation request.", error = ex.Message });
             }
-            return StatusCode(500, new { message = "An error occurred while creating the operation request." });
-
         }
 
 
