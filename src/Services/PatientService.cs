@@ -356,7 +356,7 @@ namespace src.Services.Services
 
                 if (patient != null)
                 {
-                    string deletionUrl = "https://" + url + "/api/patient/delete/sensitiveData/" + patient.MedicalRecordNumber.ToString();
+                    string deletionUrl = "https://" + url + "/api/patient/delete/sensitiveData?patientID=" + patient.MedicalRecordNumber.ToString();
 
                     await emailService.SendDeletionConfirmationEmail(patientEmail, deletionUrl);
                     await logService.CreateLogAsync("Patient requested their account be deleted;PatientId:" + patient.MedicalRecordNumber, patientEmail);

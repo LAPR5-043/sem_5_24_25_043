@@ -187,7 +187,7 @@ namespace src.Controllers
             return NotFound(new { message = "Patient not found." });
         }
 
-        // DELETE: api/patient/delete/personalAccount?confirmDeletion=
+        // DELETE: /api/patient/delete/personalAccount?confirmDeletion=
         [Authorize(Roles = "patient")]
         [HttpDelete("delete/personalAccount")]
         public async Task<IActionResult> DeletePersonalAccount([FromQuery] bool? confirmDeletion)
