@@ -560,10 +560,10 @@ namespace src.IntegrationTests
                 .ReturnsAsync((Patient)null);
 
             // Act
-            var result = await _patientService.DeleteSensitiveDataAsync(patientID);
+            var exception = await Assert.ThrowsAsync<Exception>(() => _patientService.DeleteSensitiveDataAsync(patientID));
 
             // Assert
-            Assert.False(result);
+            Assert.Equal("Patient not found.", exception.Message);
         }
 
 
@@ -602,7 +602,11 @@ namespace src.IntegrationTests
             string patientID = "123";
             var patient = new Patient
             {
-                MedicalRecordNumber = new MedicalRecordNumber(patientID)
+                MedicalRecordNumber = new MedicalRecordNumber(patientID),
+                Email = new PatientEmail("test@example.com"),
+                FullName = new PatientFullName("John", "Doe"),
+                PhoneNumber = new PatientPhoneNumber("+1234567890"),
+                DateOfBirth = new DateOfBirth("1", "1", "2000")
             };
 
             _patientRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<MedicalRecordNumber>()))

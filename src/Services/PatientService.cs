@@ -611,12 +611,22 @@ namespace src.Services.Services
 
         public async Task<bool> DeleteSensitiveDataAsync(string patientID)
         {
+            if (patientID == null)
+            {
+                throw new Exception("Invalid patient data.");
+            }
+
             var tempPatient = await patientRepository.GetByIdAsync(new MedicalRecordNumber(patientID));
             if (tempPatient == null)
             {
-                return false;
+                throw new Exception("Patient not found.");
             }
             Patient patient = tempPatient;
+
+            if (patient.Email.Value == patientID + "@REDACTED.com")
+            {
+                throw new Exception("Patient not found.");
+            }
 
             try
             {

@@ -11,7 +11,7 @@ namespace src.Controllers
     /// Patient controller
     /// </summary>
     [Route("api/[controller]")]
-    [Authorize(Roles = "admins, patient")]
+    //[Authorize(Roles = "admins, patient")]
     [ApiController]
 
     public class PatientController : ControllerBase
@@ -210,14 +210,10 @@ namespace src.Controllers
         }
 
         // DELETE: /api/patient/delete/sensitiveData?patientID=
-        [HttpDelete("delete/sensitiveData")]
+        //[Authorize(Roles = "patient")]
+        [HttpGet("delete/sensitiveData")]
         public async Task<ActionResult<string>> DeleteSensitiveData([FromQuery] string patientID)
         {
-            if (patientID == null)
-            {
-                return BadRequest(new { message = "Invalid patient data." });
-            }
-
             try
             {
                 var deleted = await service.DeleteSensitiveDataAsync(patientID);

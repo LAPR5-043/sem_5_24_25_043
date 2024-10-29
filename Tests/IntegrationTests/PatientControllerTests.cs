@@ -505,8 +505,8 @@ namespace src.IntegrationTests
             var result = await controller.DeleteSensitiveData(patientID);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            Assert.Equal("{ message = Invalid patient data. }", badRequestResult.Value.ToString());
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            Assert.Equal("{ message = Failed account deletion. }", notFoundResult.Value.ToString());
         }
 
         [Fact]
