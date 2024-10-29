@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
 
+
 #nullable disable
 
 namespace sem_5_24_25_043.Migrations
@@ -59,8 +60,8 @@ namespace sem_5_24_25_043.Migrations
                     b.HasData(
                         new
                         {
-                            operationRequestID = "1",
-                            Id = "1",
+                            operationRequestID = "000001",
+                            Id = "000001",
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "D202400001",
                             operationTypeID = "Knee Surgery",
@@ -69,8 +70,8 @@ namespace sem_5_24_25_043.Migrations
                         },
                         new
                         {
-                            operationRequestID = "2",
-                            Id = "2",
+                            operationRequestID = "000002",
+                            Id = "000002",
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "D202400001",
                             operationTypeID = "Heart Surgery",
@@ -79,8 +80,8 @@ namespace sem_5_24_25_043.Migrations
                         },
                         new
                         {
-                            operationRequestID = "3",
-                            Id = "3",
+                            operationRequestID = "000003",
+                            Id = "000003",
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "s202400002",
                             operationTypeID = "Heart Surgery",
@@ -160,7 +161,7 @@ namespace sem_5_24_25_043.Migrations
                             AppointmentHistory = "{}",
                             DateOfBirth = "1/1/1999",
                             Email = "john@email.com",
-                            EmergencyContact = "{\"Name\":\"Jane\",\"PhoneNumber\":\"\\u002B351919919919\"}",
+                            EmergencyContact = "{\"Name\":\"Jane\",\"PhoneNumber\":\"+351919919919\"}",
                             FirstName = "John",
                             FullName = "John Doe",
                             Gender = "Male",
@@ -175,7 +176,7 @@ namespace sem_5_24_25_043.Migrations
                             AppointmentHistory = "{}",
                             DateOfBirth = "1/1/1999",
                             Email = "Jane@email.com",
-                            EmergencyContact = "{\"Name\":\"Jane\",\"PhoneNumber\":\"\\u002B351919999119\"}",
+                            EmergencyContact = "{\"Name\":\"Jane\",\"PhoneNumber\":\"+351919999119\"}",
                             FirstName = "Jane",
                             FullName = "Jane Does",
                             Gender = "Male",
@@ -396,7 +397,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             appointmentID = "1",
                             Id = "1",
-                            dateAndTime = "2024-10-24 18:16:38",
+                            dateAndTime = "2024-10-29 18:55:25",
                             requestID = 1,
                             roomID = 1,
                             status = "Scheduled"

@@ -48,7 +48,7 @@ namespace sem_5_24_25_043.Migrations
                 columns: table => new
                 {
                     operationRequestID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    patientID = table.Column<int>(type: "int", nullable: false),
+                    patientID = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     doctorID = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     operationTypeID = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     deadlineDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -137,16 +137,16 @@ namespace sem_5_24_25_043.Migrations
             migrationBuilder.InsertData(
                 table: "Appointments",
                 columns: new[] { "appointmentID", "Id", "dateAndTime", "requestID", "roomID", "status" },
-                values: new object[] { "1", "1", "2024-10-22 18:21:17", 1, 1, "Scheduled" });
+                values: new object[] { "1", "1", "2024-10-29 18:55:25", 1, 1, "Scheduled" });
 
             migrationBuilder.InsertData(
                 table: "OperationRequests",
                 columns: new[] { "operationRequestID", "Id", "deadlineDate", "doctorID", "operationTypeID", "patientID", "priority" },
                 values: new object[,]
                 {
-                    { "1", "1", "01/01/2025 00:00:00", "D202400001", "Knee Surgery", 1, "Emergency" },
-                    { "2", "2", "01/01/2025 00:00:00", "D202400001", "Heart Surgery", 2, "Effective" },
-                    { "3", "3", "01/01/2025 00:00:00", "s202400002", "Heart Surgery", 2, "Effective" }
+                    { "000001", "000001", "01/01/2025 00:00:00", "D202400001", "Knee Surgery", "1", "Emergency" },
+                    { "000002", "000002", "01/01/2025 00:00:00", "D202400001", "Heart Surgery", "2", "Effective" },
+                    { "000003", "000003", "01/01/2025 00:00:00", "s202400002", "Heart Surgery", "2", "Effective" }
                 });
 
             migrationBuilder.InsertData(
@@ -154,8 +154,8 @@ namespace sem_5_24_25_043.Migrations
                 columns: new[] { "MedicalRecordNumber", "AllergiesAndConditions", "AppointmentHistory", "DateOfBirth", "Email", "EmergencyContact", "FirstName", "FullName", "Gender", "Id", "LastName", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { "1", "[]", "{}", "1/1/1999", "john@email.com", "{\"Name\":\"Jane\",\"PhoneNumber\":\"\\u002B351919919919\"}", "John", "John Doe", "Male", "1", "Doe", "+351919919919" },
-                    { "2", "[]", "{}", "1/1/1999", "Jane@email.com", "{\"Name\":\"Jane\",\"PhoneNumber\":\"\\u002B351919999119\"}", "Jane", "Jane Does", "Male", "2", "Does", "+351919991919" }
+                    { "1", "[]", "{}", "1/1/1999", "john@email.com", "{\"Name\":\"Jane\",\"PhoneNumber\":\"+351919919919\"}", "John", "John Doe", "Male", "1", "Doe", "+351919919919" },
+                    { "2", "[]", "{}", "1/1/1999", "Jane@email.com", "{\"Name\":\"Jane\",\"PhoneNumber\":\"+351919999119\"}", "Jane", "Jane Does", "Male", "2", "Does", "+351919991919" }
                 });
 
             migrationBuilder.InsertData(
