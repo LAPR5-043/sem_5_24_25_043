@@ -24,7 +24,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace src.IntegrationTests
 {
-    public class StaffControllerTests
+   public class StaffControllerTests
     {
 
         [Fact]
@@ -183,7 +183,7 @@ namespace src.IntegrationTests
         {
             // Arrange
             var mockStaffService = new Mock<IStaffService>();
-            var filteredStaff1 =
+            var filteredStaff1 = 
                 new Staff
                 {
                     Id = new StaffID("D202400011"),
@@ -198,8 +198,8 @@ namespace src.IntegrationTests
                     availabilitySlots = new AvailabilitySlots(),
                     specializationID = "Neurology"
                 };
-
-            var filteredStaff2 =
+            
+            var filteredStaff2 =     
                 new Staff
                 {
                     Id = new StaffID("D202400001"),
@@ -215,7 +215,7 @@ namespace src.IntegrationTests
                     specializationID = "Cardiology"
                 };
 
-
+        
 
             var filteredStaffs = new List<StaffDto>
             {
@@ -224,17 +224,17 @@ namespace src.IntegrationTests
             };
 
 
-            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+            mockStaffService.Setup(service => service.getStaffsFilteredAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), 
                                     It.IsAny<string>(), It.IsAny<string>()));
-
-            mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
-
+            
+             mockStaffService.SetReturnsDefault(Task.FromResult(filteredStaffs));
+                            
 
 
             var controller = new StaffController(mockStaffService.Object);
 
             // Act
-            var result = await controller.GetStaffsFiltered("", "", "", "", "firstName");
+            var result = await controller.GetStaffsFiltered( "","", "", "", "firstName");
 
             // Assert
             var okResult = Assert.IsType<ActionResult<List<StaffDto>>>(result);
@@ -243,7 +243,7 @@ namespace src.IntegrationTests
             Assert.Equal(2, staffList.Count);
             Assert.Equal("Carlos", staffList[0].FirstName);
             Assert.Equal("John", staffList[1].FirstName);
-        }
+        }    
 
 
         [Fact]
@@ -251,7 +251,7 @@ namespace src.IntegrationTests
         {
             // Arrange
             var mockStaffService = new Mock<IStaffService>();
-
+            
 
             var filteredStaffs = new List<StaffDto>();
 
@@ -335,7 +335,42 @@ namespace src.IntegrationTests
             // Assert
             var notFoundResult = Assert.IsType<NotFoundResult>(result);
         }
+
+        [Fact]
+        public async Task EditStaff_ReturnsOk_WhenStaffIsUpdatedSuccessfully()
+        {
+            // Arrange
+            var mockStaffService = new Mock<IStaffService>();
+            mockStaffService.Setup(service =>
+                    service.EditStaffAsync(It.IsAny<string>(), It.IsAny<StaffDto>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+        }
+
+        [Fact]
+        public async Task EditStaff_ReturnsBadRequest_WhenStaffDtoIsNull()
+        {
+            // Arrange
+            var mockStaffService = new Mock<IStaffService>();
+            var controller = new StaffController(mockStaffService.Object)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        User = new ClaimsPrincipal(new ClaimsIdentity(
+                            new Claim[] { new Claim("custom:internalEmail", "admin@example.com") }, "mock"))
+                    }
+                }
+            };
+
+            // Act
+            var result = await controller.EditStaff("D202400001", null);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("Staff data is null.", badRequestResult.Value);
+        }
+
     }
-
-
 }

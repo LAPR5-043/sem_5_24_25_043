@@ -30,6 +30,7 @@ namespace src.Services
             uiUrl = configuration["HostedUI"];
             resetPasswordUrl = configuration["ResetPasswordUI"];
         }
+        
 
         public async Task SendConfirmationEmail(string patientEmail, string iamEmail)
         {

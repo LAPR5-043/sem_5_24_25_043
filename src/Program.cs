@@ -1,18 +1,10 @@
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.DependencyInjection;
 using src.Controllers.Services;
 using AppContext = src.Models.AppContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Domain.StaffAggregate;
-using Domain.OperationTypeAggregate;
 using Domain.AppointmentAggregate;
-using Domain.SurgeryRoomAggregate;
-using src.Infrastructure.Repositories;
-using Domain.SpecializationAggregate;
 using Domain.PatientAggregate;
 using Domain.OperationRequestAggregate;
 using src.Services.IServices;
@@ -22,7 +14,6 @@ using Domain.LogAggregate;
 using Microsoft.OpenApi.Models;
 using src.Services.Services;
 using src.Services;
-using Swashbuckle.AspNetCore.Annotations;
 
 
 namespace sem_5_24_25_043
@@ -161,6 +152,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IPendingRequestService, PendingRequestService>();
             services.AddScoped<IOperationRequestService, OperationRequestService>();
             services.AddScoped<ISensitiveDataService, SensitiveDataService>();
+            
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
         }
     }
