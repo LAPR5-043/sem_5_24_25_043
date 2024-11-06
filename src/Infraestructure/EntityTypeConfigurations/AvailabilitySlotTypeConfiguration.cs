@@ -10,7 +10,7 @@ public class AvailabilitySlotTypeConfiguration : IEntityTypeConfiguration<Availa
 {
     public void Configure(EntityTypeBuilder<AvailabilitySlot> builder)
     {
-        builder.ToTable("Appointments");
+        builder.ToTable("AvailabilitySlots");
 
         builder.HasKey(a => a.Id);
 

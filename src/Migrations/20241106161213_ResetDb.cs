@@ -7,7 +7,7 @@
 namespace sem_5_24_25_043.Migrations
 {
     /// <inheritdoc />
-    public partial class ResetDB : Migration
+    public partial class ResetDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,19 @@ namespace sem_5_24_25_043.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.appointmentID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AvailabilitySlots",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StaffID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slots = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AvailabilitySlots", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -126,7 +139,7 @@ namespace sem_5_24_25_043.Migrations
                     phoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     licenseNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
-                    availabilitySlots = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    availabilitySlotsID = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     specializationID = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -137,7 +150,16 @@ namespace sem_5_24_25_043.Migrations
             migrationBuilder.InsertData(
                 table: "Appointments",
                 columns: new[] { "appointmentID", "Id", "dateAndTime", "requestID", "roomID", "status" },
-                values: new object[] { "1", "1", "2024-10-29 18:55:25", 1, 1, "Scheduled" });
+                values: new object[] { "1", "1", "2024-11-06 16:12:12", 1, 1, "Scheduled" });
+
+            migrationBuilder.InsertData(
+                table: "AvailabilitySlots",
+                columns: new[] { "Id", "Slots", "StaffID" },
+                values: new object[,]
+                {
+                    { "D202400001", "{\"20241028\":{\"StartTime\":720,\"EndTime\":1200},\"20241029\":{\"StartTime\":720,\"EndTime\":1200},\"20241030\":{\"StartTime\":720,\"EndTime\":1200}}", "D202400001" },
+                    { "D202400002", "{\"20241028\":{\"StartTime\":720,\"EndTime\":1200},\"20241029\":{\"StartTime\":720,\"EndTime\":1200},\"20241030\":{\"StartTime\":720,\"EndTime\":1200}}", "D202400002" }
+                });
 
             migrationBuilder.InsertData(
                 table: "OperationRequests",
@@ -160,11 +182,11 @@ namespace sem_5_24_25_043.Migrations
 
             migrationBuilder.InsertData(
                 table: "Staffs",
-                columns: new[] { "Id", "availabilitySlots", "email", "firstName", "fullName", "isActive", "lastName", "licenseNumber", "phoneNumber", "specializationID", "staffID" },
+                columns: new[] { "Id", "availabilitySlotsID", "email", "firstName", "fullName", "isActive", "lastName", "licenseNumber", "phoneNumber", "specializationID", "staffID" },
                 values: new object[,]
                 {
-                    { "D202400001", "", "d123@doctor.com", "John", "John,Doe", true, "Doe", "123456", "+351919919919", "Cardiology", "D202400001" },
-                    { "D202400011", "", "D202400011@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "121236", "+351919911319", "Orthopedics", "D202400011" }
+                    { "D202400001", "D202400001", "d123@doctor.com", "John", "John,Doe", true, "Doe", "123456", "+351919919919", "Cardiology", "D202400001" },
+                    { "D202400011", "D202400001", "D202400011@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "121236", "+351919911319", "Orthopedics", "D202400011" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -215,6 +237,9 @@ namespace sem_5_24_25_043.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Appointments");
+
+            migrationBuilder.DropTable(
+                name: "AvailabilitySlots");
 
             migrationBuilder.DropTable(
                 name: "Logs");
