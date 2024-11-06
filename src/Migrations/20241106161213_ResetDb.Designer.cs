@@ -7,14 +7,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
 
-
 #nullable disable
 
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241029185526_ResetDB")]
-    partial class ResetDB
+    [Migration("20241106161213_ResetDb")]
+    partial class ResetDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -284,7 +283,7 @@ namespace sem_5_24_25_043.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("availabilitySlots")
+                    b.Property<string>("availabilitySlotsID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -340,7 +339,7 @@ namespace sem_5_24_25_043.Migrations
                         new
                         {
                             Id = "D202400001",
-                            availabilitySlots = "",
+                            availabilitySlotsID = "D202400001",
                             email = "d123@doctor.com",
                             firstName = "John",
                             fullName = "John,Doe",
@@ -354,7 +353,7 @@ namespace sem_5_24_25_043.Migrations
                         new
                         {
                             Id = "D202400011",
-                            availabilitySlots = "",
+                            availabilitySlotsID = "D202400001",
                             email = "D202400011@medopt.com",
                             firstName = "Carlos",
                             fullName = "Carlos,Moedas",
@@ -400,10 +399,42 @@ namespace sem_5_24_25_043.Migrations
                         {
                             appointmentID = "1",
                             Id = "1",
-                            dateAndTime = "2024-10-29 18:55:25",
+                            dateAndTime = "2024-11-06 16:12:12",
                             requestID = 1,
                             roomID = 1,
                             status = "Scheduled"
+                        });
+                });
+
+            modelBuilder.Entity("src.Domain.AvailabilitySlotAggregate.AvailabilitySlot", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Slots")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaffID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AvailabilitySlots", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "D202400001",
+                            Slots = "{\"20241028\":{\"StartTime\":720,\"EndTime\":1200},\"20241029\":{\"StartTime\":720,\"EndTime\":1200},\"20241030\":{\"StartTime\":720,\"EndTime\":1200}}",
+                            StaffID = "D202400001"
+                        },
+                        new
+                        {
+                            Id = "D202400002",
+                            Slots = "{\"20241028\":{\"StartTime\":720,\"EndTime\":1200},\"20241029\":{\"StartTime\":720,\"EndTime\":1200},\"20241030\":{\"StartTime\":720,\"EndTime\":1200}}",
+                            StaffID = "D202400002"
                         });
                 });
 #pragma warning restore 612, 618

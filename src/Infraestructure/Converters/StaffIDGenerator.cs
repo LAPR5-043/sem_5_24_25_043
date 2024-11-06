@@ -28,6 +28,7 @@ public class StaffIDGenerator : ValueGenerator<StaffID>
 
         entry.Property("Id").CurrentValue = staffID  ;
         entry.Property("staffID").CurrentValue = staffID  ;
+        entry.Property("availabilitySlotsID").CurrentValue = staffID  ;
 
         return new StaffID(newNumber);
     }

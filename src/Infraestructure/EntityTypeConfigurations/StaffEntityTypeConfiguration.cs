@@ -77,8 +77,7 @@ namespace Sempi5.Infrastructure.StaffRepository
                 .IsRequired();
 
 
-            builder.Property(t => t.availabilitySlots)
-                .HasConversion(new AvailabilitySlotListConverter())
+            builder.Property(t => t.availabilitySlotsID)
                 .IsRequired();
 
 

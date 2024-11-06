@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sem_5_24_25_043;
+using src.Domain.AvailabilitySlotAggregate;
 using src.Domain.Shared;
 using src.Services.IServices;
 using AppContext = src.Models.AppContext;
@@ -18,6 +19,7 @@ public class StaffService : IStaffService
     private readonly ILogService logService;
     private readonly IAuthService authService;
     private readonly IEmailService emailService;
+    private readonly IAvailabilitySlotService availabilitySlotService;
 
     private static string staffDeactivateLog1 = "Staff status changed with success";
     private static string staffDeactivateLog2 = ";StaffId:";
@@ -27,12 +29,14 @@ public class StaffService : IStaffService
     private static string tecnician = "rol_XkxIrMhp3RLpHna0";
     private static string admin = "rol_50uF6ByTAWQ9iPmF";
 
-    public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, ILogService logService, IAuthService authService, IEmailService emailService)
+    public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, ILogService logService, IAuthService authService, IEmailService emailService, IAvailabilitySlotService availabilitySlotService)
     {
         this.unitOfWork = unitOfWork;
         this.staffRepository = staffRepository;
         this.logService = logService;
         this.authService = authService;
+        this.emailService = emailService;
+        this.availabilitySlotService = availabilitySlotService;
         this.emailService = emailService;
     }
     private Boolean ValidateStaffInformation(string email, string phoneNumber, string licenseNumber)
@@ -57,7 +61,7 @@ public class StaffService : IStaffService
             logMessage += "Email: " + staffDto.Email + "; "; }
         if (staffDto.PhoneNumber != null) { staffToEdit.changePhoneNumber(staffDto.PhoneNumber);
             logMessage += "Phone Number: " + staffDto.PhoneNumber + "; "; }
-        if (staffDto.AvailabilitySlots != null) { staffToEdit.changeAvailabilitySlots(new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots))); 
+        if (staffDto.AvailabilitySlots != null) { changeAvailabilitySlots(staffToEdit, staffDto); 
             logMessage += "Availability Slots: " + staffDto.AvailabilitySlots + "; "; }
         if (staffDto.SpecializationID != null) { staffToEdit.changeSpecializationID(staffDto.SpecializationID);
             logMessage += "Specialization: " + staffDto.SpecializationID + "; "; }
@@ -69,7 +73,16 @@ public class StaffService : IStaffService
         return true;
     }
 
-    
+    private void changeAvailabilitySlots(Staff staff ,StaffDto staffDto)
+    {
+        AvailabilitySlot av =availabilitySlotService.GetAvailabilitySlotAsync(staff.staffID.AsString()).Result;
+        foreach (var slot in staffDto.AvailabilitySlots)
+        {
+            string[] slots = slot.Split(",");
+            av.addAvailabilitySlot(int.Parse(slots[0]), int.Parse(slots[1]), int.Parse(slots[2]));
+        }
+        availabilitySlotService.UpdateAvailabilitySlot(av);
+    }
 
     public async Task<OkObjectResult> getAllStaffAsync()
     {
@@ -133,7 +146,17 @@ public class StaffService : IStaffService
         }
 
         var result = query.ToList();
-        var resultDtos = result.Select(s => new StaffDto(s)).ToList();
+
+        var resultDtos = new List<StaffDto>();
+        
+        foreach (var staff in result)
+        {
+            StaffDto staffDto = new StaffDto(staff);
+            AvailabilitySlot av = availabilitySlotService.GetAvailabilitySlotAsync(staff.staffID.AsString()).Result;
+            staffDto.AvailabilitySlots = staffDto.generateAvailabilitySlots(av);
+            resultDtos.Add(staffDto);
+
+        }
 
         return resultDtos;
     }
@@ -168,14 +191,17 @@ public class StaffService : IStaffService
         newStaff.phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber);
         newStaff.licenseNumber = new LicenseNumber(staffDto.LicenseNumber);
         newStaff.isActive = (bool)staffDto.IsActive;
-        newStaff.availabilitySlots = new AvailabilitySlots(TimeSlot.timeSlotsFromString(staffDto.AvailabilitySlots));
+     
         newStaff.specializationID = staffDto.SpecializationID;
+        Staff nStaff =  staffRepository.AddAsync(newStaff).Result;
 
-        await staffRepository.AddAsync(newStaff);
+        availabilitySlotService.CreateAvailabilitySlot(nStaff.staffID, staffDto.AvailabilitySlots);
+
         await unitOfWork.CommitAsync();
 
         return newStaff != null;
     }
+
 
     public async Task<bool> UpdateIsActiveAsync(string id, String adminEmail)
     {
