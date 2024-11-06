@@ -117,7 +117,7 @@ For the implementation of this feature, the following steps will be taken:
 
 ### 3.2. Installation of `iptables`
 
-First, we need to install the `iptables` package. To do this, run the following command:
+First, we need to install the `iptables` package.
 
 ```bash
 sudo apt-get install iptables
