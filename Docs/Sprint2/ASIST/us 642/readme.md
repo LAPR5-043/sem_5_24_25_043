@@ -48,6 +48,32 @@ Each chain is a list of rules which can match a set of packets. Each rule specif
 
 Print do manual do ipt
 
+Relevant for this feature we have the following:
+
+**Chains:**
+
+INPUT - This chain is used for packets destined for the host computer.
+
+**Targets:**
+
+ACCEPT -> This means to let the packet through.
+
+DROP -> This means to drop the packet on the floor.
+
+**Commands:**
+
+-A, --append -> Append one or more rules to the end of the selected chain.
+
+-F, --flush -> Flush the selected chain (all the chains in the table if none is given).
+
+-P, --policy -> Set the policy for the chain to the given target.
+
+**Parameters:**
+
+-s, --source -> Specify the source address or network.
+
+-j, --jump -> Specify the target of the rule.
+
 #### 2.3.2 The problem with `iptables`
 
 The main problem with `iptables` is that it is not persistent. This means that if the system is restarted, the rules will be lost.
@@ -72,7 +98,7 @@ To implement this feature, we will use the `iptables` tool to filter network tra
 
 To implement this feature, we will use a VM from DEI's private cloud. This VM will be used to test the implementation of the feature, due to the fact that it is connected to the DEI internal network and has a Public IP address, which will allow us to test the feature from outside the DEI internal network.
 
-The VM from the ASIST PL classes will not be used to implement this feature, as it is not connected to the DEI internal network.
+The VM from the ASIST PL classes will not be used to implement this feature, as it does not have a Public IP address, which will not allow us to test the feature from outside the DEI internal network.
 
 #### 3.1.1. VM from DEI's private cloud
 
@@ -99,7 +125,7 @@ sudo apt-get install iptables
 
 ### 3.3. Installation of `iptables-persistent`
 
-Next, we need to install the `iptables-persistent` package. To do this, run the following command:
+Next, we need to install the `iptables-persistent` package.
 
 ```bash
 sudo apt-get install iptables-persistent
