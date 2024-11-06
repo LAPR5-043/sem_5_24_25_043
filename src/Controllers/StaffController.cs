@@ -14,7 +14,7 @@ using src.Services.IServices;
 namespace src.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "admins")] 
+  //  [Authorize(Roles = "admins")] 
     [ApiController]
 
     public class StaffController : ControllerBase
