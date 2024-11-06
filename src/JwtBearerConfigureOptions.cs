@@ -14,7 +14,7 @@ public class JwtBearerConfigureOptions(IConfiguration configuration)
     public void Configure(JwtBearerOptions options)
     {
         configuration.GetSection(ConfigurationSectionName).Bind(options);
-        options.TokenValidationParameters.RoleClaimType = "cognito:groups";
+        options.TokenValidationParameters.RoleClaimType = "custom:roles";
         
     }
 

@@ -22,10 +22,10 @@ public class StaffService : IStaffService
     private static string staffDeactivateLog1 = "Staff status changed with success";
     private static string staffDeactivateLog2 = ";StaffId:";
     private static string staffDeactivateLog3 = ";NewStatus:";
-    private static string medic = "medic";
-    private static string nurse = "nurse";
-    private static string tecnician = "tecnician";
-    private static string admin = "admins";
+    private static string medic = "rol_ANxHawgjqkHc7Rgr";
+    private static string nurse = "rol_KvdAp8kpRA3FT57a";
+    private static string tecnician = "rol_XkxIrMhp3RLpHna0";
+    private static string admin = "rol_50uF6ByTAWQ9iPmF";
 
     public StaffService(IUnitOfWork unitOfWork, IStaffRepository staffRepository, ILogService logService, IAuthService authService, IEmailService emailService)
     {
