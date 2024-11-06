@@ -77,6 +77,7 @@ public class StaffDto
         LicenseNumber = staff.licenseNumber?.ToString() ?? string.Empty;
         IsActive = staff.isActive ? staff.isActive : false;
         SpecializationID = staff.specializationID ?? string.Empty;
+        
 
     }
     
@@ -110,7 +111,7 @@ public class StaffDto
         SpecializationID = specializationID;
     }
 
-    private List<String>? generateAvailabilitySlots(AvailabilitySlot availabilitySlots)
+    public List<String>? generateAvailabilitySlots(AvailabilitySlot availabilitySlots)
     {
         if (availabilitySlots == null)
         {

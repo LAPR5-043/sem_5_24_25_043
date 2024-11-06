@@ -146,7 +146,17 @@ public class StaffService : IStaffService
         }
 
         var result = query.ToList();
-        var resultDtos = result.Select(s => new StaffDto(s)).ToList();
+
+        var resultDtos = new List<StaffDto>();
+        
+        foreach (var staff in result)
+        {
+            StaffDto staffDto = new StaffDto(staff);
+            AvailabilitySlot av = availabilitySlotService.GetAvailabilitySlotAsync(staff.staffID.AsString()).Result;
+            staffDto.AvailabilitySlots = staffDto.generateAvailabilitySlots(av);
+            resultDtos.Add(staffDto);
+
+        }
 
         return resultDtos;
     }
