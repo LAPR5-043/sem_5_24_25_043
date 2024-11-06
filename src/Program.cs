@@ -136,6 +136,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IPendingRequestRepository, PendingRequestRepository>();
             //services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IAvailabilitySlotRepository,AvailabilitySlotRepository>();
             
 
             // Services
@@ -152,6 +153,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IPendingRequestService, PendingRequestService>();
             services.AddScoped<IOperationRequestService, OperationRequestService>();
             services.AddScoped<ISensitiveDataService, SensitiveDataService>();
+            services.AddScoped<IAvailabilitySlotService, AvailabilitySlotService>();
             
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
         }

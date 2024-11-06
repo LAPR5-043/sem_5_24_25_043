@@ -87,19 +87,7 @@ public class StaffTests
         Assert.Equal(newStatus, staff.isActive);
     }
 
-    [Fact]
-    public void ChangeAvailabilitySlots_ShouldUpdateAvailabilitySlots()
-    {
-        // Arrange
-        var staff = new Staff();
-        var newAvailabilitySlots = new AvailabilitySlots();
 
-        // Act
-        staff.changeAvailabilitySlots(newAvailabilitySlots);
-
-        // Assert
-        Assert.Equal(newAvailabilitySlots, staff.availabilitySlots);
-    }
 
     [Fact]
     public void ChangeFullName_ShouldUpdateFullName()

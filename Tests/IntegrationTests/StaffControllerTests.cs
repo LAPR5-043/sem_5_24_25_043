@@ -130,7 +130,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919919919"),
                     licenseNumber = new LicenseNumber("123456"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID = "D202400001",
                     specializationID = "Cardiology"
                 }/*,
                 new Staff
@@ -195,7 +195,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919911319"),
                     licenseNumber = new LicenseNumber("121236"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID ="D202400011",
                     specializationID = "Neurology"
                 };
             
@@ -211,7 +211,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919919919"),
                     licenseNumber = new LicenseNumber("123456"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID = "D202400001",
                     specializationID = "Cardiology"
                 };
 

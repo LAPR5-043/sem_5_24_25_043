@@ -21,6 +21,7 @@ namespace src.IntegrationTests
         private readonly Mock<IAuthService> _authServiceMock;
         private readonly Mock<IEmailService> _emailServiceMock;
         private readonly StaffService _staffService;
+        private readonly Mock<IAvailabilitySlotService> _availabilitySlotServiceMock;
 
         public StaffServiceTests()
         {
@@ -29,13 +30,16 @@ namespace src.IntegrationTests
             _logServiceMock = new Mock<ILogService>();
             _authServiceMock = new Mock<IAuthService>();
             _emailServiceMock = new Mock<IEmailService>();
+            _availabilitySlotServiceMock = new Mock<IAvailabilitySlotService>();
 
             _staffService = new StaffService(
                 _unitOfWorkMock.Object,
                 _staffRepositoryMock.Object,
                 _logServiceMock.Object,
                 _authServiceMock.Object,
-                _emailServiceMock.Object
+                _emailServiceMock.Object,
+                _availabilitySlotServiceMock.Object
+                
             );
         }
 
@@ -82,8 +86,21 @@ namespace src.IntegrationTests
                 SpecializationID = "Cardiology"
             };
 
+            var newStaff = new Staff
+            {
+                staffID = new StaffID(staffDto.StaffID),
+                firstName = new StaffFirstName(staffDto.FirstName),
+                lastName = new StaffLastName(staffDto.LastName),
+                fullName = new StaffFullName(new StaffFirstName(staffDto.FirstName), new StaffLastName(staffDto.LastName)),
+                email = new StaffEmail(staffDto.Email),
+                phoneNumber = new StaffPhoneNumber(staffDto.PhoneNumber),
+                licenseNumber = new LicenseNumber(staffDto.LicenseNumber),
+                isActive = (bool)staffDto.IsActive,
+                specializationID = staffDto.SpecializationID
+            };
+
             _staffRepositoryMock.Setup(repo => repo.StaffExists(staffDto.Email, staffDto.PhoneNumber, staffDto.LicenseNumber)).Returns(false);
-            _staffRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<Staff>())).Returns(Task.FromResult(It.IsAny<Staff>()));
+            _staffRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<Staff>())).ReturnsAsync(newStaff);
 
             // Act
             var result = await _staffService.CreateStaffAsync(staffDto);
@@ -91,6 +108,7 @@ namespace src.IntegrationTests
             // Assert
             Assert.True(result);
             _staffRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Staff>()), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
         }
 
         [Fact]
@@ -116,7 +134,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919911319"),
                     licenseNumber = new LicenseNumber("121236"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID ="D202400011",
                     specializationID = "Neurology"
                 },
 
@@ -131,7 +149,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919919919"),
                     licenseNumber = new LicenseNumber("123456"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID = "D202400001",
                     specializationID = "Cardiology"
                 }
             };
@@ -170,7 +188,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919911319"),
                     licenseNumber = new LicenseNumber("121236"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID = "D202400011",
                     specializationID = "Neurology"
                 },
 
@@ -185,7 +203,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919919919"),
                     licenseNumber = new LicenseNumber("123456"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID = "D202400001",
                     specializationID = "Cardiology"
                 }
             };
@@ -218,7 +236,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919911319"),
                     licenseNumber = new LicenseNumber("121236"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID = "D202400011",
                     specializationID = "Neurology"
                 },
 
@@ -233,7 +251,7 @@ namespace src.IntegrationTests
                     phoneNumber = new StaffPhoneNumber("+351919919919"),
                     licenseNumber = new LicenseNumber("123456"),
                     isActive = true,
-                    availabilitySlots = new AvailabilitySlots(),
+                    availabilitySlotsID = "D202400001",
                     specializationID = "Cardiology"
                 }
             };

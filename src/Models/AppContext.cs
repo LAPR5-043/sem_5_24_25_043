@@ -12,6 +12,7 @@ using src.Domain;
 using src.Domain.SurgeryRoomAggregate;
 using sem_5_24_25_043.Domain.AppointmentAggregate;
 using Domain.AppointmentAggregate;
+using src.Domain.AvailabilitySlotAggregate;
 
 namespace src.Models;
 
@@ -34,6 +35,7 @@ public class AppContext : DbContext
 
     public DbSet<Appointment> Appointments { get; set; } = null!;
     public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
+    public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; } = null!;
     //public DbSet<Specialization> Specializations { get; set; } = null!;
     //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
 
@@ -47,6 +49,7 @@ public class AppContext : DbContext
         modelBuilder.ApplyConfiguration<OperationRequest>(new OperationRequestEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<Appointment>(new AppointmentEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<PendingRequest>(new PendingRequestEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration<AvailabilitySlot>(new AvailabilitySlotTypeConfiguration());
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Patient>().HasData(
@@ -94,7 +97,7 @@ public class AppContext : DbContext
                 phoneNumber = new StaffPhoneNumber("+351919919919"),
                 licenseNumber = new LicenseNumber("123456"),
                 isActive = true,
-                availabilitySlots = new AvailabilitySlots(),
+                availabilitySlotsID ="D202400001",
                 specializationID = "Cardiology"
             },
 
@@ -109,7 +112,7 @@ public class AppContext : DbContext
                 phoneNumber = new StaffPhoneNumber("+351919911319"),
                 licenseNumber = new LicenseNumber("121236"),
                 isActive = true,
-                availabilitySlots = new AvailabilitySlots(),
+                availabilitySlotsID = "D202400001",
                 specializationID = "Orthopedics"
             }
 
@@ -159,6 +162,31 @@ public class AppContext : DbContext
                 dateAndTime = new DateAndTime(DateTime.Now),
                 status = Status.Scheduled
             }
+        );
+
+        modelBuilder.Entity<AvailabilitySlot>().HasData(
+            new AvailabilitySlot
+            {
+                Id = new StaffID("D202400001"),
+                StaffID = new StaffID("D202400001"),
+                 Slots = new Dictionary<int, Slot>()
+                {
+                    { 20241028, new Slot(720, 1200) },
+                    { 20241029, new Slot(720, 1200) },
+                    { 20241030, new Slot(720, 1200)  },
+                }
+            },
+            new AvailabilitySlot
+            {
+                Id = new StaffID("D202400002"),
+                StaffID = new StaffID("D202400002"),
+                 Slots = new Dictionary<int, Slot>()
+                {
+                    { 20241028, new Slot(720, 1200) },
+                    { 20241029, new Slot(720, 1200) },
+                    { 20241030, new Slot(720, 1200)  },
+                }
+            }            
         );
     }
 

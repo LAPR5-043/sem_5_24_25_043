@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using src.Domain.AvailabilitySlotAggregate;
 using src.Domain.Shared;
 
 public class Staff : Entity<StaffID>, IAggregateRoot
@@ -21,7 +22,7 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     //[Required]
     public bool isActive { get; set; }
     //[Required]    
-    public AvailabilitySlots availabilitySlots { get; set; }
+    public string availabilitySlotsID { get; set; }
     //[Required]
     //[ForeignKey("Specialization")]
     public string specializationID { get; set; }
@@ -112,15 +113,16 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     {
         this.isActive = isActive;
     }
-
+/* METODO DEIXA DE FAZER SENTIDO COM A IMPLEMENTAÇÃO DO AGREGADO DE AVAILABILITYSLOT
     /// <summary>
     /// Changes the availability slots of the staff member.
     /// </summary>
     /// <param name="availabilitySlots">The availability slots to change.</param>
-    public void changeAvailabilitySlots(AvailabilitySlots availabilitySlots)
+    public void changeAvailabilitySlots(List<string> availabilitySlotsID)
     {
-        this.availabilitySlots = availabilitySlots;
-    }
+        AvailabilitySlot availabilitySlots = new AvailabilitySlot();
+        this.availabilitySlotsID = availabilitySlotsID;
+    }*/
 
     /// <summary>
     /// Changes the full name of the staff member.
