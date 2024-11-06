@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using src.Domain.AvailabilitySlotAggregate;
 
 /// <summary>
 /// Represents a data transfer object for the Staff entity.
@@ -75,7 +76,6 @@ public class StaffDto
         PhoneNumber = staff.phoneNumber?.ToString() ?? string.Empty;
         LicenseNumber = staff.licenseNumber?.ToString() ?? string.Empty;
         IsActive = staff.isActive ? staff.isActive : false;
-        AvailabilitySlots = generateAvailabilitySlots(staff.availabilitySlots);
         SpecializationID = staff.specializationID ?? string.Empty;
 
     }
@@ -110,16 +110,16 @@ public class StaffDto
         SpecializationID = specializationID;
     }
 
-    private List<String>? generateAvailabilitySlots(AvailabilitySlots availabilitySlots)
+    private List<String>? generateAvailabilitySlots(AvailabilitySlot availabilitySlots)
     {
         if (availabilitySlots == null)
         {
             return null;
         }
         List<String> slots = new List<String>();
-        foreach (var slot in availabilitySlots.slots)
+        foreach (var slot in availabilitySlots.Slots.Keys)
         {
-            slots.Add(slot.ToString());
+            slots.Add(slot+","+availabilitySlots.Slots[slot].StartTime+","+availabilitySlots.Slots[slot].EndTime);
         }
         return slots;
 
