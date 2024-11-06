@@ -1,0 +1,351 @@
+"@startuml Domain Model"
+hide circle
+hide methods
+allow_mixing
+
+'skinparam monochrome false
+'skinparam packageStyle rectangle
+'skinparam shadowing false
+'skinparam linetype ortho
+
+' Title
+title Domain Model
+
+
+skinparam classAttributeIconSize 0
+
+skinparam class {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+skinparam packageStyle rectangle
+
+skinparam card {
+    LifeLineBorderColor DodgerBlue
+    LifeLineBackgroundColor APPLICATION
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+
+' Aggregates
+
+package "PendingRequest Aggregate" {
+
+    entity PendingRequest <<entity>><<root>> {
+    }
+
+    card Id <<Value Object>>
+    card UserID <<Value Object>>
+    card AttributeName <<Value Object>>
+    card PendingValue <<Value Object>>
+    card OldValue <<Value Object>>
+
+    ' Relationships inside the User aggregate
+
+    PendingRequest "1"-->"1" Id
+    PendingRequest "1"-->"1" UserID
+    PendingRequest "1"-->"1" AttributeName
+    PendingRequest "1"-->"1" PendingValue
+    PendingRequest "1"-->"1" OldValue
+}
+
+note right of PendingRequest : Used to persist a change which needs \n a user confirmation to take effect.
+
+package "Log Aggregate" {
+
+    entity Log <<entity>><<root>> {
+    }
+
+    card Timestamp <<Value Object>>
+    card Action <<Value Object>>
+    card Author <<Value Object>> 
+
+    'Relationships inside the Staff aggregate
+    Log "1"-->"1" Timestamp
+    Log "1"-->"1" Action
+    Log "1"-->"1" Author
+
+}
+note right of Log : They will be used to keep track of the actions taken by the users in compliance with GPDR.
+
+package "User Aggregate" {
+
+    entity User <<entity>><<root>> {
+    }
+
+    card Username <<Value Object>>
+    card Email <<Value Object>>
+
+    enum Role <<enumeration>> {
+        Admin
+        Doctor
+        Nurse
+        Technician
+        Patient
+    }
+
+    ' Relationships inside the User aggregate
+
+    User "1" -u-> "1" Username
+    User "1" -u-> "1" Email
+    User "1" -u-> "1" Role
+
+
+}
+
+note top of "User Aggregate" : This logic is abstracted by the backend and is implemented in the IAM process
+
+
+package "Patient Aggregate" {
+
+    entity Patient <<entity>><<root>> {
+    }
+
+    card PatientFirstName <<Value Object>>
+    card PatientLastName <<Value Object>>
+    card PatientFullName <<Value Object>>
+    card DateOfBirth <<Value Object>>
+    enum Gender <<enumeration>> {
+        Male
+        Female
+    }
+
+    card MedicalRecordNumber <<Value Object>>
+    card AllergiesAndConditions <<Value Object>>
+    card EmergencyContact <<Value Object>>
+    card AppointmentHistory <<Value Object>>
+    'card AppointmentHistory <<Value Object>>
+
+    ' Atributos Contact Information
+    card PatientEmail <<Value Object>>
+    card PhoneNumber <<Value Object>>
+
+    ' Atributos Appointment History
+    card AppointmentId <<Value Object>>
+
+    ' Relationships Appointment History
+    AppointmentHistory "1" --> "*" AppointmentId 
+
+
+    ' Relationships inside the Patient aggregate
+    Patient "1" -u-> "1" PatientFirstName
+    Patient "1" -u-> "1" PatientLastName
+    Patient "1" -u-> "1" PatientFullName
+    Patient "1" -u-> "1" DateOfBirth
+    Patient "1" -u-> "1" Gender
+    Patient "1" --> "1" MedicalRecordNumber
+    Patient "1" --> "*" AllergiesAndConditions
+    Patient "1" --> "1" EmergencyContact
+    Patient "1" --> "1" AppointmentHistory
+    Patient "1" --> "1" PatientEmail
+    Patient "1" --> "1" PhoneNumber
+
+}
+
+package "Staff Aggregate" {
+
+    entity Staff <<entity>><<root>> {
+    }
+
+    card StaffID <<Value Object>>
+    card StaffFirstName <<Value Object>>
+    card StaffLastName <<Value Object>>
+    card StaffFullName <<Value Object>>
+    card LicenseNumber <<Value Object>>
+    card isActives <<Boolean>>
+
+    ' Atributos Contact Information
+    card StaffEmail <<Value Object>>
+    card StaffPhoneNumber <<Value Object>>
+
+
+    'Relationships inside the Staff aggregate
+    Staff "1" --> "1" StaffFirstName
+    Staff "1" --> "1" StaffLastName
+    Staff "1" --> "1" StaffFullName
+    Staff "1" -d-> "1" StaffID
+    Staff "1" --> "1" LicenseNumber
+    Staff "1" --> "1" isActives
+    Staff "1" -d-> "1" StaffEmail
+    Staff "1" -d-> "1" StaffPhoneNumber
+
+
+}
+
+package "Availability Slot Aggegate" {
+
+    entity AvailabilitySlot <<entity>><<root>> {
+    }
+
+    card Staff_ID <<Value Object>>
+    entity Slot <<Value Object>>{
+        - int startTime
+        - int endTime
+    }
+
+    'Relationships
+    AvailabilitySlot "1" --> "1" Staff_ID
+    AvailabilitySlot "1" --> "1" Slot
+
+
+}
+
+package "Specialization Aggregate" {
+
+    entity Specialization <<entity>><<root>> {
+    }
+
+    card SpecializationName <<Value Object>>
+    card SpecializationDescription <<Value Object>>
+
+    'Relationships
+    Specialization "1"-->"1" SpecializationName
+    Specialization "1"-->"1" SpecializationDescription
+
+}
+
+package "Operation Request Aggregate" {
+
+    entity OperationRequest <<entity>><<root>> {
+    }
+
+    card ID <<Value Object>>
+    card PatientID <<Value Object>>
+    card DoctorID <<Value Object>>
+    card OperationTypeId <<Value Object>>
+    card DeadlineDate <<Value Object>>
+    enum Priority <<enumeration>> {
+        Elective
+        Urgent
+        Emergency
+    }
+
+
+    'Relationships
+    OperationRequest "1" -d-> "1" ID
+    OperationRequest "1" -d-> "1" PatientID
+    OperationRequest "1" -d-> "1" DoctorID
+    OperationRequest "1" -d-> "1" OperationTypeId
+    OperationRequest "1" -d-> "1" DeadlineDate
+    OperationRequest "1" -d-> "1" Priority
+
+
+}
+
+package "Operation Type Aggregate" {
+
+    entity OperationType <<entity>><<root>> {
+    }
+
+    card OperationTypeID <<Value Object>>
+    card OperationTypeName <<Value Object>>
+    card EstimatedDuration <<Value Object>>
+    card isActive <<Boolean>>
+    'Ligar a Specialization
+    
+    'Relationships
+    OperationType "1" -u-> "1" OperationTypeID
+    OperationType "1" -u-> "1" OperationTypeName
+    OperationType "1" -l-> "1" EstimatedDuration
+    OperationType "1" -u-> "1" isActive
+    
+
+}
+
+package "Appointment Aggregate" {
+
+    entity Appointment <<entity>><<root>> {
+    }
+
+    card AppointmentID <<Value Object>>
+    card RequestID <<Value Object>>
+    card RoomID <<Value Object>>
+    card DateAndTime <<Value Object>>
+    enum Status <<enumeration>> {
+        Scheduled
+        Completed
+        Cancelled
+    }
+
+    'Relationships
+    Appointment "1" --> "1" AppointmentID
+    Appointment "1" --> "1" RequestID
+    Appointment "1" --> "1" RoomID
+    Appointment "1" --> "1" DateAndTime
+    Appointment "1" --> "1" Status
+
+
+}
+
+package "Equipment Aggregate"{
+
+    entity Equipment <<entity>><<root>> {
+    }
+
+    card EquipmentName <<Value Object>>
+    card EquipmentDescription <<Value Object>>
+
+    'Relationships
+    Equipment "1" -u-> "1" EquipmentName
+    Equipment "1" -u-> "1" EquipmentDescription
+}
+
+package "Surgery Room Aggregate" {
+
+    entity SurgeryRoom <<entity>><<root>> {
+    }
+
+    card RoomNumber <<Value Object>>
+    enum Type <<enumeration>> {
+         Operating
+         Consultation 
+         ICU
+    }
+    card Capacity <<Value Object>>
+    enum CurrentStatus <<enumeration>> {
+        Available
+        Occupied
+        UnderMaintenance
+    }
+    card MaintenanceSlots <<Value Object>>
+    
+    'Relationships
+
+    SurgeryRoom "1" --> "1" RoomNumber
+    SurgeryRoom "1" -u-> "1" Type
+    SurgeryRoom "1" --> "1" Capacity
+    SurgeryRoom "1" --> "1" CurrentStatus
+    SurgeryRoom "1" -u-> "1" MaintenanceSlots
+}
+
+' Relationships
+
+' US 5.1.3, mas ficou esclarecido que NÃO é o patient que dá book, mas sim o Planning Module
+Patient "1" ----> "*" Appointment: books
+
+
+Staff "*" -l--> "1" Specialization
+Staff "*" -d--> "*" OperationRequest: submits and edits
+Staff "*" -d--> "*" AvailabilitySlot: has
+
+OperationType "*" --> "*" Specialization
+
+
+Appointment "*" --> "*" Staff
+'Alterada relação 1-para-1  ->  *-para-*
+
+User "1" --> "1..*" OperationType: adds
+User "1" -u-> "0..*" Patient
+User "1" --> "0..*" Staff
+
+SurgeryRoom "1" -u--> "*" Equipment
+
+
+
+@enduml

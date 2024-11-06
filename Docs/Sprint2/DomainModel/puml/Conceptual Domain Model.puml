@@ -1,0 +1,123 @@
+"@startuml Conceptual Domain Model"
+
+' Title
+title Conceptual Domain Model
+
+skinparam classAttributeIconSize 0
+hide empty members
+hide attributes
+
+skinparam class {
+    BackgroundColor LemonChiffon
+    ArrowColor Brown
+    BorderColor SaddleBrown
+}
+
+entity Appointment {
+    - id
+    - requestID
+    - roomID
+    - dateAndTime
+    - status
+}
+
+entity Equipment{
+    - name
+    - description
+}
+
+entity SurgeryRoom{
+    - roomNumber
+    - type
+    - capacity
+    '- assignedEquipment
+    - currentStatus
+    - maintenanceSlots
+}
+
+entity User{
+    - username
+    - role
+    - email
+}
+
+entity OperationType{
+    - id
+    - name
+    '- requiredStaffBySpecialization
+    - estimatedDuration
+}
+
+entity OperationRequest{
+    - id
+    - patientID
+    - doctorID
+    - operationTypeID
+    - deadlineDate
+    - priority
+}
+
+entity Staff{
+    - firstName
+    - lastName
+    - fullName
+    - licenseNumber
+    '- specialization
+    - contactInformation
+    - availabilitySlots
+}
+
+entity Patient{
+    - firstName
+    - lastName
+    - fullName
+    - dateOfBirth
+    - gender
+    - medicalRecordNumber
+    - contactInformation
+    - allergiesAndConditions
+    - emergencyContact
+    '- appointmentHistory
+}
+
+entity Specialization{
+    - name
+    - description
+}
+
+entity PendingRequest{
+    - id
+    - userID
+    - attributeName
+    - pendingValue
+    - oldValue
+}
+note right of PendingRequest
+Used to persist a change which needs 
+a user confirmation to take effect.
+end note
+
+
+
+
+' Relationships
+User "1" -- "1" Patient : is < 
+User "1" -- "1" Staff : is <
+User "1" -- "*" OperationType : adds >
+
+Patient "1" -- "*" Appointment : has >
+Patient "1" -- "*" OperationRequest : has >
+
+Staff "*" -- "1" Specialization : has >
+Staff "*" -- "*" OperationRequest : submits and edits >
+Staff "*" -- "*" Appointment : handles >
+
+OperationType "*" -- "*" Specialization : requires >
+OperationType "1" -- "*" OperationRequest : specifies >
+
+Appointment "1" -- "1" SurgeryRoom : in >
+Appointment "1" -- "1" OperationRequest :  generates <
+
+SurgeryRoom "1" -- "*" Equipment : contains >
+
+@enduml
