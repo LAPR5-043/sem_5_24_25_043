@@ -24,6 +24,15 @@ namespace sem_5_24_25_043
         static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy => policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
+
 
 
             // Add services to the container.
@@ -105,6 +114,7 @@ namespace sem_5_24_25_043
             //}
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowFrontend");
 
             app.MapGet("/claims",
                     (ClaimsPrincipal claims) => claims.Claims.Select(c => new { c.Type, c.Value }).ToArray())
@@ -154,6 +164,8 @@ namespace sem_5_24_25_043
             services.AddScoped<IOperationRequestService, OperationRequestService>();
             services.AddScoped<ISensitiveDataService, SensitiveDataService>();
             services.AddScoped<IAvailabilitySlotService, AvailabilitySlotService>();
+            
+       
             
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
         }
