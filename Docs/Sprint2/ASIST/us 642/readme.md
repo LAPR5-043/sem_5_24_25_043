@@ -120,7 +120,7 @@ For the implementation of this feature, the following steps will be taken:
 First, we need to install the `iptables` package.
 
 ```bash
-sudo apt-get install iptables
+sudo apt install iptables
 ```
 
 ### 3.3. Installation of `iptables-persistent`
@@ -128,7 +128,7 @@ sudo apt-get install iptables
 Next, we need to install the `iptables-persistent` package.
 
 ```bash
-sudo apt-get install iptables-persistent
+sudo apt install iptables-persistent
 ```
 
 ### 3.4. Creation of the `iptables` rules
