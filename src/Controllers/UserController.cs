@@ -67,10 +67,10 @@ namespace src.Controllers
                 var tokens = await authService.SignInAsync(email, password);
                 return Ok(new { accessToken = tokens.AccessToken, idToken = tokens.IdToken });
             }
-            /*catch (NotAuthorizedException)
+            catch (NotAuthorizedException)
             {
                 return Unauthorized();
-            }*/
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
