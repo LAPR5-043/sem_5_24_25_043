@@ -49,7 +49,11 @@ public class OperationTypeEntityTypeConfiguration : IEntityTypeConfiguration<Ope
 
     private EstimatedDuration parseEstimatedDuration(string v)
     {
-        return new EstimatedDuration(int.Parse(v.Split(":")[0]), int.Parse(v.Split(":")[1]));
+        return new EstimatedDuration(
+            int.Parse(v.Split(',')[0].Split(':')[1]),
+            int.Parse(v.Split(',')[1].Split(':')[1]),
+            int.Parse(v.Split(',')[2].Split(':')[1])
+        );
     }
 }
 

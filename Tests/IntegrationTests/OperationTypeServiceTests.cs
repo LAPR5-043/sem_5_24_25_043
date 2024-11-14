@@ -37,8 +37,9 @@ namespace src.IntegrationTests
             var operationTypeDto = new OperationTypeDto
             {
                 OperationTypeName = "OT123",
-                EstimatedDurationHours = "1",
-                EstimatedDurationMinutes = "30",
+                EstimatedDurationAnesthesia = "1",
+                EstimatedDurationOperation = "30",
+                EstimatedDurationCleaning = "20",
                 IsActive = true,
                 Specializations = new Dictionary<string, string> { { "Cardiology", "1" } }
             };
@@ -64,8 +65,9 @@ namespace src.IntegrationTests
             var operationTypeDto = new OperationTypeDto
             {
                 OperationTypeName = "OT123",
-                EstimatedDurationHours = "1",
-                EstimatedDurationMinutes = "30",
+                EstimatedDurationAnesthesia = "1",
+                EstimatedDurationOperation = "30",
+                EstimatedDurationCleaning = "20",
                 IsActive = true,
                 Specializations = new Dictionary<string, string> { { "Cardiology", "1" } }
             };
@@ -103,7 +105,7 @@ namespace src.IntegrationTests
             var operationType = new OperationType
             {
                 operationTypeName = new OperationTypeName(id),
-                estimatedDuration = new EstimatedDuration(1, 30),
+                estimatedDuration = new EstimatedDuration(1, 30,20),
                 isActive = true,
                 specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
             };
@@ -147,14 +149,14 @@ namespace src.IntegrationTests
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT123"),
-                    estimatedDuration = new EstimatedDuration(1, 30),
+                    estimatedDuration = new EstimatedDuration(1, 30,2),
                     isActive = true,
                     specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
                 },
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT124"),
-                    estimatedDuration = new EstimatedDuration(2, 0),
+                    estimatedDuration = new EstimatedDuration(2, 2,2),
                     isActive = false,
                     specializations = new Dictionary<string, int> { { "Neurology", 2 } }
                 }
@@ -181,14 +183,14 @@ namespace src.IntegrationTests
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT123"),
-                    estimatedDuration = new EstimatedDuration(1, 30),
+                    estimatedDuration = new EstimatedDuration(1, 30,1),
                     isActive = true,
                     specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
                 },
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT124"),
-                    estimatedDuration = new EstimatedDuration(2, 0),
+                    estimatedDuration = new EstimatedDuration(2, 2,1),
                     isActive = false,
                     specializations = new Dictionary<string, int> { { "Neurology", 2 } }
                 }
@@ -214,14 +216,14 @@ namespace src.IntegrationTests
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT123"),
-                    estimatedDuration = new EstimatedDuration(1, 30),
+                    estimatedDuration = new EstimatedDuration(1, 30,2),
                     isActive = true,
                     specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
                 },
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT124"),
-                    estimatedDuration = new EstimatedDuration(2, 0),
+                    estimatedDuration = new EstimatedDuration(2,2,2),
                     isActive = false,
                     specializations = new Dictionary<string, int> { { "Neurology", 2 } }
                 }
@@ -247,14 +249,14 @@ namespace src.IntegrationTests
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT123"),
-                    estimatedDuration = new EstimatedDuration(1, 30),
+                    estimatedDuration = new EstimatedDuration(12, 30,12),
                     isActive = true,
                     specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
                 },
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT124"),
-                    estimatedDuration = new EstimatedDuration(2, 0),
+                    estimatedDuration = new EstimatedDuration(2, 12,12),
                     isActive = false,
                     specializations = new Dictionary<string, int> { { "Neurology", 2 } }
                 }
