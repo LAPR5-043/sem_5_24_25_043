@@ -62,7 +62,7 @@ public class OperationTypeService : IOperationTypeService
         var newOperationType = new OperationType();
         newOperationType.Id = new OperationTypeName(operationType.OperationTypeName);
         newOperationType.operationTypeName = new OperationTypeName(operationType.OperationTypeName);
-        newOperationType.estimatedDuration = new EstimatedDuration(int.Parse(operationType.EstimatedDurationHours), int.Parse(operationType.EstimatedDurationMinutes));
+        newOperationType.estimatedDuration = new EstimatedDuration(int.Parse(operationType.EstimatedDurationAnesthesia), int.Parse(operationType.EstimatedDurationOperation), int.Parse(operationType.EstimatedDurationCleaning));  
         newOperationType.isActive = (bool)operationType.IsActive;
         newOperationType.specializations = operationType.Specializations.ToDictionary(s => s.Key, s => int.Parse(s.Value));
     
@@ -160,9 +160,9 @@ public class OperationTypeService : IOperationTypeService
         operationTypeToEdit.operationTypeName = new OperationTypeName(operationTypeDTO.OperationTypeName ?? operationTypeToEdit.operationTypeName.Value);
         
         
-        if (operationTypeDTO is { EstimatedDurationHours: not null, EstimatedDurationMinutes: not null })
+        if (operationTypeDTO is {   EstimatedDurationAnesthesia: not null, EstimatedDurationOperation: not null, EstimatedDurationCleaning: not null})
             operationTypeToEdit.estimatedDuration = new EstimatedDuration(
-                int.Parse(operationTypeDTO.EstimatedDurationHours), int.Parse(operationTypeDTO.EstimatedDurationMinutes));
+                int.Parse(operationTypeDTO.EstimatedDurationAnesthesia), int.Parse(operationTypeDTO.EstimatedDurationOperation), int.Parse(operationTypeDTO.EstimatedDurationCleaning));
         operationTypeToEdit.isActive = operationTypeDTO.IsActive ?? operationTypeToEdit.isActive;
         operationTypeToEdit.specializations = operationTypeDTO.Specializations.ToDictionary(s => s.Key, s => int.Parse(s.Value));
         await operationTypeRepository.UpdateAsync(operationTypeToEdit);

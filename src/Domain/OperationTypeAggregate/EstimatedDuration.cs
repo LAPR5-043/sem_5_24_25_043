@@ -2,14 +2,17 @@ using src.Domain.Shared;
 
 public class EstimatedDuration : IValueObject
 {
-    public int hours { get; }
-    public int minutes { get; }
+    public int anesthesia { get; }
+    public int operation { get; }
+    public int cleaning { get; }
 
-    public EstimatedDuration(int hours, int minutes)
+    public EstimatedDuration(int anesthesia, int operation,int cleaning)
     {
-        this.hours = hours;
-        this.minutes = minutes;
+        this.anesthesia = anesthesia;
+        this.operation = operation;
+        this.cleaning = cleaning;
     }
+
     public EstimatedDuration()
     {
 
@@ -23,16 +26,16 @@ public class EstimatedDuration : IValueObject
         }
 
         EstimatedDuration estimatedDuration = (EstimatedDuration)obj;
-        return hours == estimatedDuration.hours && minutes == estimatedDuration.minutes;
+        return anesthesia == estimatedDuration.anesthesia && operation == estimatedDuration.operation && cleaning == estimatedDuration.cleaning;
     }
 
     public override int GetHashCode() {
-        return hours.GetHashCode() ^ minutes.GetHashCode();
+        return anesthesia.GetHashCode() + operation.GetHashCode() + cleaning.GetHashCode();
     }
 
     public override string ToString()
     {
-        return hours + ":" + minutes ;
+        return  "anesthesia:"+ anesthesia + ",operation:" + operation + ",cleaning:" + cleaning;
     }
 
 }
