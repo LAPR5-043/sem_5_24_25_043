@@ -25,6 +25,12 @@ public class OperationTypeEntityTypeConfiguration : IEntityTypeConfiguration<Ope
                     v => v.AsString(),
                     v => new OperationTypeName(v))
                 .IsRequired();
+
+            builder.Property(t => t.operationTypeDescription)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => new OperationTypeDescription(v))
+                .IsRequired();
             
             builder.Property(t => t.estimatedDuration)
                 .HasConversion(

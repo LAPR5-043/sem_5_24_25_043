@@ -14,8 +14,8 @@ public class AppointmentTests
         // Arrange
         var appointmentID = new AppointmentID("123");
         var requestID = 1;
-        var roomID = 101;
-        var dateAndTime = new DateAndTime(new DateTime(2023, 10, 1, 14, 30, 0));
+        var roomID = "101";
+        var dateAndTime = new DateAndTime("20241028", "720", "1200");
         var status = StatusExtensions.FromString("Scheduled");
 
         // Act
@@ -55,17 +55,17 @@ public class AppointmentTests
     {
         // Arrange
         var appointment = new Appointment();
-        var newDay = 2;
-        var newMonth = 10;
-        var newYear = 2023;
-        var newHour = 15;
-        var newMinute = 45;
+        var newDay = "02";
+        var newMonth = "10";
+        var newYear = "2023";
+        var newHour = "15";
+        var newMinute = "45";
 
         // Act
         appointment.ChangeDateAndTime(newDay, newMonth, newYear, newHour, newMinute);
 
         // Assert
-        Assert.Equal(new DateTime(newYear, newMonth, newDay, newHour, newMinute, 0), appointment.dateAndTime.Value);
+        Assert.Equal(new DateAndTime("20231002","15","45"), appointment.dateAndTime);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class AppointmentTests
     {
         // Arrange
         var appointment = new Appointment();
-        var newRoomID = 102;
+        var newRoomID = "102";
 
         // Act
         appointment.ChangeRoom(newRoomID);

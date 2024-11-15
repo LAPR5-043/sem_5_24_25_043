@@ -183,6 +183,7 @@ namespace src.IntegrationTests
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT123"),
+                    operationTypeDescription = new OperationTypeDescription("ot11111"),
                     estimatedDuration = new EstimatedDuration(1, 30,1),
                     isActive = true,
                     specializations = new Dictionary<string, int> { { "Cardiology", 1 } }
@@ -190,6 +191,7 @@ namespace src.IntegrationTests
                 new OperationType
                 {
                     operationTypeName = new OperationTypeName("OT124"),
+                    operationTypeDescription = new OperationTypeDescription("ot11112"),
                     estimatedDuration = new EstimatedDuration(2, 2,1),
                     isActive = false,
                     specializations = new Dictionary<string, int> { { "Neurology", 2 } }
@@ -200,7 +202,7 @@ namespace src.IntegrationTests
                                         .ReturnsAsync(operationTypes);
 
             // Act
-            var result = await _operationTypeService.getFilteredOperationTypesAsync("OT123", null, null);
+            var result = await _operationTypeService.getFilteredOperationTypesAsync("ot11111", null, null);
 
             // Assert
             Assert.Single(result.Value);
