@@ -63,14 +63,113 @@ namespace sem_5_24_25_043.Migrations
                     b.HasData(
                         new
                         {
-                            operationRequestID = "000001",
-                            Id = "000001",
+                            operationRequestID = "1",
+                            Id = "1",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "D202400003",
+                            operationTypeID = "so3",
+                            patientID = "1",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anesthesist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"D202400026\"],\"circulating\":[\"D202400030\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "2",
+                            Id = "2",
                             deadlineDate = "01/01/2025 00:00:00",
                             doctorID = "D202400001",
                             operationTypeID = "so2",
                             patientID = "1",
                             priority = "Emergency",
-                            specializations = "{\"Anesthesist\":[\"D202400021\"]}"
+                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anesthesist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"D202400026\"],\"circulating\":[\"D202400030\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "3",
+                            Id = "3",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400001",
+                            operationTypeID = "so4",
+                            patientID = "2",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400001\",\"d202400012\"],\"anaesthetist\":[\"n202400024\",\"d202400002\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "4",
+                            Id = "4",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400001",
+                            operationTypeID = "so2",
+                            patientID = "2",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400001\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400002\",\"n202400024\"],\"instrumenting\":[\"n202400027\"],\"circulating\":[\"n202400031\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "5",
+                            Id = "5",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400011",
+                            operationTypeID = "so4",
+                            patientID = "3",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400023\",\"n202400024\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "6",
+                            Id = "6",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400003",
+                            operationTypeID = "so2",
+                            patientID = "3",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400002\",\"n202400022\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400030\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "7",
+                            Id = "7",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400003",
+                            operationTypeID = "so3",
+                            patientID = "4",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400001\"],\"anaesthetist\":[\"d202400002\",\"n202400029\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "8",
+                            Id = "8",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400001",
+                            operationTypeID = "so4",
+                            patientID = "4",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400001\",\"d202400003\",\"d202400012\"],\"anaesthetist\":[\"d202400023\",\"n202400024\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "9",
+                            Id = "9",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400001",
+                            operationTypeID = "so2",
+                            patientID = "5",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400001\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400002\",\"n202400024\"],\"instrumenting\":[\"n202400027\"],\"circulating\":[\"n202400031\"],\"medical_action\":[\"s202400001\"]}"
+                        },
+                        new
+                        {
+                            operationRequestID = "10",
+                            Id = "10",
+                            deadlineDate = "01/01/2025 00:00:00",
+                            doctorID = "d202400011",
+                            operationTypeID = "so4",
+                            patientID = "5",
+                            priority = "Emergency",
+                            specializations = "{\"orthopaedist\":[\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400023\",\"n202400024\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}"
                         });
                 });
 
@@ -235,7 +334,7 @@ namespace sem_5_24_25_043.Migrations
                             estimatedDuration = "anesthesia:45,operation:60,cleaning:45",
                             isActive = true,
                             operationTypeDescription = "Knee Replacement Surgery",
-                            specializations = "{\"Doctor_Orthopaedist\":3,\"Doctor_Anaesthetist\":1,\"Nurse_Circulating\":1,\"Nurse_Instrumenting\":1,\"Nurse_Anaesthetist\":1,\"Assistant_Medical_Action\":1}"
+                            specializations = "{\"d;orthopaedist\":3,\"d;anaesthetist\":1,\"n;circulating\":1,\"n;instrumenting\":1,\"n;anaesthetist\":1,\"s;medical_action\":1}"
                         },
                         new
                         {
@@ -244,7 +343,7 @@ namespace sem_5_24_25_043.Migrations
                             estimatedDuration = "anesthesia:45,operation:90,cleaning:45",
                             isActive = true,
                             operationTypeDescription = "Shoulder Replacement Surgery",
-                            specializations = "{\"Doctor_Orthopaedist\":3,\"Doctor_Anaesthetist\":1,\"Nurse_Circulating\":1,\"Nurse_Instrumenting\":1,\"Nurse_Anaesthetist\":1,\"Assistant_Medical_Action\":1}"
+                            specializations = "{\"d;orthopaedist\":3,\"d;anaesthetist\":1,\"n;circulating\":1,\"n;instrumenting\":1,\"n;anaesthetist\":1,\"s;medical_action\":1}"
                         },
                         new
                         {
@@ -253,7 +352,7 @@ namespace sem_5_24_25_043.Migrations
                             estimatedDuration = "anesthesia:45,operation:75,cleaning:45",
                             isActive = true,
                             operationTypeDescription = "Hip Replacement Surgery",
-                            specializations = "{\"Doctor_Orthopaedist\":2,\"Doctor_Anaesthetist\":1,\"Nurse_Circulating\":1,\"Nurse_Instrumenting\":1,\"Nurse_Anaesthetist\":1,\"Assistant_Medical_Action\":1}"
+                            specializations = "{\"d;orthopaedist\":2,\"d;anaesthetist\":1,\"n;circulating\":1,\"n;instrumenting\":1,\"n;anaesthetist\":1,\"s;medical_action\":1}"
                         });
                 });
 
@@ -290,6 +389,56 @@ namespace sem_5_24_25_043.Migrations
                         .IsUnique();
 
                     b.ToTable("PendingRequests", (string)null);
+                });
+
+            modelBuilder.Entity("Specialization", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("specializationDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("specializationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Specializations", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "orthopaedist",
+                            specializationDescription = "Orthopaedist",
+                            specializationName = "orthopaedist"
+                        },
+                        new
+                        {
+                            Id = "anaesthetist",
+                            specializationDescription = "Anaesthetist",
+                            specializationName = "anaesthetist"
+                        },
+                        new
+                        {
+                            Id = "instrumenting",
+                            specializationDescription = "Instrumenting",
+                            specializationName = "instrumenting"
+                        },
+                        new
+                        {
+                            Id = "circulating",
+                            specializationDescription = "Circulating",
+                            specializationName = "circulating"
+                        },
+                        new
+                        {
+                            Id = "medical_action",
+                            specializationDescription = "Medical Action",
+                            specializationName = "medical_action"
+                        });
                 });
 
             modelBuilder.Entity("Staff", b =>
@@ -360,8 +509,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "821322",
-                            phoneNumber = "+351912297153",
+                            licenseNumber = "332426",
+                            phoneNumber = "+351926042287",
                             specializationID = "orthopaedist",
                             staffID = "d202400001"
                         },
@@ -374,8 +523,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "805322",
-                            phoneNumber = "+351931170255",
+                            licenseNumber = "430321",
+                            phoneNumber = "+351947663505",
                             specializationID = "anaesthetist",
                             staffID = "d202400002"
                         },
@@ -388,8 +537,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "641149",
-                            phoneNumber = "+351939272958",
+                            licenseNumber = "644737",
+                            phoneNumber = "+351927470395",
                             specializationID = "orthopaedist",
                             staffID = "d202400003"
                         },
@@ -402,8 +551,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "858244",
-                            phoneNumber = "+351956913062",
+                            licenseNumber = "911602",
+                            phoneNumber = "+351977175956",
                             specializationID = "orthopaedist",
                             staffID = "d202400011"
                         },
@@ -416,8 +565,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "123949",
-                            phoneNumber = "+351961716712",
+                            licenseNumber = "993707",
+                            phoneNumber = "+351997638616",
                             specializationID = "orthopaedist",
                             staffID = "d202400012"
                         },
@@ -430,8 +579,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "269233",
-                            phoneNumber = "+351993373418",
+                            licenseNumber = "334372",
+                            phoneNumber = "+351953236453",
                             specializationID = "anaesthetist",
                             staffID = "d202400023"
                         },
@@ -444,8 +593,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Pedro,Gomes",
                             isActive = true,
                             lastName = "Gomes",
-                            licenseNumber = "793605",
-                            phoneNumber = "+351923936967",
+                            licenseNumber = "190159",
+                            phoneNumber = "+351968167275",
                             specializationID = "anaesthetist",
                             staffID = "n202400024"
                         },
@@ -458,8 +607,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Sara,Ribeiro",
                             isActive = true,
                             lastName = "Ribeiro",
-                            licenseNumber = "909177",
-                            phoneNumber = "+351923282184",
+                            licenseNumber = "218163",
+                            phoneNumber = "+351989445711",
                             specializationID = "anaesthetist",
                             staffID = "n202400029"
                         },
@@ -472,8 +621,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "David,Fernandes",
                             isActive = true,
                             lastName = "Fernandes",
-                            licenseNumber = "588010",
-                            phoneNumber = "+351910848568",
+                            licenseNumber = "499363",
+                            phoneNumber = "+351985350765",
                             specializationID = "anaesthetist",
                             staffID = "n202400022"
                         },
@@ -486,8 +635,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Laura,Sousa",
                             isActive = true,
                             lastName = "Sousa",
-                            licenseNumber = "421206",
-                            phoneNumber = "+351987269308",
+                            licenseNumber = "170793",
+                            phoneNumber = "+351961157125",
                             specializationID = "circulating",
                             staffID = "n202400025"
                         },
@@ -500,8 +649,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "390786",
-                            phoneNumber = "+351917891154",
+                            licenseNumber = "670711",
+                            phoneNumber = "+351953545601",
                             specializationID = "circulating",
                             staffID = "n202400030"
                         },
@@ -514,8 +663,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "630957",
-                            phoneNumber = "+351993471022",
+                            licenseNumber = "568151",
+                            phoneNumber = "+351946843340",
                             specializationID = "circulating",
                             staffID = "n202400031"
                         },
@@ -528,8 +677,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "512602",
-                            phoneNumber = "+351931017743",
+                            licenseNumber = "731841",
+                            phoneNumber = "+351922111411",
                             specializationID = "instrumenting",
                             staffID = "n202400026"
                         },
@@ -542,8 +691,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "483791",
-                            phoneNumber = "+351981736171",
+                            licenseNumber = "922037",
+                            phoneNumber = "+351968710496",
                             specializationID = "instrumenting",
                             staffID = "n202400027"
                         },
@@ -556,8 +705,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "992894",
-                            phoneNumber = "+351960692470",
+                            licenseNumber = "292077",
+                            phoneNumber = "+351944065903",
                             specializationID = "instrumenting",
                             staffID = "n202400028"
                         },
@@ -570,8 +719,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "932751",
-                            phoneNumber = "+351988977448",
+                            licenseNumber = "462567",
+                            phoneNumber = "+351966780565",
                             specializationID = "medical_action",
                             staffID = "s202400001"
                         });
@@ -613,7 +762,7 @@ namespace sem_5_24_25_043.Migrations
                             Id = "1",
                             dateAndTime = "20241028,720,1200",
                             requestID = 1,
-                            roomID = "1",
+                            roomID = "or1",
                             status = "Scheduled"
                         });
                 });
@@ -731,6 +880,44 @@ namespace sem_5_24_25_043.Migrations
                             Id = "s202400001",
                             Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1400}}",
                             StaffID = "s202400001"
+                        });
+                });
+
+            modelBuilder.Entity("src.Domain.SurgeryRoomAggregate.SurgeryRoom", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SurgeryRooms", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "or1",
+                            Name = "Orthopedic Surgery Room 1",
+                            RoomID = "or1"
+                        },
+                        new
+                        {
+                            Id = "or2",
+                            Name = "Orthopedic Surgery Room 2",
+                            RoomID = "or2"
+                        },
+                        new
+                        {
+                            Id = "or3",
+                            Name = "Orthopedic Surgery Room 3",
+                            RoomID = "or3"
                         });
                 });
 #pragma warning restore 612, 618

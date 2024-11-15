@@ -15,5 +15,22 @@ namespace src.Services.Services
             this.unitOfWork = unitOfWork;
             this.specializationRepository = specializationRepository;
         }
+
+        public async Task<List<SpecializationDto>> GetSpecializationsAsync(){
+            List<SpecializationDto> specializationsDto = new List<SpecializationDto>();
+            var specializations = await specializationRepository.GetAllAsync();
+            foreach (var specialization in specializations)
+            {
+                specializationsDto.Add(new SpecializationDto(specialization));
+            }
+
+            return specializationsDto;
+        }
+
+        public Task<SpecializationDto> GetSpecializationAsync(string specializationID){
+            return specializationRepository.GetByIdAsync(new SpecializationName(specializationID))
+                .ContinueWith(specialization => new SpecializationDto(specialization.Result));
+
+        }
     }
 }
