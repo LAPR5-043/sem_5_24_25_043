@@ -388,9 +388,9 @@ public class AppContext : DbContext
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400003","d202400011","d202400012" } },
-                        { "anesthesist", new List<string>() { "D202400002","n202400022" } },
-                        { "instrumenting", new List<string>() { "D202400026", } },
-                        { "circulating", new List<string>() { "D202400030", } },
+                        { "anaesthetist", new List<string>() { "D202400002","n202400022" } },
+                        { "instrumenting", new List<string>() { "n202400026", } },
+                        { "circulating", new List<string>() { "n202400030", } },
                         { "medical_action", new List<string>() { "s202400001", } }
                     }
                 },
@@ -408,9 +408,9 @@ public class AppContext : DbContext
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400003","d202400011","d202400012" } },
-                        { "anesthesist", new List<string>() { "D202400002","n202400022" } },
-                        { "instrumenting", new List<string>() { "D202400026", } },
-                        { "circulating", new List<string>() { "D202400030", } },
+                        { "anaesthetist", new List<string>() { "D202400002","n202400022" } },
+                        { "instrumenting", new List<string>() { "n202400026", } },
+                        { "circulating", new List<string>() { "n202400030", } },
                         { "medical_action", new List<string>() { "s202400001", } }
                     }
                 },

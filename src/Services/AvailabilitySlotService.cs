@@ -40,6 +40,9 @@ public class AvailabilitySlotService : IAvailabilitySlotService
     public async Task<AvailabilitySlot> GetAvailabilitySlotAsync(string availabilitySlotID){
         return await _availabilitySlotRepository.GetByIdAsync(new StaffID(availabilitySlotID));
     }
+    public async Task<List<AvailabilitySlot>> GetAllAvailabilitySlotsAsync(){
+        return await _availabilitySlotRepository.GetAllAsync();
+    }
 
 
 }
