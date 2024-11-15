@@ -12,8 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241115111656_AddSurgeryRoomsAndSpecializations")]
-    partial class AddSurgeryRoomsAndSpecializations
+    [Migration("20241115154853_DBRefactor")]
+    partial class DBRefactor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,7 +73,7 @@ namespace sem_5_24_25_043.Migrations
                             operationTypeID = "so3",
                             patientID = "1",
                             priority = "Emergency",
-                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anesthesist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"D202400026\"],\"circulating\":[\"D202400030\"],\"medical_action\":[\"s202400001\"]}"
+                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400030\"],\"medical_action\":[\"s202400001\"]}"
                         },
                         new
                         {
@@ -84,7 +84,7 @@ namespace sem_5_24_25_043.Migrations
                             operationTypeID = "so2",
                             patientID = "1",
                             priority = "Emergency",
-                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anesthesist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"D202400026\"],\"circulating\":[\"D202400030\"],\"medical_action\":[\"s202400001\"]}"
+                            specializations = "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400030\"],\"medical_action\":[\"s202400001\"]}"
                         },
                         new
                         {
@@ -512,8 +512,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "332426",
-                            phoneNumber = "+351926042287",
+                            licenseNumber = "120977",
+                            phoneNumber = "+351919969079",
                             specializationID = "orthopaedist",
                             staffID = "d202400001"
                         },
@@ -526,8 +526,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "430321",
-                            phoneNumber = "+351947663505",
+                            licenseNumber = "483193",
+                            phoneNumber = "+351926984756",
                             specializationID = "anaesthetist",
                             staffID = "d202400002"
                         },
@@ -540,8 +540,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "644737",
-                            phoneNumber = "+351927470395",
+                            licenseNumber = "346698",
+                            phoneNumber = "+351925513617",
                             specializationID = "orthopaedist",
                             staffID = "d202400003"
                         },
@@ -554,8 +554,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "911602",
-                            phoneNumber = "+351977175956",
+                            licenseNumber = "505298",
+                            phoneNumber = "+351999896835",
                             specializationID = "orthopaedist",
                             staffID = "d202400011"
                         },
@@ -568,8 +568,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "993707",
-                            phoneNumber = "+351997638616",
+                            licenseNumber = "962442",
+                            phoneNumber = "+351985090683",
                             specializationID = "orthopaedist",
                             staffID = "d202400012"
                         },
@@ -582,8 +582,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "334372",
-                            phoneNumber = "+351953236453",
+                            licenseNumber = "969490",
+                            phoneNumber = "+351913589038",
                             specializationID = "anaesthetist",
                             staffID = "d202400023"
                         },
@@ -596,8 +596,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Pedro,Gomes",
                             isActive = true,
                             lastName = "Gomes",
-                            licenseNumber = "190159",
-                            phoneNumber = "+351968167275",
+                            licenseNumber = "732158",
+                            phoneNumber = "+351997068302",
                             specializationID = "anaesthetist",
                             staffID = "n202400024"
                         },
@@ -610,8 +610,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Sara,Ribeiro",
                             isActive = true,
                             lastName = "Ribeiro",
-                            licenseNumber = "218163",
-                            phoneNumber = "+351989445711",
+                            licenseNumber = "189991",
+                            phoneNumber = "+351956801218",
                             specializationID = "anaesthetist",
                             staffID = "n202400029"
                         },
@@ -624,8 +624,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "David,Fernandes",
                             isActive = true,
                             lastName = "Fernandes",
-                            licenseNumber = "499363",
-                            phoneNumber = "+351985350765",
+                            licenseNumber = "827134",
+                            phoneNumber = "+351935853852",
                             specializationID = "anaesthetist",
                             staffID = "n202400022"
                         },
@@ -638,8 +638,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Laura,Sousa",
                             isActive = true,
                             lastName = "Sousa",
-                            licenseNumber = "170793",
-                            phoneNumber = "+351961157125",
+                            licenseNumber = "573591",
+                            phoneNumber = "+351925128348",
                             specializationID = "circulating",
                             staffID = "n202400025"
                         },
@@ -652,8 +652,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "670711",
-                            phoneNumber = "+351953545601",
+                            licenseNumber = "235809",
+                            phoneNumber = "+351992568449",
                             specializationID = "circulating",
                             staffID = "n202400030"
                         },
@@ -666,8 +666,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "568151",
-                            phoneNumber = "+351946843340",
+                            licenseNumber = "447358",
+                            phoneNumber = "+351952016886",
                             specializationID = "circulating",
                             staffID = "n202400031"
                         },
@@ -680,8 +680,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "731841",
-                            phoneNumber = "+351922111411",
+                            licenseNumber = "158355",
+                            phoneNumber = "+351911672308",
                             specializationID = "instrumenting",
                             staffID = "n202400026"
                         },
@@ -694,8 +694,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "922037",
-                            phoneNumber = "+351968710496",
+                            licenseNumber = "438404",
+                            phoneNumber = "+351956097020",
                             specializationID = "instrumenting",
                             staffID = "n202400027"
                         },
@@ -708,8 +708,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "292077",
-                            phoneNumber = "+351944065903",
+                            licenseNumber = "711982",
+                            phoneNumber = "+351976738004",
                             specializationID = "instrumenting",
                             staffID = "n202400028"
                         },
@@ -722,8 +722,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "462567",
-                            phoneNumber = "+351966780565",
+                            licenseNumber = "142277",
+                            phoneNumber = "+351928886685",
                             specializationID = "medical_action",
                             staffID = "s202400001"
                         });

@@ -17,6 +17,7 @@ using src.Services;
 using Domain.SurgeryRoomAggregate;
 using src.Infrastructure.Repositories;
 using Domain.SpecializationAggregate;
+using System.Text.Json;
 
 
 namespace sem_5_24_25_043
@@ -38,8 +39,14 @@ namespace sem_5_24_25_043
 
 
 
+                
+        
             // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
             builder.Services.AddDbContext<AppContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
            

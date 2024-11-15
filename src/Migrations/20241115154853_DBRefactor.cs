@@ -7,7 +7,7 @@
 namespace sem_5_24_25_043.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSurgeryRoomsAndSpecializations : Migration
+    public partial class DBRefactor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -208,9 +208,9 @@ namespace sem_5_24_25_043.Migrations
                 columns: new[] { "operationRequestID", "Id", "deadlineDate", "doctorID", "operationTypeID", "patientID", "priority", "specializations" },
                 values: new object[,]
                 {
-                    { "1", "1", "01/01/2025 00:00:00", "D202400003", "so3", "1", "Emergency", "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anesthesist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"D202400026\"],\"circulating\":[\"D202400030\"],\"medical_action\":[\"s202400001\"]}" },
+                    { "1", "1", "01/01/2025 00:00:00", "D202400003", "so3", "1", "Emergency", "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400030\"],\"medical_action\":[\"s202400001\"]}" },
                     { "10", "10", "01/01/2025 00:00:00", "d202400011", "so4", "5", "Emergency", "{\"orthopaedist\":[\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400023\",\"n202400024\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}" },
-                    { "2", "2", "01/01/2025 00:00:00", "D202400001", "so2", "1", "Emergency", "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anesthesist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"D202400026\"],\"circulating\":[\"D202400030\"],\"medical_action\":[\"s202400001\"]}" },
+                    { "2", "2", "01/01/2025 00:00:00", "D202400001", "so2", "1", "Emergency", "{\"orthopaedist\":[\"d202400003\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"D202400002\",\"n202400022\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400030\"],\"medical_action\":[\"s202400001\"]}" },
                     { "3", "3", "01/01/2025 00:00:00", "d202400001", "so4", "2", "Emergency", "{\"orthopaedist\":[\"d202400001\",\"d202400012\"],\"anaesthetist\":[\"n202400024\",\"d202400002\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}" },
                     { "4", "4", "01/01/2025 00:00:00", "d202400001", "so2", "2", "Emergency", "{\"orthopaedist\":[\"d202400001\",\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400002\",\"n202400024\"],\"instrumenting\":[\"n202400027\"],\"circulating\":[\"n202400031\"],\"medical_action\":[\"s202400001\"]}" },
                     { "5", "5", "01/01/2025 00:00:00", "d202400011", "so4", "3", "Emergency", "{\"orthopaedist\":[\"d202400011\",\"d202400012\"],\"anaesthetist\":[\"d202400023\",\"n202400024\"],\"instrumenting\":[\"n202400026\"],\"circulating\":[\"n202400025\"],\"medical_action\":[\"s202400001\"]}" },
@@ -256,22 +256,22 @@ namespace sem_5_24_25_043.Migrations
                 columns: new[] { "Id", "availabilitySlotsID", "email", "firstName", "fullName", "isActive", "lastName", "licenseNumber", "phoneNumber", "specializationID", "staffID" },
                 values: new object[,]
                 {
-                    { "d202400001", "d202400001", "d202400001@medopt.com", "John", "John,Doe", true, "Doe", "332426", "+351926042287", "orthopaedist", "d202400001" },
-                    { "d202400002", "d202400002", "d202400002@medopt.com", "Jane", "Jane,Smith", true, "Smith", "430321", "+351947663505", "anaesthetist", "d202400002" },
-                    { "d202400003", "d202400003", "d202400003@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "644737", "+351927470395", "orthopaedist", "d202400003" },
-                    { "d202400011", "d202400011", "d202400011@medopt.com", "Maria", "Maria,Silva", true, "Silva", "911602", "+351977175956", "orthopaedist", "d202400011" },
-                    { "d202400012", "d202400012", "d202400012@medopt.com", "Ana", "Ana,Costa", true, "Costa", "993707", "+351997638616", "orthopaedist", "d202400012" },
-                    { "d202400023", "d202400023", "d202400023@medopt.com", "Luis", "Luis,Martins", true, "Martins", "334372", "+351953236453", "anaesthetist", "d202400023" },
-                    { "n202400022", "n202400022", "n202400022@medopt.com", "David", "David,Fernandes", true, "Fernandes", "499363", "+351985350765", "anaesthetist", "n202400022" },
-                    { "n202400024", "n202400024", "n202400024@medopt.com", "Pedro", "Pedro,Gomes", true, "Gomes", "190159", "+351968167275", "anaesthetist", "n202400024" },
-                    { "n202400025", "n202400025", "n202400025@medopt.com", "Laura", "Laura,Sousa", true, "Sousa", "170793", "+351961157125", "circulating", "n202400025" },
-                    { "n202400026", "n202400026", "n202400026@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "731841", "+351922111411", "instrumenting", "n202400026" },
-                    { "n202400027", "n202400027", "n202400027@medopt.com", "Maria", "Maria,Silva", true, "Silva", "922037", "+351968710496", "instrumenting", "n202400027" },
-                    { "n202400028", "n202400028", "n202400028@medopt.com", "Ana", "Ana,Costa", true, "Costa", "292077", "+351944065903", "instrumenting", "n202400028" },
-                    { "n202400029", "n202400029", "n202400029@medopt.com", "Sara", "Sara,Ribeiro", true, "Ribeiro", "218163", "+351989445711", "anaesthetist", "n202400029" },
-                    { "n202400030", "n202400030", "n202400030@medopt.com", "John", "John,Doe", true, "Doe", "670711", "+351953545601", "circulating", "n202400030" },
-                    { "n202400031", "n202400031", "n202400031@medopt.com", "Jane", "Jane,Smith", true, "Smith", "568151", "+351946843340", "circulating", "n202400031" },
-                    { "s202400001", "s202400001", "s202400001@medopt.com", "Luis", "Luis,Martins", true, "Martins", "462567", "+351966780565", "medical_action", "s202400001" }
+                    { "d202400001", "d202400001", "d202400001@medopt.com", "John", "John,Doe", true, "Doe", "120977", "+351919969079", "orthopaedist", "d202400001" },
+                    { "d202400002", "d202400002", "d202400002@medopt.com", "Jane", "Jane,Smith", true, "Smith", "483193", "+351926984756", "anaesthetist", "d202400002" },
+                    { "d202400003", "d202400003", "d202400003@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "346698", "+351925513617", "orthopaedist", "d202400003" },
+                    { "d202400011", "d202400011", "d202400011@medopt.com", "Maria", "Maria,Silva", true, "Silva", "505298", "+351999896835", "orthopaedist", "d202400011" },
+                    { "d202400012", "d202400012", "d202400012@medopt.com", "Ana", "Ana,Costa", true, "Costa", "962442", "+351985090683", "orthopaedist", "d202400012" },
+                    { "d202400023", "d202400023", "d202400023@medopt.com", "Luis", "Luis,Martins", true, "Martins", "969490", "+351913589038", "anaesthetist", "d202400023" },
+                    { "n202400022", "n202400022", "n202400022@medopt.com", "David", "David,Fernandes", true, "Fernandes", "827134", "+351935853852", "anaesthetist", "n202400022" },
+                    { "n202400024", "n202400024", "n202400024@medopt.com", "Pedro", "Pedro,Gomes", true, "Gomes", "732158", "+351997068302", "anaesthetist", "n202400024" },
+                    { "n202400025", "n202400025", "n202400025@medopt.com", "Laura", "Laura,Sousa", true, "Sousa", "573591", "+351925128348", "circulating", "n202400025" },
+                    { "n202400026", "n202400026", "n202400026@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "158355", "+351911672308", "instrumenting", "n202400026" },
+                    { "n202400027", "n202400027", "n202400027@medopt.com", "Maria", "Maria,Silva", true, "Silva", "438404", "+351956097020", "instrumenting", "n202400027" },
+                    { "n202400028", "n202400028", "n202400028@medopt.com", "Ana", "Ana,Costa", true, "Costa", "711982", "+351976738004", "instrumenting", "n202400028" },
+                    { "n202400029", "n202400029", "n202400029@medopt.com", "Sara", "Sara,Ribeiro", true, "Ribeiro", "189991", "+351956801218", "anaesthetist", "n202400029" },
+                    { "n202400030", "n202400030", "n202400030@medopt.com", "John", "John,Doe", true, "Doe", "235809", "+351992568449", "circulating", "n202400030" },
+                    { "n202400031", "n202400031", "n202400031@medopt.com", "Jane", "Jane,Smith", true, "Smith", "447358", "+351952016886", "circulating", "n202400031" },
+                    { "s202400001", "s202400001", "s202400001@medopt.com", "Luis", "Luis,Martins", true, "Martins", "142277", "+351928886685", "medical_action", "s202400001" }
                 });
 
             migrationBuilder.InsertData(
