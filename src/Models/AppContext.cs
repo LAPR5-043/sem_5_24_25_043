@@ -36,8 +36,8 @@ public class AppContext : DbContext
     public DbSet<Appointment> Appointments { get; set; } = null!;
     public DbSet<OperationRequest> OperationRequests { get; set; } = null!;
     public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; } = null!;
-    //public DbSet<Specialization> Specializations { get; set; } = null!;
-    //public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
+    public DbSet<Specialization> Specializations { get; set; } = null!;
+    public DbSet<SurgeryRoom> SurgeryRooms { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,8 +50,68 @@ public class AppContext : DbContext
         modelBuilder.ApplyConfiguration<Appointment>(new AppointmentEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<PendingRequest>(new PendingRequestEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration<AvailabilitySlot>(new AvailabilitySlotTypeConfiguration());
+        modelBuilder.ApplyConfiguration<SurgeryRoom>(new SurgeryRoomEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration<Specialization>(new SpecializationEntityTypeConfiguration());
+
         base.OnModelCreating(modelBuilder);
         var random = new Random();
+
+
+        modelBuilder.Entity<Specialization>().HasData(
+            new Specialization
+            {
+                Id = new SpecializationName("orthopaedist"),
+                specializationName = new SpecializationName("orthopaedist"),
+                specializationDescription = new SpecializationDescription("Orthopaedist")
+            },
+            new Specialization
+            {
+                Id = new SpecializationName("anaesthetist"),
+                specializationName = new SpecializationName("anaesthetist"),
+                specializationDescription = new SpecializationDescription("Anaesthetist")
+            },
+            new Specialization
+            {
+                Id = new SpecializationName("instrumenting"),
+                specializationName = new SpecializationName("instrumenting"),
+                specializationDescription = new SpecializationDescription("Instrumenting")
+            },
+            new Specialization
+            {
+                Id = new SpecializationName("circulating"),
+                specializationName = new SpecializationName("circulating"),
+                specializationDescription = new SpecializationDescription("Circulating")
+            },
+            new Specialization
+            {
+                Id = new SpecializationName("medical_action"),
+                specializationName = new SpecializationName("medical_action"),
+                specializationDescription = new SpecializationDescription("Medical Action")
+            }
+
+        );
+
+        modelBuilder.Entity<SurgeryRoom>().HasData(
+            new SurgeryRoom
+            {
+                Id = new RoomId("or1"),
+                RoomID = new RoomId("or1"),
+                Name = "Orthopedic Surgery Room 1"
+            },
+            new SurgeryRoom
+            {
+                Id = new RoomId("or2"),
+                RoomID = new RoomId("or2"),
+                Name = "Orthopedic Surgery Room 2"
+            },
+            new SurgeryRoom
+            {
+                Id = new RoomId("or3"),
+                RoomID = new RoomId("or3"),
+                Name = "Orthopedic Surgery Room 3"
+            }
+
+        );
 
         modelBuilder.Entity<Patient>().HasData(
                 new Patient

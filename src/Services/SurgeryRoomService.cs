@@ -1,6 +1,7 @@
 using System;
 using Domain.SurgeryRoomAggregate;
 using src.Domain.Shared;
+using src.Domain.SurgeryRoomAggregate;
 using src.Services.IServices;
 
 namespace src.Services.Services
@@ -16,5 +17,24 @@ namespace src.Services.Services
             this.surgeryRoomRepository = surgeryRoomRepository;
 
         }
+
+        public Task<SurgeryRoomDto> GetSurgeryRoomAsync(string roomID)
+        {
+            return surgeryRoomRepository.GetByIdAsync(new RoomId(roomID))
+                .ContinueWith(surgeryRoom => new SurgeryRoomDto(surgeryRoom.Result));
+        }
+
+        public async Task<List<SurgeryRoomDto>> GetSurgeryRoomsAsync()
+        {
+            List<SurgeryRoomDto> surgeryRoomsDto = new List<SurgeryRoomDto>();
+            var surgeryRooms = await surgeryRoomRepository.GetAllAsync();
+            foreach (var surgeryRoom in surgeryRooms)
+            {
+                surgeryRoomsDto.Add(new SurgeryRoomDto(surgeryRoom));
+            }
+
+            return surgeryRoomsDto;
+        }
+
     }
 }
