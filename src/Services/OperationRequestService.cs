@@ -98,6 +98,8 @@ namespace src.Services
 
             newOperationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
 
+            newOperationRequest.specializations = operationRequestDto.specializationsStaff;
+
             int day;
             if (!int.TryParse(operationRequestDto.Day, out day))
             {
@@ -393,6 +395,11 @@ namespace src.Services
                 {
                     operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
                     await logService.CreateLogAsync("Update Operation Request" + "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.Priority, email);
+                }
+                if  (!operationRequestDto.specializationsStaff.IsNullOrEmpty() )
+                {
+                    operationRequest.specializations = operationRequestDto.specializationsStaff;
+                    await logService.CreateLogAsync("Update Operation Request" + "Specializations changed to " + operationRequestDto.specializationsStaff, email);
                 }
 
                 await operationRequestRepository.updateAsync(operationRequest);

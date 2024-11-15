@@ -62,6 +62,7 @@ public class OperationTypeService : IOperationTypeService
         var newOperationType = new OperationType();
         newOperationType.Id = new OperationTypeName(operationType.OperationTypeName);
         newOperationType.operationTypeName = new OperationTypeName(operationType.OperationTypeName);
+        newOperationType.operationTypeDescription = new OperationTypeDescription(operationType.OperationTypeDescription);
         newOperationType.estimatedDuration = new EstimatedDuration(int.Parse(operationType.EstimatedDurationAnesthesia), int.Parse(operationType.EstimatedDurationOperation), int.Parse(operationType.EstimatedDurationCleaning));  
         newOperationType.isActive = (bool)operationType.IsActive;
         newOperationType.specializations = operationType.Specializations.ToDictionary(s => s.Key, s => int.Parse(s.Value));
@@ -100,7 +101,7 @@ public class OperationTypeService : IOperationTypeService
 
         if (!string.IsNullOrEmpty(name))
         {
-            operationTypesList = operationTypesList.Where(o => o.operationTypeName.Value.Contains(name)).ToList();
+            operationTypesList = operationTypesList.Where(o => o.operationTypeDescription.operationTypeDescription.Contains(name)).ToList();
         }
 
         if (!string.IsNullOrEmpty(specialization))

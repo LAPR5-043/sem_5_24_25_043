@@ -1,23 +1,27 @@
+using Azure;
 using src.Domain.Shared;
 
 public class OperationType : Entity<OperationTypeName>, IAggregateRoot
 {
     public OperationTypeName operationTypeName { get; set; }
+    public OperationTypeDescription operationTypeDescription { get; set; }
     public EstimatedDuration estimatedDuration { get; set; }
     public bool isActive { get; set; }
     public Dictionary<string, int> specializations { get; set; }
  
-    public OperationType(string operationTypeName, int anesthesia, int operation,int cleaning, bool isActive, Dictionary<string, int> specialization)
+    public OperationType(string operationTypeName,string operationTypeDescription, int anesthesia, int operation,int cleaning, bool isActive, Dictionary<string, int> specialization)
     {
         this.operationTypeName = new OperationTypeName(operationTypeName);
+        this.operationTypeDescription = new OperationTypeDescription(operationTypeDescription);
         this.estimatedDuration = new EstimatedDuration( anesthesia,  operation, cleaning);
         this.isActive = isActive;
         this.specializations = specialization;
     }
 
-    public OperationType(OperationTypeName operationTypeName, EstimatedDuration estimatedDuration, bool isActive, Dictionary<string, int> specialization)
+    public OperationType(OperationTypeName operationTypeName,OperationTypeDescription operationTypeDescription , EstimatedDuration estimatedDuration, bool isActive, Dictionary<string, int> specialization)
     {
         this.operationTypeName = operationTypeName;
+        this.operationTypeDescription = operationTypeDescription;
         this.estimatedDuration = estimatedDuration;
         this.isActive = isActive;
         this.specializations = specialization;
@@ -29,6 +33,11 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
     public void changeOperationTypeName(string operationTypeName)
     {
         this.operationTypeName = new OperationTypeName(operationTypeName);
+    }
+
+    public void changeOperationTypeDescription(string operationTypeDescription)
+    {
+        this.operationTypeDescription = new OperationTypeDescription(operationTypeDescription);
     }
 
     public void changeEstimatedDuration(int anesthesia, int operation,int cleaning)
@@ -49,7 +58,7 @@ public class OperationType : Entity<OperationTypeName>, IAggregateRoot
         }
 
         OperationType operationType = (OperationType)obj;
-        return operationTypeName.Equals(operationType.operationTypeName) && estimatedDuration.Equals(operationType.estimatedDuration);
+        return operationTypeDescription.Equals(operationType.operationTypeDescription) && operationTypeName.Equals(operationType.operationTypeName) && estimatedDuration.Equals(operationType.estimatedDuration);
     }
 
     public override int GetHashCode()

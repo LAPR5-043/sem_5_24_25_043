@@ -13,6 +13,7 @@ namespace Domain.OperationTypeAggregate
         /// Gets or sets the name of the operation type.
         /// </summary>
         public string? OperationTypeName { get; set; }
+        public string? OperationTypeDescription { get; set; }
 
         /// <summary>
         /// Gets or sets the estimated duration of the operation type.
@@ -45,9 +46,10 @@ namespace Domain.OperationTypeAggregate
         /// Initializes a new instance of the <see cref="OperationTypeDto"/> class with specified details.
         /// </summary>
         [JsonConstructor]
-        public OperationTypeDto(string? operationTypeName, string? estimatedDurationAnesthesia, string? estimatedDurationOperation,string? estimatedDurationCleaning, bool? isActive, Dictionary<string, string>? specializations)
+        public OperationTypeDto(string? operationTypeName,string? operationTypeDescription, string? estimatedDurationAnesthesia, string? estimatedDurationOperation,string? estimatedDurationCleaning, bool? isActive, Dictionary<string, string>? specializations)
         {
             OperationTypeName = operationTypeName;
+            OperationTypeDescription = operationTypeDescription;
             EstimatedDurationAnesthesia = estimatedDurationAnesthesia;
             EstimatedDurationOperation = estimatedDurationOperation;
             EstimatedDurationCleaning = estimatedDurationCleaning;
@@ -61,6 +63,7 @@ namespace Domain.OperationTypeAggregate
         public OperationTypeDto(OperationType operationType)
         {
             OperationTypeName = operationType.operationTypeName?.ToString() ?? string.Empty; 
+            OperationTypeDescription = operationType.operationTypeDescription?.ToString() ?? string.Empty;
             EstimatedDurationAnesthesia = operationType.estimatedDuration?.anesthesia.ToString() ?? string.Empty;
             EstimatedDurationOperation = operationType.estimatedDuration?.operation.ToString() ?? string.Empty;
             EstimatedDurationCleaning = operationType.estimatedDuration?.cleaning.ToString() ?? string.Empty;
