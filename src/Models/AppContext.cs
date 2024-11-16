@@ -567,7 +567,7 @@ public class AppContext : DbContext
                 appointmentID = new AppointmentID("1"),
                 requestID = 1,
                 roomID = "or1",
-                dateAndTime = new DateAndTime("20241028", "720", "1200"),
+                dateAndTime = new DateAndTime("20241028", "720", "900"),
                 status = Status.Scheduled
             }
         );
@@ -580,7 +580,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("d202400001"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -589,7 +589,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("d202400002"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(500, 1440) }
+                        { 20241028, new Slot(1, 1440) }
                     }
                 },
                 new AvailabilitySlot
@@ -598,7 +598,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("d202400003"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(520, 1320) }
+                        { 20241028, new Slot(1, 1320) }
                     }
                 },
                 new AvailabilitySlot
@@ -607,7 +607,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("d202400011"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -616,7 +616,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("d202400012"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -625,7 +625,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("d202400023"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -634,7 +634,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400024"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1300) }
+                        { 20241028, new Slot(1, 1300) }
                     }
                 },
                 new AvailabilitySlot
@@ -643,7 +643,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400029"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1400) }
+                        { 20241028, new Slot(1, 1400) }
                     }
                 },
                 new AvailabilitySlot
@@ -652,7 +652,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400022"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -661,7 +661,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400025"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1300) }
+                        { 20241028, new Slot(1, 1300) }
                     }
                 },
                 new AvailabilitySlot
@@ -670,7 +670,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400030"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1400) }
+                        { 20241028, new Slot(1, 1400) }
                     }
                 },
                 new AvailabilitySlot
@@ -679,7 +679,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400031"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -688,7 +688,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400026"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -697,7 +697,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400027"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1300) }
+                        { 20241028, new Slot(1, 1300) }
                     }
                 },
                 new AvailabilitySlot
@@ -706,7 +706,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("n202400028"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1200) }
+                        { 20241028, new Slot(1, 1200) }
                     }
                 },
                 new AvailabilitySlot
@@ -715,7 +715,7 @@ public class AppContext : DbContext
                     StaffID = new StaffID("s202400001"),
                     Slots = new Dictionary<int, Slot>()
                     {
-                        { 20241028, new Slot(480, 1400) }
+                        { 20241028, new Slot(1, 1400) }
                     }
                 }
             }          
@@ -728,7 +728,7 @@ public class AppContext : DbContext
                 Id = new OperationTypeName("so2"),
                 operationTypeName = new OperationTypeName("so2"),
                 operationTypeDescription = new OperationTypeDescription("Knee Replacement Surgery"),
-                estimatedDuration = new EstimatedDuration(45,60,45),
+                estimatedDuration = new EstimatedDuration(40,60,40),
                 isActive = true,
                 specializations = new Dictionary<string, int>()
                 {
@@ -747,7 +747,7 @@ public class AppContext : DbContext
                 Id = new OperationTypeName("so3"),
                 operationTypeName = new OperationTypeName("so3"),
                 operationTypeDescription = new OperationTypeDescription("Shoulder Replacement Surgery"),
-                estimatedDuration = new EstimatedDuration(45,90,45),
+                estimatedDuration = new EstimatedDuration(40,90,40),
                 isActive = true,
                 specializations = new Dictionary<string, int>()
                 {
@@ -766,7 +766,7 @@ public class AppContext : DbContext
                 Id = new OperationTypeName("so4"),
                 operationTypeName = new OperationTypeName("so4"),
                 operationTypeDescription = new OperationTypeDescription("Hip Replacement Surgery"),
-                estimatedDuration = new EstimatedDuration(45,75,45),
+                estimatedDuration = new EstimatedDuration(40,75,40),
                 isActive = true,
                 specializations = new Dictionary<string, int>()
                 {

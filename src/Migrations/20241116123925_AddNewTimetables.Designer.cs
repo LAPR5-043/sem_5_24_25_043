@@ -7,13 +7,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using src.Models;
 using AppContext = src.Models.AppContext;
 
+
 #nullable disable
 
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241115154853_DBRefactor")]
-    partial class DBRefactor
+    [Migration("20241116123925_AddNewTimetables")]
+    partial class AddNewTimetables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -334,7 +335,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationTypeName = "so2",
                             Id = "so2",
-                            estimatedDuration = "anesthesia:45,operation:60,cleaning:45",
+                            estimatedDuration = "anesthesia:40,operation:60,cleaning:40",
                             isActive = true,
                             operationTypeDescription = "Knee Replacement Surgery",
                             specializations = "{\"d;orthopaedist\":3,\"d;anaesthetist\":1,\"n;circulating\":1,\"n;instrumenting\":1,\"n;anaesthetist\":1,\"s;medical_action\":1}"
@@ -343,7 +344,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationTypeName = "so3",
                             Id = "so3",
-                            estimatedDuration = "anesthesia:45,operation:90,cleaning:45",
+                            estimatedDuration = "anesthesia:40,operation:90,cleaning:40",
                             isActive = true,
                             operationTypeDescription = "Shoulder Replacement Surgery",
                             specializations = "{\"d;orthopaedist\":3,\"d;anaesthetist\":1,\"n;circulating\":1,\"n;instrumenting\":1,\"n;anaesthetist\":1,\"s;medical_action\":1}"
@@ -352,7 +353,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationTypeName = "so4",
                             Id = "so4",
-                            estimatedDuration = "anesthesia:45,operation:75,cleaning:45",
+                            estimatedDuration = "anesthesia:40,operation:75,cleaning:40",
                             isActive = true,
                             operationTypeDescription = "Hip Replacement Surgery",
                             specializations = "{\"d;orthopaedist\":2,\"d;anaesthetist\":1,\"n;circulating\":1,\"n;instrumenting\":1,\"n;anaesthetist\":1,\"s;medical_action\":1}"
@@ -512,8 +513,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "120977",
-                            phoneNumber = "+351919969079",
+                            licenseNumber = "456958",
+                            phoneNumber = "+351971722703",
                             specializationID = "orthopaedist",
                             staffID = "d202400001"
                         },
@@ -526,8 +527,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "483193",
-                            phoneNumber = "+351926984756",
+                            licenseNumber = "417857",
+                            phoneNumber = "+351965430265",
                             specializationID = "anaesthetist",
                             staffID = "d202400002"
                         },
@@ -540,8 +541,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "346698",
-                            phoneNumber = "+351925513617",
+                            licenseNumber = "334279",
+                            phoneNumber = "+351938265415",
                             specializationID = "orthopaedist",
                             staffID = "d202400003"
                         },
@@ -554,8 +555,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "505298",
-                            phoneNumber = "+351999896835",
+                            licenseNumber = "437757",
+                            phoneNumber = "+351915996993",
                             specializationID = "orthopaedist",
                             staffID = "d202400011"
                         },
@@ -568,8 +569,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "962442",
-                            phoneNumber = "+351985090683",
+                            licenseNumber = "233649",
+                            phoneNumber = "+351916360018",
                             specializationID = "orthopaedist",
                             staffID = "d202400012"
                         },
@@ -582,8 +583,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "969490",
-                            phoneNumber = "+351913589038",
+                            licenseNumber = "127104",
+                            phoneNumber = "+351981823461",
                             specializationID = "anaesthetist",
                             staffID = "d202400023"
                         },
@@ -596,8 +597,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Pedro,Gomes",
                             isActive = true,
                             lastName = "Gomes",
-                            licenseNumber = "732158",
-                            phoneNumber = "+351997068302",
+                            licenseNumber = "297604",
+                            phoneNumber = "+351960137705",
                             specializationID = "anaesthetist",
                             staffID = "n202400024"
                         },
@@ -610,8 +611,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Sara,Ribeiro",
                             isActive = true,
                             lastName = "Ribeiro",
-                            licenseNumber = "189991",
-                            phoneNumber = "+351956801218",
+                            licenseNumber = "119897",
+                            phoneNumber = "+351918319372",
                             specializationID = "anaesthetist",
                             staffID = "n202400029"
                         },
@@ -624,8 +625,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "David,Fernandes",
                             isActive = true,
                             lastName = "Fernandes",
-                            licenseNumber = "827134",
-                            phoneNumber = "+351935853852",
+                            licenseNumber = "176713",
+                            phoneNumber = "+351983226788",
                             specializationID = "anaesthetist",
                             staffID = "n202400022"
                         },
@@ -638,8 +639,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Laura,Sousa",
                             isActive = true,
                             lastName = "Sousa",
-                            licenseNumber = "573591",
-                            phoneNumber = "+351925128348",
+                            licenseNumber = "181811",
+                            phoneNumber = "+351957884247",
                             specializationID = "circulating",
                             staffID = "n202400025"
                         },
@@ -652,8 +653,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "235809",
-                            phoneNumber = "+351992568449",
+                            licenseNumber = "738111",
+                            phoneNumber = "+351970156657",
                             specializationID = "circulating",
                             staffID = "n202400030"
                         },
@@ -666,8 +667,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "447358",
-                            phoneNumber = "+351952016886",
+                            licenseNumber = "509604",
+                            phoneNumber = "+351957640516",
                             specializationID = "circulating",
                             staffID = "n202400031"
                         },
@@ -680,8 +681,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "158355",
-                            phoneNumber = "+351911672308",
+                            licenseNumber = "688645",
+                            phoneNumber = "+351948841592",
                             specializationID = "instrumenting",
                             staffID = "n202400026"
                         },
@@ -694,8 +695,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "438404",
-                            phoneNumber = "+351956097020",
+                            licenseNumber = "296280",
+                            phoneNumber = "+351925828325",
                             specializationID = "instrumenting",
                             staffID = "n202400027"
                         },
@@ -708,8 +709,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "711982",
-                            phoneNumber = "+351976738004",
+                            licenseNumber = "747872",
+                            phoneNumber = "+351950238550",
                             specializationID = "instrumenting",
                             staffID = "n202400028"
                         },
@@ -722,8 +723,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "142277",
-                            phoneNumber = "+351928886685",
+                            licenseNumber = "157815",
+                            phoneNumber = "+351957014138",
                             specializationID = "medical_action",
                             staffID = "s202400001"
                         });
@@ -791,97 +792,97 @@ namespace sem_5_24_25_043.Migrations
                         new
                         {
                             Id = "d202400001",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "d202400001"
                         },
                         new
                         {
                             Id = "d202400002",
-                            Slots = "{\"20241028\":{\"StartTime\":500,\"EndTime\":1440}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1440}}",
                             StaffID = "d202400002"
                         },
                         new
                         {
                             Id = "d202400003",
-                            Slots = "{\"20241028\":{\"StartTime\":520,\"EndTime\":1320}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1320}}",
                             StaffID = "d202400003"
                         },
                         new
                         {
                             Id = "d202400011",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "d202400011"
                         },
                         new
                         {
                             Id = "d202400012",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "d202400012"
                         },
                         new
                         {
                             Id = "d202400023",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "d202400023"
                         },
                         new
                         {
                             Id = "n202400024",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1300}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1300}}",
                             StaffID = "n202400024"
                         },
                         new
                         {
                             Id = "n202400029",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1400}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1400}}",
                             StaffID = "n202400029"
                         },
                         new
                         {
                             Id = "n202400022",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "n202400022"
                         },
                         new
                         {
                             Id = "n202400025",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1300}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1300}}",
                             StaffID = "n202400025"
                         },
                         new
                         {
                             Id = "n202400030",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1400}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1400}}",
                             StaffID = "n202400030"
                         },
                         new
                         {
                             Id = "n202400031",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "n202400031"
                         },
                         new
                         {
                             Id = "n202400026",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "n202400026"
                         },
                         new
                         {
                             Id = "n202400027",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1300}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1300}}",
                             StaffID = "n202400027"
                         },
                         new
                         {
                             Id = "n202400028",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1200}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1200}}",
                             StaffID = "n202400028"
                         },
                         new
                         {
                             Id = "s202400001",
-                            Slots = "{\"20241028\":{\"StartTime\":480,\"EndTime\":1400}}",
+                            Slots = "{\"20241028\":{\"StartTime\":1,\"EndTime\":1400}}",
                             StaffID = "s202400001"
                         });
                 });

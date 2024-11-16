@@ -6,6 +6,7 @@ namespace src.Services.IServices
 {
     public interface IAppointmentService
     {
-        ScheduleDto GenerateApointmentsByRoomAndDate(String RoomId, int date);
+        
+        Task<PlanningResponseDto> GenerateApointmentsByRoomAndDateAsync(String RoomId, int date);
     }
 }

@@ -30,6 +30,7 @@ public class AppointmentEntityTypeConfiguration : IEntityTypeConfiguration<Appoi
 
         builder.Property(a => a.requestID)
             .IsRequired();
+        builder.HasIndex(a => a.requestID).IsUnique();
 
         builder.Property(a => a.roomID)
             .IsRequired();

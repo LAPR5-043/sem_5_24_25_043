@@ -7,6 +7,6 @@ namespace Domain.AppointmentAggregate
     public interface IAppointmentRepository : IRepository<Appointment, AppointmentID>
     {
         Task<bool> CheckIfOperationIsScheduled(int requestID);
-        //Task<Appointment> GetAppointmentByRequestID(string requestID);
+        Appointment GetOperationRequestByRequestId(int operationRequest);
     }
 }

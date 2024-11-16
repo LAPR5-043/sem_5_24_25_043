@@ -22,17 +22,55 @@ namespace src.Controllers
     {
         private readonly IAppointmentService service;
 
+        public static string nothing_to_schedule = "Nothing To Schedule";
+        public static string schedule_with_success = "Schedule With Success";
         public AppointmentController(IAppointmentService service)
         {
             this.service = service;
         }
 
-        // GET: api/Specialization
+
         [HttpGet]
-        public async Task<ActionResult<List<ScheduleDto>>> GetAll([FromQuery] string roomId, [FromQuery] int day)
-        {
-           
-            return Ok(service.GenerateApointmentsByRoomAndDate(roomId, day));
+        public async Task<ActionResult<PlanningResponseDto>> GetAppointmentsForTheRoomAndDay([FromQuery] string roomId, [FromQuery] int day)
+        {   
+            try
+            {
+                if (roomId == null || day == 0)
+                {
+                    return BadRequest();
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                PlanningResponseDto response =  await service.GenerateApointmentsByRoomAndDateAsync(roomId, day);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(new { message = schedule_with_success, schedule = response });
+
+            }
+            catch(Exception e)
+            {
+                if (e.Message == nothing_to_schedule)
+                {
+                    return Ok(new { message = nothing_to_schedule });
+                }
+                else
+                {
+                    return StatusCode(500);
+                }
+               
+            }
+
+        
         }
 
 

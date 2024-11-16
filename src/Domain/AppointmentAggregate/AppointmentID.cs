@@ -9,7 +9,7 @@ namespace sem_5_24_25_043.Domain.AppointmentAggregate
     /// <summary>
     /// Value object representing the ID of an appointment.
     /// </summary>
-    public class AppointmentID : EntityId 
+    public class AppointmentID : EntityId, IComparable
     {
         public string ID { get; }
 
@@ -61,6 +61,18 @@ namespace sem_5_24_25_043.Domain.AppointmentAggregate
         {
             return ID.ToString();
         }
+
+        public int CompareTo(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return -1;
+            }
+
+            var other = (AppointmentID)obj;
+            return ID.CompareTo(other.ID);
+        }
+
         /// <summary>
         /// Override of the createFromString method.
         /// </summary>
