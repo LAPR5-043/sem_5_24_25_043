@@ -11,12 +11,12 @@ namespace Domain.AppointmentAggregate
         /// <summary>
         /// The date and time of the appointment.
         /// </summary>
-        public string date { get; }
-        public string startT {get;}
-        public string endT {get;}
+        public string date { get; set;}
+        public string startT {get;set;}
+        public string endT {get;set;}
 
         // Parameterless constructor for EF Core
-        private DateAndTime() { }
+        public DateAndTime() { }
  
         public DateAndTime(string  date, string startT, string endT)
         {

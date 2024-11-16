@@ -76,7 +76,7 @@ namespace Schedule
         [JsonProperty("date")]
         public string Date { get; set; }
         [JsonProperty("agenda")]
-        public List<string> Agenda { get; set; }
+        public string Agenda { get; set; }
     }
 
     public class SurgeryDto

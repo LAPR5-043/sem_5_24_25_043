@@ -127,6 +127,18 @@ namespace src.Services
             return newOperationRequest != null;
         }
 
+        public async Task<OperationRequestDto> GetOperationRequestByIdAsync(int id)
+        {
+            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+
+            if (operationRequest == null)
+            {
+                throw new Exception("Operation Request not found");
+            }
+
+            return new OperationRequestDto(operationRequest);
+        }
+
         /// <summary>
         /// Get operation requests filtered by different criteria
         /// </summary>

@@ -12,5 +12,6 @@ namespace src.Services.IServices
         Task<List<OperationRequestDto>> GetOperationRequestByPatientIdAsync(string id);
         Task<bool> DeleteOperationRequestAsync(int id, string doctorEmail);
         Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto, string email);
+        Task<OperationRequestDto> GetOperationRequestByIdAsync(int id);
     }
 }
