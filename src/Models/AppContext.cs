@@ -109,6 +109,25 @@ public class AppContext : DbContext
                 Id = new RoomId("or3"),
                 RoomID = new RoomId("or3"),
                 Name = "Orthopedic Surgery Room 3"
+            },
+
+            new SurgeryRoom
+            {
+                Id = new RoomId("or4"),
+                RoomID = new RoomId("or4"),
+                Name = "Orthopedic Surgery Room 4"
+            },
+            new SurgeryRoom
+            {
+                Id = new RoomId("or5"),
+                RoomID = new RoomId("or5"),
+                Name = "Orthopedic Surgery Room 5"
+            },
+            new SurgeryRoom
+            {
+                Id = new RoomId("or6"),
+                RoomID = new RoomId("or6"),
+                Name = "Orthopedic Surgery Room 6"
             }
 
         );
@@ -563,11 +582,31 @@ public class AppContext : DbContext
         modelBuilder.Entity<Appointment>().HasData(
             new Appointment
             {
-                Id = new AppointmentID("1"),
-                appointmentID = new AppointmentID("1"),
-                requestID = 1,
+                Id = new AppointmentID("000001"),
+                appointmentID = new AppointmentID("000001"),
+                requestID = 2,
                 roomID = "or1",
                 dateAndTime = new DateAndTime("20241028", "720", "900"),
+                status = Status.Scheduled
+            },
+
+            new Appointment
+            {
+                Id = new AppointmentID("000002"),
+                appointmentID = new AppointmentID("000002"),
+                requestID = 3,
+                roomID = "or2",
+                dateAndTime = new DateAndTime("20241118", "960", "1020"),
+                status = Status.Scheduled
+            },
+
+            new Appointment
+            {
+                Id = new AppointmentID("000003"),
+                appointmentID = new AppointmentID("000003"),
+                requestID = 4,
+                roomID = "or4",
+                dateAndTime = new DateAndTime("20241118", "960", "1020"),
                 status = Status.Scheduled
             }
         );
