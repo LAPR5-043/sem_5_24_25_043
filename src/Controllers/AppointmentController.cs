@@ -12,6 +12,7 @@ using Domain.OperationTypeAggregate;
 using Microsoft.AspNetCore.Authorization;
 using sem_5_24_25_043;
 using Schedule;
+using src.Domain.AppointmentAggregate;
 
 namespace src.Controllers
 {
@@ -29,6 +30,29 @@ namespace src.Controllers
             this.service = service;
         }
 
+
+        [HttpGet("day")]
+        public ActionResult<List<AppointmentDto>> GetDayAppointments([FromQuery] int day)
+        {
+            try
+            {
+                if (day == 0)
+                {
+                    return BadRequest();
+                }
+                var appoints = service.GetDayAppointmentsAsync(day);
+                if (appoints == null)
+                {
+                    return NotFound();
+                }
+                return Ok(appoints);
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();
+                return BadRequest();
+            }
+        }
 
         [HttpGet]
         public async Task<ActionResult<PlanningResponseDto>> GetAppointmentsForTheRoomAndDay([FromQuery] string roomId, [FromQuery] int day)

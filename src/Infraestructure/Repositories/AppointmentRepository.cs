@@ -49,4 +49,13 @@ public class AppointmentRepository : BaseRepository<Appointment, AppointmentID>,
             .FirstOrDefault(a => a.requestID == int.Parse(requestID))!;
     }
     */
+
+    public async Task<IEnumerable<Appointment>> GetDayAppointmentsAsync(int day)
+    {
+        return  context.Appointments
+                .AsEnumerable()
+            .Where(a => a.dateAndTime.date == day.ToString());
+            
+            
+    }
 }

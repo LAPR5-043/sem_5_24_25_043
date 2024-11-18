@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace src.Services
@@ -67,6 +68,20 @@ namespace src.Services
             this.unitOfWork = unitOfWork;
             this.appointmentRepository = appointmentRepository;
             this._httpClient = new HttpClient();
+        }
+        public List<AppointmentDto> GetDayAppointmentsAsync(int day)
+        {
+            IEnumerable<Appointment> appointments = appointmentRepository.GetDayAppointmentsAsync(day).Result;
+            List<AppointmentDto> appointmentsDto = new List<AppointmentDto>();
+
+            foreach (var appoint in appointments)
+            {
+                AppointmentDto appointDto = new AppointmentDto(appoint);
+
+                appointmentsDto.Add(appointDto);
+            }
+            return appointmentsDto;
+
         }
         public async Task<PlanningResponseDto> GenerateApointmentsByRoomAndDateAsync(string RoomId, int date)
         {
