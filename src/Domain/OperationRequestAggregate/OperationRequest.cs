@@ -83,7 +83,7 @@ namespace Domain.OperationRequestAggregate
         {
             return operationRequestID.GetHashCode();
         }
-
+        
 
     }
 }

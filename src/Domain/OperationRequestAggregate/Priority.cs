@@ -12,6 +12,8 @@ namespace src.Domain.OperationRequestAggregate
         Urgent,
         Emergency
     }
+
+    
     /// <summary>
     /// Extension methods for the Priority enumeration.
     /// </summary>
@@ -29,6 +31,16 @@ namespace src.Domain.OperationRequestAggregate
                 "effective" => Priority.Effective,
                 "urgent" => Priority.Urgent,
                 "emergency" => Priority.Emergency,
+                _ => throw new ArgumentException("Invalid priority value")
+            };
+        }
+        public static int ToInt(this Priority priority)
+        {
+            return priority switch
+            {
+                Priority.Effective => 0,
+                Priority.Urgent => 1,
+                Priority.Emergency => 2,
                 _ => throw new ArgumentException("Invalid priority value")
             };
         }

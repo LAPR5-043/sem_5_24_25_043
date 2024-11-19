@@ -40,6 +40,7 @@ namespace src.Domain.AppointmentAggregate
             };
             Status = appointment.status.ToString();
         } 
+        
         }
     public class DateAndTimeDto
     {
