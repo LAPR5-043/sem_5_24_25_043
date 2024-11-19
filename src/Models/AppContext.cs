@@ -402,7 +402,7 @@ public class AppContext : DbContext
                     patientID = "1",
                     doctorID = "D202400003",
                     operationTypeID = "so3",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
+                    deadlineDate = new DeadlineDate(1, 2, 2025),
                     priority = Priority.Emergency,
                     specializations = new Dictionary<string, List<string>>()
                     {
@@ -422,7 +422,7 @@ public class AppContext : DbContext
                     patientID = "1",
                     doctorID = "D202400001",
                     operationTypeID = "so2",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
+                    deadlineDate = new DeadlineDate(1, 2, 2025),
                     priority = Priority.Emergency,
                     specializations = new Dictionary<string, List<string>>()
                     {
@@ -458,8 +458,8 @@ public class AppContext : DbContext
                     patientID = "2",
                     doctorID = "d202400001",
                     operationTypeID = "so2",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency,
+                    deadlineDate = new DeadlineDate(2, 1, 2025),
+                    priority = Priority.Effective,
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400001","d202400011","d202400012" } },
@@ -476,8 +476,8 @@ public class AppContext : DbContext
                     patientID = "3",
                     doctorID = "d202400011",
                     operationTypeID = "so4",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency,
+                    deadlineDate = new DeadlineDate(1, 12, 2025),
+                    priority = Priority.Effective,
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400011","d202400012" } },
@@ -494,8 +494,8 @@ public class AppContext : DbContext
                     patientID = "3",
                     doctorID = "d202400003",
                     operationTypeID = "so2",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency,
+                    deadlineDate = new DeadlineDate(15, 1, 2025),
+                    priority = Priority.Effective,
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400003","d202400011","d202400012" } },
@@ -512,8 +512,8 @@ public class AppContext : DbContext
                     patientID = "4",
                     doctorID = "d202400003",
                     operationTypeID = "so3",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency,
+                    deadlineDate = new DeadlineDate(11, 12, 2025),
+                    priority = Priority.Urgent,
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400003","d202400011","d202400001" } },
@@ -530,8 +530,8 @@ public class AppContext : DbContext
                     patientID = "4",
                     doctorID = "d202400001",
                     operationTypeID = "so4",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency,
+                    deadlineDate = new DeadlineDate(7, 3, 2025),
+                    priority = Priority.Urgent,
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400001","d202400003","d202400012" } },
@@ -548,8 +548,8 @@ public class AppContext : DbContext
                     patientID = "5",
                     doctorID = "d202400001",
                     operationTypeID = "so2",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency,
+                    deadlineDate = new DeadlineDate(4, 1, 2025),
+                    priority = Priority.Urgent,
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400001","d202400011","d202400012" } },
@@ -566,8 +566,8 @@ public class AppContext : DbContext
                     patientID = "5",
                     doctorID = "d202400011",
                     operationTypeID = "so4",
-                    deadlineDate = new DeadlineDate(1, 1, 2025),
-                    priority = Priority.Emergency,
+                    deadlineDate = new DeadlineDate(1, 5, 2025),
+                    priority = Priority.Urgent,
                     specializations = new Dictionary<string, List<string>>()
                     {
                         { "orthopaedist", new List<string>() { "d202400011","d202400012" } },

@@ -47,6 +47,8 @@ namespace src.Services
         private static string update = "planning_update";
         
         public static string nothing_to_schedule = "Nothing To Schedule";
+        private static int minAverageAvailability = 700;
+        private static int maxNumberOfOperations = 8;
 
         /// <summary>
         /// Constructor
@@ -102,7 +104,7 @@ namespace src.Services
 
             apiUrl = GetApiUrlFromJsonFile(servers, better);
 
-           PlanningResponseDto response = await GetPlanningModuleSchedulingAsync(apiUrl, RoomId, date);
+            PlanningResponseDto response = await GetPlanningModuleSchedulingAsync(apiUrl, RoomId, date);
 
             if (response.FinalOperationTime == 1441)
             {
@@ -214,6 +216,43 @@ namespace src.Services
             return planningResponse;
         }
 
+        private List<OperationRequestDto> sortOperationRequestsByPriority(List<OperationRequest> opRequests,  IEnumerable<OperationTypeDto> operationTypes){
+            SortedSet<OperationRequest> opRequestsSorted =  new SortedSet<OperationRequest>(new OperationRequestComparer());
+            foreach (var op in opRequests)
+            {
+                opRequestsSorted.Add(op);
+            }
+           
+           List<OperationRequestDto> operationRequests = new List<OperationRequestDto>();
+
+
+
+            foreach (var op in opRequestsSorted){
+                OperationRequestDto opDto = new OperationRequestDto(op);
+                operationRequests.Add(opDto);
+                OperationTypeDto opType = operationTypes.Where(x => x.OperationTypeName == op.operationTypeID).FirstOrDefault();
+            }    
+
+            return operationRequests;
+        }
+
+        private List<OperationRequestDto>  onlyScheduleSome(List<OperationRequestDto> opRequests,IEnumerable<OperationTypeDto> operationTypes){
+            List<OperationRequestDto> toSchedule = new List<OperationRequestDto>();
+
+            int totalTime = 0;
+            int numOp = 0;
+            while(totalTime<= minAverageAvailability && opRequests.Count>0 && maxNumberOfOperations> numOp){
+                OperationRequestDto op = opRequests.First();
+                opRequests.Remove(op);
+                toSchedule.Add(op);
+                OperationTypeDto opType = operationTypes.Where(x => x.OperationTypeName == op.OperationTypeID).FirstOrDefault();
+                totalTime += int.Parse(opType.EstimatedDurationAnesthesia) + int.Parse(opType.EstimatedDurationOperation) + int.Parse(opType.EstimatedDurationCleaning);
+                numOp++;
+            }    
+
+            return  toSchedule;
+        }
+
         private ScheduleDto PrepareDataForPlanningModule(String RoomId, int date){
                         ScheduleDto schedule = new ScheduleDto();
             try
@@ -221,7 +260,11 @@ namespace src.Services
                 SurgeryRoomDto room = roomService.GetSurgeryRoomAsync(RoomId).Result;
                 IEnumerable<StaffDto> staff = staffService.getStaffsFilteredAsync(null, null, null, null, null).Result;
                 IEnumerable<OperationTypeDto> operationTypes = operationTypeService.getAllOperationTypesAsync().Result?.Value.Cast<OperationTypeDto>() ?? Enumerable.Empty<OperationTypeDto>();
-                List<OperationRequestDto> operationRequests = operationRequestService.GetOperationRequestFilteredAsync(null, null, null, null, null, null, "priority").Result;
+                List<OperationRequest> opRequests = operationRequestService.GetAllOperationRequestsAsync().Result;
+
+                List<OperationRequestDto> operationRequests = sortOperationRequestsByPriority(opRequests, operationTypes);
+
+
                 List<AvailabilitySlot> availabilitySlots = availabilitySlotService.GetAllAvailabilitySlotsAsync().Result;
                 List<SpecializationDto> specializations = specializationService.GetSpecializationsAsync().Result;
                 List<Appointment> appointments = appointmentRepository.GetAllAsync().Result;
@@ -275,8 +318,9 @@ namespace src.Services
                     requestsWichAlreadyAreScheduled.Add(appoint.requestID.ToString());
                 }
 
-                List<OperationRequestDto> notScheduled = operationRequests.AsQueryable().Where(x => !requestsWichAlreadyAreScheduled.Contains(x.RequestId)).ToList();
+                List<OperationRequestDto> notScheduled = onlyScheduleSome(operationRequests.AsQueryable().Where(x => !requestsWichAlreadyAreScheduled.Contains(x.RequestId)).ToList(), operationTypes);
                 
+
                 if (notScheduled.Count == 0)
                 {
                     throw new Exception(nothing_to_schedule);

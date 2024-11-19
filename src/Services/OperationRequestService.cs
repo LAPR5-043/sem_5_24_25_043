@@ -139,6 +139,13 @@ namespace src.Services
             return new OperationRequestDto(operationRequest);
         }
 
+        public async Task<List<OperationRequest>> GetAllOperationRequestsAsync()
+        {
+            var operationRequestList = await operationRequestRepository.GetAllAsync();
+
+            return operationRequestList;
+        }
+
         /// <summary>
         /// Get operation requests filtered by different criteria
         /// </summary>
@@ -149,6 +156,7 @@ namespace src.Services
         /// <param name="status">Status of the operation</param>
         /// <param name="sortBy">Column to sort by</param>
         /// <returns>List of operation requests</returns>
+        /// 
         public async Task<List<OperationRequestDto>> GetOperationRequestFilteredAsync(string? doctorID, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
         {
             var operationRequestList = await operationRequestRepository.GetAllAsync();

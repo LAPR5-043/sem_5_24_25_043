@@ -87,5 +87,10 @@ namespace Domain.OperationRequestAggregate
         {
             return deadlineDate.ToString();
         }
+
+        internal int CompareTo(DeadlineDate deadlineDate)
+        {
+            return this.deadlineDate.CompareTo(deadlineDate.deadlineDate);
+        }
     }
 }

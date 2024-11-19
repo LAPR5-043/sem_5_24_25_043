@@ -13,5 +13,7 @@ namespace src.Services.IServices
         Task<bool> DeleteOperationRequestAsync(int id, string doctorEmail);
         Task<bool> UpdateOperationRequestAsync(int id, OperationRequestDto operationRequestDto, string email);
         Task<OperationRequestDto> GetOperationRequestByIdAsync(int id);
+        Task<List<OperationRequest>> GetAllOperationRequestsAsync();
+        
     }
 }
