@@ -31,7 +31,7 @@ jobs:
             cd src
 
             echo "Building the application..."
-            dotnet build --no-warn
+            dotnet build -p:NoWarn=*
 
             echo "Restarting the service..."
             sudo systemctl restart backend.service
