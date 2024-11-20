@@ -115,6 +115,8 @@ namespace sem_5_24_25_043
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.Run("https://0.0.0.0:443");
+
             app.MapControllers();
 
             app.Run();
