@@ -59,7 +59,14 @@ public class AuthService : IAuthService
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException("Authentication failed.", ex);
+            if (ex.Message.Contains("Wrong email or password."))
+            {
+                throw new NotAuthorizedException("Wrong email or password.", ex);
+            }
+            else
+            {
+                throw new InvalidOperationException("Authentication failed.", ex);
+            }
         }
     }
 

@@ -13,15 +13,17 @@ namespace Domain.OperationTypeAggregate
         /// Gets or sets the name of the operation type.
         /// </summary>
         public string? OperationTypeName { get; set; }
+        public string? OperationTypeDescription { get; set; }
 
         /// <summary>
         /// Gets or sets the estimated duration of the operation type.
         /// </summary>
-        public string? EstimatedDurationHours { get; set; }
+        public string? EstimatedDurationAnesthesia { get; set; }
         /// <summary>
         /// Gets or sets the estimated duration of the operation type.
         /// </summary>
-        public string? EstimatedDurationMinutes { get; set; }
+        public string? EstimatedDurationOperation { get; set; }
+        public string? EstimatedDurationCleaning { get; set; }
 
         /// <summary>
         /// Gets or sets the active status of the operation type.
@@ -44,11 +46,13 @@ namespace Domain.OperationTypeAggregate
         /// Initializes a new instance of the <see cref="OperationTypeDto"/> class with specified details.
         /// </summary>
         [JsonConstructor]
-        public OperationTypeDto(string? operationTypeName, string? estimatedDurationHours, string? estimatedDurationMinutes, bool? isActive, Dictionary<string, string>? specializations)
+        public OperationTypeDto(string? operationTypeName,string? operationTypeDescription, string? estimatedDurationAnesthesia, string? estimatedDurationOperation,string? estimatedDurationCleaning, bool? isActive, Dictionary<string, string>? specializations)
         {
             OperationTypeName = operationTypeName;
-            EstimatedDurationHours = estimatedDurationHours;
-            EstimatedDurationMinutes = estimatedDurationMinutes;
+            OperationTypeDescription = operationTypeDescription;
+            EstimatedDurationAnesthesia = estimatedDurationAnesthesia;
+            EstimatedDurationOperation = estimatedDurationOperation;
+            EstimatedDurationCleaning = estimatedDurationCleaning;
             IsActive = isActive;
             Specializations = specializations ?? new Dictionary<string, string>();
         }
@@ -59,8 +63,10 @@ namespace Domain.OperationTypeAggregate
         public OperationTypeDto(OperationType operationType)
         {
             OperationTypeName = operationType.operationTypeName?.ToString() ?? string.Empty; 
-            EstimatedDurationHours = operationType.estimatedDuration?.hours.ToString() ?? string.Empty;
-            EstimatedDurationMinutes = operationType.estimatedDuration?.minutes.ToString() ?? string.Empty;
+            OperationTypeDescription = operationType.operationTypeDescription?.ToString() ?? string.Empty;
+            EstimatedDurationAnesthesia = operationType.estimatedDuration?.anesthesia.ToString() ?? string.Empty;
+            EstimatedDurationOperation = operationType.estimatedDuration?.operation.ToString() ?? string.Empty;
+            EstimatedDurationCleaning = operationType.estimatedDuration?.cleaning.ToString() ?? string.Empty;
             IsActive = operationType.isActive;
             Specializations = operationType.specializations?.ToDictionary(s => s.Key, s => s.Value.ToString()) ?? new Dictionary<string, string>();
         }

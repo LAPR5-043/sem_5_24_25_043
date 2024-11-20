@@ -21,7 +21,7 @@ namespace src.Domain.AppointmentAggregate
         /// <summary>
         /// Represents the ID of the room.
         /// </summary>
-        public int roomID { get; set; }
+        public string roomID { get; set; }
         /// <summary>
         /// Represents the date and time of the appointment.
         /// </summary>
@@ -67,16 +67,16 @@ namespace src.Domain.AppointmentAggregate
         /// <param name="year"></param>
         /// <param name="hour"></param>
         /// <param name="minute"></param>
-        public void ChangeDateAndTime(int day, int month, int year, int hour, int minute)
+        public void ChangeDateAndTime(string day, string month, string year, string startT, string endT)
         {
-            this.dateAndTime = new DateAndTime(new DateTime(year, month, day, hour, minute, 0));
+            this.dateAndTime =new DateAndTime(year+month+day, startT, endT);
         }
 
         /// <summary>
         /// Change the room of the appointment.
         /// </summary>
         /// <param name="roomID"></param>
-        public void ChangeRoom(int roomID)
+        public void ChangeRoom(string roomID)
         {
             this.roomID = roomID;
         }

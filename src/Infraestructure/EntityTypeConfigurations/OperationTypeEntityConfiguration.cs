@@ -25,6 +25,12 @@ public class OperationTypeEntityTypeConfiguration : IEntityTypeConfiguration<Ope
                     v => v.AsString(),
                     v => new OperationTypeName(v))
                 .IsRequired();
+
+            builder.Property(t => t.operationTypeDescription)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => new OperationTypeDescription(v))
+                .IsRequired();
             
             builder.Property(t => t.estimatedDuration)
                 .HasConversion(
@@ -49,7 +55,11 @@ public class OperationTypeEntityTypeConfiguration : IEntityTypeConfiguration<Ope
 
     private EstimatedDuration parseEstimatedDuration(string v)
     {
-        return new EstimatedDuration(int.Parse(v.Split(":")[0]), int.Parse(v.Split(":")[1]));
+        return new EstimatedDuration(
+            int.Parse(v.Split(',')[0].Split(':')[1]),
+            int.Parse(v.Split(',')[1].Split(':')[1]),
+            int.Parse(v.Split(',')[2].Split(':')[1])
+        );
     }
 }
 

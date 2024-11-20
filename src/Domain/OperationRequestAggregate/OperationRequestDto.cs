@@ -21,6 +21,7 @@ public class OperationRequestDto
     public string? Month { get; set; }
 
     public string? Year { get; set; }
+    public Dictionary<string, List<string>> specializationsStaff { get; set; }
 
 
 
@@ -48,6 +49,8 @@ public class OperationRequestDto
         Year = operationRequest.deadlineDate.Year().ToString() ?? string.Empty;
 
         Priority = operationRequest.priority.ToString() ?? string.Empty;
+
+        specializationsStaff = operationRequest.specializations ?? new Dictionary<string, List<string>>();
     }
 
     /// <summary>

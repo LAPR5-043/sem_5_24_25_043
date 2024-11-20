@@ -1,0 +1,5 @@
+{
+
+    "planning_better": "http://localhost:8080/api/prolog/obtain_better_sol",
+    "planning_update": "http://localhost:8080/api/prolog/update_data"
+}

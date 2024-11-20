@@ -30,6 +30,7 @@ public class AppointmentEntityTypeConfiguration : IEntityTypeConfiguration<Appoi
 
         builder.Property(a => a.requestID)
             .IsRequired();
+        builder.HasIndex(a => a.requestID).IsUnique();
 
         builder.Property(a => a.roomID)
             .IsRequired();
@@ -38,7 +39,7 @@ public class AppointmentEntityTypeConfiguration : IEntityTypeConfiguration<Appoi
             .IsRequired()
             .HasConversion(
                 v => v.ToString(),
-                v => new DateAndTime(DateTime.Parse(v))
+                v => DateAndTimeFromString(v)
             );
 
         builder.Property(a => a.status)
@@ -47,5 +48,11 @@ public class AppointmentEntityTypeConfiguration : IEntityTypeConfiguration<Appoi
                 v => StatusExtensions.FromString(v)
             )
             .IsRequired();
+    }
+
+    private static DateAndTime DateAndTimeFromString(string v)
+    {
+        var parts = v.Split(",");
+        return new DateAndTime(parts[0], parts[1], parts[2]);
     }
 }

@@ -7,8 +7,8 @@ using AppContext = src.Models.AppContext;
 
 
 namespace src.Infrastructure.Repositories
-{/*
-    public class SurgeryRoomRepository : BaseRepository<SurgeryRoom, RoomNumber>, ISurgeryRoomRepository
+{
+    public class SurgeryRoomRepository : BaseRepository<SurgeryRoom, RoomId>, ISurgeryRoomRepository
     {
         private readonly AppContext context;
 
@@ -16,5 +16,5 @@ namespace src.Infrastructure.Repositories
         {
             this.context = context;
         }
-    }*/
+    }
 }

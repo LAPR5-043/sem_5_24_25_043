@@ -11,15 +11,20 @@ namespace Domain.AppointmentAggregate
         /// <summary>
         /// The date and time of the appointment.
         /// </summary>
-        public DateTime Value { get; }
+        public string date { get; set;}
+        public string startT {get;set;}
+        public string endT {get;set;}
 
         // Parameterless constructor for EF Core
-        private DateAndTime() { }
-
-        public DateAndTime(DateTime value)
+        public DateAndTime() { }
+ 
+        public DateAndTime(string  date, string startT, string endT)
         {
-            Value = value;
+            this.date = date;
+            this.startT = startT;
+            this.endT = endT;
         }
+
 
         /// <summary>
         /// Override of the equality operator.
@@ -32,7 +37,7 @@ namespace Domain.AppointmentAggregate
             }
 
             var other = (DateAndTime)obj;
-            return Value.Equals(other.Value);
+            return date == other.date && startT == other.startT && endT == other.endT;
         }
 
         /// <summary>
@@ -40,7 +45,7 @@ namespace Domain.AppointmentAggregate
         /// </summary>
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return HashCode.Combine(date, startT, endT);
         }
 
         /// <summary>
@@ -48,7 +53,7 @@ namespace Domain.AppointmentAggregate
         /// </summary>
         public override string ToString()
         {
-            return Value.ToString("yyyy-MM-dd HH:mm:ss");
+            return $"{date},{startT},{endT}";
         }
     }
 }

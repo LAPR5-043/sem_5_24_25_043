@@ -6,7 +6,7 @@ using AppContext = src.Models.AppContext;
 
 
 namespace src.Infrastructure.Repositories
-{/*
+{
     public class SpecializationRepository : BaseRepository<Specialization, SpecializationName>, ISpecializationRepository
     {
         private readonly AppContext context;
@@ -16,5 +16,5 @@ namespace src.Infrastructure.Repositories
         {
             this.context = context;
         }
-    }*/
+    }
 }
