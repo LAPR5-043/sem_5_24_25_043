@@ -32,7 +32,8 @@ More info about the DEI's internal network can be found [here](https://rede.dei.
 
 ### 2.3. Research
 
-To implement this feature, we need to use a tool that allows us to filter network traffic based on the source IP address. There are several tools that can be used to implement this feature, such as `iptables` and `nftables`.
+To implement this feature, we need to use a tool that allows us to filter network traffic based on the source IP address. There are several tools that can be used to implement this feature, such as `iptables` and `nftables` as well as libraries like `libwrap`.
+
 
 #### 2.3.1 `iptables` vs `nftables`
 
@@ -40,11 +41,36 @@ To implement this feature, we need to use a tool that allows us to filter networ
 
 `nftables` is the successor to `iptables` and is more modern and flexible, but due to the fact that `iptables` was the tool introduced to us in the ASIST Curricular Unit, it was decided to use `iptables` to implement this feature.
 
-#### 2.3.1. What is `iptables`?
+#### 2.3.2. What is `iptables`?
 
 **Iptables** is used to set up, maintain, and inspect the tables of IP packet filter rules in the Linux kernel. Several different tables may be defined. Each table contains a number of built-in chains and may also contain user-defined chains.
 
 Each chain is a list of rules which can match a set of packets. Each rule specifies what to do with a packet that matches. This is called a 'target', which may be a jump to a user-defined chain in the same table.
+
+#### 2.3.3. What is `libwrap`?
+
+**libwrap** is a tcpd-based tool that can be used to control access to specific services on a Linux server. It works through the /etc/hosts.allow and /etc/hosts.deny files, where we can define which IPs or networks are permitted to access certain services (such as SSH, FTP, HTTP, etc.).
+
+Pros:
+
+- Easy to configure for services that use tcpd.
+- Simple and quick access control by service.
+
+Cons:
+
+- Works only for specific services compatible with tcpd.
+- Not a centralized solution for controlling access to all services.
+- Not ideal for environments with multiple services that do not use tcpd.
+
+Ideal for: Situations where you need to control access to individual services like SSH or FTP, and where these services are compatible with the libwrap library.
+
+#### 2.3.4. `iptables` vs `libwrap`
+
+Although **libwrap** is a simple and effective solution for restricting access to specific services (like SSH or FTP), **it is not the best solution for centralized and comprehensive access control** of all application services. To ensure that only internal network users can access the solution, `iptables` or `nftables` are more suitable options, as they offer more flexible and persistent network traffic control, applying rules globally, without depending on the service type.
+
+Therefore, we decided to use iptables to filter network traffic based on the source IP address, ensuring that only internal network users (wired or via VPN) can access the solution.
+
+#### 2.3.x `iptables` Relevant Information
 
 Print do manual do ipt
 
@@ -120,7 +146,7 @@ For the implementation of this feature, the following steps will be taken:
 First, we need to install the `iptables` package.
 
 ```bash
-sudo apt-get install iptables
+sudo apt install iptables
 ```
 
 ### 3.3. Installation of `iptables-persistent`
@@ -128,7 +154,7 @@ sudo apt-get install iptables
 Next, we need to install the `iptables-persistent` package.
 
 ```bash
-sudo apt-get install iptables-persistent
+sudo apt install iptables-persistent
 ```
 
 ### 3.4. Creation of the `iptables` rules
