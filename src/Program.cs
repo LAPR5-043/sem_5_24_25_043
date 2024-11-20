@@ -34,10 +34,10 @@ namespace sem_5_24_25_043
             // Configure Kestrel to bind to a specific IP and port
             builder.WebHost.ConfigureKestrel(options =>
             {
-                options.Listen(System.Net.IPAddress.Any, 80); // Listen on all IPs, port 80 for HTTP
-                options.Listen(System.Net.IPAddress.Any, 443, listenOptions =>
+                options.Listen(System.Net.IPAddress.Any, 8080); // Listen on port 8080 for HTTP
+                options.Listen(System.Net.IPAddress.Any, 8443, listenOptions =>
                 {
-                    listenOptions.UseHttps(); // Enable HTTPS if you want
+                    listenOptions.UseHttps(); // Enable HTTPS on port 8443
                 });
             });
 
