@@ -39,23 +39,26 @@ namespace sem_5_24_25_043
             builder.Services.AddControllers();
             builder.Services.AddDbContext<AppContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-           
-             // Configure JWT authentication with AWS Cognito
 
-             builder.Services.AddAuthorization();
-             
-             
-             
-             
-             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                 .AddJwtBearer();
-                builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();
-             
-             
-             
-             
+            // Configure Kestrel to bind to a specific IP and port
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Listen(System.Net.IPAddress.Any, 8080); // Listen on port 8080 for HTTP
+                options.Listen(System.Net.IPAddress.Any, 8443, listenOptions =>
+                {
+                    listenOptions.UseHttps(); // Enable HTTPS on port 8443
+                });
+            });
 
-             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // Configure JWT authentication with AWS Cognito
+
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer();
+            builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();
+
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
             // Register Repos and Services
             RegisteredServices(builder.Services);
@@ -89,7 +92,7 @@ namespace sem_5_24_25_043
                     new string[] {}
                 }});
             });
-            
+
 
             var app = builder.Build();
 
@@ -101,16 +104,17 @@ namespace sem_5_24_25_043
                 context.Database.EnsureCreated();
             }
 
+
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
             //{
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend API");
-                    c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
-                    
-                });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend API");
+                c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+
+            });
             //}
 
             app.UseHttpsRedirection();
@@ -120,8 +124,8 @@ namespace sem_5_24_25_043
                     (ClaimsPrincipal claims) => claims.Claims.Select(c => new { c.Type, c.Value }).ToArray())
                 .RequireAuthorization()
                 .WithName("GetClaims");
-                
-            
+
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -146,8 +150,8 @@ namespace sem_5_24_25_043
             services.AddScoped<IPendingRequestRepository, PendingRequestRepository>();
             //services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-            services.AddScoped<IAvailabilitySlotRepository,AvailabilitySlotRepository>();
-            
+            services.AddScoped<IAvailabilitySlotRepository, AvailabilitySlotRepository>();
+
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
@@ -164,8 +168,6 @@ namespace sem_5_24_25_043
             services.AddScoped<IOperationRequestService, OperationRequestService>();
             services.AddScoped<ISensitiveDataService, SensitiveDataService>();
             services.AddScoped<IAvailabilitySlotService, AvailabilitySlotService>();
-            
-       
             
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
         }
