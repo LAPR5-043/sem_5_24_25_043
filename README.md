@@ -6,6 +6,9 @@
   [![Backend CI/CD](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/backend-ci_cd.yml/badge.svg)](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/backend-ci_cd.yml)
   [![Backend Deploy](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend.yml/badge.svg)](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend.yml)
   
+  [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+  [![GitHub issues](https://img.shields.io/github/issues/LAPR5-043/sem_5_24_25_043)](https://github.com/LAPR5-043/sem_5_24_25_043/issues)
+
   [![.NET](https://img.shields.io/badge/.NET-v8-purple?logo=dotnet)](https://dotnet.microsoft.com/)
   [![C#](https://img.shields.io/badge/C%23-v9-green?logo=csharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
 </div>
@@ -110,3 +113,11 @@ MedOpt is a web-based prototype system designed to streamline surgical appointme
 ## 📜 License
 
 This project is licensed under the MIT License.
+
+## 📞 Contact
+
+Project Maintainers: `geral@medopt.pt`
+
+<div align="center">
+  <sub>🏥 MedOpt - Optimizing Your Health 🏥</sub>
+</div>
