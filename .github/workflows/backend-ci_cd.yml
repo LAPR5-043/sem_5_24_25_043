@@ -1,0 +1,28 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install Dependencies
+        run: dotnet restore
+
+      - name: Run Integration Tests
+        run: dotnet test ./tests/IntegrationTests --no-restore --verbosity normal
+
+      - name: Run Unit Tests
+        run: dotnet test ./tests/UnitTests --no-restore --verbosity normal
