@@ -19,10 +19,20 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Install Dependencies
-        run: dotnet restore sem_5_24_25_043.sln
+        run: |
+          dotnet restore ./sem_5_24_25_043.sln
+          dotnet restore ./tests/IntegrationTests/IntegrationTests.csproj
+          dotnet restore ./tests/UnitTests/tests.csproj
+
+      - name: Fix Solution Paths
+        run: |
+          dotnet sln ./sem_5_24_25_043.sln remove tests/IntegrationTests/IntegrationTests.csproj
+          dotnet sln ./sem_5_24_25_043.sln remove tests/UnitTests/tests.csproj
+          dotnet sln ./sem_5_24_25_043.sln add tests/IntegrationTests/IntegrationTests.csproj
+          dotnet sln ./sem_5_24_25_043.sln add tests/UnitTests/tests.csproj
 
       - name: Run Integration Tests
-        run: dotnet test sem_5_24_25_043.sln --filter "FullyQualifiedName~IntegrationTests" --no-restore --verbosity normal
+        run: dotnet test ./tests/IntegrationTests --no-restore --verbosity normal
 
       - name: Run Unit Tests
-        run: dotnet test sem_5_24_25_043.sln --filter "FullyQualifiedName~UnitTests" --no-restore --verbosity normal
+        run: dotnet test ./tests/UnitTests --no-restore --verbosity normal
