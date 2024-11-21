@@ -23,7 +23,7 @@ jobs:
         run: dotnet build ./sem_5_24_25_043.sln --no-restore --verbosity minimal
 
       - name: Run Integration Tests
-        run: dotnet test ./tests/IntegrationTests/IntegrationTests.csproj --no-restore --verbosity normal
+        run: dotnet test ./Tests/IntegrationTests/IntegrationTests.csproj --no-restore --verbosity normal
 
       - name: Run Unit Tests
-        run: dotnet test ./tests/UnitTests/tests.csproj --no-restore --verbosity normal
+        run: dotnet test ./Tests/UnitTests/tests.csproj --no-restore --verbosity normal
