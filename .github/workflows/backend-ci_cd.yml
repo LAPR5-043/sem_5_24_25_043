@@ -19,10 +19,10 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Install Dependencies
-        run: dotnet restore
+        run: dotnet restore sem_5_24_25_043.sln
 
       - name: Run Integration Tests
-        run: dotnet test ./tests/IntegrationTests --no-restore --verbosity normal
+        run: dotnet test sem_5_24_25_043.sln --filter "FullyQualifiedName~IntegrationTests" --no-restore --verbosity normal
 
       - name: Run Unit Tests
-        run: dotnet test ./tests/UnitTests --no-restore --verbosity normal
+        run: dotnet test sem_5_24_25_043.sln --filter "FullyQualifiedName~UnitTests" --no-restore --verbosity normal
