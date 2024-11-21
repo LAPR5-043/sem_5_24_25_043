@@ -21,6 +21,9 @@ jobs:
       - name: Verify Directory Structure
         run: ls -R
 
+      - name: Set Working Directory
+        run: cd sem_5_24_25_043
+
       - name: Install Dependencies
         run: dotnet restore sem_5_24_25_043.sln --verbosity minimal
 
