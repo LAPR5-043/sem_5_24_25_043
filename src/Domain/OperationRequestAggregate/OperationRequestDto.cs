@@ -4,16 +4,26 @@ using System.Text.Json.Serialization;
 
 namespace Domain.OperationRequestAggregate;
 
+
+
+public class StaffInOperation {
+
+    public string? staffID { get; set; }
+    public string? staffName { get; set; }
+}
+
 public class OperationRequestDto
 {
 
     public string? RequestId { get; set; }
 
     public string? PatientID { get; set; }
+    public string? PatientName { get; set; }
 
     public string? OperationTypeID { get; set; }
 
     public string? DoctorID { get; set; }
+    public string? DoctorName { get; set; }
     public string? Priority { get; set; }
 
     public string? Day { get; set; }
@@ -21,7 +31,8 @@ public class OperationRequestDto
     public string? Month { get; set; }
 
     public string? Year { get; set; }
-    public Dictionary<string, List<string>> specializationsStaff { get; set; }
+    public Dictionary<string, List<String>> specializationsStaff { get; set; }
+    public Dictionary<string, List<StaffInOperation>> specializationsStaffNames { get; set; }
 
 
 
