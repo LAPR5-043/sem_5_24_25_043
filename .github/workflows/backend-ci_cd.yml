@@ -18,18 +18,16 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Install Dependencies
-        run: |
-          dotnet restore ./sem_5_24_25_043.sln
-          dotnet restore ./tests/IntegrationTests/IntegrationTests.csproj
-          dotnet restore ./tests/UnitTests/tests.csproj
+      - name: Verify Directory Structure
+        run: ls -R
 
-      - name: Fix Solution Paths
+      - name: Adjust File Paths for CI Environment
         run: |
-          dotnet sln ./sem_5_24_25_043.sln remove tests/IntegrationTests/IntegrationTests.csproj
-          dotnet sln ./sem_5_24_25_043.sln remove tests/UnitTests/tests.csproj
-          dotnet sln ./sem_5_24_25_043.sln add tests/IntegrationTests/IntegrationTests.csproj
-          dotnet sln ./sem_5_24_25_043.sln add tests/UnitTests/tests.csproj
+          sed -i 's|tests/IntegrationTests/IntegrationTests.csproj|../tests/IntegrationTests/IntegrationTests.csproj|' sem_5_24_25_043.sln
+          sed -i 's|tests/UnitTests/tests.csproj|../tests/UnitTests/tests.csproj|' sem_5_24_25_043.sln
+
+      - name: Install Dependencies
+        run: dotnet restore ./sem_5_24_25_043.sln
 
       - name: Run Integration Tests
         run: dotnet test ./tests/IntegrationTests --no-restore --verbosity normal
