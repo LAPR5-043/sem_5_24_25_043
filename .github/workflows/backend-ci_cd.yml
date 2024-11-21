@@ -21,16 +21,14 @@ jobs:
       - name: Verify Directory Structure
         run: ls -R
 
-      - name: Adjust File Paths for CI Environment
-        run: |
-          sed -i 's|tests/IntegrationTests/IntegrationTests.csproj|../tests/IntegrationTests/IntegrationTests.csproj|' sem_5_24_25_043.sln
-          sed -i 's|tests/UnitTests/tests.csproj|../tests/UnitTests/tests.csproj|' sem_5_24_25_043.sln
-
       - name: Install Dependencies
-        run: dotnet restore ./sem_5_24_25_043.sln
+        run: dotnet restore sem_5_24_25_043.sln --verbosity minimal
+
+      - name: Build Solution
+        run: dotnet build sem_5_24_25_043.sln --no-restore --verbosity minimal
 
       - name: Run Integration Tests
-        run: dotnet test ./tests/IntegrationTests --no-restore --verbosity normal
+        run: dotnet test tests/IntegrationTests/IntegrationTests.csproj --no-restore --verbosity normal
 
       - name: Run Unit Tests
-        run: dotnet test ./tests/UnitTests --no-restore --verbosity normal
+        run: dotnet test tests/UnitTests/tests.csproj --no-restore --verbosity normal
