@@ -79,6 +79,7 @@ namespace src.Services
             foreach (var appoint in appointments)
             {
                 AppointmentDto appointDto = new AppointmentDto(appoint);
+                appointDto.Request = operationRequestService.GetOperationRequestByIdAsync(appoint.requestID).Result;
 
                 appointmentsDto.Add(appointDto);
             }

@@ -31,6 +31,7 @@ namespace src.Services
         /// Appointment Repository
         /// </summary>
         private readonly IAppointmentRepository appointmentRepository;
+        
         /// <summary>
         /// Planning Module Service
         /// </summary>
@@ -127,108 +128,122 @@ namespace src.Services
             return newOperationRequest != null;
         }
 
-        public async Task<OperationRequestDto> GetOperationRequestByIdAsync(int id)
+public async Task<OperationRequestDto> GetOperationRequestByIdAsync(int id)
+{
+    var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+
+    if (operationRequest == null)
+    {
+        throw new Exception("Operation Request not found");
+    }
+
+    var result = new OperationRequestDto(operationRequest)
+    {
+        PatientName = (await patientService.GetPatientByIdAsync(operationRequest.patientID)).FullName,
+        DoctorName = (await staffService.GetStaffAsync(operationRequest.doctorID)).FullName
+    };
+
+    // Convert specializations
+    result.specializationsStaffNames = operationRequest.specializations?.ToDictionary(
+        kvp => kvp.Key,
+        kvp => kvp.Value.Select(staffId => new StaffInOperation { staffID = staffId, staffName = staffService.GetStaffAsync(staffId).Result.FullName }).ToList()
+    ) ?? new Dictionary<string, List<StaffInOperation>>();
+
+    return result;
+}
+
+public async Task<List<OperationRequestDto>> GetAllOperationRequestsAsync()
+{
+    var operationRequestList = await operationRequestRepository.GetAllAsync();
+
+    var resultDtos = operationRequestList.Select(o =>
+        new OperationRequestDto(o)
         {
-            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
-
-            if (operationRequest == null)
-            {
-                throw new Exception("Operation Request not found");
-            }
-
-            return new OperationRequestDto(operationRequest);
+            PatientName = patientService.GetPatientByIdAsync(o.patientID).Result.FullName,
+            DoctorName = staffService.GetStaffAsync(o.doctorID).Result.FullName,
+            specializationsStaffNames = o.specializations?.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Select(staffId => new StaffInOperation { staffID = staffId, staffName = staffService.GetStaffAsync(staffId).Result.FullName }).ToList()
+            ) ?? new Dictionary<string, List<StaffInOperation>>()
         }
+    ).ToList();
+    var res = await  Task.FromResult<List<OperationRequestDto>>(resultDtos);
+    return res;
+}
 
-        public async Task<List<OperationRequest>> GetAllOperationRequestsAsync()
+public async Task<List<OperationRequestDto>> GetOperationRequestFilteredAsync(string? doctorID, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
+{
+    var operationRequestList = await operationRequestRepository.GetAllAsync();
+    var query = operationRequestList.AsQueryable();
+
+    if (!string.IsNullOrEmpty(doctorID))
+    {
+        query = query.Where(o => o.doctorID == doctorID);
+    }
+
+    if (!string.IsNullOrEmpty(patientID))
+    {
+        query = query.Where(o => o.patientID == patientID);
+    }
+
+    if (!string.IsNullOrEmpty(patientFirstName) || !string.IsNullOrEmpty(patientLastName))
+    {
+        var patientList = await patientService.GetPatientsByName(patientFirstName, patientLastName);
+        var patientIds = patientList.Select(p => p.MedicalRecordNumber).ToList();
+        query = query.Where(o => patientIds.Contains(o.patientID));
+    }
+
+    if (!string.IsNullOrEmpty(operationType))
+    {
+        query = query.Where(o => o.operationTypeID == operationType);
+    }
+
+    if (!string.IsNullOrEmpty(priority))
+    {
+        if (!Enum.TryParse(priority, true, out Priority priorityEnumValue))
         {
-            var operationRequestList = await operationRequestRepository.GetAllAsync();
-
-            return operationRequestList;
+            throw new ArgumentException("Invalid priority value");
         }
+        query = query.Where(o => o.priority == priorityEnumValue);
+    }
 
-        /// <summary>
-        /// Get operation requests filtered by different criteria
-        /// </summary>
-        /// <param name="firstName">First name of the patient</param>
-        /// <param name="lastName">Last name of the patient</param>
-        /// <param name="operationType">Type of operation</param>
-        /// <param name="priority">Priority of the operation</param>
-        /// <param name="status">Status of the operation</param>
-        /// <param name="sortBy">Column to sort by</param>
-        /// <returns>List of operation requests</returns>
-        /// 
-        public async Task<List<OperationRequestDto>> GetOperationRequestFilteredAsync(string? doctorID, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
+    if (!string.IsNullOrEmpty(sortBy))
+    {
+        switch (sortBy.ToLower())
         {
-            var operationRequestList = await operationRequestRepository.GetAllAsync();
-            var query = operationRequestList.AsQueryable();
-
-
-            if (!string.IsNullOrEmpty(doctorID))
-            {
-                query = query.Where(o => o.doctorID == doctorID);
-            }
-
-            if (!string.IsNullOrEmpty(patientID))
-            {
-                query = query.Where(o => o.patientID == patientID);
-            }
-
-
-            if (!string.IsNullOrEmpty(patientFirstName) || !string.IsNullOrEmpty(patientLastName))
-            {
-                var patientList = await patientService.GetPatientsByName(patientFirstName, patientLastName);
-
-                var patientIds = patientList.Select(p => p.MedicalRecordNumber).ToList();
-
-                query = query.Where(o => patientIds.Contains(o.patientID));
-            }
-
-            if (!string.IsNullOrEmpty(operationType))
-            {
-                query = query.Where(o => o.operationTypeID == operationType);
-            }
-
-            if (!string.IsNullOrEmpty(priority))
-            {
-                if (!Enum.TryParse(priority, true, out Priority priorityEnumValue))
-                {
-                    throw new ArgumentException("Invalid priority value");
-                }
-                query = query.Where(o => o.priority == priorityEnumValue);
-
-            }
-
-            if (!string.IsNullOrEmpty(sortBy))
-            {
-                switch (sortBy.ToLower())
-                {
-                    case "doctorID":
-                        query = query.OrderBy(o => o.doctorID);
-                        break;
-
-                    case "patientID":
-                        query = query.OrderBy(o => o.patientID);
-                        break;
-
-                    case "operationType":
-                        query = query.OrderBy(o => o.operationTypeID);
-                        break;
-
-                    case "priority":
-                        query = query.OrderBy(o => o.priority);
-                        break;
-
-                    default:
-                        query = query.OrderBy(o => o.doctorID);
-                        break;
-                }
-            }
-
-            var result = query.ToList();
-            var resultDtos = result.Select(o => new OperationRequestDto(o)).ToList();
-
-            return resultDtos;
+            case "doctorid":
+                query = query.OrderBy(o => o.doctorID);
+                break;
+            case "patientid":
+                query = query.OrderBy(o => o.patientID);
+                break;
+            case "operationtype":
+                query = query.OrderBy(o => o.operationTypeID);
+                break;
+            case "priority":
+                query = query.OrderBy(o => o.priority);
+                break;
+            default:
+                query = query.OrderBy(o => o.doctorID);
+                break;
         }
+    }
+
+    var result = query.ToList();
+    var resultDtos = result.Select(o =>
+        new OperationRequestDto(o)
+        {
+            PatientName = patientService.GetPatientByIdAsync(o.patientID).Result.FullName,
+            DoctorName = staffService.GetStaffAsync(o.doctorID).Result.FullName,
+            specializationsStaffNames = o.specializations?.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Select(staffId => new StaffInOperation { staffID = staffId, staffName = staffService.GetStaffAsync(staffId).Result.FullName }).ToList()
+            ) ?? new Dictionary<string, List<StaffInOperation>>()
+        }
+    ).ToList();
+
+    return resultDtos;
+}
 
         public async Task<List<OperationRequestDto>> GetDoctorOperationRequestsAsync(string doctorEmail, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
         {
@@ -298,7 +313,13 @@ namespace src.Services
             }
 
             var result = query.ToList();
-            var resultDtos = result.Select(o => new OperationRequestDto(o)).ToList();
+            var resultDtos = result.Select(o =>
+             new OperationRequestDto(o)
+             {
+                 PatientName = patientService.GetPatientByIdAsync(o.patientID).Result.FullName,
+                 DoctorName = staffService.GetStaffAsync(o.doctorID).Result.FullName
+             }
+            ).ToList();
 
             return resultDtos;
         }
@@ -316,8 +337,14 @@ namespace src.Services
             {
                 throw new Exception("Patient not found.");
             }
-
-            var resultDtos = result.Select(o => new OperationRequestDto(o)).ToList();
+    
+            var resultDtos = result.Select(o =>
+             new OperationRequestDto(o)
+             {
+                 PatientName = patientService.GetPatientByIdAsync(o.patientID).Result.FullName,
+                 DoctorName = staffService.GetStaffAsync(o.doctorID).Result.FullName
+             }
+            ).ToList();
 
             return resultDtos;
         }
@@ -446,6 +473,11 @@ namespace src.Services
             {
                 throw new ArgumentException("The Patient's ID must be a number");
             }
+        }
+
+        Task<List<OperationRequest>> IOperationRequestService.GetAllOperationRequestsAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
