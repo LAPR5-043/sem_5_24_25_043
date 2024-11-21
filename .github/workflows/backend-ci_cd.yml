@@ -13,25 +13,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
-
       - name: Verify Directory Structure
         run: ls -R
 
-      - name: Set Working Directory
-        run: cd sem_5_24_25_043
-
       - name: Install Dependencies
-        run: dotnet restore sem_5_24_25_043.sln --verbosity minimal
+        run: dotnet restore ./sem_5_24_25_043.sln --verbosity minimal
 
       - name: Build Solution
-        run: dotnet build sem_5_24_25_043.sln --no-restore --verbosity minimal
+        run: dotnet build ./sem_5_24_25_043.sln --no-restore --verbosity minimal
 
       - name: Run Integration Tests
-        run: dotnet test tests/IntegrationTests/IntegrationTests.csproj --no-restore --verbosity normal
+        run: dotnet test ./tests/IntegrationTests/IntegrationTests.csproj --no-restore --verbosity normal
 
       - name: Run Unit Tests
-        run: dotnet test tests/UnitTests/tests.csproj --no-restore --verbosity normal
+        run: dotnet test ./tests/UnitTests/tests.csproj --no-restore --verbosity normal
