@@ -98,6 +98,8 @@ namespace src.Services
 
             newOperationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
 
+            newOperationRequest.specializations = operationRequestDto.specializationsStaff;
+
             int day;
             if (!int.TryParse(operationRequestDto.Day, out day))
             {
@@ -125,6 +127,25 @@ namespace src.Services
             return newOperationRequest != null;
         }
 
+        public async Task<OperationRequestDto> GetOperationRequestByIdAsync(int id)
+        {
+            var operationRequest = await operationRequestRepository.GetByIdAsync(new OperationRequestID(id.ToString()));
+
+            if (operationRequest == null)
+            {
+                throw new Exception("Operation Request not found");
+            }
+
+            return new OperationRequestDto(operationRequest);
+        }
+
+        public async Task<List<OperationRequest>> GetAllOperationRequestsAsync()
+        {
+            var operationRequestList = await operationRequestRepository.GetAllAsync();
+
+            return operationRequestList;
+        }
+
         /// <summary>
         /// Get operation requests filtered by different criteria
         /// </summary>
@@ -135,6 +156,7 @@ namespace src.Services
         /// <param name="status">Status of the operation</param>
         /// <param name="sortBy">Column to sort by</param>
         /// <returns>List of operation requests</returns>
+        /// 
         public async Task<List<OperationRequestDto>> GetOperationRequestFilteredAsync(string? doctorID, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
         {
             var operationRequestList = await operationRequestRepository.GetAllAsync();
@@ -393,6 +415,11 @@ namespace src.Services
                 {
                     operationRequest.priority = PriorityExtensions.FromString(operationRequestDto.Priority);
                     await logService.CreateLogAsync("Update Operation Request" + "Priority changed from " + operationRequest.priority + " to " + operationRequestDto.Priority, email);
+                }
+                if  (!operationRequestDto.specializationsStaff.IsNullOrEmpty() )
+                {
+                    operationRequest.specializations = operationRequestDto.specializationsStaff;
+                    await logService.CreateLogAsync("Update Operation Request" + "Specializations changed to " + operationRequestDto.specializationsStaff, email);
                 }
 
                 await operationRequestRepository.updateAsync(operationRequest);

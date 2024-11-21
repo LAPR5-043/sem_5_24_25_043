@@ -55,6 +55,12 @@ public class OperationRequestEntityTypeConfiguration : IEntityTypeConfiguration<
                     v => PriorityExtensions.FromString(v)
                 )
                 .IsRequired();      
+            builder.Property(t => t.specializations)
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                    v => JsonSerializer.Deserialize<Dictionary<string, List<string>>>(v, new JsonSerializerOptions()) ?? new Dictionary<string, List<string>>()
+                )
+                .IsRequired();
         }
         private DeadlineDate parseDeadlineDate(string dateString)
         {

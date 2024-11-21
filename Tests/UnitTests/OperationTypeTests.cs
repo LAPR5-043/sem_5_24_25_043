@@ -10,18 +10,21 @@ public class OperationTypeTests
     {
         // Arrange
         var operationTypeName = "Surgery";
-        var hours = 2;
-        var minutes = 30;
+        var operationTypeDescription  = "Surgery Description";
+        var anesthesia = 2;
+        var operation = 30;
+        var cleaning = 0;
         var isActive = true;
         var specializations = new Dictionary<string, int> { { "Cardiology", 5 } };
 
         // Act
-        var operationType = new OperationType(operationTypeName, hours, minutes, isActive, specializations);
-
+        var operationType = new OperationType(operationTypeName, operationTypeDescription, anesthesia, operation, cleaning, isActive, specializations);
         // Assert
         Assert.Equal(operationTypeName, operationType.operationTypeName.operationTypeName);
-        Assert.Equal(hours, operationType.estimatedDuration.hours);
-        Assert.Equal(minutes, operationType.estimatedDuration.minutes);
+        Assert.Equal(operationTypeDescription, operationType.operationTypeDescription.operationTypeDescription);
+        Assert.Equal(anesthesia, operationType.estimatedDuration.anesthesia);
+        Assert.Equal(operation, operationType.estimatedDuration.operation);
+        Assert.Equal(cleaning, operationType.estimatedDuration.cleaning);
         Assert.Equal(isActive, operationType.isActive);
         Assert.Equal(specializations, operationType.specializations);
     }
@@ -45,15 +48,17 @@ public class OperationTypeTests
     {
         // Arrange
         var operationType = new OperationType();
-        var newHours = 3;
-        var newMinutes = 45;
+        var anesthesia = 2;
+        var operation = 30;
+        var cleaning = 0;
 
         // Act
-        operationType.changeEstimatedDuration(newHours, newMinutes);
+        operationType.changeEstimatedDuration(anesthesia, operation, cleaning);
 
         // Assert
-        Assert.Equal(newHours, operationType.estimatedDuration.hours);
-        Assert.Equal(newMinutes, operationType.estimatedDuration.minutes);
+        Assert.Equal(anesthesia, operationType.estimatedDuration.anesthesia);
+        Assert.Equal(operation, operationType.estimatedDuration.operation);
+        Assert.Equal(cleaning, operationType.estimatedDuration.cleaning);
     }
 
     [Fact]
@@ -89,9 +94,10 @@ public class OperationTypeTests
     {
         // Arrange
         var operationTypeName = new OperationTypeName("Surgery");
-        var estimatedDuration = new EstimatedDuration(2, 30);
-        var operationType1 = new OperationType(operationTypeName, estimatedDuration, true, new Dictionary<string, int>());
-        var operationType2 = new OperationType(operationTypeName, estimatedDuration, true, new Dictionary<string, int>());
+        var operationTypeDescription = new OperationTypeDescription("Surgery Description");
+        var estimatedDuration = new EstimatedDuration(2, 30, 23);
+        var operationType1 = new OperationType(operationTypeName, operationTypeDescription , estimatedDuration, true, new Dictionary<string, int>());
+        var operationType2 = new OperationType(operationTypeName,operationTypeDescription, estimatedDuration, true, new Dictionary<string, int>());
 
         // Act
         var result = operationType1.Equals(operationType2);
@@ -105,12 +111,14 @@ public class OperationTypeTests
     {
         // Arrange
         var operationTypeName1 = new OperationTypeName("Surgery");
+        var operationTypeDescription = new OperationTypeDescription("Surgery Description");
+        var operationTypeDescription2 = new OperationTypeDescription("Surgery ");
         var operationTypeName2 = new OperationTypeName("Consultation");
-        var estimatedDuration1 = new EstimatedDuration(2, 30);
-        var estimatedDuration2 = new EstimatedDuration(1, 0);
-        var operationType1 = new OperationType(operationTypeName1, estimatedDuration1, true, new Dictionary<string, int>());
-        var operationType2 = new OperationType(operationTypeName2, estimatedDuration1, true, new Dictionary<string, int>());
-        var operationType3 = new OperationType(operationTypeName1, estimatedDuration2, true, new Dictionary<string, int>());
+        var estimatedDuration1 = new EstimatedDuration(2, 30,1);
+        var estimatedDuration2 = new EstimatedDuration(1, 2,1);
+        var operationType1 = new OperationType(operationTypeName1, operationTypeDescription,estimatedDuration1, true, new Dictionary<string, int>());
+        var operationType2 = new OperationType(operationTypeName2,operationTypeDescription2, estimatedDuration1, true, new Dictionary<string, int>());
+        var operationType3 = new OperationType(operationTypeName1,operationTypeDescription2, estimatedDuration2, true, new Dictionary<string, int>());
 
         // Act
         var result1 = operationType1.Equals(operationType2);
@@ -126,8 +134,10 @@ public class OperationTypeTests
     {
         // Arrange
         var operationTypeName = new OperationTypeName("Surgery");
-        var operationType1 = new OperationType(operationTypeName, new EstimatedDuration(2, 30), true, new Dictionary<string, int>());
-        var operationType2 = new OperationType(operationTypeName, new EstimatedDuration(2, 30), true, new Dictionary<string, int>());
+        var operationTypeDescription = new OperationTypeDescription("Surgery Description");
+
+        var operationType1 = new OperationType(operationTypeName, operationTypeDescription,new EstimatedDuration(2, 30,1), true, new Dictionary<string, int>());
+        var operationType2 = new OperationType(operationTypeName, operationTypeDescription,new EstimatedDuration(2, 30,1), true, new Dictionary<string, int>());
 
         // Act
         var hashCode1 = operationType1.GetHashCode();
@@ -142,7 +152,8 @@ public class OperationTypeTests
     {
         // Arrange
         var operationTypeName = new OperationTypeName("Surgery");
-        var operationType = new OperationType(operationTypeName, new EstimatedDuration(2, 30), true, new Dictionary<string, int>());
+        var operationTypeDescription = new OperationTypeDescription("Surgery Description");
+        var operationType = new OperationType(operationTypeName, operationTypeDescription,new EstimatedDuration(2, 30,1), true, new Dictionary<string, int>());
 
         // Act
         var result = operationType.ToString();

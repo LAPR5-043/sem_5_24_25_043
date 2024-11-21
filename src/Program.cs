@@ -14,6 +14,10 @@ using Domain.LogAggregate;
 using Microsoft.OpenApi.Models;
 using src.Services.Services;
 using src.Services;
+using Domain.SurgeryRoomAggregate;
+using src.Infrastructure.Repositories;
+using Domain.SpecializationAggregate;
+using System.Text.Json;
 
 
 namespace sem_5_24_25_043
@@ -35,8 +39,14 @@ namespace sem_5_24_25_043
 
 
 
+                
+        
             // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
             builder.Services.AddDbContext<AppContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -117,6 +127,7 @@ namespace sem_5_24_25_043
             });
             //}
 
+
             app.UseHttpsRedirection();
             app.UseCors("AllowFrontend");
 
@@ -143,12 +154,12 @@ namespace sem_5_24_25_043
             //services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IOperationRequestRepository, OperationRequestRepository>();
             services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
-            //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IPendingRequestRepository, PendingRequestRepository>();
-            //services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
+            services.AddScoped<ISurgeryRoomRepository, SurgeryRoomRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IAvailabilitySlotRepository, AvailabilitySlotRepository>();
 
@@ -168,6 +179,8 @@ namespace sem_5_24_25_043
             services.AddScoped<IOperationRequestService, OperationRequestService>();
             services.AddScoped<ISensitiveDataService, SensitiveDataService>();
             services.AddScoped<IAvailabilitySlotService, AvailabilitySlotService>();
+            services.AddScoped<ISurgeryRoomService, SurgeryRoomService>();
+            services.AddScoped<ISpecializationService, SpecializationService>();
             
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
         }

@@ -40,6 +40,8 @@ namespace Domain.OperationRequestAggregate
         /// </summary>
         public Priority priority { get; set; }
 
+        public Dictionary<string, List<string>> specializations { get; set; }
+
         /// <summary>
         /// Default constructor required by Entity Framework.
         /// </summary>
@@ -81,7 +83,7 @@ namespace Domain.OperationRequestAggregate
         {
             return operationRequestID.GetHashCode();
         }
-
+        
 
     }
 }

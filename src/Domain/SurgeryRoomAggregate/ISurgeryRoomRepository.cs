@@ -3,7 +3,7 @@ using src.Domain.SurgeryRoomAggregate;
 
 namespace Domain.SurgeryRoomAggregate
 {
-    public interface ISurgeryRoomRepository : IRepository<SurgeryRoom, RoomNumber>
+    public interface ISurgeryRoomRepository : IRepository<SurgeryRoom, RoomId>
     {
     }
 }
