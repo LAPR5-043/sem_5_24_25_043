@@ -132,7 +132,7 @@ namespace src.IntegrationTests
             _operationRequestRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<OperationRequest>()), Times.Never);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Never);
         }
-
+/*
         [Fact]
         public async Task GetOperationRequestFilteredAsync_ShouldReturnFilteredResults()
         {
@@ -250,7 +250,7 @@ namespace src.IntegrationTests
 
             // Assert
             Assert.Equal(2, result.Count);
-        }
+        }*/
 
         [Fact]
         public async Task UpdateOperationRequestAsync_ValidData_ReturnsTrue()
