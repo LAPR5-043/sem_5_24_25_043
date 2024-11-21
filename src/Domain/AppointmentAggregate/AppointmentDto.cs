@@ -1,3 +1,5 @@
+using Domain.OperationRequestAggregate;
+
 namespace src.Domain.AppointmentAggregate
 {
     public class AppointmentDto
@@ -10,7 +12,7 @@ namespace src.Domain.AppointmentAggregate
         /// <summary>
         /// Represents the ID of the request.
         /// </summary>
-        public int RequestID { get; set; }
+        public OperationRequestDto Request { get; set; }
 
         /// <summary>
         /// Represents the ID of the room.
@@ -30,7 +32,7 @@ namespace src.Domain.AppointmentAggregate
         public AppointmentDto(Appointment appointment)
         {
             AppointmentID = appointment.appointmentID.ToString();
-            RequestID = appointment.requestID;
+        
             RoomID = appointment.roomID;
             DateAndTime = new DateAndTimeDto
             {
