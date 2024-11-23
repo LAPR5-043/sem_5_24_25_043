@@ -83,7 +83,7 @@ namespace src.IntegrationTests
             // Assert
             var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
             var response = statusCodeResult.Value;
-            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal(400, statusCodeResult.StatusCode);
             Assert.Equal("An error occurred: Test exception", response.GetType().GetProperty("message").GetValue(response, null));
         }
 
