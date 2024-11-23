@@ -170,6 +170,7 @@ namespace src.Controllers
             {
                 return BadRequest(new { message = "Invalid patient data." });
             }
+
             var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
             var patientExists = await service.GetPatientByIdAsync(id);
             if (patientExists == null)
@@ -177,14 +178,35 @@ namespace src.Controllers
                 return NotFound(new { message = "Patient not found." });
             }
 
-            var result = await service.EditPatientAsync(id, patientDto, adminEmail);
+            var patient = await service.EditPatientAsync(id, patientDto, adminEmail);
 
-            if (result)
+            if (patient != null)
             {
-                return Ok(new { message = "Patient updated successfully." });
+                var response = new
+                {
+                    MedicalRecordNumber = patient.MedicalRecordNumber.medicalRecordNumber,
+                    FirstName = patient.FirstName.ToString(),
+                    LastName = patient.LastName.ToString(),
+                    FullName = patient.FullName.ToString(),
+                    Email = patient.Email.ToString(),
+                    PhoneNumber = patient.PhoneNumber.ToString(),
+                    EmergencyContactName = patient.EmergencyContact?.Name ?? "",
+                    EmergencyContactPhoneNumber = patient.EmergencyContact?.PhoneNumber ?? "",
+                    DayOfBirth = patient.DateOfBirth?.Day().ToString(),
+                    MonthOfBirth = patient.DateOfBirth?.Month(),
+                    YearOfBirth = patient.DateOfBirth?.Year(),
+                    Gender = patient.Gender == 0 ? "Male" : "Female",
+                    AllergiesAndConditions = patient.AllergiesAndConditions,
+                    AppointmentHistory = patient.AppointmentHistory
+                };
+
+                return CreatedAtAction(nameof(GetPatientById), new { id = patient.MedicalRecordNumber }, response);
             }
+           
+
 
             return NotFound(new { message = "Patient not found." });
+            
         }
 
         // DELETE: /api/patient/delete/personalAccount?confirmDeletion=
