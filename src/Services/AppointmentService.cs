@@ -71,6 +71,21 @@ namespace src.Services
             this.appointmentRepository = appointmentRepository;
             this._httpClient = new HttpClient();
         }
+
+        public List<AppointmentDto> GetAllAppointmentsAsync(){
+            IEnumerable<Appointment> appointments = appointmentRepository.GetAllAsync().Result;
+            List<AppointmentDto> appointmentsDto = new List<AppointmentDto>();
+
+            foreach (var appoint in appointments)
+            {
+                AppointmentDto appointDto = new AppointmentDto(appoint);
+                appointDto.Request = operationRequestService.GetOperationRequestByIdAsync(appoint.requestID).Result;
+
+                appointmentsDto.Add(appointDto);
+            }
+            return appointmentsDto;
+        }
+
         public List<AppointmentDto> GetDayAppointmentsAsync(int day)
         {
             IEnumerable<Appointment> appointments = appointmentRepository.GetDayAppointmentsAsync(day).Result;
