@@ -10,5 +10,6 @@ namespace src.Services.IServices
     {
         List<AppointmentDto> GetDayAppointmentsAsync(int day);
         Task<PlanningResponseDto> GenerateApointmentsByRoomAndDateAsync(String RoomId, int date);
+        List<AppointmentDto> GetAllAppointmentsAsync();
     }
 }

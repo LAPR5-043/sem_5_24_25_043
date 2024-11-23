@@ -25,18 +25,23 @@ jobs:
           port: 22
           script: |
             set -e
+            
+            echo "Navigating to the project folder..."
             cd /var/www/backend/sem_5_24_25_043
 
-            echo "Pulling latest code..."
+            echo "Stopping the running application..."
+            sudo systemctl stop backend.service || true
+
+            echo "Pulling the latest code..."
             git pull origin production
 
-            echo "Change directory to the project folder..."
-            cd src
+            echo "Cleaning previous build artifacts..."
+            dotnet clean src
 
             echo "Building the application..."
-            dotnet build -p:NoWarn=*
+            dotnet build src -p:NoWarn=*
 
-            echo "Restarting the service..."
+            echo "Restarting the application service..."
             sudo systemctl restart backend.service
 
-            echo "Deployment completed!"
+            echo "Deployment completed successfully!"
