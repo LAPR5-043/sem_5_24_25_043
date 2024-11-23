@@ -50,7 +50,7 @@ namespace src.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+                return StatusCode(400, new { message = $"An error occurred: {ex.Message}" });
             }
         }
 
