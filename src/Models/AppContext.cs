@@ -162,6 +162,22 @@ public class AppContext : DbContext
                     Gender = Gender.Male,
                     AllergiesAndConditions = new List<AllergiesAndConditions>(),
                     AppointmentHistory = new AppointmentHistory()
+                },
+
+                new Patient
+                {
+                    Id = new MedicalRecordNumber("3"),
+                    MedicalRecordNumber = new MedicalRecordNumber("3"),
+                    FirstName = new PatientFirstName("Ricky"),
+                    LastName = new PatientLastName("Simons"),
+                    FullName = new PatientFullName("Ricky", "Simons"),
+                    Email = new PatientEmail("1220606@isep.ipp.pt"),
+                    PhoneNumber = new PatientPhoneNumber("+351913613541"),
+                    EmergencyContact = new EmergencyContact("Jane", "+351919999119"),
+                    DateOfBirth = new DateOfBirth("01", "01", "1999"),
+                    Gender = Gender.Male,
+                    AllergiesAndConditions = new List<AllergiesAndConditions>(),
+                    AppointmentHistory = new AppointmentHistory()
                 }
             );
 

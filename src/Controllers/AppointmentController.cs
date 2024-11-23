@@ -54,6 +54,25 @@ namespace src.Controllers
             }
         }
 
+        [HttpGet("All")]
+        public ActionResult<List<AppointmentDto>> GetAllAppointments()
+        {
+            try
+            {
+                var appoints = service.GetAllAppointmentsAsync();
+                if (appoints == null)
+                {
+                    return NotFound();
+                }
+                return Ok(appoints);
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();
+                return BadRequest();
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<PlanningResponseDto>> GetAppointmentsForTheRoomAndDay([FromQuery] string roomId, [FromQuery] int day)
         {   

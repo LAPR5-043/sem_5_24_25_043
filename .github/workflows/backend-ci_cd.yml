@@ -1,0 +1,29 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Verify Directory Structure
+        run: ls -R
+
+      - name: Install Dependencies
+        run: dotnet restore ./sem_5_24_25_043.sln --verbosity minimal
+
+      - name: Build Solution
+        run: dotnet build ./sem_5_24_25_043.sln --no-restore --verbosity minimal
+
+      - name: Run Integration Tests
+        run: dotnet test ./Tests/IntegrationTests/IntegrationTests.csproj --no-restore --verbosity normal
+
+      - name: Run Unit Tests
+        run: dotnet test ./Tests/UnitTests/tests.csproj --no-restore --verbosity normal
