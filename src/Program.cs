@@ -128,12 +128,11 @@ namespace sem_5_24_25_043
             });
             //}
 
-
-            // Ensure the request is redirected to HTTPS first
-            app.UseHttpsRedirection();
-
             // Apply CORS to allow requests from the frontend
             app.UseCors("AllowFrontend");
+
+            // Ensure the request is redirected to HTTPS first
+            //app.UseHttpsRedirection();
 
             // Authenticate the user
             app.UseAuthentication();
