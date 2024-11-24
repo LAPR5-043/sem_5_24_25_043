@@ -121,8 +121,6 @@ public class StaffService : IStaffService
             query = query.Where(s => s.specializationID.Contains(specialization));
         }
 
-        query = query.Where(s => s.isActive == true);
-
         if (!string.IsNullOrEmpty(sortBy))
         {
             switch (sortBy.ToLower())
