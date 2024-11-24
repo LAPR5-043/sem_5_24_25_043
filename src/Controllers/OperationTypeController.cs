@@ -32,7 +32,7 @@ namespace src.Controllers
         public async Task<ActionResult<List<OperationTypeDto>>> GetOperationTypes()
         {
             var operationTypes = await service.getAllOperationTypesAsync();
-            return Ok(operationTypes);
+            return Ok(operationTypes.Value);
         }
 
         // GET: api/OperationType/Filters?name=&specialization=&status=
@@ -40,7 +40,7 @@ namespace src.Controllers
         public async Task<ActionResult<List<OperationTypeDto>>> GetFilteredOperationTypes([FromQuery] string name = null, [FromQuery] string specialization = null, [FromQuery] string status = null)
         {
             var operationTypes = await service.getFilteredOperationTypesAsync(name, specialization, status);
-            return Ok(operationTypes);
+            return Ok(operationTypes.Value);
         }
         
         // PUT: api/OperationType/ChangeStatus/Knee Surgery
