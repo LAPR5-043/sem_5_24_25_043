@@ -271,6 +271,7 @@ namespace src.Services
 
         private ScheduleDto PrepareDataForPlanningModule(String RoomId, int date){
                         ScheduleDto schedule = new ScheduleDto();
+
             try
             {
                 SurgeryRoomDto room = roomService.GetSurgeryRoomAsync(RoomId).Result;
@@ -286,6 +287,38 @@ namespace src.Services
                 List<Appointment> appointments = appointmentRepository.GetAllAsync().Result;
 
                 List<string> opTypes = new List<string>();
+
+                
+                schedule.AgendaOperationRoom.room_id = RoomId;
+                schedule.AgendaOperationRoom.date = date.ToString();
+                schedule.AgendaOperationRoom.agenda += "[";
+
+                foreach(var app in appointments){
+                    if(app.dateAndTime.date == date.ToString() && app.roomID == RoomId){
+                        OperationRoomAgendaDto temp = new OperationRoomAgendaDto();
+                        temp.Start = int.Parse(app.dateAndTime.startT);
+                        temp.End = int.Parse(app.dateAndTime.endT);
+                        temp.Surgery = app.requestID;
+                        schedule.AgendaOperationRoom.agenda += "(" + temp.Start + "," + temp.End + "," + temp.Surgery + "),";
+                    }
+                    
+                }
+                
+                int length = schedule.AgendaOperationRoom.agenda.Length-1;
+                
+                if (schedule.AgendaOperationRoom.agenda[length] == ',')
+                {
+                    schedule.AgendaOperationRoom.agenda = schedule.AgendaOperationRoom.agenda.Substring(0, length) + "]";
+                }
+                else
+                {
+                    schedule.AgendaOperationRoom.agenda = schedule.AgendaOperationRoom.agenda + "]";
+                }
+                {
+                    
+                }
+                
+
                 foreach (var op in operationTypes)
                 {
                     opTypes.Add(op.OperationTypeName.ToString().ToLower());
@@ -301,6 +334,13 @@ namespace src.Services
                         temp.Id = slot.Id.ToString();
                         temp.Date = date.ToString();
                         temp.Time = "(" + availability.StartTime + "," + availability.EndTime + ")";
+                        schedule.Timetables.Add(temp);
+                    }else{
+                        Slot availability = slot.Slots[0];
+                        TimetableDto temp = new TimetableDto();
+                        temp.Id = slot.Id.ToString();
+                        temp.Date = date.ToString();
+                        temp.Time = "(" + 0 + "," + 1400 + ")";
                         schedule.Timetables.Add(temp);
                     }
                 }
@@ -398,6 +438,12 @@ namespace src.Services
 
                             string staffSpecialization = staff.AsQueryable().Where(x => x.StaffID.ToString().ToLower() == assignedStaff.ToLower()).FirstOrDefault().SpecializationID;
 
+
+                            if (staffSpecialization == null)
+                            {
+                                Console.WriteLine(assignedStaff);
+                            }
+                            
                             if (staffSpecialization == "anaesthetist")
                             {
                                 int start = stime;
