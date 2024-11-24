@@ -6,6 +6,8 @@ namespace Schedule
 {
     public class ScheduleDto
     {
+        [JsonProperty("agenda_operation_room")]
+        public OperationRoom AgendaOperationRoom { get; set; }
         [JsonProperty("timetables")]
         public List<TimetableDto> Timetables { get; set; }
         [JsonProperty("staff")]
@@ -27,6 +29,8 @@ namespace Schedule
             SurgeryId = new List<SurgeryIdDto>();
             AgendaStaff = new List<AgendaStaffDto>();
             Surgery = new List<SurgeryDto>();
+            AgendaOperationRoom = new OperationRoom();
+            
         }
     }
 
@@ -90,5 +94,16 @@ namespace Schedule
         [JsonProperty("cleaning")]
         public string Cleaning { get; set; }
     }
+
+    public class OperationRoom
+    {
+        [JsonProperty("room_id")]
+        public string room_id { get; set; }
+        [JsonProperty("date")]
+        public string date { get; set; }
+        [JsonProperty("agenda")]
+        public string agenda { get; set; }
+    }
+
 
 }

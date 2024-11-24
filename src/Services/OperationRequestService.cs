@@ -151,7 +151,7 @@ public async Task<OperationRequestDto> GetOperationRequestByIdAsync(int id)
 
     return result;
 }
-
+/*
 public async Task<List<OperationRequestDto>> GetAllOperationRequestsAsync()
 {
     var operationRequestList = await operationRequestRepository.GetAllAsync();
@@ -169,7 +169,7 @@ public async Task<List<OperationRequestDto>> GetAllOperationRequestsAsync()
     ).ToList();
     var res = await  Task.FromResult<List<OperationRequestDto>>(resultDtos);
     return res;
-}
+}*/
 
 public async Task<List<OperationRequestDto>> GetOperationRequestFilteredAsync(string? doctorID, string? patientID, string? patientFirstName, string? patientLastName, string? operationType, string? priority, string? sortBy)
 {
@@ -475,9 +475,11 @@ public async Task<List<OperationRequestDto>> GetOperationRequestFilteredAsync(st
             }
         }
 
-        Task<List<OperationRequest>> IOperationRequestService.GetAllOperationRequestsAsync()
+        public Task<List<OperationRequest>> GetAllOperationRequestsAsync()
         {
-            throw new NotImplementedException();
+            return operationRequestRepository.GetAllAsync();
         }
+
+        
     }
 }
