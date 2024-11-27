@@ -32,9 +32,10 @@ namespace sem_5_24_25_043
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend",
-                    policy => policy.AllowAnyOrigin()
+                policy => policy.WithOrigins("http://localhost:5173/", "https://medopt.pt") // Add specific origins
                         .AllowAnyMethod()
-                        .AllowAnyHeader());
+                        .AllowAnyHeader()
+                        .AllowCredentials()); // Enable credentials support
             });
 
 
