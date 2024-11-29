@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using src.Domain.AvailabilitySlotAggregate;
 using src.Domain.Shared;
 
-public class Staff : Entity<StaffID>, IAggregateRoot
+public class Staff : Entity<StaffID>, IAggregateRoot, IComparable<Staff>
 {
 
     public StaffID staffID { get; set; }
@@ -166,5 +166,10 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     public override string ToString()
     {
         return staffID.ToString();
+    }
+
+    public int CompareTo(Staff? other)
+    {
+        return Id.CompareTo(other?.Id);
     }
 }
