@@ -28,19 +28,18 @@ namespace sem_5_24_25_043
         static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend",
                     policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowAnyMethod());
+                        .WithExposedHeaders("Authorization")); // Expose any required headers
             });
 
 
 
-                
-        
             // Add services to the container.
             builder.Services.AddControllers().AddJsonOptions(options =>
                 {
@@ -127,22 +126,30 @@ namespace sem_5_24_25_043
             });
             //}
 
+            // Ensure the request is redirected to HTTPS first
+            //app.UseHttpsRedirection();
 
-            app.UseHttpsRedirection();
+            // Apply CORS to allow requests from the frontend
             app.UseCors("AllowFrontend");
 
+            // Authenticate the user
+            app.UseAuthentication();
+
+            // Authorize the user
+            app.UseAuthorization();
+
+            // Define endpoints
             app.MapGet("/claims",
-                    (ClaimsPrincipal claims) => claims.Claims.Select(c => new { c.Type, c.Value }).ToArray())
+                (ClaimsPrincipal claims) => claims.Claims.Select(c => new { c.Type, c.Value }).ToArray())
                 .RequireAuthorization()
                 .WithName("GetClaims");
 
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
+            // Map the controllers
             app.MapControllers();
 
+            // Run the application
             app.Run();
+
         }
 
 
@@ -181,7 +188,7 @@ namespace sem_5_24_25_043
             services.AddScoped<IAvailabilitySlotService, AvailabilitySlotService>();
             services.AddScoped<ISurgeryRoomService, SurgeryRoomService>();
             services.AddScoped<ISpecializationService, SpecializationService>();
-            
+
             //services.AddScoped<ISpecializationRepository, SpecializationRepository>();
         }
     }

@@ -39,9 +39,9 @@ public class StaffService : IStaffService
         this.availabilitySlotService = availabilitySlotService;
         this.emailService = emailService;
     }
-    private Boolean ValidateStaffInformation(string email, string phoneNumber, string licenseNumber)
+    private Task<bool> ValidateStaffInformation(string email, string phoneNumber, string licenseNumber)
     {
-        return staffRepository.StaffExists(email, phoneNumber, licenseNumber);
+        return Task.FromResult(staffRepository.StaffExists(email, phoneNumber, licenseNumber));
     }
     public async Task<bool> EditStaffAsync(string id, StaffDto staffDto, string adminEmail)
     {
@@ -121,8 +121,6 @@ public class StaffService : IStaffService
             query = query.Where(s => s.specializationID.Contains(specialization));
         }
 
-        query = query.Where(s => s.isActive == true);
-
         if (!string.IsNullOrEmpty(sortBy))
         {
             switch (sortBy.ToLower())
@@ -174,7 +172,7 @@ public class StaffService : IStaffService
             throw new ArgumentNullException(nameof(staffDto), "Staff data is null.");
         }
 
-        if (ValidateStaffInformation(staffDto.Email, staffDto.PhoneNumber, staffDto.LicenseNumber))
+        if (await ValidateStaffInformation(staffDto.Email, staffDto.PhoneNumber, staffDto.LicenseNumber))
         {
             throw new InvalidOperationException("Staff already exists.");
         }
@@ -183,7 +181,7 @@ public class StaffService : IStaffService
 
         var newStaff = new Staff();
 
-        newStaff.staffID = new StaffID(staffDto.StaffID);
+      //  newStaff.staffID = new StaffID(staffDto.StaffID);
         newStaff.firstName = new StaffFirstName(staffDto.FirstName);
         newStaff.lastName = new StaffLastName(staffDto.LastName);
         newStaff.fullName = new StaffFullName(newStaff.firstName, newStaff.lastName);
@@ -193,11 +191,15 @@ public class StaffService : IStaffService
         newStaff.isActive = (bool)staffDto.IsActive;
      
         newStaff.specializationID = staffDto.SpecializationID;
-        Staff nStaff =  staffRepository.AddAsync(newStaff).Result;
-
-        availabilitySlotService.CreateAvailabilitySlot(nStaff.staffID, staffDto.AvailabilitySlots);
-
+        await staffRepository.AddAsync(newStaff);
         await unitOfWork.CommitAsync();
+
+
+        Staff nStaff = newStaff;
+
+         availabilitySlotService.CreateAvailabilitySlotAsync(nStaff.staffID, staffDto.AvailabilitySlots).Wait();
+
+        
 
         return newStaff != null;
     }

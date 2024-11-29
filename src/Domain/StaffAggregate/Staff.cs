@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using src.Domain.AvailabilitySlotAggregate;
 using src.Domain.Shared;
 
-public class Staff : Entity<StaffID>, IAggregateRoot
+public class Staff : Entity<StaffID>, IAggregateRoot, IComparable<Staff>
 {
 
     public StaffID staffID { get; set; }
@@ -27,7 +27,7 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     //[ForeignKey("Specialization")]
     public string specializationID { get; set; }
 
-    /*public Staff(string staffID, string firstName, string lastName, string email, 
+    public Staff(string staffID, string firstName, string lastName, string email, 
                 string phoneNumber, string licenseNumber, bool isActive,
                  string specializationID){
         this.staffID = new StaffID(staffID);
@@ -38,11 +38,10 @@ public class Staff : Entity<StaffID>, IAggregateRoot
         this.phoneNumber = new StaffPhoneNumber(phoneNumber);
         this.licenseNumber = new LicenseNumber(licenseNumber);
         this.isActive = isActive;
-        this.availabilitySlots = new AvailabilitySlots();
         this.specializationID = specializationID;
     }
 
-    public Staff(StaffID staffID, StaffFirstName firstName, StaffLastName lastName, StaffEmail email, StaffPhoneNumber phoneNumber, LicenseNumber licenseNumber, bool isActive, AvailabilitySlots availabilitySlots, string specializationID)
+    public Staff(StaffID staffID, StaffFirstName firstName, StaffLastName lastName, StaffEmail email, StaffPhoneNumber phoneNumber, LicenseNumber licenseNumber, bool isActive, string specializationID)
     {
         this.staffID = staffID;
         this.firstName = firstName;
@@ -52,9 +51,11 @@ public class Staff : Entity<StaffID>, IAggregateRoot
         this.phoneNumber = phoneNumber;
         this.licenseNumber = licenseNumber;
         this.isActive = isActive;
-        this.availabilitySlots = availabilitySlots;
         this.specializationID = specializationID;
-    }*/
+    }
+    public Staff()
+    {
+    }
 
     /// <summary>
     /// Changes the first name of the staff member.
@@ -166,5 +167,10 @@ public class Staff : Entity<StaffID>, IAggregateRoot
     public override string ToString()
     {
         return staffID.ToString();
+    }
+
+    public int CompareTo(Staff? other)
+    {
+        return Id.CompareTo(other?.Id);
     }
 }

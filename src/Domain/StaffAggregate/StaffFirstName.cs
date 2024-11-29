@@ -19,7 +19,7 @@ public class StaffFirstName : IValueObject
     public StaffFirstName(string firstName)
     {
 
-        if (string.IsNullOrWhiteSpace(firstName))
+        if (string.IsNullOrEmpty(firstName))
         {
             throw new ArgumentException("First Name cannot be null or empty");
         }

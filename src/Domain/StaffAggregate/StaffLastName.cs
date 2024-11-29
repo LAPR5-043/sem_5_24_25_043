@@ -18,7 +18,7 @@ public class StaffLastName : IValueObject
     /// <exception cref="ArgumentException"></exception>
     public StaffLastName(string lastName)
     {
-        if (string.IsNullOrWhiteSpace(lastName))
+        if (string.IsNullOrEmpty(lastName))
         {
             throw new System.ArgumentException("First Name cannot be null or empty");
         }

@@ -1,4 +1,5 @@
 using Domain.StaffAggregate;
+using Microsoft.IdentityModel.Tokens;
 using src.Domain.AvailabilitySlotAggregate;
 using src.Domain.Shared;
 
@@ -12,7 +13,7 @@ public class AvailabilitySlotService : IAvailabilitySlotService
         _availabilitySlotRepository = availabilitySlotRepository;
         this.unitOfWork = unitOfWork;
     }
-    public void CreateAvailabilitySlot(StaffID availabilitySlotID, List<string> availabilitySlots){
+    public async Task CreateAvailabilitySlotAsync(StaffID availabilitySlotID, List<string> availabilitySlots){
         AvailabilitySlot av = new AvailabilitySlot();
         av.Id = availabilitySlotID;
         av.StaffID = availabilitySlotID;
@@ -20,12 +21,14 @@ public class AvailabilitySlotService : IAvailabilitySlotService
 
         foreach (var slot in availabilitySlots)
         {
-            string[] slots = slot.Split(",");
-            av.addAvailabilitySlot(int.Parse(slots[0]), int.Parse(slots[1]), int.Parse(slots[2]));
+            if (!slot.IsNullOrEmpty()){
+                string[] slots = slot.Split(",");
+                av.addAvailabilitySlot(int.Parse(slots[0]), int.Parse(slots[1]), int.Parse(slots[2]));
+            }    
         }
 
-        _availabilitySlotRepository.AddAsync(av);
-        unitOfWork.CommitAsync();
+        await  _availabilitySlotRepository.AddAsync(av);
+         unitOfWork.CommitAsync();
         
     }
     public void UpdateAvailabilitySlot(AvailabilitySlot availabilitySlot){

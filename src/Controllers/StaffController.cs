@@ -14,7 +14,7 @@ using src.Services.IServices;
 namespace src.Controllers
 {
     [Route("api/[controller]")]
-  //  [Authorize(Roles = "admins")] 
+    [Authorize(Roles = "admins")] 
     [ApiController]
 
     public class StaffController : ControllerBase
@@ -100,24 +100,30 @@ namespace src.Controllers
         [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditStaff(string id, [FromBody] StaffDto staffDto)
         {
-            var adminEmail = User.Claims.First(claim => claim.Type == "custom:internalEmail").Value;
+            var adminEmailClaim = User.Claims.FirstOrDefault(claim => claim.Type == "custom:internalEmail");
+            if (adminEmailClaim == null)
+            {
+                return Unauthorized(new { message = "Admin email claim not found." });
+            }
+            var adminEmail = adminEmailClaim.Value;
+
             if (staffDto == null)
             {
                 return BadRequest("Staff data is null.");
             }
             try
             {
-                var result = await service.EditStaffAsync(id, staffDto,adminEmail);
+                var result = await service.EditStaffAsync(id, staffDto, adminEmail);
             }
             catch (InvalidOperationException e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
             catch (Exception e)
             {
                 return NotFound("Staff not found.");
             }
-            
+
             return Ok(new { message = "Staff updated with success." });
         }
 

@@ -1,9 +1,10 @@
+using System;
 using src.Domain.Shared;
 
 /// <summary>
 /// Represents an id of a staff member
 /// </summary>
-public class StaffID : EntityId
+public class StaffID : EntityId , IComparable<StaffID>
 {
     /// <summary>
     /// The staff id
@@ -66,5 +67,15 @@ public class StaffID : EntityId
     public override string AsString()
     {
         return id;
+    }
+
+    public int CompareTo(StaffID? other)
+    {
+        if (other == null)
+        {
+            return 1;
+        }
+
+        return id.CompareTo(other.id);
     }
 }
