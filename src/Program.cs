@@ -32,10 +32,12 @@ namespace sem_5_24_25_043
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend",
-                policy => policy.AllowAnyOrigin()
+                    policy => policy.AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader());
+                        .AllowAnyHeader()
+                        .WithExposedHeaders("Authorization")); // Expose any required headers
             });
+
 
 
             // Add services to the container.
@@ -124,11 +126,11 @@ namespace sem_5_24_25_043
             });
             //}
 
-            // Apply CORS to allow requests from the frontend
-            app.UseCors("AllowFrontend");
-
             // Ensure the request is redirected to HTTPS first
             app.UseHttpsRedirection();
+
+            // Apply CORS to allow requests from the frontend
+            app.UseCors("AllowFrontend");
 
             // Authenticate the user
             app.UseAuthentication();
