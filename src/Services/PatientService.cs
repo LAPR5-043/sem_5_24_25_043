@@ -77,6 +77,15 @@ namespace src.Services.Services
         {
             bool ascending = true;
             var patientList = await patientRepository.GetAllAsync();
+            foreach (var patient in patientList)
+            {
+                if (patient.EmergencyContact.PhoneNumber == null|| patient.EmergencyContact.Name == null)
+                {
+                        Console.WriteLine("Emergency Contact is null");
+
+                }
+
+            }
             var query = patientList.AsQueryable();
 
             if (!string.IsNullOrEmpty(firstName))

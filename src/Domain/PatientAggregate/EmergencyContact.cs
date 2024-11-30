@@ -14,13 +14,9 @@ namespace Domain.PatientAggregate
         /// The name of the emergency contact
         /// </summary>
         [JsonPropertyName("Name")]
-        public string Name { get; }
-        /// <summary>
-        /// The phone number of the emergency contact
-        /// </summary>
+        public string Name { get; set; }
         [JsonPropertyName("PhoneNumber")]
-        public string PhoneNumber { get; }
-        /// <summary>
+        public string PhoneNumber { get; set;}
         /// Default constructor
         /// </summary>
         public EmergencyContact()

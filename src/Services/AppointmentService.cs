@@ -336,7 +336,6 @@ namespace src.Services
                         temp.Time = "(" + availability.StartTime + "," + availability.EndTime + ")";
                         schedule.Timetables.Add(temp);
                     }else{
-                        Slot availability = slot.Slots[0];
                         TimetableDto temp = new TimetableDto();
                         temp.Id = slot.Id.ToString();
                         temp.Date = date.ToString();

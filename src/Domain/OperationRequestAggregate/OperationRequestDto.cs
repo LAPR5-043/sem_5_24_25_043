@@ -31,8 +31,8 @@ public class OperationRequestDto
     public string? Month { get; set; }
 
     public string? Year { get; set; }
-    public Dictionary<string, List<String>> specializationsStaff { get; set; }
-    public Dictionary<string, List<StaffInOperation>> specializationsStaffNames { get; set; }
+    public Dictionary<string, List<String>>? specializationsStaff { get; set; }
+    public Dictionary<string, List<StaffInOperation>>? specializationsStaffNames { get; set; }
 
 
 

@@ -66,17 +66,20 @@ namespace Infrastructure.PatientRepository
                 .IsRequired();
                 
             builder.Property(p => p.EmergencyContact)
-            .HasConversion(
-                v => JsonSerializer.Serialize(v, new JsonSerializerOptions
-                {
-                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                }),
-                v => JsonSerializer.Deserialize<EmergencyContact>(v, new JsonSerializerOptions
-                {
-                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                }) ?? new EmergencyContact()
-            )
-            .IsRequired();
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, new JsonSerializerOptions
+                    {
+                        Encoder = JavaScriptEncoder.Default,
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                        WriteIndented = true
+                    }),
+                    v => JsonSerializer.Deserialize<EmergencyContact>(v, new JsonSerializerOptions
+                    {
+                        Encoder = JavaScriptEncoder.Default,
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    }) ?? new EmergencyContact()
+                )
+                .IsRequired();
 
             builder.Property(p => p.DateOfBirth)
                 .HasConversion(

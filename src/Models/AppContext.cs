@@ -525,7 +525,7 @@ public class AppContext : DbContext
                 {
                     Id = new OperationRequestID("7"),
                     operationRequestID = new OperationRequestID("7"),
-                    patientID = "4",
+                    patientID = "2",
                     doctorID = "d202400003",
                     operationTypeID = "so3",
                     deadlineDate = new DeadlineDate(11, 12, 2025),
@@ -543,7 +543,7 @@ public class AppContext : DbContext
                 {
                     Id = new OperationRequestID("8"),
                     operationRequestID = new OperationRequestID("8"),
-                    patientID = "4",
+                    patientID = "3",
                     doctorID = "d202400001",
                     operationTypeID = "so4",
                     deadlineDate = new DeadlineDate(7, 3, 2025),
@@ -561,7 +561,7 @@ public class AppContext : DbContext
                 {
                     Id = new OperationRequestID("9"),
                     operationRequestID = new OperationRequestID("9"),
-                    patientID = "5",
+                    patientID = "1",
                     doctorID = "d202400001",
                     operationTypeID = "so2",
                     deadlineDate = new DeadlineDate(4, 1, 2025),
@@ -579,7 +579,7 @@ public class AppContext : DbContext
                 {
                     Id = new OperationRequestID("10"),
                     operationRequestID = new OperationRequestID("10"),
-                    patientID = "5",
+                    patientID = "2",
                     doctorID = "d202400011",
                     operationTypeID = "so4",
                     deadlineDate = new DeadlineDate(1, 5, 2025),

@@ -157,7 +157,7 @@ namespace src.Controllers
         }
 
         //PUT 
-        [Authorize(Roles = "medic")]
+        [Authorize(Roles = "medic,admins")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateOperationRequest(int id, [FromBody] OperationRequestDto operationRequestDto)
         {
