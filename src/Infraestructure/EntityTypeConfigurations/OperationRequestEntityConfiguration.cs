@@ -71,7 +71,7 @@ public class OperationRequestEntityTypeConfiguration : IEntityTypeConfiguration<
             {
                 int day = int.Parse(dateParts[0]);
                 int month = int.Parse(dateParts[1]);
-                int year = int.Parse(dateParts[2]);
+                int year = int.Parse(dateParts[2].Split(' ')[0]);
                 return new DeadlineDate(day, month, year);
             }
             throw new ArgumentException("Invalid date format");
