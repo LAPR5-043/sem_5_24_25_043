@@ -85,7 +85,8 @@ namespace Domain.OperationRequestAggregate
         /// <returns></returns>
         public override string ToString()
         {
-            return deadlineDate.ToString();
+           
+            return deadlineDate.Day + "/" + deadlineDate.Month + "/" + deadlineDate.Year;
         }
 
         internal int CompareTo(DeadlineDate deadlineDate)

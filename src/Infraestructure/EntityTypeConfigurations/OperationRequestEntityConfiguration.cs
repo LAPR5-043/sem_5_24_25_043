@@ -64,9 +64,15 @@ public class OperationRequestEntityTypeConfiguration : IEntityTypeConfiguration<
         }
         private DeadlineDate parseDeadlineDate(string dateString)
         {
-            if (DateTime.TryParse(dateString, out var date))
+            
+
+            string[] dateParts = dateString.Split('/');
+            if (dateParts.Length == 3)
             {
-                return new DeadlineDate(date.Day, date.Month, date.Year);
+                int day = int.Parse(dateParts[0]);
+                int month = int.Parse(dateParts[1]);
+                int year = int.Parse(dateParts[2]);
+                return new DeadlineDate(day, month, year);
             }
             throw new ArgumentException("Invalid date format");
         }
