@@ -5,7 +5,8 @@ namespace src.Services.IServices
 {
     public interface ISurgeryRoomService
     {
-        public Task<List<SurgeryRoomDto>> GetSurgeryRoomsAsync();
+        Task<List<SurgeryRoomDto>> GetSurgeryRoomsAsync();
         Task<SurgeryRoomDto> GetSurgeryRoomAsync(string roomID);
+        Task<SurgeryRoomDto> CreateSurgeryRoomAsync(SurgeryRoomDto surgeryRoomDto);
     }   
 }

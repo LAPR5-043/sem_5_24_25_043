@@ -30,18 +30,45 @@ namespace src.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SurgeryRoomDto>>> GetAllSpecializations()
         {
-            var surgeryRooms = await service.GetSurgeryRoomsAsync();
-            return Ok(surgeryRooms);
+            try
+            {
+                var surgeryRooms = await service.GetSurgeryRoomsAsync();
+                return Ok(surgeryRooms);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        
         }
 
         // GET: api/Specialization/5
         [HttpGet("{id}")]
         public async Task<ActionResult<List<SurgeryRoomDto>>> GetFilteredOperationTypes(string id)
         {
-            var surgeryRoom = await service.GetSurgeryRoomAsync(id);
-            return Ok(surgeryRoom);
+            try
+            {
+                var surgeryRoom = await service.GetSurgeryRoomAsync(id);
+                return Ok(surgeryRoom);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
-        
+
+        [HttpPost]
+        public async Task<ActionResult<SurgeryRoomDto>> CreateSurgeryRoom(SurgeryRoomDto surgeryRoomDto)
+        {
+            try
+            {
+                return await service.CreateSurgeryRoomAsync(surgeryRoomDto);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { message = e.Message });
+            }
+        }        
 
         
 

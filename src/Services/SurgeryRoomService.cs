@@ -36,5 +36,23 @@ namespace src.Services.Services
             return surgeryRoomsDto;
         }
 
+        public async Task<SurgeryRoomDto> CreateSurgeryRoomAsync(SurgeryRoomDto surgeryRoomDto)
+        {
+            var surgeryRoom = new SurgeryRoom { Name = surgeryRoomDto.Name };
+            try
+            {
+                var result = surgeryRoomRepository.AddAsync(surgeryRoom).Result;
+                await unitOfWork.CommitAsync();
+                return new SurgeryRoomDto(result);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Room Already Exists");
+            }
+
+
+        }
+
     }
 }
