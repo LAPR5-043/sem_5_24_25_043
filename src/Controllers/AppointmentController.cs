@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using sem_5_24_25_043;
 using Schedule;
 using src.Domain.AppointmentAggregate;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace src.Controllers
 {
@@ -117,9 +118,80 @@ namespace src.Controllers
         }
 
 
-        
+    [HttpGet("request")]
+    public async Task<ActionResult<AppointmentDto>> GetAppointmentByRequestID([FromQuery] string requestID)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(requestID))
+            {
+                return BadRequest(new { message = "Request ID cannot be null or empty." });
+            }
 
-        
+            var appoint = await service.GetAppointmentByRequestIDAsync(requestID);
+            if (appoint == null)
+            {
+                return NotFound(new { message = "Appointment not found." });
+            }
 
+            return Ok(appoint);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = "Appointment not found."});
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<AppointmentDto>> CreateAppointment([FromBody] AppointmentDto appointmentDto)
+    {
+        try
+        {
+            if (appointmentDto == null)
+            {
+                return BadRequest(new { message = "Appointment cannot be null." });
+            }
+
+            var appoint = await service.createAppointmentAsync(appointmentDto);
+            if (appoint == null)
+            {
+                return NotFound(new { message = "Appointment not found." });
+            }
+
+            return Ok(appoint);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = e.Message });
+        }
+
+
+    }
+
+    [HttpPatch]
+    public async Task<ActionResult<AppointmentDto>> UpdateAppointment([FromBody] AppointmentDto appointmentDto)
+    {
+        try
+        {
+            Console.WriteLine("appointmentDto");
+            if (appointmentDto == null)
+            {
+                return BadRequest(new { message = "Appointment cannot be null." });
+            }
+            Console.WriteLine("appointmentDto1");
+            var appoint = await service.updateAppointmentAsync(appointmentDto);
+            Console.WriteLine("appointmentDto2");
+            if (appoint == null)
+            {
+                return NotFound(new { message = "Appointment not found." });
+            }
+
+            return Ok(appoint);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = e.Message });
+        }
+    }
     }
 }
