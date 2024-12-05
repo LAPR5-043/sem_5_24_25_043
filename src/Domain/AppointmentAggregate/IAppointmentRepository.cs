@@ -9,5 +9,10 @@ namespace Domain.AppointmentAggregate
         Task<bool> CheckIfOperationIsScheduled(int requestID);
         Task<IEnumerable<Appointment>> GetDayAppointmentsAsync(int day);
         Appointment GetOperationRequestByRequestId(int operationRequest);
+
+        Task<Appointment> GetAppointmentByRequestID(string requestID);
+
+        Task<Appointment> updateAsync(Appointment appointment);
+
     }
 }

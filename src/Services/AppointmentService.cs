@@ -500,7 +500,126 @@ namespace src.Services
             }
 
             return schedule;
-        }    
+        }
 
+        public Task<AppointmentDto> GetAppointmentByRequestIDAsync(string requestID)
+        {
+           var appoint = appointmentRepository.GetAppointmentByRequestID(requestID).Result;
+           if (appoint == null)
+           {
+             throw new Exception("Appointment not found");
+           }
+              AppointmentDto appointDto = new AppointmentDto(appoint);
+
+                appointDto.Request = operationRequestService.GetOperationRequestByIdAsync(appoint.requestID).Result;
+            return Task.FromResult<AppointmentDto>(appointDto);
+        }
+
+        public async Task<AppointmentDto> createAppointmentAsync(AppointmentDto appointmentDto)
+        {
+            try
+            {
+                bool opReq = appointmentRepository.CheckIfOperationIsScheduled(int.Parse(appointmentDto.Request.RequestId)).Result;
+                if (opReq)
+                {
+                    throw new Exception("Operation already scheduled.");
+                }
+                 if (!checkIfItTheScheduleIsAvailable(appointmentDto.DateAndTime, appointmentDto.RoomID))
+                 {
+                     throw new Exception("The schedule is not available.");
+                 }
+                Appointment appoint = new Appointment{
+                    dateAndTime = new DateAndTime{
+                        startT = appointmentDto.DateAndTime.StartT,
+                        endT = appointmentDto.DateAndTime.EndT,
+                        date = appointmentDto.DateAndTime.Date
+                    },
+                    requestID = int.Parse(appointmentDto.Request.RequestId),
+                    roomID = appointmentDto.RoomID,
+                    status = Status.Scheduled
+                };
+                await appointmentRepository.AddAsync(appoint);
+                await unitOfWork.CommitAsync();
+                AppointmentDto result = new AppointmentDto(appoint);
+                result.Request = operationRequestService.GetOperationRequestByIdAsync(appoint.requestID).Result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+  
+    public async Task<AppointmentDto> updateAppointmentAsync(AppointmentDto appointmentDto)
+    {
+        if (appointmentDto == null)
+        {
+            throw new ArgumentNullException(nameof(appointmentDto), "Appointment data is null.");
+        }
+ 
+        var appointment = await appointmentRepository.GetAppointmentByRequestID(appointmentDto.Request.RequestId);
+
+        if (appointment == null)
+        {
+            throw new Exception("Appointment not found.");
+        }
+        Console.WriteLine("1");
+        // Atualizar as propriedades da Appointment com os valores do AppointmentDto
+        if (appointmentDto.DateAndTime != null)
+        {   
+            if (!checkIfItTheScheduleIsAvailable(appointmentDto.DateAndTime, appointmentDto.RoomID))
+            {
+                throw new Exception("The schedule is not available.");
+            }
+            appointment.dateAndTime.startT = appointmentDto.DateAndTime.StartT;
+            appointment.dateAndTime.endT = appointmentDto.DateAndTime.EndT;
+            appointment.dateAndTime.date = appointmentDto.DateAndTime.Date;
+        }
+        Console.WriteLine("2");
+        if (appointmentDto.Request != null)
+        {
+            appointment.requestID = int.Parse(appointmentDto.Request.RequestId);
+        }
+        Console.WriteLine("3");
+        if (appointmentDto.RoomID != null)
+        {
+            appointment.roomID = appointmentDto.RoomID;
+        }
+
+        if (appointmentDto.Status != null){
+            appointment.status = Enum.Parse<Status>(appointmentDto.Status);
+        }
+
+        Console.WriteLine("4");
+
+        // Salvar as alterações no repositório
+        await appointmentRepository.updateAsync(appointment);
+        await unitOfWork.CommitAsync();
+        Console.WriteLine("5");
+        var result= new AppointmentDto(appointment);
+        result.Request = operationRequestService.GetOperationRequestByIdAsync(appointment.requestID).Result;
+        return result;
+    }
+
+    public bool checkIfItTheScheduleIsAvailable(DateAndTimeDto time, string roomID)
+    {
+        IEnumerable<Appointment> appointments = appointmentRepository.GetAllAsync().Result;
+        foreach (var appoint in appointments)
+        {
+            if (appoint.roomID == roomID && appoint.dateAndTime.date == time.Date)
+            {
+                if (int.Parse(appoint.dateAndTime.startT) <= int.Parse(time.StartT) && int.Parse(appoint.dateAndTime.endT) >= int.Parse(time.StartT))
+                {
+                    return false;
+                }
+                if (int.Parse(appoint.dateAndTime.startT) <= int.Parse(time.EndT) && int.Parse(appoint.dateAndTime.endT) >= int.Parse(time.EndT))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     }
 }

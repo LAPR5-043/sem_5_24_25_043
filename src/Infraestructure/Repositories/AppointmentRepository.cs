@@ -58,4 +58,17 @@ public class AppointmentRepository : BaseRepository<Appointment, AppointmentID>,
             
             
     }
+
+    public async Task<Appointment> GetAppointmentByRequestID(string requestID)
+    {
+        return await context.Appointments
+            .FirstOrDefaultAsync(a => a.requestID == int.Parse(requestID));
+    }
+
+    
+    public Task<Appointment> updateAsync(Appointment appointment)
+    {
+        context.Entry(appointment).State = EntityState.Modified;
+        return Task.FromResult(appointment);
+    }
 }
