@@ -1,7 +1,7 @@
     public class SpecializationDto
     {
-        public string SpecializationName { get; set; }
-        public string SpecializationDescription { get; set; }
+        public string? SpecializationName { get; set; }
+        public string? SpecializationDescription { get; set; }
 
         public SpecializationDto()
         {
