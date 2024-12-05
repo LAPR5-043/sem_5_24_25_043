@@ -32,5 +32,43 @@ namespace src.Services.Services
                 .ContinueWith(specialization => new SpecializationDto(specialization.Result));
 
         }
+
+        public async Task<SpecializationDto> CreateSpecializationAsync(SpecializationDto specializationDto){
+            var specialization = new Specialization { specializationDescription = new SpecializationDescription(specializationDto.SpecializationDescription ),
+                                                        specializationName = new SpecializationName(specializationDto.SpecializationName),
+                                                        Id = new SpecializationName(specializationDto.SpecializationName) };
+            try
+            {
+                var result = specializationRepository.AddAsync(specialization).Result;
+                await unitOfWork.CommitAsync();
+                return new SpecializationDto(result);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<SpecializationDto> UpdateSpecializationAsync(string id, SpecializationDto specializationDto){
+            var specialization = specializationRepository.GetByIdAsync(new SpecializationName(id)).Result;
+    
+
+            if (specializationDto.SpecializationDescription != null)
+            {
+                specialization.specializationDescription = new SpecializationDescription(specializationDto.SpecializationDescription);
+            }
+            try
+            {
+                var result = specializationRepository.UpdateAsync(specialization);
+                await unitOfWork.CommitAsync();
+                return new SpecializationDto(result);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Specialization Already Exists");
+            }
+        }
     }
 }

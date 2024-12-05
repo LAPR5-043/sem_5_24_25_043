@@ -2,7 +2,7 @@ using src.Domain.SurgeryRoomAggregate;
 
 public class SurgeryRoomDto
     {
-        public string RoomID { get; set; }
+        public string? RoomID { get; set; }
         public string Name { get; set; }
 
         public SurgeryRoomDto()

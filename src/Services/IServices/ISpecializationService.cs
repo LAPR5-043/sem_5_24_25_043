@@ -8,6 +8,7 @@ namespace src.Services.IServices
         Task<List<SpecializationDto>> GetSpecializationsAsync();
 
         Task<SpecializationDto> GetSpecializationAsync(string specializationID);
-        
+        Task<SpecializationDto> CreateSpecializationAsync(SpecializationDto specializationDto);
+        Task<SpecializationDto> UpdateSpecializationAsync(string id, SpecializationDto specializationDto);
     }
 }

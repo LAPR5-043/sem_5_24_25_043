@@ -31,18 +31,95 @@ namespace src.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SpecializationDto>>> GetAllSpecializations()
         {
-            var specializations = await service.GetSpecializationsAsync();
-            return Ok(specializations);
+            
+            try
+            {
+                var specializations = await service.GetSpecializationsAsync();
+                return Ok(specializations);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // GET: api/Specialization/5
         [HttpGet("{id}")]
         public async Task<ActionResult<List<SpecializationDto>>> GetFilteredOperationTypes(string id)
         {
-            var specialization = await service.GetSpecializationAsync(id);
-            return Ok(specialization);
+            if (id == null)
+            {
+                return BadRequest(new { message = "Invalid Specialization ID." });
+            }
+
+            try
+            {
+                var specialization = await service.GetSpecializationAsync(id);
+                if (specialization == null)
+                {
+                    return NotFound(new { message = "Specialization not found." });
+                }
+                return Ok(specialization);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
         
+        [HttpPost]
+        public async Task<ActionResult<SpecializationDto>> CreateSpecialization([FromBody] SpecializationDto specializationDto)
+        {
+            if (specializationDto == null)
+            {
+                return BadRequest(new { message = "Invalid Specialization data." });
+            }
+
+            try
+            {
+                Console.WriteLine(specializationDto.SpecializationName);
+
+                var createdSpecialization =  await service.CreateSpecializationAsync(specializationDto);
+                if (createdSpecialization != null)
+                {
+                    return Ok(new { message = "Specialization created successfully." });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+            return StatusCode(500, new { message = "An error occurred while creating the Specialization." });
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<SpecializationDto>> UpdateSpecialization(string id, [FromBody] SpecializationDto specializationDto)
+        {
+            if (id == null)
+            {
+                return BadRequest(new { message = "Invalid Specialization ID." });
+            }
+
+            if (specializationDto == null)
+            {
+                return BadRequest(new { message = "Invalid Specialization data." });
+            }
+
+            try
+            {
+                var updatedSpecialization = await service.UpdateSpecializationAsync(id, specializationDto);
+                if (updatedSpecialization != null) 
+                {
+                    return Ok(new { message = "Specialization updated successfully." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+            return StatusCode(500, new { message = "An error occurred while updating the Specialization." });
+        }
 
         
 

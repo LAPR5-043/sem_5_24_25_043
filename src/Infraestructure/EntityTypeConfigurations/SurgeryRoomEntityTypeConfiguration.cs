@@ -18,7 +18,7 @@ public class SurgeryRoomEntityTypeConfiguration : IEntityTypeConfiguration<Surge
                 .HasConversion(
                     v => v.AsString(),
                     v => new RoomId(v))
-                .IsRequired();
+                .IsRequired().HasValueGenerator<SurgeryRoomIDGenerator>();
 
             builder.Property(t => t.RoomID)
                 .HasConversion(
@@ -30,7 +30,7 @@ public class SurgeryRoomEntityTypeConfiguration : IEntityTypeConfiguration<Surge
             builder.Property(t => t.Name)
                 .IsRequired();                    
                   
-            
+            builder.HasIndex(t => t.Name).IsUnique();
    }
 
  

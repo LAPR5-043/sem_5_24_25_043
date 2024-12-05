@@ -16,5 +16,11 @@ namespace src.Infrastructure.Repositories
         {
             this.context = context;
         }
+
+        public Specialization UpdateAsync(Specialization specialization)
+        {
+            context.Entry(specialization).State = EntityState.Modified;
+            return specialization;
+        }
     }
 }

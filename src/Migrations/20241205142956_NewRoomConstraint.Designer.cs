@@ -12,8 +12,8 @@ using AppContext = src.Models.AppContext;
 namespace sem_5_24_25_043.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20241130121016_FixPatient")]
-    partial class FixPatient
+    [Migration("20241205142956_NewRoomConstraint")]
+    partial class NewRoomConstraint
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "1",
                             Id = "1",
-                            deadlineDate = "01/02/2025 00:00:00",
+                            deadlineDate = "1/2/2025",
                             doctorID = "D202400003",
                             operationTypeID = "so3",
                             patientID = "1",
@@ -79,7 +79,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "2",
                             Id = "2",
-                            deadlineDate = "01/02/2025 00:00:00",
+                            deadlineDate = "1/2/2025",
                             doctorID = "D202400001",
                             operationTypeID = "so2",
                             patientID = "1",
@@ -90,7 +90,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "3",
                             Id = "3",
-                            deadlineDate = "01/01/2025 00:00:00",
+                            deadlineDate = "1/1/2025",
                             doctorID = "d202400001",
                             operationTypeID = "so4",
                             patientID = "2",
@@ -101,7 +101,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "4",
                             Id = "4",
-                            deadlineDate = "02/01/2025 00:00:00",
+                            deadlineDate = "2/1/2025",
                             doctorID = "d202400001",
                             operationTypeID = "so2",
                             patientID = "2",
@@ -112,7 +112,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "5",
                             Id = "5",
-                            deadlineDate = "01/12/2025 00:00:00",
+                            deadlineDate = "1/12/2025",
                             doctorID = "d202400011",
                             operationTypeID = "so4",
                             patientID = "3",
@@ -123,7 +123,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "6",
                             Id = "6",
-                            deadlineDate = "15/01/2025 00:00:00",
+                            deadlineDate = "15/1/2025",
                             doctorID = "d202400003",
                             operationTypeID = "so2",
                             patientID = "3",
@@ -134,7 +134,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "7",
                             Id = "7",
-                            deadlineDate = "11/12/2025 00:00:00",
+                            deadlineDate = "11/12/2025",
                             doctorID = "d202400003",
                             operationTypeID = "so3",
                             patientID = "2",
@@ -145,7 +145,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "8",
                             Id = "8",
-                            deadlineDate = "07/03/2025 00:00:00",
+                            deadlineDate = "7/3/2025",
                             doctorID = "d202400001",
                             operationTypeID = "so4",
                             patientID = "3",
@@ -156,7 +156,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "9",
                             Id = "9",
-                            deadlineDate = "04/01/2025 00:00:00",
+                            deadlineDate = "4/1/2025",
                             doctorID = "d202400001",
                             operationTypeID = "so2",
                             patientID = "1",
@@ -167,7 +167,7 @@ namespace sem_5_24_25_043.Migrations
                         {
                             operationRequestID = "10",
                             Id = "10",
-                            deadlineDate = "01/05/2025 00:00:00",
+                            deadlineDate = "1/5/2025",
                             doctorID = "d202400011",
                             operationTypeID = "so4",
                             patientID = "2",
@@ -527,8 +527,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "147288",
-                            phoneNumber = "+351924362278",
+                            licenseNumber = "668834",
+                            phoneNumber = "+351989225252",
                             specializationID = "orthopaedist",
                             staffID = "d202400001"
                         },
@@ -541,8 +541,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "570484",
-                            phoneNumber = "+351989236986",
+                            licenseNumber = "614628",
+                            phoneNumber = "+351984960256",
                             specializationID = "anaesthetist",
                             staffID = "d202400002"
                         },
@@ -555,8 +555,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "766113",
-                            phoneNumber = "+351937454085",
+                            licenseNumber = "653567",
+                            phoneNumber = "+351967100824",
                             specializationID = "orthopaedist",
                             staffID = "d202400003"
                         },
@@ -569,8 +569,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "805107",
-                            phoneNumber = "+351972506804",
+                            licenseNumber = "937325",
+                            phoneNumber = "+351990966610",
                             specializationID = "orthopaedist",
                             staffID = "d202400011"
                         },
@@ -583,8 +583,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "761186",
-                            phoneNumber = "+351923931986",
+                            licenseNumber = "945412",
+                            phoneNumber = "+351945450919",
                             specializationID = "orthopaedist",
                             staffID = "d202400012"
                         },
@@ -597,8 +597,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "282835",
-                            phoneNumber = "+351917847403",
+                            licenseNumber = "205996",
+                            phoneNumber = "+351959517971",
                             specializationID = "anaesthetist",
                             staffID = "d202400023"
                         },
@@ -611,8 +611,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Pedro,Gomes",
                             isActive = true,
                             lastName = "Gomes",
-                            licenseNumber = "915557",
-                            phoneNumber = "+351915190727",
+                            licenseNumber = "255440",
+                            phoneNumber = "+351924703586",
                             specializationID = "anaesthetist",
                             staffID = "n202400024"
                         },
@@ -625,8 +625,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Sara,Ribeiro",
                             isActive = true,
                             lastName = "Ribeiro",
-                            licenseNumber = "837615",
-                            phoneNumber = "+351947548603",
+                            licenseNumber = "352642",
+                            phoneNumber = "+351949187959",
                             specializationID = "anaesthetist",
                             staffID = "n202400029"
                         },
@@ -639,8 +639,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "David,Fernandes",
                             isActive = true,
                             lastName = "Fernandes",
-                            licenseNumber = "478249",
-                            phoneNumber = "+351970693603",
+                            licenseNumber = "997295",
+                            phoneNumber = "+351956947440",
                             specializationID = "anaesthetist",
                             staffID = "n202400022"
                         },
@@ -653,8 +653,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Laura,Sousa",
                             isActive = true,
                             lastName = "Sousa",
-                            licenseNumber = "986166",
-                            phoneNumber = "+351919288695",
+                            licenseNumber = "758681",
+                            phoneNumber = "+351928210707",
                             specializationID = "circulating",
                             staffID = "n202400025"
                         },
@@ -667,8 +667,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "479307",
-                            phoneNumber = "+351919478132",
+                            licenseNumber = "928773",
+                            phoneNumber = "+351917040623",
                             specializationID = "circulating",
                             staffID = "n202400030"
                         },
@@ -681,8 +681,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "406403",
-                            phoneNumber = "+351968335681",
+                            licenseNumber = "329668",
+                            phoneNumber = "+351935014594",
                             specializationID = "circulating",
                             staffID = "n202400031"
                         },
@@ -695,8 +695,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "388997",
-                            phoneNumber = "+351997438034",
+                            licenseNumber = "857272",
+                            phoneNumber = "+351971033460",
                             specializationID = "instrumenting",
                             staffID = "n202400026"
                         },
@@ -709,8 +709,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "534138",
-                            phoneNumber = "+351972707686",
+                            licenseNumber = "585558",
+                            phoneNumber = "+351959796225",
                             specializationID = "instrumenting",
                             staffID = "n202400027"
                         },
@@ -723,8 +723,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "830141",
-                            phoneNumber = "+351941965048",
+                            licenseNumber = "612873",
+                            phoneNumber = "+351932676114",
                             specializationID = "instrumenting",
                             staffID = "n202400028"
                         },
@@ -737,8 +737,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "485321",
-                            phoneNumber = "+351976542721",
+                            licenseNumber = "860657",
+                            phoneNumber = "+351921992778",
                             specializationID = "medical_action",
                             staffID = "s202400001"
                         });
@@ -929,13 +929,16 @@ namespace sem_5_24_25_043.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoomID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("SurgeryRooms", (string)null);
 
