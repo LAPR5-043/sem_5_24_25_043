@@ -47,6 +47,7 @@ namespace src.Services
         private static string update = "planning_update";
         
         public static string nothing_to_schedule = "Nothing To Schedule";
+        public static string room_full = "The Room is Full";
         private static int minAverageAvailability = 700;
         private static int maxNumberOfOperations = 8;
 
@@ -124,7 +125,7 @@ namespace src.Services
 
             if (response.FinalOperationTime == 1441)
             {
-                throw new Exception("The is no free time for the surgeries in the room.");
+                throw new Exception(room_full);
             }
 
             status = await TransformResponseintoAppointementsAsync(response, date);

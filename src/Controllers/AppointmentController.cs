@@ -26,6 +26,7 @@ namespace src.Controllers
 
         public static string nothing_to_schedule = "Nothing To Schedule";
         public static string schedule_with_success = "Schedule With Success";
+        public static string room_full = "The Room is Full";
         public AppointmentController(IAppointmentService service)
         {
             this.service = service;
@@ -107,10 +108,12 @@ namespace src.Controllers
                 {
                     return Ok(new { message = nothing_to_schedule });
                 }
-                else
+                if (e.Message == room_full)
                 {
-                    return StatusCode(500, e.Message);
+                    return Ok(new { message = room_full });
                 }
+                
+                return StatusCode(500, e.Message);
                
             }
 
