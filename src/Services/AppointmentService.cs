@@ -124,7 +124,7 @@ namespace src.Services
 
             if (response.FinalOperationTime == 1441)
             {
-                return null;
+                throw new Exception("The is no free time for the surgeries in the room.");
             }
 
             status = await TransformResponseintoAppointementsAsync(response, date);
@@ -198,10 +198,11 @@ namespace src.Services
         }
         private async Task<bool> SendingPlanningModuleUpdatedData(string apiUrl, ScheduleDto schedule)
         {
-            Console.WriteLine("Sending data to planning module...");
+ 
+
             var json = JsonConvert.SerializeObject(schedule);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-
+            
             var response = await _httpClient.PostAsync(apiUrl, data);
             response.EnsureSuccessStatusCode();
 
@@ -336,11 +337,13 @@ namespace src.Services
                         temp.Time = "(" + availability.StartTime + "," + availability.EndTime + ")";
                         schedule.Timetables.Add(temp);
                     }else{
+
                         TimetableDto temp = new TimetableDto();
                         temp.Id = slot.Id.ToString();
                         temp.Date = date.ToString();
                         temp.Time = "(" + 0 + "," + 1400 + ")";
                         schedule.Timetables.Add(temp);
+
                     }
                 }
 

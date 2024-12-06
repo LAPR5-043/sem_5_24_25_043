@@ -109,7 +109,7 @@ namespace src.Controllers
                 }
                 else
                 {
-                    return StatusCode(500);
+                    return StatusCode(500, e.Message);
                 }
                
             }
