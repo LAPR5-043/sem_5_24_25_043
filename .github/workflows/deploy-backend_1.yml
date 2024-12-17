@@ -1,4 +1,4 @@
-name: Deploy Backend
+name: Deploy Backend 1 ( AZURE - 172.167.44.221)
 
 on:
   workflow_run:
@@ -19,9 +19,9 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@v0.1.8
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SERVER_IP2 }}
+          username: ${{ secrets.SERVER_USER2 }}
+          key: ${{ secrets.SSH_PRIVATE_KEY2 }}
           port: 22
           script: |
             set -e
