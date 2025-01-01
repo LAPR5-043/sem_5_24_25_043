@@ -7,7 +7,7 @@ namespace Schedule
     public class ScheduleDto
     {
         [JsonProperty("agenda_operation_room")]
-        public OperationRoom AgendaOperationRoom { get; set; }
+        public List<OperationRoom> AgendaOperationRoom { get; set; }
         [JsonProperty("timetables")]
         public List<TimetableDto> Timetables { get; set; }
         [JsonProperty("staff")]
@@ -29,7 +29,7 @@ namespace Schedule
             SurgeryId = new List<SurgeryIdDto>();
             AgendaStaff = new List<AgendaStaffDto>();
             Surgery = new List<SurgeryDto>();
-            AgendaOperationRoom = new OperationRoom();
+            AgendaOperationRoom = new List<OperationRoom>();
             
         }
     }

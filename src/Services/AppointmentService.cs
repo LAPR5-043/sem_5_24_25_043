@@ -197,17 +197,19 @@ namespace src.Services
 
             return jsonObject[key].ToString();
         }
-        private async Task<bool> SendingPlanningModuleUpdatedData(string apiUrl, ScheduleDto schedule)
+    private async Task<bool> SendingPlanningModuleUpdatedData(string apiUrl, ScheduleDto schedule)
+    {
+        try
         {
- 
-
             var json = JsonConvert.SerializeObject(schedule);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            
+            Console.WriteLine(data);
             var response = await _httpClient.PostAsync(apiUrl, data);
             response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Response Content: {responseContent}");
+
             var planningResponse = JsonConvert.DeserializeObject<StatusDto>(responseContent);
             if (planningResponse.Status.IsNullOrEmpty())
             {
@@ -216,6 +218,22 @@ namespace src.Services
 
             return true;
         }
+        catch (JsonException jsonEx)
+        {
+            Console.WriteLine($"JSON Error: {jsonEx.Message}");
+            throw;
+        }
+        catch (HttpRequestException httpEx)
+        {
+            Console.WriteLine($"HTTP Request Error: {httpEx.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"General Error: {ex.Message}");
+            throw;
+        }
+    }
        
         private async Task<PlanningResponseDto> GetPlanningModuleSchedulingAsync(string apiUrl, String roomId, int date)
         {
@@ -276,6 +294,7 @@ namespace src.Services
 
             try
             {
+                List<SurgeryRoomDto> rooms = roomService.GetSurgeryRoomsAsync().Result;
                 SurgeryRoomDto room = roomService.GetSurgeryRoomAsync(RoomId).Result;
                 IEnumerable<StaffDto> staff = staffService.getStaffsFilteredAsync(null, null, null, null, null).Result;
                 IEnumerable<OperationTypeDto> operationTypes = operationTypeService.getAllOperationTypesAsync().Result?.Value.Cast<OperationTypeDto>() ?? Enumerable.Empty<OperationTypeDto>();
@@ -290,10 +309,15 @@ namespace src.Services
 
                 List<string> opTypes = new List<string>();
 
-                
-                schedule.AgendaOperationRoom.room_id = RoomId;
-                schedule.AgendaOperationRoom.date = date.ToString();
-                schedule.AgendaOperationRoom.agenda += "[";
+                foreach (var r in rooms)
+                {
+                    schedule.AgendaOperationRoom.Add(new OperationRoom
+                    {
+                        room_id = r.RoomID,
+                        date = date.ToString(),
+                        agenda = "["
+                    });
+                }
 
                 foreach(var app in appointments){
                     if(app.dateAndTime.date == date.ToString() && app.roomID == RoomId){
@@ -301,25 +325,26 @@ namespace src.Services
                         temp.Start = int.Parse(app.dateAndTime.startT);
                         temp.End = int.Parse(app.dateAndTime.endT);
                         temp.Surgery = app.requestID;
-                        schedule.AgendaOperationRoom.agenda += "(" + temp.Start + "," + temp.End + "," + temp.Surgery + "),";
+                        schedule.AgendaOperationRoom.Where(x => x.room_id == RoomId).FirstOrDefault().agenda += "(" + temp.Start + "," + temp.End + "," + temp.Surgery + "),";
+                    
                     }
                     
                 }
                 
-                int length = schedule.AgendaOperationRoom.agenda.Length-1;
-                
-                if (schedule.AgendaOperationRoom.agenda[length] == ',')
-                {
-                    schedule.AgendaOperationRoom.agenda = schedule.AgendaOperationRoom.agenda.Substring(0, length) + "]";
-                }
-                else
-                {
-                    schedule.AgendaOperationRoom.agenda = schedule.AgendaOperationRoom.agenda + "]";
-                }
-                {
+                foreach (var r in schedule.AgendaOperationRoom){
+
+                    int length = r.agenda.Length-1;
                     
+                    if (r.agenda[length] == ',')
+                    {
+                        r.agenda = r.agenda.Substring(0, length) + "]";
+                    }
+                    else
+                    {
+                        r.agenda = r.agenda + "]";
+                    }
+             
                 }
-                
 
                 foreach (var op in operationTypes)
                 {
