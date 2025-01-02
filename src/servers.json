@@ -1,5 +1,6 @@
 {
 
     "planning_better": "http://vsgate-http.dei.isep.ipp.pt:11326/api/prolog/obtain_better_sol",
-    "planning_update": "http://vsgate-http.dei.isep.ipp.pt:11326/api/prolog/update_data"
+    "planning_update": "http://vsgate-http.dei.isep.ipp.pt:11326/api/prolog/update_data",
+    "planning_genetic":"http://vsgate-http.dei.isep.ipp.pt:11326/api/prolog/obtain_schedule_all_rooms"
 }

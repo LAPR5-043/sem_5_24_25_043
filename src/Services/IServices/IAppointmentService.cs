@@ -14,5 +14,6 @@ namespace src.Services.IServices
         Task<AppointmentDto> GetAppointmentByRequestIDAsync(string requestID);
         Task<AppointmentDto> createAppointmentAsync(AppointmentDto appointmentDto);
         Task<AppointmentDto> updateAppointmentAsync(AppointmentDto appointmentDto);
+        Task<GeneticResponseDto> GenerateApointmentsByDateAsync( int date);
     }
 }

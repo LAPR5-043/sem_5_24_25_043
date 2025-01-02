@@ -44,12 +44,14 @@ namespace src.Services
         private readonly HttpClient _httpClient;
         private static string servers = "servers.json";
         private static string better = "planning_better";
+        private static string genetic = "planning_genetic";
         private static string update = "planning_update";
         
         public static string nothing_to_schedule = "Nothing To Schedule";
         public static string room_full = "The Room is Full";
         private static int minAverageAvailability = 700;
         private static int maxNumberOfOperations = 8;
+        private int isGenetic = 0;
 
         /// <summary>
         /// Constructor
@@ -104,7 +106,8 @@ namespace src.Services
         }
         public async Task<PlanningResponseDto> GenerateApointmentsByRoomAndDateAsync(string RoomId, int date)
         {
-            ScheduleDto schedule = PrepareDataForPlanningModule(RoomId, date);
+            isGenetic = 0;
+            ScheduleDto schedule = PrepareDataForPlanningModule( date);
             if (schedule == null)
             {
                 return null;
@@ -139,6 +142,87 @@ namespace src.Services
           
         }
 
+        public async Task<GeneticResponseDto> GenerateApointmentsByDateAsync( int date)
+        {
+            isGenetic = 1;
+            ScheduleDto schedule = PrepareDataForPlanningModule( date);
+            if (schedule == null)
+            {
+                return null;
+            }
+
+            string apiUrl = GetApiUrlFromJsonFile(servers, update);
+
+            bool status = await SendingPlanningModuleUpdatedData(apiUrl, schedule);
+
+            if (!status)
+            {
+                return null;
+            }
+
+            apiUrl = GetApiUrlFromJsonFile(servers, genetic);
+
+            GeneticResponseDto response = await GetPlanningModuleAllRoomsSchedulingAsync(apiUrl, date);
+
+            if ( response.OperationRoomAgenda == null)
+            {
+                return null;
+            }
+          
+
+            status = await TransformGeneticResponseintoAppointementsAsync(response, date);
+
+            if (!status)
+            {
+                return null;
+            }
+
+            return response;
+          
+        }
+
+
+        private async Task<bool> TransformGeneticResponseintoAppointementsAsync(GeneticResponseDto response, int date)
+        {
+            try
+            {
+                foreach (var room in response.OperationRoomAgenda){
+                    foreach (var surgery in room.Agenda)
+                    {
+                        bool opReq = appointmentRepository.CheckIfOperationIsScheduled(surgery.Surgery).Result;
+
+                        if (!opReq)
+                        {
+                            Appointment appoint = new Appointment
+                            {
+                                dateAndTime = new DateAndTime
+                                {
+                                    startT = surgery.Start.ToString(),
+                                    endT = surgery.End.ToString(),
+                                    date = date.ToString()
+                                },
+                                requestID = surgery.Surgery,
+                                roomID = room.Name,
+                                status = Status.Scheduled
+                            };
+
+                            await appointmentRepository.AddAsync(appoint);
+                            await unitOfWork.CommitAsync();
+                        }
+
+
+                    }
+                }
+                
+            }
+            catch (Exception e)
+            {
+                // Log the exception
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            return true;
+        }
         private async Task<bool> TransformResponseintoAppointementsAsync(PlanningResponseDto response, int date)
         {
             try
@@ -203,7 +287,7 @@ namespace src.Services
         {
             var json = JsonConvert.SerializeObject(schedule);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            Console.WriteLine(data);
+            Console.WriteLine( json );
             var response = await _httpClient.PostAsync(apiUrl, data);
             response.EnsureSuccessStatusCode();
 
@@ -252,6 +336,42 @@ namespace src.Services
             return planningResponse;
         }
 
+        private async Task<GeneticResponseDto> GetPlanningModuleAllRoomsSchedulingAsync(string apiUrl, int date)
+        {
+            try
+            {
+                    Console.WriteLine("Getting data from planning module...");
+                    var json = JsonConvert.SerializeObject( new {day = date.ToString() } );
+                    var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await _httpClient.PostAsync(apiUrl, data);
+                    Console.WriteLine(response);
+                    response.EnsureSuccessStatusCode();
+
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);
+                    var planningResponse = JsonConvert.DeserializeObject<GeneticResponseDto>(responseContent);
+
+
+                    Console.WriteLine("Data received from planning module...");
+                    return planningResponse;
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Console.WriteLine($"HTTP Request Error: {httpEx.Message}");
+                throw;
+            }
+            catch (JsonException jsonEx)
+            {
+                Console.WriteLine($"JSON Error: {jsonEx.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"General Error: {ex.Message}");
+                throw;
+            }        
+        }
         private List<OperationRequestDto> sortOperationRequestsByPriority(List<OperationRequest> opRequests,  IEnumerable<OperationTypeDto> operationTypes){
             SortedSet<OperationRequest> opRequestsSorted =  new SortedSet<OperationRequest>(new OperationRequestComparer());
             foreach (var op in opRequests)
@@ -277,25 +397,35 @@ namespace src.Services
 
             int totalTime = 0;
             int numOp = 0;
-            while(totalTime<= minAverageAvailability && opRequests.Count>0 && maxNumberOfOperations> numOp){
-                OperationRequestDto op = opRequests.First();
-                opRequests.Remove(op);
-                toSchedule.Add(op);
-                OperationTypeDto opType = operationTypes.Where(x => x.OperationTypeName == op.OperationTypeID).FirstOrDefault();
-                totalTime += int.Parse(opType.EstimatedDurationAnesthesia) + int.Parse(opType.EstimatedDurationOperation) + int.Parse(opType.EstimatedDurationCleaning);
-                numOp++;
-            }    
+
+            if(isGenetic == 0){
+                while(totalTime<= minAverageAvailability && opRequests.Count>0 && maxNumberOfOperations> numOp){
+                    OperationRequestDto op = opRequests.First();
+                    opRequests.Remove(op);
+                    toSchedule.Add(op);
+                    OperationTypeDto opType = operationTypes.Where(x => x.OperationTypeName == op.OperationTypeID).FirstOrDefault();
+                    totalTime += int.Parse(opType.EstimatedDurationAnesthesia) + int.Parse(opType.EstimatedDurationOperation) + int.Parse(opType.EstimatedDurationCleaning);
+                    numOp++;
+                }    
+            }
+            if(isGenetic == 1){
+                while( opRequests.Count>0 ){
+                    OperationRequestDto op = opRequests.First();
+                    opRequests.Remove(op);
+                    toSchedule.Add(op);
+                }
+            }
 
             return  toSchedule;
         }
 
-        private ScheduleDto PrepareDataForPlanningModule(String RoomId, int date){
+        private ScheduleDto PrepareDataForPlanningModule( int date){
                         ScheduleDto schedule = new ScheduleDto();
 
             try
             {
                 List<SurgeryRoomDto> rooms = roomService.GetSurgeryRoomsAsync().Result;
-                SurgeryRoomDto room = roomService.GetSurgeryRoomAsync(RoomId).Result;
+                //SurgeryRoomDto room = roomService.GetSurgeryRoomAsync(RoomId).Result;
                 IEnumerable<StaffDto> staff = staffService.getStaffsFilteredAsync(null, null, null, null, null).Result;
                 IEnumerable<OperationTypeDto> operationTypes = operationTypeService.getAllOperationTypesAsync().Result?.Value.Cast<OperationTypeDto>() ?? Enumerable.Empty<OperationTypeDto>();
                 List<OperationRequest> opRequests = operationRequestService.GetAllOperationRequestsAsync().Result;
@@ -320,12 +450,12 @@ namespace src.Services
                 }
 
                 foreach(var app in appointments){
-                    if(app.dateAndTime.date == date.ToString() && app.roomID == RoomId){
+                    if(app.dateAndTime.date == date.ToString() ){
                         OperationRoomAgendaDto temp = new OperationRoomAgendaDto();
                         temp.Start = int.Parse(app.dateAndTime.startT);
                         temp.End = int.Parse(app.dateAndTime.endT);
                         temp.Surgery = app.requestID;
-                        schedule.AgendaOperationRoom.Where(x => x.room_id == RoomId).FirstOrDefault().agenda += "(" + temp.Start + "," + temp.End + "," + temp.Surgery + "),";
+                        schedule.AgendaOperationRoom.Where(x => x.room_id == app.roomID).FirstOrDefault().agenda += "(" + temp.Start + "," + temp.End + "," + temp.Surgery + "),";
                     
                     }
                     
