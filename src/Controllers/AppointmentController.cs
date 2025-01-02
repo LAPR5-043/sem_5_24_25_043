@@ -120,6 +120,50 @@ namespace src.Controllers
         
         }
 
+        [HttpGet("GenerateToMultipleRooms")]
+        public async Task<ActionResult<GeneticResponseDto>> GetAppointmentsForTheDay([FromQuery] int day)
+        {   
+            try
+            {
+                if ( day == 0)
+                {
+                    return BadRequest();
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                GeneticResponseDto response =  await service.GenerateApointmentsByDateAsync( day);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(new { message = schedule_with_success, schedule = response });
+
+            }
+            catch(Exception e)
+            {
+                if (e.Message == nothing_to_schedule)
+                {
+                    return Ok(new { message = nothing_to_schedule });
+                }
+                if (e.Message == room_full)
+                {
+                    return Ok(new { message = room_full });
+                }
+                
+                return StatusCode(500, e.Message);
+               
+            }
+
+        
+        }
 
     [HttpGet("request")]
     public async Task<ActionResult<AppointmentDto>> GetAppointmentByRequestID([FromQuery] string requestID)
