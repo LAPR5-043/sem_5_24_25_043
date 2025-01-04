@@ -4,7 +4,8 @@
   # MedOpt: Surgical Appointment and Resource Management System
 
   [![Backend CI/CD](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/backend-ci_cd.yml/badge.svg)](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/backend-ci_cd.yml)
-  [![Backend Deploy](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend.yml/badge.svg)](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend.yml)
+  [![Backend Deploy 1](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend_1.yml/badge.svg)](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend_1.yml)
+  [![Backend Deploy 2](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend_2.yml/badge.svg)](https://github.com/LAPR5-043/sem_5_24_25_043/actions/workflows/deploy-backend_2.yml)
   
   [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![GitHub issues](https://img.shields.io/github/issues/LAPR5-043/sem_5_24_25_043)](https://github.com/LAPR5-043/sem_5_24_25_043/issues)

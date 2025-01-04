@@ -1,4 +1,4 @@
-name: Deploy Backend 2 ( AWS - 3.80.180.37)
+name: Deploy Backend AWS
 
 on:
   workflow_run:
