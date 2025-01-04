@@ -65,7 +65,7 @@ namespace src.Controllers
 
 
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
-        [Authorize(Roles = "admins")]
+        [Authorize(Roles = "admins, patient")]
         [HttpGet("filtered")]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
                                                                     [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
