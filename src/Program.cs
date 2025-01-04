@@ -39,16 +39,8 @@ namespace sem_5_24_25_043
                         .WithExposedHeaders("Authorization")); // Expose any required headers
             });
 
-            builder.Services.Configure<IISServerOptions>(options =>
-            {
-                options.MaxRequestBodySize = 104857600; // 100 MB
-            });
 
-            builder.Services.Configure<KestrelServerOptions>(options =>
-            {
-                options.Limits.MaxRequestBodySize = 104857600; // 100 MB
-                options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(5); // 5 minutos
-            });
+       
 
             // Add services to the container.
             builder.Services.AddControllers().AddJsonOptions(options =>
