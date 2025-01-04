@@ -7,7 +7,7 @@
 namespace sem_5_24_25_043.Migrations
 {
     /// <inheritdoc />
-    public partial class RefreshBD : Migration
+    public partial class ResetDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -246,26 +246,26 @@ namespace sem_5_24_25_043.Migrations
                 columns: new[] { "MedicalRecordNumber", "AllergiesAndConditions", "AppointmentHistory", "DateOfBirth", "Email", "EmergencyContact", "FirstName", "FullName", "Gender", "Id", "LastName", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { "202310001975", "[]", "{}", "15/6/2008", "1220606@isep.ipp.pt", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Ricky", "Ricky Simons", "Male", "202310001975", "Simons", "+351913613541" },
-                    { "202310056123", "[]", "{}", "19/8/2003", "john@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919919919\"\r\n}", "John", "John Doe", "Male", "202310056123", "Doe", "+351919919919" },
-                    { "202410000941", "[]", "{}", "7/1/1980", "rmiguel@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Miguel", "Miguel Rios", "Male", "202410000941", "Rios", "+351919108919" },
-                    { "202410000942", "[]", "{}", "15/8/2019", "smiguel@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Miguel", "Miguel Santos", "Male", "202410000942", "Santos", "+351940928081" },
-                    { "202410000943", "[]", "{}", "22/10/1989", "rrada@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Carlos", "Carlos Prada", "Male", "202410000943", "Prada", "+351980538621" },
-                    { "202410000944", "[]", "{}", "26/10/2002", "furtado@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "José", "José Furtado", "Male", "202410000944", "Furtado", "+351984208790" },
-                    { "202410000945", "[]", "{}", "1/10/2018", "ochal@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Diana", "Diana Rocha", "Female", "202410000945", "Rocha", "+351990667773" },
-                    { "202410000946", "[]", "{}", "4/1/1970", "nessa@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Jéssica", "Jéssica Vanessa", "Female", "202410000946", "Vanessa", "+351981251676" },
-                    { "202410000947", "[]", "{}", "4/3/1992", "dreia@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Andreia", "Andreia Rios", "Female", "202410000947", "Rios", "+351971471413" },
-                    { "202410000948", "[]", "{}", "10/10/2017", "biggle@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Mariana", "Mariana Ribeiro", "Female", "202410000948", "Ribeiro", "+351934055817" },
-                    { "202410000949", "[]", "{}", "1/1/2007", "key@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Matilde", "Matilde Chaves", "Female", "202410000949", "Chaves", "+351944699717" },
-                    { "202410000950", "[]", "{}", "27/9/1980", "isaa@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Isabel", "Isabel Areal", "Female", "202410000950", "Areal", "+351918514534" },
-                    { "202410000951", "[]", "{}", "23/1/2009", "angel@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Noélia", "Noélia Anjos", "Female", "202410000951", "Anjos", "+351973107412" },
-                    { "202410000952", "[]", "{}", "27/10/1979", "minda@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Ermelinda", "Ermelinda Barbosa", "Female", "202410000952", "Barbosa", "+351912726541" },
-                    { "202410007891", "[]", "{}", "10/3/1969", "Jane@email.com", "{\r\n  \"Name\": \"Carlos\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Jane", "Jane Does", "Male", "202410007891", "Does", "+351919991919" },
-                    { "202410007911", "[]", "{}", "25/2/1982", "silva@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "João", "João Silva", "Male", "202410007911", "Silva", "+351911382919" },
-                    { "202410019271", "[]", "{}", "7/4/1997", "diogonet@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Diogo", "Diogo Neto", "Male", "202410019271", "Neto", "+351919994919" },
-                    { "202410033891", "[]", "{}", "5/6/1995", "joanac@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Joana", "Joana Silva", "Male", "202410033891", "Silva", "+351911231919" },
-                    { "202410120782", "[]", "{}", "14/2/1990", "costa@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "André", "André Costa", "Male", "202410120782", "Costa", "+351911011919" },
-                    { "202410555891", "[]", "{}", "21/9/2008", "franlopes@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Francisca", "Francisca Lopes", "Male", "202410555891", "Lopes", "+351919991072" }
+                    { "202310001975", "[]", "{}", "2/3/2010", "1220606@isep.ipp.pt", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Ricky", "Ricky Simons", "Male", "202310001975", "Simons", "+351913613541" },
+                    { "202310056123", "[]", "{}", "17/8/1997", "john@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919919919\"\r\n}", "John", "John Doe", "Male", "202310056123", "Doe", "+351919919919" },
+                    { "202410000941", "[]", "{}", "25/10/1971", "rmiguel@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Miguel", "Miguel Rios", "Male", "202410000941", "Rios", "+351919108919" },
+                    { "202410000942", "[]", "{}", "1/8/1974", "smiguel@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Miguel", "Miguel Santos", "Male", "202410000942", "Santos", "+351972086871" },
+                    { "202410000943", "[]", "{}", "10/9/1996", "rrada@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Carlos", "Carlos Prada", "Male", "202410000943", "Prada", "+351920908079" },
+                    { "202410000944", "[]", "{}", "2/7/1994", "furtado@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "José", "José Furtado", "Male", "202410000944", "Furtado", "+351928199291" },
+                    { "202410000945", "[]", "{}", "18/10/2012", "ochal@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Diana", "Diana Rocha", "Female", "202410000945", "Rocha", "+351958921901" },
+                    { "202410000946", "[]", "{}", "11/7/2011", "nessa@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Jéssica", "Jéssica Vanessa", "Female", "202410000946", "Vanessa", "+351910147943" },
+                    { "202410000947", "[]", "{}", "20/5/1981", "dreia@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Andreia", "Andreia Rios", "Female", "202410000947", "Rios", "+351965703922" },
+                    { "202410000948", "[]", "{}", "9/2/1979", "biggle@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Mariana", "Mariana Ribeiro", "Female", "202410000948", "Ribeiro", "+351963814392" },
+                    { "202410000949", "[]", "{}", "28/2/1970", "key@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Matilde", "Matilde Chaves", "Female", "202410000949", "Chaves", "+351979520831" },
+                    { "202410000950", "[]", "{}", "19/2/2006", "isaa@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Isabel", "Isabel Areal", "Female", "202410000950", "Areal", "+351919430214" },
+                    { "202410000951", "[]", "{}", "3/6/2012", "angel@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Noélia", "Noélia Anjos", "Female", "202410000951", "Anjos", "+351954878702" },
+                    { "202410000952", "[]", "{}", "24/7/2002", "minda@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Ermelinda", "Ermelinda Barbosa", "Female", "202410000952", "Barbosa", "+351931988386" },
+                    { "202410007891", "[]", "{}", "19/11/2018", "Jane@email.com", "{\r\n  \"Name\": \"Carlos\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Jane", "Jane Does", "Male", "202410007891", "Does", "+351919991919" },
+                    { "202410007911", "[]", "{}", "4/3/1974", "silva@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "João", "João Silva", "Male", "202410007911", "Silva", "+351911382919" },
+                    { "202410019271", "[]", "{}", "3/10/2002", "diogonet@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Diogo", "Diogo Neto", "Male", "202410019271", "Neto", "+351919994919" },
+                    { "202410033891", "[]", "{}", "28/6/1996", "joanac@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Joana", "Joana Silva", "Male", "202410033891", "Silva", "+351911231919" },
+                    { "202410120782", "[]", "{}", "14/6/1989", "costa@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "André", "André Costa", "Male", "202410120782", "Costa", "+351911011919" },
+                    { "202410555891", "[]", "{}", "17/3/1970", "franlopes@email.com", "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}", "Francisca", "Francisca Lopes", "Male", "202410555891", "Lopes", "+351919991072" }
                 });
 
             migrationBuilder.InsertData(
@@ -285,28 +285,28 @@ namespace sem_5_24_25_043.Migrations
                 columns: new[] { "Id", "availabilitySlotsID", "email", "firstName", "fullName", "isActive", "lastName", "licenseNumber", "phoneNumber", "specializationID", "staffID" },
                 values: new object[,]
                 {
-                    { "d202400001", "d202400001", "d202400001@medopt.com", "John", "John,Doe", true, "Doe", "887933", "+351946161592", "orthopaedist", "d202400001" },
-                    { "d202400002", "d202400002", "d202400002@medopt.com", "Jane", "Jane,Smith", true, "Smith", "988014", "+351969944594", "orthopaedist", "d202400002" },
-                    { "d202400003", "d202400003", "d202400003@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "902234", "+351911051458", "orthopaedist", "d202400003" },
-                    { "d202400004", "d202400004", "d202400004@medopt.com", "Maria", "Maria,Silva", true, "Silva", "233117", "+351947300072", "orthopaedist", "d202400004" },
-                    { "d202400005", "d202400005", "d202400005@medopt.com", "Ana", "Ana,Costa", true, "Costa", "710595", "+351919121712", "orthopaedist", "d202400005" },
-                    { "d202400006", "d202400006", "d202400006@medopt.com", "Luis", "Luis,Martins", true, "Martins", "224700", "+351929915030", "orthopaedist", "d202400006" },
-                    { "d202400007", "d202400007", "d202400007@medopt.com", "Pedro", "Pedro,Gomes", true, "Gomes", "876091", "+351923464970", "orthopaedist", "d202400007" },
-                    { "d202400008", "d202400008", "d202400008@medopt.com", "Sara", "Sara,Ribeiro", true, "Ribeiro", "299959", "+351996819355", "anaesthetist", "d202400008" },
-                    { "d202400009", "d202400009", "d202400009@medopt.com", "David", "David,Fernandes", true, "Fernandes", "379242", "+351934590816", "anaesthetist", "d202400009" },
-                    { "d202400010", "d202400010", "d202400010@medopt.com", "Laura", "Laura,Sousa", true, "Sousa", "392565", "+351914328203", "anaesthetist", "d202400010" },
-                    { "n202400011", "n202400011", "n202400011@medopt.com", "John", "John,Doe", true, "Doe", "649984", "+351971766739", "anaesthetist", "n202400011" },
-                    { "n202400012", "n202400012", "n202400012@medopt.com", "Jane", "Jane,Smith", true, "Smith", "136265", "+351910126300", "anaesthetist", "n202400012" },
-                    { "n202400013", "n202400013", "n202400013@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "105079", "+351971675485", "anaesthetist", "n202400013" },
-                    { "n202400014", "n202400014", "n202400014@medopt.com", "Maria", "Maria,Silva", true, "Silva", "846633", "+351928104208", "instrumenting", "n202400014" },
-                    { "n202400015", "n202400015", "n202400015@medopt.com", "Nádia", "Nádia,Silva", true, "Silva", "949360", "+351965771841", "instrumenting", "n202400015" },
-                    { "n202400016", "n202400016", "n202400016@medopt.com", "José", "José,Costa", true, "Costa", "942835", "+351932190666", "instrumenting", "n202400016" },
-                    { "n202400017", "n202400017", "n202400017@medopt.com", "Diogo", "Diogo,Costa", true, "Costa", "985453", "+351956023906", "circulating", "n202400017" },
-                    { "n202400018", "n202400018", "n202400018@medopt.com", "Arménio", "Arménio,Costa", true, "Costa", "439504", "+351930125374", "circulating", "n202400018" },
-                    { "n202400019", "n202400019", "n202400019@medopt.com", "Nininho", "Nininho,Costa", true, "Costa", "837704", "+351951401059", "circulating", "n202400019" },
-                    { "s202400001", "s202400001", "s202400001@medopt.com", "Luis", "Luis,Martins", true, "Martins", "423783", "+351959773397", "medical_action", "s202400001" },
-                    { "s202400002", "s202400002", "s202400002@medopt.com", "Cândido", "Cândido,Costa", true, "Costa", "890969", "+351941823585", "medical_action", "s202400002" },
-                    { "s202400003", "s202400003", "s202400003@medopt.com", "Reinaldo", "Reinaldo,Teles", true, "Teles", "285620", "+351919682965", "medical_action", "s202400003" }
+                    { "d202400001", "d202400001", "d202400001@medopt.com", "John", "John,Doe", true, "Doe", "913747", "+351922236531", "orthopaedist", "d202400001" },
+                    { "d202400002", "d202400002", "d202400002@medopt.com", "Jane", "Jane,Smith", true, "Smith", "630413", "+351940724643", "orthopaedist", "d202400002" },
+                    { "d202400003", "d202400003", "d202400003@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "540020", "+351967343528", "orthopaedist", "d202400003" },
+                    { "d202400004", "d202400004", "d202400004@medopt.com", "Maria", "Maria,Silva", true, "Silva", "919110", "+351927035655", "orthopaedist", "d202400004" },
+                    { "d202400005", "d202400005", "d202400005@medopt.com", "Ana", "Ana,Costa", true, "Costa", "463911", "+351953899204", "orthopaedist", "d202400005" },
+                    { "d202400006", "d202400006", "d202400006@medopt.com", "Luis", "Luis,Martins", true, "Martins", "167458", "+351928804647", "orthopaedist", "d202400006" },
+                    { "d202400007", "d202400007", "d202400007@medopt.com", "Pedro", "Pedro,Gomes", true, "Gomes", "518083", "+351989680327", "orthopaedist", "d202400007" },
+                    { "d202400008", "d202400008", "d202400008@medopt.com", "Sara", "Sara,Ribeiro", true, "Ribeiro", "337430", "+351913573399", "anaesthetist", "d202400008" },
+                    { "d202400009", "d202400009", "d202400009@medopt.com", "David", "David,Fernandes", true, "Fernandes", "715551", "+351945381157", "anaesthetist", "d202400009" },
+                    { "d202400010", "d202400010", "d202400010@medopt.com", "Laura", "Laura,Sousa", true, "Sousa", "781405", "+351966532149", "anaesthetist", "d202400010" },
+                    { "n202400011", "n202400011", "n202400011@medopt.com", "John", "John,Doe", true, "Doe", "131092", "+351920022904", "anaesthetist", "n202400011" },
+                    { "n202400012", "n202400012", "n202400012@medopt.com", "Jane", "Jane,Smith", true, "Smith", "215315", "+351976305239", "anaesthetist", "n202400012" },
+                    { "n202400013", "n202400013", "n202400013@medopt.com", "Carlos", "Carlos,Moedas", true, "Moedas", "612155", "+351989418925", "anaesthetist", "n202400013" },
+                    { "n202400014", "n202400014", "n202400014@medopt.com", "Maria", "Maria,Silva", true, "Silva", "402461", "+351977395134", "instrumenting", "n202400014" },
+                    { "n202400015", "n202400015", "n202400015@medopt.com", "Nádia", "Nádia,Silva", true, "Silva", "520990", "+351955143561", "instrumenting", "n202400015" },
+                    { "n202400016", "n202400016", "n202400016@medopt.com", "José", "José,Costa", true, "Costa", "695514", "+351956736469", "instrumenting", "n202400016" },
+                    { "n202400017", "n202400017", "n202400017@medopt.com", "Diogo", "Diogo,Costa", true, "Costa", "337579", "+351948090603", "circulating", "n202400017" },
+                    { "n202400018", "n202400018", "n202400018@medopt.com", "Arménio", "Arménio,Costa", true, "Costa", "553791", "+351981477646", "circulating", "n202400018" },
+                    { "n202400019", "n202400019", "n202400019@medopt.com", "Nininho", "Nininho,Costa", true, "Costa", "650828", "+351963885322", "circulating", "n202400019" },
+                    { "s202400001", "s202400001", "s202400001@medopt.com", "Luis", "Luis,Martins", true, "Martins", "695544", "+351973568790", "medical_action", "s202400001" },
+                    { "s202400002", "s202400002", "s202400002@medopt.com", "Cândido", "Cândido,Costa", true, "Costa", "175140", "+351912312947", "medical_action", "s202400002" },
+                    { "s202400003", "s202400003", "s202400003@medopt.com", "Reinaldo", "Reinaldo,Teles", true, "Teles", "615113", "+351993057373", "medical_action", "s202400003" }
                 });
 
             migrationBuilder.InsertData(

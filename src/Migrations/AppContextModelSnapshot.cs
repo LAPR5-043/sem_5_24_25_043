@@ -352,7 +352,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202310056123",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "19/8/2003",
+                            DateOfBirth = "17/8/1997",
                             Email = "john@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919919919\"\r\n}",
                             FirstName = "John",
@@ -367,7 +367,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410007891",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "10/3/1969",
+                            DateOfBirth = "19/11/2018",
                             Email = "Jane@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Carlos\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Jane",
@@ -382,7 +382,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410007911",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "25/2/1982",
+                            DateOfBirth = "4/3/1974",
                             Email = "silva@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "João",
@@ -397,7 +397,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410120782",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "14/2/1990",
+                            DateOfBirth = "14/6/1989",
                             Email = "costa@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "André",
@@ -412,7 +412,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410033891",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "5/6/1995",
+                            DateOfBirth = "28/6/1996",
                             Email = "joanac@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Joana",
@@ -427,7 +427,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410019271",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "7/4/1997",
+                            DateOfBirth = "3/10/2002",
                             Email = "diogonet@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Diogo",
@@ -442,7 +442,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410555891",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "21/9/2008",
+                            DateOfBirth = "17/3/1970",
                             Email = "franlopes@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Francisca",
@@ -457,7 +457,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410000941",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "7/1/1980",
+                            DateOfBirth = "25/10/1971",
                             Email = "rmiguel@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Miguel",
@@ -472,7 +472,7 @@ namespace sem_5_24_25_043.Migrations
                             MedicalRecordNumber = "202410000942",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "15/8/2019",
+                            DateOfBirth = "1/8/1974",
                             Email = "smiguel@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Miguel",
@@ -480,14 +480,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Male",
                             Id = "202410000942",
                             LastName = "Santos",
-                            PhoneNumber = "+351940928081"
+                            PhoneNumber = "+351972086871"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000943",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "22/10/1989",
+                            DateOfBirth = "10/9/1996",
                             Email = "rrada@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Carlos",
@@ -495,14 +495,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Male",
                             Id = "202410000943",
                             LastName = "Prada",
-                            PhoneNumber = "+351980538621"
+                            PhoneNumber = "+351920908079"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000944",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "26/10/2002",
+                            DateOfBirth = "2/7/1994",
                             Email = "furtado@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "José",
@@ -510,14 +510,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Male",
                             Id = "202410000944",
                             LastName = "Furtado",
-                            PhoneNumber = "+351984208790"
+                            PhoneNumber = "+351928199291"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000945",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "1/10/2018",
+                            DateOfBirth = "18/10/2012",
                             Email = "ochal@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Diana",
@@ -525,14 +525,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000945",
                             LastName = "Rocha",
-                            PhoneNumber = "+351990667773"
+                            PhoneNumber = "+351958921901"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000946",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "4/1/1970",
+                            DateOfBirth = "11/7/2011",
                             Email = "nessa@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Jéssica",
@@ -540,14 +540,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000946",
                             LastName = "Vanessa",
-                            PhoneNumber = "+351981251676"
+                            PhoneNumber = "+351910147943"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000947",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "4/3/1992",
+                            DateOfBirth = "20/5/1981",
                             Email = "dreia@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Andreia",
@@ -555,14 +555,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000947",
                             LastName = "Rios",
-                            PhoneNumber = "+351971471413"
+                            PhoneNumber = "+351965703922"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000948",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "10/10/2017",
+                            DateOfBirth = "9/2/1979",
                             Email = "biggle@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Mariana",
@@ -570,14 +570,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000948",
                             LastName = "Ribeiro",
-                            PhoneNumber = "+351934055817"
+                            PhoneNumber = "+351963814392"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000949",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "1/1/2007",
+                            DateOfBirth = "28/2/1970",
                             Email = "key@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Matilde",
@@ -585,14 +585,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000949",
                             LastName = "Chaves",
-                            PhoneNumber = "+351944699717"
+                            PhoneNumber = "+351979520831"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000950",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "27/9/1980",
+                            DateOfBirth = "19/2/2006",
                             Email = "isaa@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Isabel",
@@ -600,14 +600,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000950",
                             LastName = "Areal",
-                            PhoneNumber = "+351918514534"
+                            PhoneNumber = "+351919430214"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000951",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "23/1/2009",
+                            DateOfBirth = "3/6/2012",
                             Email = "angel@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Noélia",
@@ -615,14 +615,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000951",
                             LastName = "Anjos",
-                            PhoneNumber = "+351973107412"
+                            PhoneNumber = "+351954878702"
                         },
                         new
                         {
                             MedicalRecordNumber = "202410000952",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "27/10/1979",
+                            DateOfBirth = "24/7/2002",
                             Email = "minda@email.com",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Ermelinda",
@@ -630,14 +630,14 @@ namespace sem_5_24_25_043.Migrations
                             Gender = "Female",
                             Id = "202410000952",
                             LastName = "Barbosa",
-                            PhoneNumber = "+351912726541"
+                            PhoneNumber = "+351931988386"
                         },
                         new
                         {
                             MedicalRecordNumber = "202310001975",
                             AllergiesAndConditions = "[]",
                             AppointmentHistory = "{}",
-                            DateOfBirth = "15/6/2008",
+                            DateOfBirth = "2/3/2010",
                             Email = "1220606@isep.ipp.pt",
                             EmergencyContact = "{\r\n  \"Name\": \"Jane\",\r\n  \"PhoneNumber\": \"\\u002B351919999119\"\r\n}",
                             FirstName = "Ricky",
@@ -889,8 +889,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "887933",
-                            phoneNumber = "+351946161592",
+                            licenseNumber = "913747",
+                            phoneNumber = "+351922236531",
                             specializationID = "orthopaedist",
                             staffID = "d202400001"
                         },
@@ -903,8 +903,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "988014",
-                            phoneNumber = "+351969944594",
+                            licenseNumber = "630413",
+                            phoneNumber = "+351940724643",
                             specializationID = "orthopaedist",
                             staffID = "d202400002"
                         },
@@ -917,8 +917,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "902234",
-                            phoneNumber = "+351911051458",
+                            licenseNumber = "540020",
+                            phoneNumber = "+351967343528",
                             specializationID = "orthopaedist",
                             staffID = "d202400003"
                         },
@@ -931,8 +931,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "233117",
-                            phoneNumber = "+351947300072",
+                            licenseNumber = "919110",
+                            phoneNumber = "+351927035655",
                             specializationID = "orthopaedist",
                             staffID = "d202400004"
                         },
@@ -945,8 +945,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Ana,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "710595",
-                            phoneNumber = "+351919121712",
+                            licenseNumber = "463911",
+                            phoneNumber = "+351953899204",
                             specializationID = "orthopaedist",
                             staffID = "d202400005"
                         },
@@ -959,8 +959,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "224700",
-                            phoneNumber = "+351929915030",
+                            licenseNumber = "167458",
+                            phoneNumber = "+351928804647",
                             specializationID = "orthopaedist",
                             staffID = "d202400006"
                         },
@@ -973,8 +973,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Pedro,Gomes",
                             isActive = true,
                             lastName = "Gomes",
-                            licenseNumber = "876091",
-                            phoneNumber = "+351923464970",
+                            licenseNumber = "518083",
+                            phoneNumber = "+351989680327",
                             specializationID = "orthopaedist",
                             staffID = "d202400007"
                         },
@@ -987,8 +987,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Sara,Ribeiro",
                             isActive = true,
                             lastName = "Ribeiro",
-                            licenseNumber = "299959",
-                            phoneNumber = "+351996819355",
+                            licenseNumber = "337430",
+                            phoneNumber = "+351913573399",
                             specializationID = "anaesthetist",
                             staffID = "d202400008"
                         },
@@ -1001,8 +1001,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "David,Fernandes",
                             isActive = true,
                             lastName = "Fernandes",
-                            licenseNumber = "379242",
-                            phoneNumber = "+351934590816",
+                            licenseNumber = "715551",
+                            phoneNumber = "+351945381157",
                             specializationID = "anaesthetist",
                             staffID = "d202400009"
                         },
@@ -1015,8 +1015,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Laura,Sousa",
                             isActive = true,
                             lastName = "Sousa",
-                            licenseNumber = "392565",
-                            phoneNumber = "+351914328203",
+                            licenseNumber = "781405",
+                            phoneNumber = "+351966532149",
                             specializationID = "anaesthetist",
                             staffID = "d202400010"
                         },
@@ -1029,8 +1029,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "John,Doe",
                             isActive = true,
                             lastName = "Doe",
-                            licenseNumber = "649984",
-                            phoneNumber = "+351971766739",
+                            licenseNumber = "131092",
+                            phoneNumber = "+351920022904",
                             specializationID = "anaesthetist",
                             staffID = "n202400011"
                         },
@@ -1043,8 +1043,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Jane,Smith",
                             isActive = true,
                             lastName = "Smith",
-                            licenseNumber = "136265",
-                            phoneNumber = "+351910126300",
+                            licenseNumber = "215315",
+                            phoneNumber = "+351976305239",
                             specializationID = "anaesthetist",
                             staffID = "n202400012"
                         },
@@ -1057,8 +1057,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Carlos,Moedas",
                             isActive = true,
                             lastName = "Moedas",
-                            licenseNumber = "105079",
-                            phoneNumber = "+351971675485",
+                            licenseNumber = "612155",
+                            phoneNumber = "+351989418925",
                             specializationID = "anaesthetist",
                             staffID = "n202400013"
                         },
@@ -1071,8 +1071,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Maria,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "846633",
-                            phoneNumber = "+351928104208",
+                            licenseNumber = "402461",
+                            phoneNumber = "+351977395134",
                             specializationID = "instrumenting",
                             staffID = "n202400014"
                         },
@@ -1085,8 +1085,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Nádia,Silva",
                             isActive = true,
                             lastName = "Silva",
-                            licenseNumber = "949360",
-                            phoneNumber = "+351965771841",
+                            licenseNumber = "520990",
+                            phoneNumber = "+351955143561",
                             specializationID = "instrumenting",
                             staffID = "n202400015"
                         },
@@ -1099,8 +1099,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "José,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "942835",
-                            phoneNumber = "+351932190666",
+                            licenseNumber = "695514",
+                            phoneNumber = "+351956736469",
                             specializationID = "instrumenting",
                             staffID = "n202400016"
                         },
@@ -1113,8 +1113,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Diogo,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "985453",
-                            phoneNumber = "+351956023906",
+                            licenseNumber = "337579",
+                            phoneNumber = "+351948090603",
                             specializationID = "circulating",
                             staffID = "n202400017"
                         },
@@ -1127,8 +1127,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Arménio,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "439504",
-                            phoneNumber = "+351930125374",
+                            licenseNumber = "553791",
+                            phoneNumber = "+351981477646",
                             specializationID = "circulating",
                             staffID = "n202400018"
                         },
@@ -1141,8 +1141,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Nininho,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "837704",
-                            phoneNumber = "+351951401059",
+                            licenseNumber = "650828",
+                            phoneNumber = "+351963885322",
                             specializationID = "circulating",
                             staffID = "n202400019"
                         },
@@ -1155,8 +1155,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Luis,Martins",
                             isActive = true,
                             lastName = "Martins",
-                            licenseNumber = "423783",
-                            phoneNumber = "+351959773397",
+                            licenseNumber = "695544",
+                            phoneNumber = "+351973568790",
                             specializationID = "medical_action",
                             staffID = "s202400001"
                         },
@@ -1169,8 +1169,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Cândido,Costa",
                             isActive = true,
                             lastName = "Costa",
-                            licenseNumber = "890969",
-                            phoneNumber = "+351941823585",
+                            licenseNumber = "175140",
+                            phoneNumber = "+351912312947",
                             specializationID = "medical_action",
                             staffID = "s202400002"
                         },
@@ -1183,8 +1183,8 @@ namespace sem_5_24_25_043.Migrations
                             fullName = "Reinaldo,Teles",
                             isActive = true,
                             lastName = "Teles",
-                            licenseNumber = "285620",
-                            phoneNumber = "+351919682965",
+                            licenseNumber = "615113",
+                            phoneNumber = "+351993057373",
                             specializationID = "medical_action",
                             staffID = "s202400003"
                         });
