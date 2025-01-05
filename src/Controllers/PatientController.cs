@@ -35,7 +35,7 @@ namespace src.Controllers
         /// <param name="patientDto"></param>
         /// <returns></returns>
         // POST: api/Patient/Create
-        [Authorize(Roles = "admins")]
+        [Authorize(Roles = "admins,medic")]
         [HttpPost("Create")]
         public async Task<IActionResult> CreatePatient([FromBody] PatientDto patientDto)
         {
@@ -65,7 +65,7 @@ namespace src.Controllers
 
 
         //GET /api/Patient/filtered?firstName=&lastName=&email=&phoneNumber=&medicalRecordNumber=&dateOfBirth=&gender=&sortBy=
-        [Authorize(Roles = "admins, patient")]
+        [Authorize(Roles = "admins, patient,medic")]
         [HttpGet("filtered")]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetPatientsFiltered([FromQuery] string? firstName, [FromQuery] string? lastName,
                                                                     [FromQuery] string? email, [FromQuery] string? phoneNumber, [FromQuery] string? medicalRecordNumber, [FromQuery] string? dateOfBirth, [FromQuery] string? gender, [FromQuery] string? sortBy)
@@ -80,7 +80,7 @@ namespace src.Controllers
         }
 
         // GET: api/Patient/5
-        [Authorize(Roles = "admins")]
+        [Authorize(Roles = "admins,medic")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatientById(string id)
         {
@@ -94,7 +94,7 @@ namespace src.Controllers
             return Ok(patient);
         }
 
-        [Authorize(Roles = "admins")]
+        [Authorize(Roles = "admins,medic")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(string id)
         {
@@ -162,7 +162,8 @@ namespace src.Controllers
 
             return NotFound(new { message = "pending requests not found." });
         }
-
+        
+        [Authorize(Roles = "admins,medic")]
         [HttpPatch("edit/{id}")]
         public async Task<IActionResult> EditPatient(string id, [FromBody] PatientDto patientDto)
         {
@@ -233,6 +234,7 @@ namespace src.Controllers
 
         // DELETE: /api/patient/delete/sensitiveData?patientID=
         //[Authorize(Roles = "patient")]
+        [Authorize(Roles = "admins,medic,patient")]
         [HttpGet("delete/sensitiveData")]
         public async Task<ActionResult<string>> DeleteSensitiveData([FromQuery] string patientID)
         {
