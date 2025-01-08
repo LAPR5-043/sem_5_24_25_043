@@ -49,7 +49,10 @@ namespace sem_5_24_25_043
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 });
             builder.Services.AddDbContext<AppContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
+                {
+                    sqlOptions.CommandTimeout(120); // 120 segundos
+                }));
 
             // Configure Kestrel to bind to a specific IP and port
             builder.WebHost.ConfigureKestrel(options =>
