@@ -14,7 +14,5 @@ namespace Domain.AppointmentAggregate
 
         Task<Appointment> updateAsync(Appointment appointment);
 
-        
-
     }
 }

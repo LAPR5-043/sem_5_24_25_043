@@ -71,9 +71,4 @@ public class StaffFullName : IValueObject
     {
         return fullName;
     }
-
-    public static implicit operator string?(StaffFullName? v)
-    {
-        throw new NotImplementedException();
-    }
 }

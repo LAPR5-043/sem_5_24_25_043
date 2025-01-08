@@ -57,12 +57,12 @@ namespace src.Controllers
         }
 
         [HttpGet("All")]
-        public async Task<ActionResult<List<AppointmentDto>>> GetAllAppointments()
+        public ActionResult<List<AppointmentDto>> GetAllAppointments()
         {
             try
             {
-                var appoints = await service.GetAllAppointmentsAsync();
-                if (appoints == null || !appoints.Any())
+                var appoints = service.GetAllAppointmentsAsync();
+                if (appoints == null)
                 {
                     return NotFound();
                 }
@@ -70,14 +70,14 @@ namespace src.Controllers
             }
             catch (Exception e)
             {
-                // Log the exception (e.g., using a logging framework)
-                return BadRequest(e.Message);
+                e.StackTrace.ToString();
+                return BadRequest();
             }
         }
 
         [HttpGet]
         public async Task<ActionResult<PlanningResponseDto>> GetAppointmentsForTheRoomAndDay([FromQuery] string roomId, [FromQuery] int day)
-        {
+        {   
             try
             {
                 if (roomId == null || day == 0)
@@ -92,7 +92,7 @@ namespace src.Controllers
 
             try
             {
-                PlanningResponseDto response = await service.GenerateApointmentsByRoomAndDateAsync(roomId, day);
+                PlanningResponseDto response =  await service.GenerateApointmentsByRoomAndDateAsync(roomId, day);
 
                 if (response == null)
                 {
@@ -102,7 +102,7 @@ namespace src.Controllers
                 return Ok(new { message = schedule_with_success, schedule = response });
 
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 if (e.Message == nothing_to_schedule)
                 {
@@ -112,20 +112,20 @@ namespace src.Controllers
                 {
                     return Ok(new { message = room_full });
                 }
-
+                
                 return StatusCode(500, e.Message);
-
+               
             }
 
-
+        
         }
 
         [HttpGet("GenerateToMultipleRooms")]
         public async Task<ActionResult<GeneticResponseDto>> GetAppointmentsForTheDay([FromQuery] int day)
-        {
+        {   
             try
             {
-                if (day == 0)
+                if ( day == 0)
                 {
                     return BadRequest();
                 }
@@ -137,7 +137,7 @@ namespace src.Controllers
 
             try
             {
-                GeneticResponseDto response = await service.GenerateApointmentsByDateAsync(day);
+                GeneticResponseDto response =  await service.GenerateApointmentsByDateAsync( day);
 
                 if (response == null)
                 {
@@ -147,7 +147,7 @@ namespace src.Controllers
                 return Ok(new { message = schedule_with_success, schedule = response });
 
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 if (e.Message == nothing_to_schedule)
                 {
@@ -157,88 +157,88 @@ namespace src.Controllers
                 {
                     return Ok(new { message = room_full });
                 }
-
+                
                 return StatusCode(500, e.Message);
-
+               
             }
 
-
+        
         }
 
-        [HttpGet("request")]
-        public async Task<ActionResult<AppointmentDto>> GetAppointmentByRequestID([FromQuery] string requestID)
+    [HttpGet("request")]
+    public async Task<ActionResult<AppointmentDto>> GetAppointmentByRequestID([FromQuery] string requestID)
+    {
+        try
         {
-            try
+            if (string.IsNullOrEmpty(requestID))
             {
-                if (string.IsNullOrEmpty(requestID))
-                {
-                    return BadRequest(new { message = "Request ID cannot be null or empty." });
-                }
-
-                var appoint = await service.GetAppointmentByRequestIDAsync(requestID);
-                if (appoint == null)
-                {
-                    return NotFound(new { message = "Appointment not found." });
-                }
-
-                return Ok(appoint);
+                return BadRequest(new { message = "Request ID cannot be null or empty." });
             }
-            catch (Exception e)
+
+            var appoint = await service.GetAppointmentByRequestIDAsync(requestID);
+            if (appoint == null)
             {
-                return StatusCode(500, new { message = "Appointment not found." });
+                return NotFound(new { message = "Appointment not found." });
             }
+
+            return Ok(appoint);
         }
-
-        [HttpPost]
-        public async Task<ActionResult<AppointmentDto>> CreateAppointment([FromBody] AppointmentDto appointmentDto)
+        catch (Exception e)
         {
-            try
-            {
-                if (appointmentDto == null)
-                {
-                    return BadRequest(new { message = "Appointment cannot be null." });
-                }
-
-                var appoint = await service.createAppointmentAsync(appointmentDto);
-                if (appoint == null)
-                {
-                    return NotFound(new { message = "Appointment not found." });
-                }
-
-                return Ok(appoint);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, new { message = e.Message });
-            }
-
-
+            return StatusCode(500, new { message = "Appointment not found."});
         }
+    }
 
-        [HttpPatch]
-        public async Task<ActionResult<AppointmentDto>> UpdateAppointment([FromBody] AppointmentDto appointmentDto)
+    [HttpPost]
+    public async Task<ActionResult<AppointmentDto>> CreateAppointment([FromBody] AppointmentDto appointmentDto)
+    {
+        try
         {
-            try
+            if (appointmentDto == null)
             {
-                Console.WriteLine("appointmentDto");
-                if (appointmentDto == null)
-                {
-                    return BadRequest(new { message = "Appointment cannot be null." });
-                }
-                Console.WriteLine("appointmentDto1");
-                var appoint = await service.updateAppointmentAsync(appointmentDto);
-                Console.WriteLine("appointmentDto2");
-                if (appoint == null)
-                {
-                    return NotFound(new { message = "Appointment not found." });
-                }
+                return BadRequest(new { message = "Appointment cannot be null." });
+            }
 
-                return Ok(appoint);
-            }
-            catch (Exception e)
+            var appoint = await service.createAppointmentAsync(appointmentDto);
+            if (appoint == null)
             {
-                return StatusCode(500, new { message = e.Message });
+                return NotFound(new { message = "Appointment not found." });
             }
+
+            return Ok(appoint);
         }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = e.Message });
+        }
+
+
+    }
+
+    [HttpPatch]
+    public async Task<ActionResult<AppointmentDto>> UpdateAppointment([FromBody] AppointmentDto appointmentDto)
+    {
+        try
+        {
+            Console.WriteLine("appointmentDto");
+            if (appointmentDto == null)
+            {
+                return BadRequest(new { message = "Appointment cannot be null." });
+            }
+            Console.WriteLine("appointmentDto1");
+            var appoint = await service.updateAppointmentAsync(appointmentDto);
+            Console.WriteLine("appointmentDto2");
+            if (appoint == null)
+            {
+                return NotFound(new { message = "Appointment not found." });
+            }
+
+            return Ok(appoint);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = e.Message });
+        }
+    }
     }
 }
