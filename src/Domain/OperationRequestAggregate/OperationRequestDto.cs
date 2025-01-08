@@ -87,4 +87,9 @@ public class OperationRequestDto
         Month = month;
         Year = year;
     }
+
+    public static implicit operator OperationRequestDto(OperationRequest v)
+    {
+        throw new NotImplementedException();
+    }
 }
